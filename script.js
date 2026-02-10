@@ -57,18 +57,44 @@
     history.pushState(null, "", href);
   });
 
-  // Request form (static stub)
+  // TEMPORARY (unsafe): tokens in frontend are visible to everyone.
+  // TODO: Move TELEGRAM_BOT_TOKEN/TELEGRAM_CHAT_ID to backend/serverless (Cloudflare Workers, etc.).
+  // Note: the bot must be able to write to the target chat (open bot chat and press /start, or add the bot to a group).
+  const TELEGRAM_BOT_TOKEN = "8371908218:AAFX2-mU-7bHFSEMFm8C3Im8oRJwTgT1dT4";
+  // earlier: const TELEGRAM_CHAT_ID = "5034197708";
+  const TELEGRAM_CHAT_ID = "-5034197708";
+
+  const sendTelegramMessage = async (text) => {
+    if (!TELEGRAM_BOT_TOKEN || TELEGRAM_BOT_TOKEN.includes("ТУТ_Я_ПОДСТАВЛЮ_САМ")) {
+      throw new Error("TELEGRAM_BOT_TOKEN is not set");
+    }
+    if (!TELEGRAM_CHAT_ID || TELEGRAM_CHAT_ID.includes("ТУТ_Я_ПОДСТАВЛЮ_САМ")) {
+      throw new Error("TELEGRAM_CHAT_ID is not set");
+    }
+
+    const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: TELEGRAM_CHAT_ID,
+        text,
+      }),
+    });
+
+    const data = await res.json().catch(() => null);
+    if (!res.ok || !data || data.ok !== true) {
+      const desc = data && typeof data.description === "string" ? data.description : "Unknown error";
+      throw new Error(desc);
+    }
+
+    return data;
+  };
+
+  // Request form
   const form = document.getElementById("request-form");
   const result = document.getElementById("request-result");
 
   if (form) {
-    // TEMPORARY (unsafe): tokens in frontend are visible to everyone.
-    // TODO: Move BOT_TOKEN/CHAT_ID to backend/serverless (Cloudflare Workers, etc.).
-    // Note: the bot must be able to write to the target chat (open bot chat and press /start, or add the bot to a group).
-    const BOT_TOKEN = "8371908218:AAFX2-mU-7bHFSEMFm8C3Im8oRJwTgT1dT4";
-    // earlier: const CHAT_ID = "5034197708";
-    const CHAT_ID = "-5034197708";
-
     const submitBtn = form.querySelector("button[type='submit']");
     const resultTitle = result ? result.querySelector(".form-result-title") : null;
     const resultText = result ? result.querySelector(".form-result-text") : null;
@@ -122,28 +148,7 @@
       if (result) result.hidden = true;
 
       try {
-        if (!BOT_TOKEN || BOT_TOKEN.includes("ТУТ_Я_ПОДСТАВЛЮ_САМ")) {
-          throw new Error("BOT_TOKEN is not set");
-        }
-        if (!CHAT_ID || CHAT_ID.includes("ТУТ_Я_ПОДСТАВЛЮ_САМ")) {
-          throw new Error("CHAT_ID is not set");
-        }
-
-        const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            chat_id: CHAT_ID,
-            text: message,
-          }),
-        });
-
-        const data = await res.json().catch(() => null);
-
-        if (!res.ok || !data || data.ok !== true) {
-          const desc = data && typeof data.description === "string" ? data.description : "Unknown error";
-          throw new Error(desc);
-        }
+        await sendTelegramMessage(message);
 
         setResult({
           type: "success",
@@ -177,6 +182,7 @@
 
   if (partnerForm) {
     const ISSUE_BASE_URL = "https://github.com/karenavedikyan/rem/issues/new";
+    const partnerSubmitBtn = partnerForm.querySelector("button[type='submit']");
     const partnerResultTitle = partnerResult ? partnerResult.querySelector(".form-result-title") : null;
     const partnerResultText = partnerResult ? partnerResult.querySelector(".form-result-text") : null;
     const partnerResultLink = document.getElementById("partner-result-link");
@@ -204,7 +210,12 @@
       return el && "value" in el ? String(el.value).trim() : "";
     };
 
-    partnerForm.addEventListener("submit", (e) => {
+    const setPartnerLoading = (loading) => {
+      if (partnerSubmitBtn) partnerSubmitBtn.disabled = loading;
+      partnerForm.setAttribute("aria-busy", loading ? "true" : "false");
+    };
+
+    partnerForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
       if (!partnerForm.checkValidity()) {
@@ -212,6 +223,7 @@
         return;
       }
 
+      setPartnerLoading(true);
       if (partnerResult) partnerResult.hidden = true;
 
       try {
@@ -227,6 +239,20 @@
           website: getPartnerValue("website"),
           comment: getPartnerValue("comment"),
         };
+
+        const telegramMessage =
+          "Новая заявка партнера RemCard:\n" +
+          `Контактное лицо: ${payload.contactName || "-"}\n` +
+          `Компания / бренд: ${payload.businessName || "-"}\n` +
+          `Телефон: ${payload.phone || "-"}\n` +
+          `Email: ${payload.email || "-"}\n` +
+          `Город: ${payload.city || "-"}\n` +
+          `Тип партнера: ${payload.partnerType || "-"}\n` +
+          `Опыт: ${payload.experience || "-"}\n` +
+          `Сайт / соцсети: ${payload.website || "-"}\n` +
+          `Услуги / товары: ${payload.offerings || "-"}\n` +
+          `Комментарий: ${payload.comment || "-"}`;
+        await sendTelegramMessage(telegramMessage);
 
         const issueTitle = `Заявка партнёра: ${payload.businessName || payload.contactName || "без названия"}`;
         const issueBody =
@@ -252,7 +278,7 @@
         setPartnerResult({
           type: "success",
           title: "Черновик заявки готов",
-          text: "Мы открыли GitHub с подготовленной заявкой. Проверьте данные и нажмите Create issue.",
+          text: "Заявка отправлена в Telegram, и мы открыли GitHub с черновиком. Проверьте данные и нажмите Create issue.",
           url,
         });
 
@@ -270,6 +296,8 @@
         });
         // eslint-disable-next-line no-console
         console.error("RemCard partner form error:", err);
+      } finally {
+        setPartnerLoading(false);
       }
     });
   }
