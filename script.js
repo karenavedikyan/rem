@@ -66,7 +66,7 @@
     // TODO: Move BOT_TOKEN/CHAT_ID to backend/serverless (Cloudflare Workers, etc.).
     // Note: the bot must be able to write to the target chat (open bot chat and press /start, or add the bot to a group).
     const BOT_TOKEN = "8371908218:AAFX2-mU-7bHFSEMFm8C3Im8oRJwTgT1dT4";
-    const CHAT_ID = "5034197708";
+    const CHAT_ID = "38648162";
 
     const submitBtn = form.querySelector("button[type='submit']");
     const resultTitle = result ? result.querySelector(".form-result-title") : null;
