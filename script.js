@@ -57,6 +57,102 @@
     history.pushState(null, "", href);
   });
 
+  // Confirmed partners list (loaded from JSON)
+  const confirmedPartnersList = document.getElementById("confirmed-partners-list");
+  const confirmedPartnersMeta = document.getElementById("confirmed-partners-meta");
+
+  if (confirmedPartnersList) {
+    const escapeHtml = (value) =>
+      String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+
+    const renderPartners = (items) => {
+      if (!Array.isArray(items) || items.length === 0) {
+        confirmedPartnersList.innerHTML = `
+          <article class="card partner">
+            <h3>Подтверждённых заявок пока нет</h3>
+            <p>Добавьте записи в файл confirmed-partners.json, и они появятся в этом разделе.</p>
+          </article>
+        `;
+        return;
+      }
+
+      const cards = items.map((item) => {
+        const title = escapeHtml(item.title || "Без названия");
+        const description = escapeHtml(item.description || "Описание не указано.");
+        const status = escapeHtml(item.status || "Подтверждено");
+        const note = escapeHtml(item.note || "Источник: Telegram.");
+        const tags = Array.isArray(item.tags)
+          ? item.tags
+              .map((tag) => String(tag).trim())
+              .filter(Boolean)
+              .map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`)
+              .join("")
+          : "";
+
+        return `
+          <article class="card partner">
+            <h3>${title}</h3>
+            <p>${description}</p>
+            <div class="partner-meta">
+              <span class="tag">${status}</span>
+              ${tags}
+            </div>
+            <p class="partner-note">${note}</p>
+          </article>
+        `;
+      });
+
+      confirmedPartnersList.innerHTML = cards.join("");
+    };
+
+    const formatDateRu = (isoDate) => {
+      const date = new Date(isoDate);
+      if (Number.isNaN(date.getTime())) return "";
+      return new Intl.DateTimeFormat("ru-RU", { day: "2-digit", month: "2-digit", year: "numeric" }).format(date);
+    };
+
+    const loadConfirmedPartners = async () => {
+      confirmedPartnersList.setAttribute("aria-busy", "true");
+
+      try {
+        const response = await fetch("./confirmed-partners.json", { cache: "no-store" });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+        const data = await response.json();
+        renderPartners(data.items);
+
+        if (confirmedPartnersMeta) {
+          const source = typeof data.source === "string" && data.source.trim() ? data.source.trim() : "Telegram";
+          const updatedAt = formatDateRu(data.updatedAt);
+          confirmedPartnersMeta.textContent = updatedAt
+            ? `Источник: ${source}. Последнее обновление списка: ${updatedAt}.`
+            : `Источник: ${source}. Список обновляется из файла confirmed-partners.json.`;
+        }
+      } catch (err) {
+        confirmedPartnersList.innerHTML = `
+          <article class="card partner">
+            <h3>Не удалось загрузить список заявок</h3>
+            <p>Проверьте файл confirmed-partners.json и повторите попытку.</p>
+          </article>
+        `;
+        if (confirmedPartnersMeta) {
+          confirmedPartnersMeta.textContent = "Временная ошибка загрузки списка подтверждённых заявок.";
+        }
+        // eslint-disable-next-line no-console
+        console.error("RemCard confirmed partners load error:", err);
+      } finally {
+        confirmedPartnersList.setAttribute("aria-busy", "false");
+      }
+    };
+
+    loadConfirmedPartners();
+  }
+
   // TEMPORARY (unsafe): tokens in frontend are visible to everyone.
   // TODO: Move TELEGRAM_BOT_TOKEN/TELEGRAM_CHAT_ID to backend/serverless (Cloudflare Workers, etc.).
   // Note: the bot must be able to write to the target chat (open bot chat and press /start, or add the bot to a group).
