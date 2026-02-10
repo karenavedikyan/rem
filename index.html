@@ -35,14 +35,17 @@
             <a class="nav-link" href="#structure">Структура сервиса</a>
             <a class="nav-link" href="#roadmap">Дорожная карта</a>
             <a class="nav-link" href="#contacts">Контакты</a>
+            <button class="nav-link nav-admin-trigger" id="admin-profile-toggle" type="button" aria-expanded="false" aria-controls="admin-profile">
+              Профиль админа
+            </button>
           </div>
         </nav>
       </div>
     </header>
 
-    <aside class="admin-profile" aria-label="Профиль админа">
-      <details class="admin-details admin-profile-details">
-        <summary class="admin-summary">
+    <aside class="admin-profile" id="admin-profile" aria-label="Профиль админа" hidden>
+      <div class="admin-details admin-profile-details card admin-card">
+        <div class="admin-profile-head">
           <span class="admin-summary-main">
             <span class="admin-avatar" aria-hidden="true">A</span>
             <span class="admin-summary-text">
@@ -50,49 +53,48 @@
               <span class="admin-summary-subtitle">@kraavediks • публикация заявок</span>
             </span>
           </span>
-        </summary>
+          <button class="admin-close" id="admin-profile-close" type="button" aria-label="Закрыть профиль админа">×</button>
+        </div>
 
-        <div class="card admin-card">
-          <form class="form" id="admin-partner-form" novalidate>
-            <div class="field field-wide">
-              <label for="admin-telegram-text">Текст заявки из Telegram</label>
-              <textarea
-                class="input textarea"
-                id="admin-telegram-text"
-                name="telegramText"
-                rows="8"
-                required
-                placeholder="Новая заявка партнера RemCard:
+        <form class="form" id="admin-partner-form" novalidate>
+          <div class="field field-wide">
+            <label for="admin-telegram-text">Текст заявки из Telegram</label>
+            <textarea
+              class="input textarea"
+              id="admin-telegram-text"
+              name="telegramText"
+              rows="8"
+              required
+              placeholder="Новая заявка партнера RemCard:
 Контактное лицо: Алексей Петров
 Компания / бренд: ИП Петров
 Город: Краснодар
 Тип партнера: Частный мастер / бригада
 Услуги / товары: Плитка, сантехника"
-              ></textarea>
-            </div>
-
-            <div class="form-actions">
-              <button class="btn btn-primary" type="submit">Сформировать/добавить</button>
-              <p class="fineprint">
-                Заявка будет добавлена в список на этой странице. Для публикации нажмите “Скачать confirmed-partners.json” и замените файл в
-                репозитории.
-              </p>
-            </div>
-          </form>
-
-          <div class="admin-actions">
-            <button class="btn btn-ghost" id="admin-copy-json" type="button" disabled>Скопировать JSON заявки</button>
-            <button class="btn btn-ghost" id="admin-download-json" type="button" disabled>Скачать confirmed-partners.json</button>
+            ></textarea>
           </div>
+        </form>
 
-          <pre class="admin-json-output" id="admin-json-output" hidden></pre>
-
-          <div class="form-result" id="admin-parser-result" role="status" aria-live="polite" hidden>
-            <div class="form-result-title">Готово</div>
-            <div class="form-result-text">Заявка обработана.</div>
-          </div>
+        <div class="form-actions">
+          <button class="btn btn-primary" form="admin-partner-form" type="submit">Сформировать/добавить</button>
+          <p class="fineprint">
+            Заявка будет добавлена в список на этой странице. Для публикации нажмите “Скачать confirmed-partners.json” и замените файл в
+            репозитории.
+          </p>
         </div>
-      </details>
+
+        <div class="admin-actions">
+          <button class="btn btn-ghost" id="admin-copy-json" type="button" disabled>Скопировать JSON заявки</button>
+          <button class="btn btn-ghost" id="admin-download-json" type="button" disabled>Скачать confirmed-partners.json</button>
+        </div>
+
+        <pre class="admin-json-output" id="admin-json-output" hidden></pre>
+
+        <div class="form-result" id="admin-parser-result" role="status" aria-live="polite" hidden>
+          <div class="form-result-title">Готово</div>
+          <div class="form-result-text">Заявка обработана.</div>
+        </div>
+      </div>
     </aside>
 
     <main id="main">

@@ -2,6 +2,39 @@
   const header = document.querySelector(".site-header");
   const toggle = document.querySelector(".nav-toggle");
   const menu = document.querySelector("#nav-menu");
+  const adminProfile = document.getElementById("admin-profile");
+  const adminProfileToggle = document.getElementById("admin-profile-toggle");
+  const adminProfileClose = document.getElementById("admin-profile-close");
+
+  const setAdminProfileOpen = (open) => {
+    if (!adminProfile || !adminProfileToggle) return;
+    adminProfile.hidden = !open;
+    adminProfile.classList.toggle("is-open", open);
+    adminProfileToggle.setAttribute("aria-expanded", open ? "true" : "false");
+  };
+
+  const isAdminProfileOpen = () => Boolean(adminProfile && !adminProfile.hidden);
+
+  if (adminProfile && adminProfileToggle) {
+    setAdminProfileOpen(false);
+    adminProfileToggle.addEventListener("click", () => setAdminProfileOpen(!isAdminProfileOpen()));
+  }
+
+  if (adminProfileClose) {
+    adminProfileClose.addEventListener("click", () => setAdminProfileOpen(false));
+  }
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") setAdminProfileOpen(false);
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!isAdminProfileOpen()) return;
+    const target = e.target;
+    if (!(target instanceof Node)) return;
+    if ((adminProfile && adminProfile.contains(target)) || (adminProfileToggle && adminProfileToggle.contains(target))) return;
+    setAdminProfileOpen(false);
+  });
 
   // Footer year
   const yearEl = document.getElementById("year");
@@ -20,8 +53,8 @@
 
     // Close menu on link click (mobile)
     menu.addEventListener("click", (e) => {
-      const link = e.target.closest("a[href^='#']");
-      if (!link) return;
+      const target = e.target.closest("a[href^='#'], #admin-profile-toggle");
+      if (!target) return;
       setExpanded(false);
     });
 
