@@ -24,6 +24,7 @@ Server runs on:
 - `npm run dev` — start dev server with auto-reload
 - `npm run build` — compile TypeScript into `dist/`
 - `npm run start` — start compiled build
+- `npm run bot:create-partner -- --name "..." --type individual --description "..."` — quick approved create (for bot/manual flow)
 - `npm run prisma:migrate` — run Prisma migrations
 - `npm run prisma:generate` — regenerate Prisma client
 
@@ -99,6 +100,35 @@ await fetch("https://<BASE_URL>/partners", {
     isApproved: true,
   }),
 });
+```
+
+CLI helper example (manual/бот-поток):
+
+```bash
+npm run bot:create-partner -- \
+  --base-url "http://localhost:3001" \
+  --name "Иван Петров" \
+  --type "individual" \
+  --city "Краснодар" \
+  --description "Мастер по ремонту санузлов"
+```
+
+## Frontend integration
+
+For RemCard website, request approved partners from API:
+
+```js
+fetch("https://<BASE_URL>/partners?approved=true")
+  .then((res) => res.json())
+  .then((partners) => {
+    // render cards from partners
+  });
+```
+
+For local development:
+
+```txt
+http://localhost:3001/partners?approved=true
 ```
 
 ## Notes for Railway

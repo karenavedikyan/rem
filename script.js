@@ -107,6 +107,10 @@
   };
   let confirmedPartnersLoaded = false;
   let latestGeneratedPartnerItem = null;
+  const PARTNERS_API_BASE_URL =
+    typeof window.REMCARD_PARTNERS_API_BASE_URL === "string" && window.REMCARD_PARTNERS_API_BASE_URL.trim()
+      ? window.REMCARD_PARTNERS_API_BASE_URL.trim().replace(/\/+$/, "")
+      : "http://localhost:3001";
 
   const escapeHtml = (value) =>
     String(value ?? "")
@@ -246,7 +250,7 @@
       return "";
     };
 
-    const source = pickField("Источник") || cleanValue(confirmedPartnersData.source) || "Telegram";
+    const source = pickField("Источник") || "Telegram";
     const contact = pickField("Контактное лицо", "Имя");
     const business = pickField("Компания / бренд", "Компания / специализация");
     const city = pickField("Город");
@@ -287,27 +291,73 @@
   const loadConfirmedPartners = async () => {
     if (!confirmedPartnersList) return;
 
+    const mapApiPartnerToItem = (partner) => {
+      if (!partner || typeof partner !== "object") return null;
+      const data = partner;
+
+      const id = typeof data.id === "number" ? data.id : null;
+      const name = cleanValue(data.name) || "Партнёр RemCard";
+      const city = cleanValue(data.city) || "Краснодар";
+      const description = cleanValue(data.description) || `Партнёр RemCard, город ${city}.`;
+      const type = cleanValue(data.type);
+      const typeLabel = type === "company" ? "Юр лицо" : type === "individual" ? "Физ лицо" : "Партнёр";
+      const status = data.isApproved === false ? "На проверке" : "Подтверждено";
+      const tags = uniqueValues([typeLabel, city], 5);
+      const note = `Источник: Partners API.${id ? ` ID: ${id}.` : ""}`;
+
+      return {
+        title: name,
+        description,
+        status,
+        tags: tags.length > 0 ? tags : ["Без тега"],
+        note,
+      };
+    };
+
     confirmedPartnersList.setAttribute("aria-busy", "true");
     try {
-      const response = await fetch("./confirmed-partners.json", { cache: "no-store" });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      try {
+        const apiResponse = await fetch(`${PARTNERS_API_BASE_URL}/partners?approved=true`, { cache: "no-store" });
+        if (!apiResponse.ok) throw new Error(`HTTP ${apiResponse.status}`);
 
-      const data = await response.json();
+        const apiPartners = await apiResponse.json();
+        const mappedItems = Array.isArray(apiPartners)
+          ? apiPartners.map(mapApiPartnerToItem).filter(Boolean)
+          : [];
+
+        confirmedPartnersData = {
+          source: `Partners API (${PARTNERS_API_BASE_URL})`,
+          updatedAt: getTodayIso(),
+          items: mappedItems,
+        };
+
+        renderPartners(confirmedPartnersData.items);
+        updateConfirmedPartnersMeta();
+        return;
+      } catch (apiError) {
+        // eslint-disable-next-line no-console
+        console.warn("Partners API is unavailable, fallback to local JSON:", apiError);
+      }
+
+      const localResponse = await fetch("./confirmed-partners.json", { cache: "no-store" });
+      if (!localResponse.ok) throw new Error(`HTTP ${localResponse.status}`);
+
+      const localData = await localResponse.json();
       confirmedPartnersData = {
-        source: cleanValue(data.source) || "Telegram",
-        updatedAt: cleanValue(data.updatedAt) || getTodayIso(),
-        items: Array.isArray(data.items) ? data.items : [],
+        source: cleanValue(localData.source) || "Telegram",
+        updatedAt: cleanValue(localData.updatedAt) || getTodayIso(),
+        items: Array.isArray(localData.items) ? localData.items : [],
       };
 
       renderPartners(confirmedPartnersData.items);
       updateConfirmedPartnersMeta();
     } catch (err) {
       confirmedPartnersList.innerHTML = `
-        <article class="card partner">
-          <h3>Не удалось загрузить список заявок</h3>
-          <p>Проверьте файл confirmed-partners.json и повторите попытку.</p>
-        </article>
-      `;
+          <article class="card partner">
+            <h3>Не удалось загрузить список заявок</h3>
+            <p>Проверьте доступность Partners API и файл confirmed-partners.json.</p>
+          </article>
+        `;
       if (confirmedPartnersMeta) {
         confirmedPartnersMeta.textContent = "Временная ошибка загрузки списка подтверждённых заявок.";
       }
