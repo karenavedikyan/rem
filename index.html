@@ -29,6 +29,7 @@
             <a class="nav-link" href="#clients">Для клиентов</a>
             <a class="nav-link" href="#request">Заявка (Краснодар)</a>
             <a class="nav-link" href="#partners">Для партнёров</a>
+            <a class="nav-link" href="#partner-request">Заявка партнёра</a>
             <a class="nav-link" href="#partners-krasnodar">Партнёры Краснодар</a>
             <a class="nav-link" href="#bonus">Бонусная карта</a>
             <a class="nav-link" href="#structure">Структура сервиса</a>
@@ -338,6 +339,160 @@
         </div>
       </section>
 
+      <section class="section" id="partner-request">
+        <div class="container">
+          <header class="section-header">
+            <h2>Заявка на участие для партнёров</h2>
+            <p class="section-subtitle">
+              Заполните форму — мы подготовим черновик заявки и откроем его в GitHub. Останется только нажать кнопку Create issue.
+            </p>
+          </header>
+
+          <div class="grid two-col">
+            <div class="card">
+              <h3>Форма заявки партнёра</h3>
+              <p class="muted">Форма подходит для мастеров, бригад, магазинов и компаний, которые хотят подключиться к RemCard.</p>
+
+              <form class="form" id="partner-form" novalidate>
+                <div class="form-grid">
+                  <div class="field">
+                    <label for="partner-contact">Контактное лицо</label>
+                    <input
+                      class="input"
+                      id="partner-contact"
+                      name="contactName"
+                      autocomplete="name"
+                      required
+                      placeholder="Например, Алексей Петров"
+                    />
+                  </div>
+
+                  <div class="field">
+                    <label for="partner-business">Название компании / бренда</label>
+                    <input
+                      class="input"
+                      id="partner-business"
+                      name="businessName"
+                      required
+                      placeholder="Например, КрасСтройПлюс"
+                    />
+                  </div>
+
+                  <div class="field">
+                    <label for="partner-phone">Телефон</label>
+                    <input
+                      class="input"
+                      id="partner-phone"
+                      name="phone"
+                      type="tel"
+                      inputmode="tel"
+                      autocomplete="tel"
+                      required
+                      placeholder="+7 (___) ___-__-__"
+                    />
+                  </div>
+
+                  <div class="field">
+                    <label for="partner-email">Email</label>
+                    <input
+                      class="input"
+                      id="partner-email"
+                      name="email"
+                      type="email"
+                      autocomplete="email"
+                      required
+                      placeholder="name@example.com"
+                    />
+                  </div>
+
+                  <div class="field">
+                    <label for="partner-city">Город</label>
+                    <input class="input" id="partner-city" name="city" value="Краснодар" required placeholder="Например, Краснодар" />
+                  </div>
+
+                  <div class="field">
+                    <label for="partner-type">Тип партнёра</label>
+                    <select class="input" id="partner-type" name="partnerType" required>
+                      <option value="" selected disabled>Выберите вариант</option>
+                      <option>Частный мастер / бригада</option>
+                      <option>Магазин / салон</option>
+                      <option>Сервисная компания</option>
+                      <option>Дизайнер / проектировщик</option>
+                      <option>Другое</option>
+                    </select>
+                  </div>
+
+                  <div class="field field-wide">
+                    <label for="partner-offerings">Услуги / товары / специализация</label>
+                    <textarea
+                      class="input textarea"
+                      id="partner-offerings"
+                      name="offerings"
+                      rows="4"
+                      required
+                      placeholder="Кратко опишите, чем занимаетесь и что хотите продвигать в RemCard"
+                    ></textarea>
+                  </div>
+
+                  <div class="field">
+                    <label for="partner-experience">Опыт работы</label>
+                    <input class="input" id="partner-experience" name="experience" placeholder="Например, 7 лет" />
+                  </div>
+
+                  <div class="field">
+                    <label for="partner-site">Сайт / соцсети (опционально)</label>
+                    <input class="input" id="partner-site" name="website" type="url" placeholder="https://example.com" />
+                  </div>
+
+                  <div class="field field-wide">
+                    <label for="partner-comment">Комментарий</label>
+                    <textarea
+                      class="input textarea"
+                      id="partner-comment"
+                      name="comment"
+                      rows="4"
+                      placeholder="Например: интересует подключение к бонусной программе, условия и сроки старта"
+                    ></textarea>
+                  </div>
+
+                  <div class="field field-wide">
+                    <label class="checkbox-field" for="partner-consent">
+                      <input id="partner-consent" name="consent" type="checkbox" required />
+                      <span>Согласен(на) на обработку контактных данных для связи по заявке.</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="form-actions">
+                  <button class="btn btn-primary" type="submit">Отправить заявку через GitHub</button>
+                  <p class="fineprint">После отправки откроется GitHub с автозаполненным текстом заявки.</p>
+                </div>
+
+                <div class="form-result" id="partner-result" role="status" aria-live="polite" hidden>
+                  <div class="form-result-title">Черновик заявки готов</div>
+                  <div class="form-result-text">Открылся GitHub. Проверьте данные и нажмите Create issue.</div>
+                  <a class="form-result-link" id="partner-result-link" href="#" target="_blank" rel="noopener noreferrer">
+                    Открыть черновик заявки
+                  </a>
+                </div>
+              </form>
+            </div>
+
+            <div class="card">
+              <h3>Что будет в заявке</h3>
+              <ul class="list">
+                <li>Тип партнёра и контактные данные</li>
+                <li>Город, специализация и опыт</li>
+                <li>Комментарий по подключению к RemCard</li>
+              </ul>
+              <p class="muted" style="margin-top: 12px">
+                Если GitHub уже открыт в браузере, заявка создаётся в несколько кликов. Это позволяет фиксировать обращения прямо в проекте.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="section" id="partners-krasnodar">
         <div class="container">
           <header class="section-header">
@@ -506,8 +661,8 @@
             <div class="card cta">
               <h3>Стать партнёром</h3>
               <p>Оставьте заявку — мы свяжемся и подскажем, как быстро подключиться к RemCard.</p>
-              <a class="btn btn-primary" href="mailto:remcard@example.com?subject=RemCard%20—%20Партнёрство">Связаться</a>
-              <p class="fineprint">Пока форма не подключена — используйте email.</p>
+              <a class="btn btn-primary" href="#partner-request">Заполнить форму</a>
+              <p class="fineprint">Заявка формируется через GitHub issue.</p>
             </div>
           </div>
         </div>

@@ -170,4 +170,107 @@
       }
     });
   }
+
+  // Partner application form -> GitHub issue draft
+  const partnerForm = document.getElementById("partner-form");
+  const partnerResult = document.getElementById("partner-result");
+
+  if (partnerForm) {
+    const ISSUE_BASE_URL = "https://github.com/karenavedikyan/rem/issues/new";
+    const partnerResultTitle = partnerResult ? partnerResult.querySelector(".form-result-title") : null;
+    const partnerResultText = partnerResult ? partnerResult.querySelector(".form-result-text") : null;
+    const partnerResultLink = document.getElementById("partner-result-link");
+
+    const setPartnerResult = ({ type, title, text, url }) => {
+      if (!partnerResult) return;
+      partnerResult.hidden = false;
+      partnerResult.classList.toggle("is-error", type === "error");
+      if (partnerResultTitle) partnerResultTitle.textContent = title;
+      if (partnerResultText) partnerResultText.textContent = text;
+
+      if (partnerResultLink) {
+        if (url) {
+          partnerResultLink.hidden = false;
+          partnerResultLink.href = url;
+        } else {
+          partnerResultLink.hidden = true;
+          partnerResultLink.removeAttribute("href");
+        }
+      }
+    };
+
+    const getPartnerValue = (name) => {
+      const el = partnerForm.querySelector(`[name="${CSS.escape(name)}"]`);
+      return el && "value" in el ? String(el.value).trim() : "";
+    };
+
+    partnerForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      if (!partnerForm.checkValidity()) {
+        partnerForm.reportValidity();
+        return;
+      }
+
+      if (partnerResult) partnerResult.hidden = true;
+
+      try {
+        const payload = {
+          contactName: getPartnerValue("contactName"),
+          businessName: getPartnerValue("businessName"),
+          phone: getPartnerValue("phone"),
+          email: getPartnerValue("email"),
+          city: getPartnerValue("city"),
+          partnerType: getPartnerValue("partnerType"),
+          offerings: getPartnerValue("offerings"),
+          experience: getPartnerValue("experience"),
+          website: getPartnerValue("website"),
+          comment: getPartnerValue("comment"),
+        };
+
+        const issueTitle = `Заявка партнёра: ${payload.businessName || payload.contactName || "без названия"}`;
+        const issueBody =
+          "## Новая заявка на участие партнёра в RemCard\n\n" +
+          `- **Контактное лицо:** ${payload.contactName || "-"}\n` +
+          `- **Компания / бренд:** ${payload.businessName || "-"}\n` +
+          `- **Телефон:** ${payload.phone || "-"}\n` +
+          `- **Email:** ${payload.email || "-"}\n` +
+          `- **Город:** ${payload.city || "-"}\n` +
+          `- **Тип партнёра:** ${payload.partnerType || "-"}\n` +
+          `- **Опыт:** ${payload.experience || "-"}\n` +
+          `- **Сайт / соцсети:** ${payload.website || "-"}\n\n` +
+          "### Услуги / товары / специализация\n" +
+          `${payload.offerings || "-"}\n\n` +
+          "### Комментарий\n" +
+          `${payload.comment || "-"}\n`;
+
+        const url = `${ISSUE_BASE_URL}?${new URLSearchParams({
+          title: issueTitle,
+          body: issueBody,
+        }).toString()}`;
+
+        setPartnerResult({
+          type: "success",
+          title: "Черновик заявки готов",
+          text: "Мы открыли GitHub с подготовленной заявкой. Проверьте данные и нажмите Create issue.",
+          url,
+        });
+
+        const popup = window.open(url, "_blank", "noopener,noreferrer");
+        if (!popup) {
+          window.location.assign(url);
+        }
+
+        partnerForm.reset();
+      } catch (err) {
+        setPartnerResult({
+          type: "error",
+          title: "Ошибка",
+          text: "Не удалось подготовить черновик заявки в GitHub. Попробуйте снова.",
+        });
+        // eslint-disable-next-line no-console
+        console.error("RemCard partner form error:", err);
+      }
+    });
+  }
 })();

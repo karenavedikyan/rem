@@ -721,6 +721,22 @@ img {
   margin-top: 14px;
 }
 
+.checkbox-field {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  color: rgba(245, 245, 245, 0.92);
+  line-height: 1.4;
+}
+
+.checkbox-field input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin-top: 1px;
+  accent-color: var(--red);
+}
+
 .form-result {
   margin-top: 14px;
   border-radius: var(--radius);
@@ -748,6 +764,21 @@ img {
 .form-result-text {
   margin-top: 6px;
   color: rgba(176, 190, 197, 0.95);
+}
+
+.form-result-link {
+  display: inline-flex;
+  margin-top: 10px;
+  font-weight: 700;
+  border-bottom: 1px dashed rgba(229, 57, 53, 0.45);
+  padding-bottom: 1px;
+}
+
+.form-result-link:hover,
+.form-result-link:focus-visible {
+  color: rgba(245, 245, 245, 1);
+  border-bottom-color: rgba(245, 245, 245, 0.5);
+  outline: none;
 }
 
 /* Footer */
