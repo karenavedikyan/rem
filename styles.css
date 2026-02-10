@@ -454,6 +454,10 @@ img {
   grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
+.cards-partners {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .two-col {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
@@ -627,6 +631,114 @@ img {
   color: rgba(176, 190, 197, 0.95);
 }
 
+/* Partners (Krasnodar) */
+.partner-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 10px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  border: 1px solid rgba(245, 245, 245, 0.12);
+  background: rgba(18, 18, 18, 0.35);
+  color: rgba(245, 245, 245, 0.92);
+}
+
+.partner-note {
+  margin-top: 12px;
+  font-size: 12.5px;
+  color: rgba(176, 190, 197, 0.9);
+  border-top: 1px solid rgba(245, 245, 245, 0.08);
+  padding-top: 12px;
+}
+
+/* Request form */
+.form {
+  margin-top: 12px;
+}
+
+.form-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+.field-wide {
+  grid-column: 1 / -1;
+}
+
+.field label {
+  font-size: 13px;
+  color: rgba(245, 245, 245, 0.92);
+  font-weight: 650;
+}
+
+.input {
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid rgba(245, 245, 245, 0.14);
+  background: rgba(18, 18, 18, 0.35);
+  color: var(--text);
+  padding: 12px 12px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 160ms var(--ease), box-shadow 160ms var(--ease), transform 160ms var(--ease);
+}
+
+.input::placeholder {
+  color: rgba(176, 190, 197, 0.75);
+}
+
+.input:focus {
+  border-color: rgba(229, 57, 53, 0.45);
+  box-shadow: 0 0 0 4px rgba(229, 57, 53, 0.12);
+}
+
+.input[readonly] {
+  opacity: 0.9;
+  cursor: not-allowed;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.form-actions {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.form-result {
+  margin-top: 14px;
+  border-radius: var(--radius);
+  border: 1px solid rgba(229, 57, 53, 0.22);
+  background: linear-gradient(180deg, rgba(229, 57, 53, 0.11), rgba(18, 18, 18, 0.35));
+  padding: 14px;
+}
+
+.form-result-title {
+  font-weight: 850;
+  letter-spacing: -0.2px;
+}
+
+.form-result-text {
+  margin-top: 6px;
+  color: rgba(176, 190, 197, 0.95);
+}
+
 /* Footer */
 .site-footer {
   border-top: 1px solid rgba(245, 245, 245, 0.06);
@@ -676,6 +788,10 @@ img {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .cards-partners {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .cards-4 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -683,6 +799,10 @@ img {
   .cards-3,
   .two-col,
   .tiles {
+    grid-template-columns: 1fr;
+  }
+
+  .form-grid {
     grid-template-columns: 1fr;
   }
 
@@ -734,6 +854,10 @@ img {
   }
 
   .cards-5 {
+    grid-template-columns: 1fr;
+  }
+
+  .cards-partners {
     grid-template-columns: 1fr;
   }
 }

@@ -27,7 +27,9 @@
           <div class="nav-menu" id="nav-menu">
             <a class="nav-link" href="#about">О проекте</a>
             <a class="nav-link" href="#clients">Для клиентов</a>
+            <a class="nav-link" href="#request">Заявка (Краснодар)</a>
             <a class="nav-link" href="#partners">Для партнёров</a>
+            <a class="nav-link" href="#partners-krasnodar">Партнёры Краснодар</a>
             <a class="nav-link" href="#bonus">Бонусная карта</a>
             <a class="nav-link" href="#structure">Структура сервиса</a>
             <a class="nav-link" href="#roadmap">Дорожная карта</a>
@@ -44,7 +46,8 @@
             <p class="eyebrow">Платформа • Каталог • Акции • Бонусы</p>
             <h1>RemCard — платформа для ремонта и обустройства</h1>
             <p class="lead">
-              Сделать ремонт так же просто, как вызвать такси: мастера, товары, акции и бонусы в одном сервисе.
+              Сделать ремонт так же просто, как вызвать такси: мастера, товары, акции и бонусы в одном сервисе. Первый запуск RemCard
+              планируется в Краснодаре — дальше будем расширяться по другим регионам России.
             </p>
             <div class="hero-actions">
               <a class="btn btn-primary" href="#clients">Для клиентов</a>
@@ -93,7 +96,8 @@
             <h2>О проекте RemCard</h2>
             <p class="section-subtitle">
               RemCard — онлайн‑платформа, которая объединяет клиентов и партнёров рынка ремонта и обустройства. Цель — сделать ремонт и
-              обустройство такими же понятными и удобными, как вызов такси.
+              обустройство такими же понятными и удобными, как вызов такси. Начинаем с Краснодара, затем масштабируем модель на другие
+              города.
             </p>
           </header>
 
@@ -119,7 +123,8 @@
           <header class="section-header">
             <h2>Для клиентов</h2>
             <p class="section-subtitle">
-              Клиент видит партнёров, товары и услуги рядом с собой, выбирает лучшее предложение и получает бонусы за покупки.
+              На первом этапе RemCard помогает с ремонтом в Краснодаре (и крае): клиент видит партнёров, товары и услуги рядом с собой,
+              выбирает лучшее предложение и получает бонусы за покупки.
             </p>
           </header>
 
@@ -174,6 +179,104 @@
         </div>
       </section>
 
+      <section class="section" id="request">
+        <div class="container">
+          <header class="section-header">
+            <h2>Оставить заявку на ремонт (Краснодар)</h2>
+            <p class="section-subtitle">
+              Оставьте контакты и кратко опишите задачу — мы свяжемся и подскажем, как быстро подобрать исполнителя под ваш запрос.
+            </p>
+          </header>
+
+          <div class="grid two-col">
+            <div class="card">
+              <h3>Форма заявки</h3>
+              <p class="muted">Запуск: Краснодар. Дальше — подключение других городов.</p>
+
+              <!-- TODO: Подключить реальный backend (телеграм‑бот / почта / API). -->
+              <form class="form" id="request-form" novalidate>
+                <div class="form-grid">
+                  <div class="field">
+                    <label for="req-name">Имя</label>
+                    <input class="input" id="req-name" name="name" autocomplete="name" required placeholder="Например, Алексей" />
+                  </div>
+
+                  <div class="field">
+                    <label for="req-phone">Телефон</label>
+                    <input
+                      class="input"
+                      id="req-phone"
+                      name="phone"
+                      type="tel"
+                      inputmode="tel"
+                      autocomplete="tel"
+                      required
+                      placeholder="+7 (___) ___‑__‑__"
+                    />
+                  </div>
+
+                  <div class="field">
+                    <label for="req-email">Email</label>
+                    <input class="input" id="req-email" name="email" type="email" autocomplete="email" placeholder="name@example.com" />
+                  </div>
+
+                  <div class="field">
+                    <label for="req-city">Город</label>
+                    <input class="input" id="req-city" name="city" value="Краснодар" readonly />
+                  </div>
+
+                  <div class="field field-wide">
+                    <label for="req-type">Тип задачи</label>
+                    <select class="input" id="req-type" name="taskType" required>
+                      <option value="" selected disabled>Выберите вариант</option>
+                      <option>Косметический ремонт квартиры</option>
+                      <option>Ремонт ванной/санузла</option>
+                      <option>Ремонт кухни</option>
+                      <option>Полный ремонт под ключ</option>
+                      <option>Другое</option>
+                    </select>
+                  </div>
+
+                  <div class="field field-wide">
+                    <label for="req-comment">Комментарий</label>
+                    <textarea
+                      class="input textarea"
+                      id="req-comment"
+                      name="comment"
+                      rows="5"
+                      placeholder="Опишите задачу: метраж, сроки, адрес/район, пожелания…"
+                    ></textarea>
+                  </div>
+                </div>
+
+                <div class="form-actions">
+                  <button class="btn btn-primary" type="submit">Отправить заявку</button>
+                  <p class="fineprint">Нажимая “Отправить заявку”, вы соглашаетесь на обработку данных для связи по заявке.</p>
+                </div>
+
+                <div class="form-result" id="request-result" role="status" aria-live="polite" hidden>
+                  <div class="form-result-title">Спасибо!</div>
+                  <div class="form-result-text">Заявка отправлена. В ближайшее время команда RemCard свяжется с вами.</div>
+                </div>
+              </form>
+            </div>
+
+            <div class="card">
+              <h3>Что указать в комментарии</h3>
+              <ul class="list">
+                <li>Тип объекта и примерный метраж</li>
+                <li>Желаемые сроки начала и окончания</li>
+                <li>Район/адрес (Краснодар)</li>
+                <li>Пожелания по материалам и бюджету</li>
+              </ul>
+              <p class="muted" style="margin-top: 12px">
+                Это демо‑форма для статического сайта. Подключение отправки заявок будет добавлено на этапе запуска.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="section" id="partners">
         <div class="container">
           <header class="section-header">
@@ -223,6 +326,59 @@
                 <div class="mini-text">Создание и управление спецпредложениями</div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="partners-krasnodar">
+        <div class="container">
+          <header class="section-header">
+            <h2>Партнёры RemCard в Краснодаре (первые)</h2>
+            <p class="section-subtitle">
+              Ниже — демо‑карточки для примера. В реальном запуске здесь будут реальные мастера и компании Краснодара.
+            </p>
+          </header>
+
+          <div class="grid cards-partners">
+            <article class="card partner">
+              <h3>Иван Петров — мастер по ремонту санузлов</h3>
+              <p>Ремонт ванных комнат и санузлов, Краснодар и пригороды.</p>
+              <div class="partner-meta">
+                <span class="tag">Физ лицо</span>
+                <span class="tag">Плитка • Сантехника • Электрика</span>
+              </div>
+              <p class="partner-note">Демо‑карточка партнёра, для примера. В реальном запуске здесь будут реальные мастера и компании.</p>
+            </article>
+
+            <article class="card partner">
+              <h3>ООО “КрасСтройРемонт” — ремонт квартир под ключ</h3>
+              <p>Полный ремонт под ключ: черновые/чистовые работы, комплектация материалами. Краснодар.</p>
+              <div class="partner-meta">
+                <span class="tag">Юр лицо</span>
+                <span class="tag">Под ключ • Квартиры • Новостройки</span>
+              </div>
+              <p class="partner-note">Демо‑карточка партнёра, для примера. В реальном запуске здесь будут реальные мастера и компании.</p>
+            </article>
+
+            <article class="card partner">
+              <h3>Мария Смирнова — дизайнер интерьеров</h3>
+              <p>Планировка, дизайн‑проект, подбор материалов и авторский надзор. Краснодар.</p>
+              <div class="partner-meta">
+                <span class="tag">Физ лицо</span>
+                <span class="tag">Дизайн • Визуализация • Надзор</span>
+              </div>
+              <p class="partner-note">Демо‑карточка партнёра, для примера. В реальном запуске здесь будут реальные мастера и компании.</p>
+            </article>
+
+            <article class="card partner">
+              <h3>“СантехМаркет Юг” — магазин сантехники</h3>
+              <p>Подбор и поставка сантехники, консультации, доставка по Краснодару.</p>
+              <div class="partner-meta">
+                <span class="tag">Юр лицо</span>
+                <span class="tag">Сантехника • Доставка • Комплектация</span>
+              </div>
+              <p class="partner-note">Демо‑карточка партнёра, для примера. В реальном запуске здесь будут реальные мастера и компании.</p>
+            </article>
           </div>
         </div>
       </section>
