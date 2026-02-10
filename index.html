@@ -662,8 +662,52 @@
             <div class="card cta">
               <h3>Стать партнёром</h3>
               <p>Оставьте заявку — мы свяжемся и подскажем, как быстро подключиться к RemCard.</p>
-              <a class="btn btn-primary" href="#partner-request">Заполнить форму</a>
-              <p class="fineprint">Заявка формируется через GitHub issue.</p>
+
+              <form class="form" id="partner-cta-form" novalidate>
+                <div class="form-grid">
+                  <div class="field">
+                    <label for="partner-cta-name">Имя</label>
+                    <input class="input" id="partner-cta-name" name="name" autocomplete="name" required placeholder="Например, Алексей" />
+                  </div>
+
+                  <div class="field">
+                    <label for="partner-cta-phone">Телефон</label>
+                    <input
+                      class="input"
+                      id="partner-cta-phone"
+                      name="phone"
+                      type="tel"
+                      inputmode="tel"
+                      autocomplete="tel"
+                      required
+                      placeholder="+7 (___) ___-__-__"
+                    />
+                  </div>
+
+                  <div class="field field-wide">
+                    <label for="partner-cta-company">Компания / специализация</label>
+                    <input
+                      class="input"
+                      id="partner-cta-company"
+                      name="company"
+                      required
+                      placeholder="Например, бригада отделочников или магазин сантехники"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-actions">
+                  <button class="btn btn-primary" type="submit">Стать партнёром</button>
+                  <p class="fineprint">Заявка отправится в Telegram.</p>
+                </div>
+
+                <div class="form-result" id="partner-cta-result" role="status" aria-live="polite" hidden>
+                  <div class="form-result-title">Спасибо!</div>
+                  <div class="form-result-text">Заявка отправлена в Telegram. Мы свяжемся с вами в ближайшее время.</div>
+                </div>
+              </form>
+
+              <p class="fineprint">Нужна подробная анкета? <a class="contacts-link" href="#partner-request">Откройте расширенную форму</a>.</p>
             </div>
           </div>
         </div>

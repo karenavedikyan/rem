@@ -176,6 +176,81 @@
     });
   }
 
+  // Quick partner form in Contacts section
+  const partnerCtaForm = document.getElementById("partner-cta-form");
+  const partnerCtaResult = document.getElementById("partner-cta-result");
+
+  if (partnerCtaForm) {
+    const partnerCtaSubmitBtn = partnerCtaForm.querySelector("button[type='submit']");
+    const partnerCtaResultTitle = partnerCtaResult ? partnerCtaResult.querySelector(".form-result-title") : null;
+    const partnerCtaResultText = partnerCtaResult ? partnerCtaResult.querySelector(".form-result-text") : null;
+
+    const setPartnerCtaResult = ({ type, title, text }) => {
+      if (!partnerCtaResult) return;
+      partnerCtaResult.hidden = false;
+      partnerCtaResult.classList.toggle("is-error", type === "error");
+      if (partnerCtaResultTitle) partnerCtaResultTitle.textContent = title;
+      if (partnerCtaResultText) partnerCtaResultText.textContent = text;
+    };
+
+    const getPartnerCtaValue = (name) => {
+      const el = partnerCtaForm.querySelector(`[name="${CSS.escape(name)}"]`);
+      return el && "value" in el ? String(el.value).trim() : "";
+    };
+
+    const setPartnerCtaLoading = (loading) => {
+      if (partnerCtaSubmitBtn) partnerCtaSubmitBtn.disabled = loading;
+      partnerCtaForm.setAttribute("aria-busy", loading ? "true" : "false");
+    };
+
+    partnerCtaForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      if (!partnerCtaForm.checkValidity()) {
+        partnerCtaForm.reportValidity();
+        return;
+      }
+
+      setPartnerCtaLoading(true);
+      if (partnerCtaResult) partnerCtaResult.hidden = true;
+
+      try {
+        const payload = {
+          name: getPartnerCtaValue("name"),
+          phone: getPartnerCtaValue("phone"),
+          company: getPartnerCtaValue("company"),
+        };
+
+        const message =
+          "Новая быстрая заявка партнера RemCard:\n" +
+          "Источник: кнопка \"Стать партнером\" (раздел Контакты)\n" +
+          `Имя: ${payload.name || "-"}\n` +
+          `Телефон: ${payload.phone || "-"}\n` +
+          `Компания / специализация: ${payload.company || "-"}`;
+
+        await sendTelegramMessage(message);
+
+        setPartnerCtaResult({
+          type: "success",
+          title: "Спасибо!",
+          text: "Заявка отправлена в Telegram. Мы свяжемся с вами в ближайшее время.",
+        });
+
+        partnerCtaForm.reset();
+      } catch (err) {
+        setPartnerCtaResult({
+          type: "error",
+          title: "Ошибка",
+          text: "Не удалось отправить заявку. Попробуйте позже или свяжитесь с нами напрямую.",
+        });
+        // eslint-disable-next-line no-console
+        console.error("RemCard partner CTA form error:", err);
+      } finally {
+        setPartnerCtaLoading(false);
+      }
+    });
+  }
+
   // Partner application form -> GitHub issue draft
   const partnerForm = document.getElementById("partner-form");
   const partnerResult = document.getElementById("partner-result");
