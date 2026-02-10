@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: "RemCard process notes"
+    url: "https://github.com/karenavedikyan/rem/blob/main/docs/telegram-github-process.md"
+    about: "Регламент обработки заявок партнёров Telegram -> GitHub -> сайт"

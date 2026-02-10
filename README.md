@@ -26,6 +26,23 @@
 
 Если API недоступен, фронт автоматически использует fallback из `confirmed-partners.json`.
 
+## Рабочий процесс Telegram -> GitHub (партнёры)
+
+Для заявок партнёров добавлен Issue-шаблон:
+
+- `.github/ISSUE_TEMPLATE/partner-application.yml`
+
+Базовый процесс:
+
+1) Заявка приходит в Telegram  
+2) Создаётся GitHub Issue по шаблону  
+3) После проверки ставится `approved` и/или issue закрывается  
+4) Партнёр публикуется на сайте через API/JSON
+
+Подробный регламент:
+
+- `docs/telegram-github-process.md`
+
 ## Как обновить подтверждённые заявки партнёров
 
 1) Откройте `confirmed-partners.json`.

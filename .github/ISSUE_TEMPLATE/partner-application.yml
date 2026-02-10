@@ -1,0 +1,110 @@
+name: "Partner application (Telegram)"
+description: "Заявка партнёра из Telegram в проект RemCard"
+title: "[Partner] "
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Поток Telegram -> GitHub
+        1. Скопируйте данные заявки из Telegram.
+        2. Заполните эту форму и создайте Issue.
+        3. После проверки добавьте label `approved` и/или закройте Issue.
+        4. Опубликуйте партнёра на сайте через API/JSON.
+
+  - type: input
+    id: telegram-date
+    attributes:
+      label: "Дата/время заявки в Telegram"
+      description: "Например: 2026-02-10 19:30 (MSK)"
+      placeholder: "2026-02-10 19:30"
+    validations:
+      required: true
+
+  - type: input
+    id: telegram-chat
+    attributes:
+      label: "Источник в Telegram"
+      description: "Группа/чат и, если возможно, ссылка на сообщение"
+      placeholder: "RemCard заявки, msg #123"
+    validations:
+      required: true
+
+  - type: input
+    id: contact-name
+    attributes:
+      label: "Контактное лицо"
+      placeholder: "Иван Петров"
+    validations:
+      required: true
+
+  - type: input
+    id: company-name
+    attributes:
+      label: "Компания / бренд (если есть)"
+      placeholder: "ООО Пример"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: partner-type
+    attributes:
+      label: "Тип партнёра"
+      options:
+        - individual
+        - company
+    validations:
+      required: true
+
+  - type: input
+    id: city
+    attributes:
+      label: "Город"
+      value: "Краснодар"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: "Описание / специализация"
+      description: "Чем занимается партнёр, какие услуги/товары предоставляет"
+      placeholder: "Мастер по ремонту санузлов..."
+    validations:
+      required: true
+
+  - type: input
+    id: phone
+    attributes:
+      label: "Телефон"
+      placeholder: "+7 ..."
+    validations:
+      required: false
+
+  - type: input
+    id: email
+    attributes:
+      label: "Email"
+      placeholder: "name@example.com"
+    validations:
+      required: false
+
+  - type: textarea
+    id: comment
+    attributes:
+      label: "Комментарий"
+      description: "Дополнительная информация из заявки"
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: moderation
+    attributes:
+      label: "Проверка заявки"
+      options:
+        - label: "Проверка данных выполнена"
+          required: false
+        - label: "Заявка одобрена (добавьте label `approved`)"
+          required: false
+        - label: "Партнёр опубликован на сайте"
+          required: false
