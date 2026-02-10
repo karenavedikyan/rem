@@ -3,7 +3,7 @@
 Lightweight micro-backend for RemCard partners.
 
 - Stack: Node.js + TypeScript + Express
-- Database: Prisma + SQLite (`prisma/dev.db`)
+- Database: Prisma + SQLite (`dev.db`) via Prisma SQLite adapter
 - Deployment target: Railway (or any Node hosting)
 
 ## Quick start
