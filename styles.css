@@ -1,6 +1,8 @@
 :root {
   --red: #e53935;
   --red-dark: #b71c1c;
+  --tiffany: #81d8d0;
+  --tiffany-dark: #4fbdb3;
   --bg: #121212;
   --surface: #1e1e1e;
   --surface-2: #222222;
@@ -782,11 +784,20 @@ img {
 }
 
 /* Admin tools */
+#admin-panel .section-header h2 {
+  color: var(--tiffany);
+  text-shadow: 0 8px 24px rgba(129, 216, 208, 0.18);
+}
+
+#admin-panel .section-header .section-subtitle {
+  color: rgba(191, 243, 238, 0.95);
+}
+
 .admin-details {
   border-radius: var(--radius);
-  border: 1px solid var(--border);
-  background: linear-gradient(180deg, rgba(30, 30, 30, 0.78), rgba(30, 30, 30, 0.58));
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(129, 216, 208, 0.38);
+  background: linear-gradient(180deg, rgba(129, 216, 208, 0.14), rgba(30, 30, 30, 0.64));
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(129, 216, 208, 0.12) inset;
   padding: 14px;
 }
 
@@ -794,6 +805,7 @@ img {
   list-style: none;
   cursor: pointer;
   font-weight: 750;
+  color: rgba(191, 243, 238, 0.98);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -807,7 +819,7 @@ img {
 
 .admin-summary::after {
   content: "▾";
-  color: rgba(245, 245, 245, 0.8);
+  color: var(--tiffany);
   transition: transform 160ms var(--ease);
 }
 
@@ -819,6 +831,10 @@ img {
   margin-top: 12px;
 }
 
+.admin-card::after {
+  background: radial-gradient(600px 240px at 0% 0%, rgba(129, 216, 208, 0.2), transparent 55%);
+}
+
 .admin-actions {
   margin-top: 12px;
   display: flex;
@@ -826,13 +842,33 @@ img {
   gap: 10px;
 }
 
+#admin-panel .btn-ghost {
+  border-color: rgba(129, 216, 208, 0.34);
+  background: rgba(129, 216, 208, 0.08);
+}
+
+#admin-panel .btn-ghost:hover,
+#admin-panel .btn-ghost:focus-visible {
+  border-color: rgba(129, 216, 208, 0.58);
+}
+
+#admin-panel .input:focus {
+  border-color: rgba(129, 216, 208, 0.6);
+  box-shadow: 0 0 0 4px rgba(129, 216, 208, 0.16);
+}
+
+#admin-panel .form-result {
+  border-color: rgba(129, 216, 208, 0.4);
+  background: linear-gradient(180deg, rgba(129, 216, 208, 0.16), rgba(18, 18, 18, 0.35));
+}
+
 .admin-json-output {
   margin: 14px 0 0;
   border-radius: 14px;
-  border: 1px solid rgba(245, 245, 245, 0.12);
-  background: rgba(18, 18, 18, 0.42);
+  border: 1px solid rgba(129, 216, 208, 0.35);
+  background: rgba(20, 45, 43, 0.45);
   padding: 12px;
-  color: rgba(245, 245, 245, 0.95);
+  color: rgba(216, 249, 245, 0.97);
   font-size: 13px;
   line-height: 1.45;
   max-height: 320px;
