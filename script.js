@@ -60,97 +60,367 @@
   // Confirmed partners list (loaded from JSON)
   const confirmedPartnersList = document.getElementById("confirmed-partners-list");
   const confirmedPartnersMeta = document.getElementById("confirmed-partners-meta");
+  const adminPartnerForm = document.getElementById("admin-partner-form");
+  const adminTelegramText = document.getElementById("admin-telegram-text");
+  const adminParserResult = document.getElementById("admin-parser-result");
+  const adminJsonOutput = document.getElementById("admin-json-output");
+  const adminCopyJsonBtn = document.getElementById("admin-copy-json");
+  const adminDownloadJsonBtn = document.getElementById("admin-download-json");
+
+  let confirmedPartnersData = {
+    source: "Telegram",
+    updatedAt: "",
+    items: [],
+  };
+  let confirmedPartnersLoaded = false;
+  let latestGeneratedPartnerItem = null;
+
+  const escapeHtml = (value) =>
+    String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#39;");
+
+  const cleanValue = (value) => {
+    const cleaned = String(value ?? "").trim();
+    if (!cleaned || cleaned === "-") return "";
+    return cleaned;
+  };
+
+  const uniqueValues = (values, limit = 5) => {
+    const result = [];
+    for (const value of values) {
+      const normalized = cleanValue(value);
+      if (!normalized || result.includes(normalized)) continue;
+      result.push(normalized);
+      if (result.length >= limit) break;
+    }
+    return result;
+  };
+
+  const splitTags = (value) =>
+    cleanValue(value)
+      .split(/[•,;/|]/)
+      .map((tag) => cleanValue(tag))
+      .filter(Boolean);
+
+  const formatDateRu = (isoDate) => {
+    const date = new Date(isoDate);
+    if (Number.isNaN(date.getTime())) return "";
+    return new Intl.DateTimeFormat("ru-RU", { day: "2-digit", month: "2-digit", year: "numeric" }).format(date);
+  };
+
+  const getTodayIso = () => new Date().toISOString().slice(0, 10);
+
+  const toSerializableConfirmedData = () => ({
+    source: cleanValue(confirmedPartnersData.source) || "Telegram",
+    updatedAt: cleanValue(confirmedPartnersData.updatedAt) || getTodayIso(),
+    items: Array.isArray(confirmedPartnersData.items) ? confirmedPartnersData.items : [],
+  });
+
+  const updateConfirmedPartnersMeta = () => {
+    if (!confirmedPartnersMeta) return;
+    const source = cleanValue(confirmedPartnersData.source) || "Telegram";
+    const updatedAt = formatDateRu(confirmedPartnersData.updatedAt);
+    confirmedPartnersMeta.textContent = updatedAt
+      ? `Источник: ${source}. Последнее обновление списка: ${updatedAt}.`
+      : `Источник: ${source}. Список обновляется из файла confirmed-partners.json.`;
+  };
+
+  const renderPartners = (items) => {
+    if (!confirmedPartnersList) return;
+
+    if (!Array.isArray(items) || items.length === 0) {
+      confirmedPartnersList.innerHTML = `
+        <article class="card partner">
+          <h3>Подтверждённых заявок пока нет</h3>
+          <p>Добавьте записи в файл confirmed-partners.json, и они появятся в этом разделе.</p>
+        </article>
+      `;
+      return;
+    }
+
+    const cards = items.map((item) => {
+      const title = escapeHtml(item.title || "Без названия");
+      const description = escapeHtml(item.description || "Описание не указано.");
+      const status = escapeHtml(item.status || "Подтверждено");
+      const note = escapeHtml(item.note || "Источник: Telegram.");
+      const tags = Array.isArray(item.tags)
+        ? item.tags
+            .map((tag) => cleanValue(tag))
+            .filter(Boolean)
+            .map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`)
+            .join("")
+        : "";
+
+      return `
+        <article class="card partner">
+          <h3>${title}</h3>
+          <p>${description}</p>
+          <div class="partner-meta">
+            <span class="tag">${status}</span>
+            ${tags}
+          </div>
+          <p class="partner-note">${note}</p>
+        </article>
+      `;
+    });
+
+    confirmedPartnersList.innerHTML = cards.join("");
+  };
+
+  const setAdminParserResult = ({ type, title, text }) => {
+    if (!adminParserResult) return;
+    const titleEl = adminParserResult.querySelector(".form-result-title");
+    const textEl = adminParserResult.querySelector(".form-result-text");
+    adminParserResult.hidden = false;
+    adminParserResult.classList.toggle("is-error", type === "error");
+    if (titleEl) titleEl.textContent = title;
+    if (textEl) textEl.textContent = text;
+  };
+
+  const updateAdminButtons = () => {
+    if (adminCopyJsonBtn) adminCopyJsonBtn.disabled = !latestGeneratedPartnerItem;
+    if (adminDownloadJsonBtn) {
+      const hasItems = Array.isArray(confirmedPartnersData.items) && confirmedPartnersData.items.length > 0;
+      adminDownloadJsonBtn.disabled = !hasItems;
+    }
+  };
+
+  const parseTelegramPartnerText = (rawText) => {
+    const lines = String(rawText)
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter(Boolean);
+
+    const fields = {};
+    for (const line of lines) {
+      const separatorIndex = line.indexOf(":");
+      if (separatorIndex < 0) continue;
+      const key = cleanValue(line.slice(0, separatorIndex));
+      const value = cleanValue(line.slice(separatorIndex + 1));
+      if (!key) continue;
+      fields[key] = value;
+    }
+
+    const pickField = (...keys) => {
+      for (const key of keys) {
+        const value = cleanValue(fields[key]);
+        if (value) return value;
+      }
+      return "";
+    };
+
+    const source = pickField("Источник") || cleanValue(confirmedPartnersData.source) || "Telegram";
+    const contact = pickField("Контактное лицо", "Имя");
+    const business = pickField("Компания / бренд", "Компания / специализация");
+    const city = pickField("Город");
+    const partnerType = pickField("Тип партнера", "Тип партнёра");
+    const offerings = pickField("Услуги / товары", "Компания / специализация");
+    const comment = pickField("Комментарий");
+    const experience = pickField("Опыт");
+
+    let title = "Новый партнёр RemCard";
+    if (business && contact) title = `${business} — ${contact}`;
+    else if (business) title = business;
+    else if (contact) title = contact;
+
+    const descriptionParts = [];
+    if (offerings) descriptionParts.push(`Заявка на подключение: ${offerings}`);
+    else if (comment) descriptionParts.push(`Заявка на подключение: ${comment}`);
+    else descriptionParts.push("Заявка на подключение партнёра в проект RemCard");
+    if (city) descriptionParts.push(`Город: ${city}`);
+    if (partnerType) descriptionParts.push(`Формат: ${partnerType}`);
+    const description = `${descriptionParts.join(". ")}.`;
+
+    const tags = uniqueValues([partnerType, city, ...splitTags(offerings)], 5);
+
+    const noteParts = [`Источник: ${source}. Статус заявки: подтверждена.`];
+    if (experience) noteParts.push(`Опыт: ${experience}.`);
+
+    const item = {
+      title,
+      description,
+      status: "Подтверждено",
+      tags: tags.length > 0 ? tags : ["Без тега"],
+      note: noteParts.join(" "),
+    };
+
+    return { item, source };
+  };
+
+  const loadConfirmedPartners = async () => {
+    if (!confirmedPartnersList) return;
+
+    confirmedPartnersList.setAttribute("aria-busy", "true");
+    try {
+      const response = await fetch("./confirmed-partners.json", { cache: "no-store" });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+      const data = await response.json();
+      confirmedPartnersData = {
+        source: cleanValue(data.source) || "Telegram",
+        updatedAt: cleanValue(data.updatedAt) || getTodayIso(),
+        items: Array.isArray(data.items) ? data.items : [],
+      };
+
+      renderPartners(confirmedPartnersData.items);
+      updateConfirmedPartnersMeta();
+    } catch (err) {
+      confirmedPartnersList.innerHTML = `
+        <article class="card partner">
+          <h3>Не удалось загрузить список заявок</h3>
+          <p>Проверьте файл confirmed-partners.json и повторите попытку.</p>
+        </article>
+      `;
+      if (confirmedPartnersMeta) {
+        confirmedPartnersMeta.textContent = "Временная ошибка загрузки списка подтверждённых заявок.";
+      }
+      // eslint-disable-next-line no-console
+      console.error("RemCard confirmed partners load error:", err);
+    } finally {
+      confirmedPartnersList.setAttribute("aria-busy", "false");
+      confirmedPartnersLoaded = true;
+      updateAdminButtons();
+    }
+  };
 
   if (confirmedPartnersList) {
-    const escapeHtml = (value) =>
-      String(value ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#39;");
+    loadConfirmedPartners();
+  } else {
+    updateAdminButtons();
+  }
 
-    const renderPartners = (items) => {
-      if (!Array.isArray(items) || items.length === 0) {
-        confirmedPartnersList.innerHTML = `
-          <article class="card partner">
-            <h3>Подтверждённых заявок пока нет</h3>
-            <p>Добавьте записи в файл confirmed-partners.json, и они появятся в этом разделе.</p>
-          </article>
-        `;
+  if (adminPartnerForm && adminTelegramText) {
+    adminPartnerForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      if (!adminPartnerForm.checkValidity()) {
+        adminPartnerForm.reportValidity();
         return;
       }
 
-      const cards = items.map((item) => {
-        const title = escapeHtml(item.title || "Без названия");
-        const description = escapeHtml(item.description || "Описание не указано.");
-        const status = escapeHtml(item.status || "Подтверждено");
-        const note = escapeHtml(item.note || "Источник: Telegram.");
-        const tags = Array.isArray(item.tags)
-          ? item.tags
-              .map((tag) => String(tag).trim())
-              .filter(Boolean)
-              .map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`)
-              .join("")
-          : "";
-
-        return `
-          <article class="card partner">
-            <h3>${title}</h3>
-            <p>${description}</p>
-            <div class="partner-meta">
-              <span class="tag">${status}</span>
-              ${tags}
-            </div>
-            <p class="partner-note">${note}</p>
-          </article>
-        `;
-      });
-
-      confirmedPartnersList.innerHTML = cards.join("");
-    };
-
-    const formatDateRu = (isoDate) => {
-      const date = new Date(isoDate);
-      if (Number.isNaN(date.getTime())) return "";
-      return new Intl.DateTimeFormat("ru-RU", { day: "2-digit", month: "2-digit", year: "numeric" }).format(date);
-    };
-
-    const loadConfirmedPartners = async () => {
-      confirmedPartnersList.setAttribute("aria-busy", "true");
+      if (!confirmedPartnersLoaded && confirmedPartnersList) {
+        setAdminParserResult({
+          type: "error",
+          title: "Подождите",
+          text: "Список заявок ещё загружается. Повторите через пару секунд.",
+        });
+        return;
+      }
 
       try {
-        const response = await fetch("./confirmed-partners.json", { cache: "no-store" });
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const { item, source } = parseTelegramPartnerText(adminTelegramText.value);
 
-        const data = await response.json();
-        renderPartners(data.items);
-
-        if (confirmedPartnersMeta) {
-          const source = typeof data.source === "string" && data.source.trim() ? data.source.trim() : "Telegram";
-          const updatedAt = formatDateRu(data.updatedAt);
-          confirmedPartnersMeta.textContent = updatedAt
-            ? `Источник: ${source}. Последнее обновление списка: ${updatedAt}.`
-            : `Источник: ${source}. Список обновляется из файла confirmed-partners.json.`;
+        const hasDuplicate = Array.isArray(confirmedPartnersData.items)
+          ? confirmedPartnersData.items.some(
+              (existing) =>
+                cleanValue(existing.title) === item.title && cleanValue(existing.description) === item.description
+            )
+          : false;
+        if (hasDuplicate) {
+          throw new Error("Похожая заявка уже есть в списке. Проверьте данные перед повторным добавлением.");
         }
+
+        latestGeneratedPartnerItem = item;
+        confirmedPartnersData.source = source || cleanValue(confirmedPartnersData.source) || "Telegram";
+        confirmedPartnersData.updatedAt = getTodayIso();
+        confirmedPartnersData.items = Array.isArray(confirmedPartnersData.items) ? confirmedPartnersData.items : [];
+        confirmedPartnersData.items.unshift(item);
+
+        if (adminJsonOutput) {
+          adminJsonOutput.hidden = false;
+          adminJsonOutput.textContent = JSON.stringify(item, null, 2);
+        }
+
+        renderPartners(confirmedPartnersData.items);
+        updateConfirmedPartnersMeta();
+        updateAdminButtons();
+        setAdminParserResult({
+          type: "success",
+          title: "Готово",
+          text: "Заявка добавлена в список на странице. Для публикации скачайте confirmed-partners.json и загрузите его в репозиторий.",
+        });
       } catch (err) {
-        confirmedPartnersList.innerHTML = `
-          <article class="card partner">
-            <h3>Не удалось загрузить список заявок</h3>
-            <p>Проверьте файл confirmed-partners.json и повторите попытку.</p>
-          </article>
-        `;
-        if (confirmedPartnersMeta) {
-          confirmedPartnersMeta.textContent = "Временная ошибка загрузки списка подтверждённых заявок.";
-        }
+        setAdminParserResult({
+          type: "error",
+          title: "Ошибка",
+          text: err instanceof Error ? err.message : "Не удалось обработать текст заявки.",
+        });
         // eslint-disable-next-line no-console
-        console.error("RemCard confirmed partners load error:", err);
-      } finally {
-        confirmedPartnersList.setAttribute("aria-busy", "false");
+        console.error("RemCard admin parser error:", err);
       }
-    };
+    });
+  }
 
-    loadConfirmedPartners();
+  if (adminCopyJsonBtn) {
+    adminCopyJsonBtn.addEventListener("click", async () => {
+      if (!latestGeneratedPartnerItem) return;
+      const jsonText = JSON.stringify(latestGeneratedPartnerItem, null, 2);
+
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(jsonText);
+        } else {
+          const helper = document.createElement("textarea");
+          helper.value = jsonText;
+          helper.style.position = "fixed";
+          helper.style.opacity = "0";
+          document.body.appendChild(helper);
+          helper.select();
+          document.execCommand("copy");
+          document.body.removeChild(helper);
+        }
+
+        setAdminParserResult({
+          type: "success",
+          title: "Скопировано",
+          text: "JSON-блок заявки скопирован в буфер обмена.",
+        });
+      } catch (err) {
+        setAdminParserResult({
+          type: "error",
+          title: "Ошибка",
+          text: "Не удалось скопировать JSON в буфер обмена.",
+        });
+        // eslint-disable-next-line no-console
+        console.error("RemCard admin copy error:", err);
+      }
+    });
+  }
+
+  if (adminDownloadJsonBtn) {
+    adminDownloadJsonBtn.addEventListener("click", () => {
+      try {
+        const payload = JSON.stringify(toSerializableConfirmedData(), null, 2);
+        const blob = new Blob([`${payload}\n`], { type: "application/json;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "confirmed-partners.json";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+
+        setAdminParserResult({
+          type: "success",
+          title: "Файл готов",
+          text: "Скачан обновлённый confirmed-partners.json. Загрузите его в репозиторий для публикации.",
+        });
+      } catch (err) {
+        setAdminParserResult({
+          type: "error",
+          title: "Ошибка",
+          text: "Не удалось сформировать файл confirmed-partners.json.",
+        });
+        // eslint-disable-next-line no-console
+        console.error("RemCard admin download error:", err);
+      }
+    });
   }
 
   // TEMPORARY (unsafe): tokens in frontend are visible to everyone.

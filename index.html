@@ -513,6 +513,62 @@
         </div>
       </section>
 
+      <section class="section" id="admin-panel">
+        <div class="container">
+          <header class="section-header">
+            <h2>Админ-инструмент публикации заявок</h2>
+            <p class="section-subtitle">
+              Вставьте текст заявки из Telegram, нажмите “Сформировать/добавить” и скачайте обновлённый JSON-файл для публикации.
+            </p>
+          </header>
+
+          <details class="admin-details">
+            <summary class="admin-summary">Открыть/свернуть админ-панель</summary>
+
+            <div class="card admin-card">
+              <form class="form" id="admin-partner-form" novalidate>
+                <div class="field field-wide">
+                  <label for="admin-telegram-text">Текст заявки из Telegram</label>
+                  <textarea
+                    class="input textarea"
+                    id="admin-telegram-text"
+                    name="telegramText"
+                    rows="8"
+                    required
+                    placeholder="Новая заявка партнера RemCard:
+Контактное лицо: Алексей Петров
+Компания / бренд: ИП Петров
+Город: Краснодар
+Тип партнера: Частный мастер / бригада
+Услуги / товары: Плитка, сантехника"
+                  ></textarea>
+                </div>
+
+                <div class="form-actions">
+                  <button class="btn btn-primary" type="submit">Сформировать/добавить</button>
+                  <p class="fineprint">
+                    Заявка будет добавлена в список на этой странице. Для публикации нажмите “Скачать confirmed-partners.json” и замените файл в
+                    репозитории.
+                  </p>
+                </div>
+              </form>
+
+              <div class="admin-actions">
+                <button class="btn btn-ghost" id="admin-copy-json" type="button" disabled>Скопировать JSON заявки</button>
+                <button class="btn btn-ghost" id="admin-download-json" type="button" disabled>Скачать confirmed-partners.json</button>
+              </div>
+
+              <pre class="admin-json-output" id="admin-json-output" hidden></pre>
+
+              <div class="form-result" id="admin-parser-result" role="status" aria-live="polite" hidden>
+                <div class="form-result-title">Готово</div>
+                <div class="form-result-text">Заявка обработана.</div>
+              </div>
+            </div>
+          </details>
+        </div>
+      </section>
+
       <section class="section" id="bonus">
         <div class="container">
           <header class="section-header">
