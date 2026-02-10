@@ -8,6 +8,7 @@
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "build": "prisma generate && tsc -p tsconfig.json",
     "start": "node dist/index.js",
+    "bot:approve": "node bot/approve-partner-bot.mjs",
     "bot:create-partner": "node scripts/create-approved-partner.mjs",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
@@ -21,7 +22,8 @@
     "@prisma/client": "^7.3.0",
     "better-sqlite3": "^12.6.2",
     "cors": "^2.8.6",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "node-telegram-bot-api": "^0.67.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",

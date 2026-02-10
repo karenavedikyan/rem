@@ -24,6 +24,7 @@ Server runs on:
 - `npm run dev` — start dev server with auto-reload
 - `npm run build` — compile TypeScript into `dist/`
 - `npm run start` — start compiled build
+- `npm run bot:approve` — run Telegram approve bot (`/approve_partner ...`)
 - `npm run bot:create-partner -- --name "..." --type individual --description "..."` — quick approved create (for bot/manual flow)
 - `npm run prisma:migrate` — run Prisma migrations
 - `npm run prisma:generate` — regenerate Prisma client
@@ -131,8 +132,36 @@ For local development:
 http://localhost:3001/partners?approved=true
 ```
 
+## Telegram bot approval flow
+
+Bot entrypoint:
+
+```bash
+TELEGRAM_BOT_TOKEN=... \
+PARTNERS_API_BASE_URL=https://<BASE_URL> \
+npm run bot:approve
+```
+
+Command in Telegram:
+
+```txt
+/approve_partner Иван Петров | individual | Мастер по ремонту санузлов | Краснодар
+```
+
+Bot will show an inline confirmation button and, after approval, run helper script `scripts/create-approved-partner.mjs` to perform `POST /partners`.
+
 ## Notes for Railway
 
 - Set `PORT` via Railway automatically (Express already supports it).
 - For SQLite MVP, persistent disk is required.
 - For production, you can switch Prisma datasource to Postgres.
+- Deployment config is in `railway.json`.
+
+Typical deploy flow:
+
+```bash
+cd apps/partners-api
+railway login
+railway init
+railway up
+```

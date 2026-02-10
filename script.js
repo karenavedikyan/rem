@@ -110,7 +110,7 @@
   const PARTNERS_API_BASE_URL =
     typeof window.REMCARD_PARTNERS_API_BASE_URL === "string" && window.REMCARD_PARTNERS_API_BASE_URL.trim()
       ? window.REMCARD_PARTNERS_API_BASE_URL.trim().replace(/\/+$/, "")
-      : "http://localhost:3001";
+      : "https://remcard-partners-api.up.railway.app";
 
   const escapeHtml = (value) =>
     String(value ?? "")

@@ -8,6 +8,23 @@
 - `styles.css` — красно‑чёрный фирменный стиль + адаптив
 - `script.js` — бургер‑меню + плавный скролл + авто‑год в футере
 - `confirmed-partners.json` — подтверждённые заявки партнёров (публикуются в разделе через JS)
+- `apps/partners-api` — микро‑backend партнёров (Express + Prisma + SQLite)
+
+## Источник партнёров на фронте
+
+Фронт сначала запрашивает подтверждённых партнёров из API:
+
+`GET <REMCARD_PARTNERS_API_BASE_URL>/partners?approved=true`
+
+Базовый URL задаётся в `index.html` через:
+
+```html
+<script>
+  window.REMCARD_PARTNERS_API_BASE_URL = "https://remcard-partners-api.up.railway.app";
+</script>
+```
+
+Если API недоступен, фронт автоматически использует fallback из `confirmed-partners.json`.
 
 ## Как обновить подтверждённые заявки партнёров
 
