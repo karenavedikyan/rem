@@ -29,6 +29,7 @@
             <a class="nav-link" href="#clients">Для клиентов</a>
             <a class="nav-link" href="#request">Заявка (Краснодар)</a>
             <a class="nav-link" href="#partners">Для партнёров</a>
+            <a class="nav-link" href="#partner-request">Заявка партнёра</a>
             <a class="nav-link" href="#partners-krasnodar">Партнёры Краснодар</a>
             <a class="nav-link" href="#bonus">Бонусная карта</a>
             <a class="nav-link" href="#structure">Структура сервиса</a>
@@ -338,6 +339,127 @@
         </div>
       </section>
 
+      <section class="section" id="partner-request">
+        <div class="container">
+          <header class="section-header">
+            <h2>Стать партнёром RemCard</h2>
+            <p class="section-subtitle">
+              Заполните форму ниже — мы свяжемся с вами, расскажем об условиях и поможем быстро подключиться к платформе.
+              Подключение подходит мастерам, бригадам, магазинам стройматериалов и сервисным компаниям.
+            </p>
+          </header>
+
+          <div class="grid two-col">
+            <div class="card">
+              <h3>Форма заявки на участие</h3>
+              <p class="muted">Первый запуск — Краснодар. Заявки из других городов тоже принимаются.</p>
+
+              <form class="form" id="partner-request-form" novalidate>
+                <div class="form-grid">
+                  <div class="field">
+                    <label for="pr-name">Контактное лицо</label>
+                    <input class="input" id="pr-name" name="contactName" autocomplete="name" required placeholder="Имя и фамилия" />
+                  </div>
+
+                  <div class="field">
+                    <label for="pr-phone">Телефон</label>
+                    <input
+                      class="input"
+                      id="pr-phone"
+                      name="phone"
+                      type="tel"
+                      inputmode="tel"
+                      autocomplete="tel"
+                      required
+                      placeholder="+7 (___) ___‑__‑__"
+                    />
+                  </div>
+
+                  <div class="field">
+                    <label for="pr-email">Email</label>
+                    <input class="input" id="pr-email" name="email" type="email" autocomplete="email" required placeholder="name@example.com" />
+                  </div>
+
+                  <div class="field">
+                    <label for="pr-city">Город</label>
+                    <input class="input" id="pr-city" name="city" autocomplete="address-level2" placeholder="Краснодар" />
+                  </div>
+
+                  <div class="field">
+                    <label for="pr-company">Название компании / ФИО мастера</label>
+                    <input class="input" id="pr-company" name="company" placeholder="ООО «Пример» или Иван Петров" />
+                  </div>
+
+                  <div class="field">
+                    <label for="pr-type">Тип партнёра</label>
+                    <select class="input" id="pr-type" name="partnerType" required>
+                      <option value="" selected disabled>Выберите вариант</option>
+                      <option>Мастер / Бригада</option>
+                      <option>Дизайнер интерьеров</option>
+                      <option>Ремонтная компания</option>
+                      <option>Магазин стройматериалов</option>
+                      <option>Магазин мебели / сантехники</option>
+                      <option>Сервисная компания</option>
+                      <option>Другое</option>
+                    </select>
+                  </div>
+
+                  <div class="field field-wide">
+                    <label for="pr-services">Услуги / товары</label>
+                    <textarea
+                      class="input textarea"
+                      id="pr-services"
+                      name="services"
+                      rows="4"
+                      placeholder="Кратко опишите, что вы предлагаете: виды работ, категории товаров, зону обслуживания…"
+                    ></textarea>
+                  </div>
+
+                  <div class="field field-wide">
+                    <label for="pr-comment">Дополнительный комментарий</label>
+                    <textarea
+                      class="input textarea"
+                      id="pr-comment"
+                      name="comment"
+                      rows="3"
+                      placeholder="Вопросы, пожелания или ссылки на ваш сайт / соцсети…"
+                    ></textarea>
+                  </div>
+                </div>
+
+                <div class="form-actions">
+                  <button class="btn btn-primary" type="submit">Отправить заявку партнёра</button>
+                  <p class="fineprint">Нажимая «Отправить», вы соглашаетесь на обработку данных для связи по заявке.</p>
+                </div>
+
+                <div class="form-result" id="partner-request-result" role="status" aria-live="polite" hidden>
+                  <div class="form-result-title">Спасибо!</div>
+                  <div class="form-result-text">Заявка отправлена. Мы свяжемся с вами в ближайшее время.</div>
+                </div>
+              </form>
+            </div>
+
+            <div class="card">
+              <h3>Что даёт партнёрство</h3>
+              <ul class="list">
+                <li><strong>Витрина</strong> — ваш профиль в каталоге RemCard с описанием услуг и товаров.</li>
+                <li><strong>Клиенты</strong> — поток целевых заявок от людей, которым нужен ремонт.</li>
+                <li><strong>Бонусная программа</strong> — без разработки своей системы: клиенты копят и тратят бонусы у вас.</li>
+                <li><strong>Акции</strong> — инструмент для продвижения спецпредложений.</li>
+                <li><strong>Личный кабинет</strong> — управление профилем, позициями и статистикой.</li>
+              </ul>
+              <h3 style="margin-top: 18px;">Что указать в заявке</h3>
+              <ul class="list">
+                <li>Тип деятельности (мастер, магазин, компания)</li>
+                <li>Основные услуги или категории товаров</li>
+                <li>Город и зона обслуживания</li>
+                <li>Контакты для связи</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="section" id="partners-krasnodar">
         <div class="container">
           <header class="section-header">
@@ -506,8 +628,7 @@
             <div class="card cta">
               <h3>Стать партнёром</h3>
               <p>Оставьте заявку — мы свяжемся и подскажем, как быстро подключиться к RemCard.</p>
-              <a class="btn btn-primary" href="mailto:remcard@example.com?subject=RemCard%20—%20Партнёрство">Связаться</a>
-              <p class="fineprint">Пока форма не подключена — используйте email.</p>
+              <a class="btn btn-primary" href="#partner-request">Заполнить заявку партнёра</a>
             </div>
           </div>
         </div>

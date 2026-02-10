@@ -57,69 +57,53 @@
     history.pushState(null, "", href);
   });
 
-  // Request form (static stub)
-  const form = document.getElementById("request-form");
-  const result = document.getElementById("request-result");
+  // ─── Helper: Telegram sender ───
+  // TEMPORARY (unsafe): tokens in frontend are visible to everyone.
+  // TODO: Move BOT_TOKEN/CHAT_ID to backend/serverless (Cloudflare Workers, etc.).
+  const BOT_TOKEN = "8371908218:AAFX2-mU-7bHFSEMFm8C3Im8oRJwTgT1dT4";
+  const CHAT_ID = "-5034197708";
 
-  if (form) {
-    // TEMPORARY (unsafe): tokens in frontend are visible to everyone.
-    // TODO: Move BOT_TOKEN/CHAT_ID to backend/serverless (Cloudflare Workers, etc.).
-    // Note: the bot must be able to write to the target chat (open bot chat and press /start, or add the bot to a group).
-    const BOT_TOKEN = "8371908218:AAFX2-mU-7bHFSEMFm8C3Im8oRJwTgT1dT4";
-    // earlier: const CHAT_ID = "5034197708";
-    const CHAT_ID = "-5034197708";
+  /**
+   * Wire a form to Telegram.
+   * @param {string} formId   - ID of the <form> element
+   * @param {string} resultId - ID of the result container
+   * @param {(form: HTMLFormElement) => string} buildMessage - returns the message text
+   * @param {(form: HTMLFormElement) => void} [afterReset]  - optional callback after form.reset()
+   */
+  function wireFormToTelegram(formId, resultId, buildMessage, afterReset) {
+    const frm = document.getElementById(formId);
+    const res = document.getElementById(resultId);
+    if (!frm) return;
 
-    const submitBtn = form.querySelector("button[type='submit']");
-    const resultTitle = result ? result.querySelector(".form-result-title") : null;
-    const resultText = result ? result.querySelector(".form-result-text") : null;
+    const submitBtn = frm.querySelector("button[type='submit']");
+    const resTitle = res ? res.querySelector(".form-result-title") : null;
+    const resText = res ? res.querySelector(".form-result-text") : null;
 
     const setResult = ({ type, title, text }) => {
-      if (!result) return;
-      result.hidden = false;
-      result.classList.toggle("is-error", type === "error");
-      if (resultTitle) resultTitle.textContent = title;
-      if (resultText) resultText.textContent = text;
+      if (!res) return;
+      res.hidden = false;
+      res.classList.toggle("is-error", type === "error");
+      if (resTitle) resTitle.textContent = title;
+      if (resText) resText.textContent = text;
     };
 
     const setLoading = (loading) => {
       if (submitBtn) submitBtn.disabled = loading;
-      form.setAttribute("aria-busy", loading ? "true" : "false");
+      frm.setAttribute("aria-busy", loading ? "true" : "false");
     };
 
-    const getValue = (name) => {
-      const el = form.querySelector(`[name="${CSS.escape(name)}"]`);
-      return el && "value" in el ? String(el.value).trim() : "";
-    };
-
-    form.addEventListener("submit", async (e) => {
+    frm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      // Let browser show native validation UI
-      if (!form.checkValidity()) {
-        form.reportValidity();
+      if (!frm.checkValidity()) {
+        frm.reportValidity();
         return;
       }
 
-      const payload = {
-        name: getValue("name"),
-        phone: getValue("phone"),
-        email: getValue("email"),
-        city: getValue("city") || "Краснодар",
-        taskType: getValue("taskType") || getValue("jobType"),
-        comment: getValue("comment"),
-      };
-
-      const message =
-        "Новая заявка RemCard:\n" +
-        `Имя: ${payload.name || "-"}\n` +
-        `Телефон: ${payload.phone || "-"}\n` +
-        `Email: ${payload.email || "-"}\n` +
-        `Город: ${payload.city || "-"}\n` +
-        `Тип задачи: ${payload.taskType || "-"}\n` +
-        `Комментарий: ${payload.comment || "-"}`;
+      const message = buildMessage(frm);
 
       setLoading(true);
-      if (result) result.hidden = true;
+      if (res) res.hidden = true;
 
       try {
         if (!BOT_TOKEN || BOT_TOKEN.includes("ТУТ_Я_ПОДСТАВЛЮ_САМ")) {
@@ -129,18 +113,15 @@
           throw new Error("CHAT_ID is not set");
         }
 
-        const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        const resp = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            chat_id: CHAT_ID,
-            text: message,
-          }),
+          body: JSON.stringify({ chat_id: CHAT_ID, text: message }),
         });
 
-        const data = await res.json().catch(() => null);
+        const data = await resp.json().catch(() => null);
 
-        if (!res.ok || !data || data.ok !== true) {
+        if (!resp.ok || !data || data.ok !== true) {
           const desc = data && typeof data.description === "string" ? data.description : "Unknown error";
           throw new Error(desc);
         }
@@ -151,23 +132,59 @@
           text: "Заявка отправлена в RemCard. Мы свяжемся с вами в ближайшее время.",
         });
 
-        const city = form.querySelector("input[name='city']");
-        const cityValue = city ? city.value : "Краснодар";
-        form.reset();
-        if (city) city.value = cityValue;
-
-        if (result) result.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        frm.reset();
+        if (afterReset) afterReset(frm);
+        if (res) res.scrollIntoView({ behavior: "smooth", block: "nearest" });
       } catch (err) {
         setResult({
           type: "error",
           title: "Ошибка",
           text: "Не удалось отправить заявку. Попробуйте позже или свяжитесь с нами напрямую.",
         });
-        // eslint-disable-next-line no-console
-        console.error("RemCard request form error:", err);
+        console.error("RemCard form error:", err);
       } finally {
         setLoading(false);
       }
     });
   }
+
+  // ─── Helper: get trimmed value from a form field ───
+  const val = (frm, name) => {
+    const el = frm.querySelector(`[name="${CSS.escape(name)}"]`);
+    return el && "value" in el ? String(el.value).trim() : "";
+  };
+
+  // ─── 1. Request form (clients — Krasnodar) ───
+  wireFormToTelegram(
+    "request-form",
+    "request-result",
+    (frm) =>
+      "Новая заявка RemCard:\n" +
+      `Имя: ${val(frm, "name") || "-"}\n` +
+      `Телефон: ${val(frm, "phone") || "-"}\n` +
+      `Email: ${val(frm, "email") || "-"}\n` +
+      `Город: ${val(frm, "city") || "Краснодар"}\n` +
+      `Тип задачи: ${val(frm, "taskType") || val(frm, "jobType") || "-"}\n` +
+      `Комментарий: ${val(frm, "comment") || "-"}`,
+    (frm) => {
+      const city = frm.querySelector("input[name='city']");
+      if (city) city.value = "Краснодар";
+    }
+  );
+
+  // ─── 2. Partner application form ───
+  wireFormToTelegram(
+    "partner-request-form",
+    "partner-request-result",
+    (frm) =>
+      "🤝 Заявка на партнёрство RemCard:\n" +
+      `Контактное лицо: ${val(frm, "contactName") || "-"}\n` +
+      `Телефон: ${val(frm, "phone") || "-"}\n` +
+      `Email: ${val(frm, "email") || "-"}\n` +
+      `Город: ${val(frm, "city") || "-"}\n` +
+      `Компания / ФИО: ${val(frm, "company") || "-"}\n` +
+      `Тип партнёра: ${val(frm, "partnerType") || "-"}\n` +
+      `Услуги / товары: ${val(frm, "services") || "-"}\n` +
+      `Комментарий: ${val(frm, "comment") || "-"}`
+  );
 })();
