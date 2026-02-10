@@ -17,6 +17,51 @@
 
 После пуша на GitHub Pages карточки в блоке "Подтверждённые заявки" обновятся автоматически.
 
+## Полуавтоматическое добавление заявки из Telegram
+
+В проекте есть утилита:
+
+`tools/telegram_partner_to_json.py`
+
+### Вариант A — получить готовый JSON-блок (без записи в файл)
+
+```bash
+python3 tools/telegram_partner_to_json.py <<'EOF'
+Новая заявка партнера RemCard:
+Контактное лицо: Алексей Петров
+Компания / бренд: ИП Петров
+Телефон: +7 900 000-00-00
+Email: example@mail.com
+Город: Краснодар
+Тип партнера: Частный мастер / бригада
+Услуги / товары: Плитка, сантехника, электрика
+Комментарий: Готов подключиться в феврале.
+EOF
+```
+
+Скрипт выведет готовый JSON-объект для вставки в `items`.
+
+### Вариант B — добавить в `confirmed-partners.json` автоматически
+
+```bash
+python3 tools/telegram_partner_to_json.py --append --prepend <<'EOF'
+...текст заявки из Telegram...
+EOF
+```
+
+- `--append` — записывает заявку в `confirmed-partners.json`
+- `--prepend` — добавляет заявку в начало списка (самые новые сверху)
+
+### Вариант C — «в 1 команду опубликовать»
+
+```bash
+python3 tools/telegram_partner_to_json.py --append --prepend --publish <<'EOF'
+...текст заявки из Telegram...
+EOF
+```
+
+`--publish` выполняет `git add + git commit + git push` для текущей ветки.
+
 ## Локальный запуск
 
 Откройте `index.html` в браузере (все пути относительные).
