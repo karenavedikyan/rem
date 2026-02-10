@@ -729,6 +729,17 @@ img {
   padding: 14px;
 }
 
+.form-result.is-error {
+  border-color: rgba(183, 28, 28, 0.35);
+  background: linear-gradient(180deg, rgba(183, 28, 28, 0.14), rgba(18, 18, 18, 0.35));
+}
+
+.btn[disabled] {
+  opacity: 0.75;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .form-result-title {
   font-weight: 850;
   letter-spacing: -0.2px;

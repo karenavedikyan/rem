@@ -62,7 +62,34 @@
   const result = document.getElementById("request-result");
 
   if (form) {
-    form.addEventListener("submit", (e) => {
+    // TEMPORARY (unsafe): tokens in frontend are visible to everyone.
+    // TODO: Move BOT_TOKEN/CHAT_ID to backend/serverless (Cloudflare Workers, etc.).
+    const BOT_TOKEN = "ТУТ_Я_ПОДСТАВЛЮ_САМ";
+    const CHAT_ID = "ТУТ_Я_ПОДСТАВЛЮ_САМ";
+
+    const submitBtn = form.querySelector("button[type='submit']");
+    const resultTitle = result ? result.querySelector(".form-result-title") : null;
+    const resultText = result ? result.querySelector(".form-result-text") : null;
+
+    const setResult = ({ type, title, text }) => {
+      if (!result) return;
+      result.hidden = false;
+      result.classList.toggle("is-error", type === "error");
+      if (resultTitle) resultTitle.textContent = title;
+      if (resultText) resultText.textContent = text;
+    };
+
+    const setLoading = (loading) => {
+      if (submitBtn) submitBtn.disabled = loading;
+      form.setAttribute("aria-busy", loading ? "true" : "false");
+    };
+
+    const getValue = (name) => {
+      const el = form.querySelector(`[name="${CSS.escape(name)}"]`);
+      return el && "value" in el ? String(el.value).trim() : "";
+    };
+
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
       // Let browser show native validation UI
@@ -71,20 +98,74 @@
         return;
       }
 
-      // TODO: Подключить реальный backend (телеграм‑бот / почта / API) и отправку данных.
-      if (result) {
-        result.hidden = false;
-        result.scrollIntoView({ behavior: "smooth", block: "nearest" });
-      } else {
-        // Fallback
-        // eslint-disable-next-line no-alert
-        alert("Спасибо! Заявка отправлена. В ближайшее время команда RemCard свяжется с вами.");
-      }
+      const payload = {
+        name: getValue("name"),
+        phone: getValue("phone"),
+        email: getValue("email"),
+        city: getValue("city") || "Краснодар",
+        taskType: getValue("taskType"),
+        comment: getValue("comment"),
+      };
 
-      const city = form.querySelector("input[name='city']");
-      const cityValue = city ? city.value : "Краснодар";
-      form.reset();
-      if (city) city.value = cityValue;
+      const message =
+        "Новая заявка RemCard:\n" +
+        `Имя: ${payload.name || "-"}\n` +
+        `Телефон: ${payload.phone || "-"}\n` +
+        `Email: ${payload.email || "-"}\n` +
+        `Город: ${payload.city || "-"}\n` +
+        `Тип задачи: ${payload.taskType || "-"}\n` +
+        `Комментарий: ${payload.comment || "-"}`;
+
+      setLoading(true);
+      if (result) result.hidden = true;
+
+      try {
+        if (!BOT_TOKEN || BOT_TOKEN.includes("ТУТ_Я_ПОДСТАВЛЮ_САМ")) {
+          throw new Error("BOT_TOKEN is not set");
+        }
+        if (!CHAT_ID || CHAT_ID.includes("ТУТ_Я_ПОДСТАВЛЮ_САМ")) {
+          throw new Error("CHAT_ID is not set");
+        }
+
+        const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: CHAT_ID,
+            text: message,
+          }),
+        });
+
+        const data = await res.json().catch(() => null);
+
+        if (!res.ok || !data || data.ok !== true) {
+          const desc = data && typeof data.description === "string" ? data.description : "Unknown error";
+          throw new Error(desc);
+        }
+
+        setResult({
+          type: "success",
+          title: "Спасибо!",
+          text: "Заявка отправлена в RemCard. Мы свяжемся с вами в ближайшее время.",
+        });
+
+        const city = form.querySelector("input[name='city']");
+        const cityValue = city ? city.value : "Краснодар";
+        form.reset();
+        if (city) city.value = cityValue;
+
+        if (result) result.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      } catch (err) {
+        setResult({
+          type: "error",
+          title: "Ошибка",
+          text: "Не удалось отправить заявку. Попробуйте позже или свяжитесь с нами напрямую.",
+        });
+        // eslint-disable-next-line no-console
+        console.error("RemCard request form error:", err);
+      } finally {
+        setLoading(false);
+      }
     });
   }
 })();
