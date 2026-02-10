@@ -170,4 +170,123 @@
       }
     });
   }
+
+  // Partner form (static stub)
+  const partnerForm = document.getElementById("partner-form");
+  const partnerResult = document.getElementById("partner-result");
+
+  if (partnerForm) {
+    // Using same BOT_TOKEN and CHAT_ID as request form
+    const BOT_TOKEN = "8371908218:AAFX2-mU-7bHFSEMFm8C3Im8oRJwTgT1dT4";
+    const CHAT_ID = "-5034197708";
+
+    const submitBtn = partnerForm.querySelector("button[type='submit']");
+    const resultTitle = partnerResult ? partnerResult.querySelector(".form-result-title") : null;
+    const resultText = partnerResult ? partnerResult.querySelector(".form-result-text") : null;
+
+    const setResult = ({ type, title, text }) => {
+      if (!partnerResult) return;
+      partnerResult.hidden = false;
+      partnerResult.classList.toggle("is-error", type === "error");
+      if (resultTitle) resultTitle.textContent = title;
+      if (resultText) resultText.textContent = text;
+    };
+
+    const setLoading = (loading) => {
+      if (submitBtn) submitBtn.disabled = loading;
+      partnerForm.setAttribute("aria-busy", loading ? "true" : "false");
+    };
+
+    const getValue = (name) => {
+      const el = partnerForm.querySelector(`[name="${CSS.escape(name)}"]`);
+      return el && "value" in el ? String(el.value).trim() : "";
+    };
+
+    partnerForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      // Let browser show native validation UI
+      if (!partnerForm.checkValidity()) {
+        partnerForm.reportValidity();
+        return;
+      }
+
+      const payload = {
+        partnerType: getValue("partnerType"),
+        contactName: getValue("contactName"),
+        companyName: getValue("companyName"),
+        phone: getValue("phone"),
+        email: getValue("email"),
+        city: getValue("city") || "Краснодар",
+        website: getValue("website"),
+        category: getValue("category"),
+        description: getValue("description"),
+        comment: getValue("comment"),
+      };
+
+      const message =
+        "🤝 Новая заявка ПАРТНЁРА RemCard:\n\n" +
+        `Тип: ${payload.partnerType || "-"}\n` +
+        `Контактное лицо: ${payload.contactName || "-"}\n` +
+        `Название: ${payload.companyName || "-"}\n` +
+        `Телефон: ${payload.phone || "-"}\n` +
+        `Email: ${payload.email || "-"}\n` +
+        `Город: ${payload.city || "-"}\n` +
+        `Сайт/соцсети: ${payload.website || "-"}\n` +
+        `Категория: ${payload.category || "-"}\n\n` +
+        `Описание:\n${payload.description || "-"}\n\n` +
+        `Комментарий:\n${payload.comment || "-"}`;
+
+      setLoading(true);
+      if (partnerResult) partnerResult.hidden = true;
+
+      try {
+        if (!BOT_TOKEN || BOT_TOKEN.includes("ТУТ_Я_ПОДСТАВЛЮ_САМ")) {
+          throw new Error("BOT_TOKEN is not set");
+        }
+        if (!CHAT_ID || CHAT_ID.includes("ТУТ_Я_ПОДСТАВЛЮ_САМ")) {
+          throw new Error("CHAT_ID is not set");
+        }
+
+        const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: CHAT_ID,
+            text: message,
+          }),
+        });
+
+        const data = await res.json().catch(() => null);
+
+        if (!res.ok || !data || data.ok !== true) {
+          const desc = data && typeof data.description === "string" ? data.description : "Unknown error";
+          throw new Error(desc);
+        }
+
+        setResult({
+          type: "success",
+          title: "Спасибо за заявку!",
+          text: "Ваша заявка на партнёрство отправлена. Команда RemCard свяжется с вами в течение 2-3 рабочих дней.",
+        });
+
+        const city = partnerForm.querySelector("input[name='city']");
+        const cityValue = city ? city.value : "Краснодар";
+        partnerForm.reset();
+        if (city) city.value = cityValue;
+
+        if (partnerResult) partnerResult.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      } catch (err) {
+        setResult({
+          type: "error",
+          title: "Ошибка",
+          text: "Не удалось отправить заявку. Попробуйте позже или свяжитесь с нами напрямую по email.",
+        });
+        // eslint-disable-next-line no-console
+        console.error("RemCard partner form error:", err);
+      } finally {
+        setLoading(false);
+      }
+    });
+  }
 })();

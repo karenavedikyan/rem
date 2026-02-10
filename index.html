@@ -29,6 +29,7 @@
             <a class="nav-link" href="#clients">Для клиентов</a>
             <a class="nav-link" href="#request">Заявка (Краснодар)</a>
             <a class="nav-link" href="#partners">Для партнёров</a>
+            <a class="nav-link" href="#partner-apply">Заявка партнёра</a>
             <a class="nav-link" href="#partners-krasnodar">Партнёры Краснодар</a>
             <a class="nav-link" href="#bonus">Бонусная карта</a>
             <a class="nav-link" href="#structure">Структура сервиса</a>
@@ -338,6 +339,147 @@
         </div>
       </section>
 
+      <section class="section" id="partner-apply">
+        <div class="container">
+          <header class="section-header">
+            <h2>Стать партнёром RemCard</h2>
+            <p class="section-subtitle">
+              Заполните заявку на участие в проекте RemCard. Мы рассмотрим вашу заявку и свяжемся с вами для обсуждения условий сотрудничества.
+            </p>
+            <p class="section-subtitle">
+              <strong>Приглашаем мастеров, компании и магазины из Краснодара</strong> присоединиться к платформе и получить доступ к новым клиентам.
+            </p>
+          </header>
+
+          <div class="grid two-col">
+            <div class="card">
+              <h3>Форма заявки партнёра</h3>
+              <p class="muted">Заполните все обязательные поля. Первый запуск: Краснодар.</p>
+
+              <!-- TODO: Подключить реальный backend (телеграм‑бот / почта / API). -->
+              <form class="form" id="partner-form" novalidate>
+                <div class="form-grid">
+                  <div class="field field-wide">
+                    <label for="partner-type">Тип партнёра *</label>
+                    <select class="input" id="partner-type" name="partnerType" required>
+                      <option value="" selected disabled>Выберите тип</option>
+                      <option>Физическое лицо (мастер, специалист)</option>
+                      <option>Индивидуальный предприниматель (ИП)</option>
+                      <option>Юридическое лицо (ООО и др.)</option>
+                    </select>
+                  </div>
+
+                  <div class="field">
+                    <label for="partner-contact-name">Контактное лицо *</label>
+                    <input class="input" id="partner-contact-name" name="contactName" autocomplete="name" required placeholder="Иван Иванов" />
+                  </div>
+
+                  <div class="field">
+                    <label for="partner-company-name">Название компании / ФИО мастера *</label>
+                    <input class="input" id="partner-company-name" name="companyName" required placeholder="ООО «Ремонт» / Иван Петров" />
+                  </div>
+
+                  <div class="field">
+                    <label for="partner-phone">Телефон *</label>
+                    <input
+                      class="input"
+                      id="partner-phone"
+                      name="phone"
+                      type="tel"
+                      inputmode="tel"
+                      autocomplete="tel"
+                      required
+                      placeholder="+7 (___) ___‑__‑__"
+                    />
+                  </div>
+
+                  <div class="field">
+                    <label for="partner-email">Email *</label>
+                    <input class="input" id="partner-email" name="email" type="email" autocomplete="email" required placeholder="name@example.com" />
+                  </div>
+
+                  <div class="field">
+                    <label for="partner-city">Город *</label>
+                    <input class="input" id="partner-city" name="city" value="Краснодар" readonly />
+                  </div>
+
+                  <div class="field">
+                    <label for="partner-website">Сайт / соцсети</label>
+                    <input class="input" id="partner-website" name="website" type="url" placeholder="https://example.com или @instagram" />
+                  </div>
+
+                  <div class="field field-wide">
+                    <label for="partner-category">Категория услуг / товаров *</label>
+                    <select class="input" id="partner-category" name="category" required>
+                      <option value="" selected disabled>Выберите категорию</option>
+                      <option>Ремонтные работы (комплексные)</option>
+                      <option>Отделочные работы</option>
+                      <option>Сантехнические работы</option>
+                      <option>Электромонтажные работы</option>
+                      <option>Дизайн интерьера</option>
+                      <option>Мебель и фурнитура</option>
+                      <option>Строительные материалы</option>
+                      <option>Сантехника и оборудование</option>
+                      <option>Освещение и электротовары</option>
+                      <option>Декор и текстиль</option>
+                      <option>Другое</option>
+                    </select>
+                  </div>
+
+                  <div class="field field-wide">
+                    <label for="partner-description">Описание услуг / товаров *</label>
+                    <textarea
+                      class="input textarea"
+                      id="partner-description"
+                      name="description"
+                      rows="5"
+                      required
+                      placeholder="Расскажите о своих услугах или товарах, опыте работы, преимуществах…"
+                    ></textarea>
+                  </div>
+
+                  <div class="field field-wide">
+                    <label for="partner-comment">Дополнительная информация</label>
+                    <textarea
+                      class="input textarea"
+                      id="partner-comment"
+                      name="comment"
+                      rows="3"
+                      placeholder="Ваши вопросы, пожелания или дополнительная информация о сотрудничестве…"
+                    ></textarea>
+                  </div>
+                </div>
+
+                <div class="form-actions">
+                  <button class="btn btn-primary" type="submit">Отправить заявку</button>
+                  <p class="fineprint">Нажимая "Отправить заявку", вы соглашаетесь на обработку данных для рассмотрения партнёрства.</p>
+                </div>
+
+                <div class="form-result" id="partner-result" role="status" aria-live="polite" hidden>
+                  <div class="form-result-title">Спасибо!</div>
+                  <div class="form-result-text">Заявка отправлена. Команда RemCard свяжется с вами для обсуждения сотрудничества.</div>
+                </div>
+              </form>
+            </div>
+
+            <div class="card">
+              <h3>Что даёт участие в RemCard</h3>
+              <ul class="list">
+                <li>Витрина в каталоге с описанием и контактами</li>
+                <li>Личный кабинет для управления профилем</li>
+                <li>Инструменты для продвижения и акций</li>
+                <li>Доступ к общей бонусной программе</li>
+                <li>Привлечение целевых клиентов</li>
+                <li>Аналитика и отчёты по заказам</li>
+              </ul>
+              <p class="muted" style="margin-top: 16px">
+                После отправки заявки мы свяжемся с вами в течение 2-3 рабочих дней для обсуждения условий сотрудничества и подключения к платформе.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="section" id="partners-krasnodar">
         <div class="container">
           <header class="section-header">
@@ -506,8 +648,8 @@
             <div class="card cta">
               <h3>Стать партнёром</h3>
               <p>Оставьте заявку — мы свяжемся и подскажем, как быстро подключиться к RemCard.</p>
-              <a class="btn btn-primary" href="mailto:remcard@example.com?subject=RemCard%20—%20Партнёрство">Связаться</a>
-              <p class="fineprint">Пока форма не подключена — используйте email.</p>
+              <a class="btn btn-primary" href="#partner-apply">Заполнить заявку</a>
+              <p class="fineprint">Заполните форму партнёра, и мы свяжемся с вами.</p>
             </div>
           </div>
         </div>
