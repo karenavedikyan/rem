@@ -29,6 +29,7 @@
             <a class="nav-link" href="#clients">Для клиентов</a>
             <a class="nav-link" href="#request">Заявка (Краснодар)</a>
             <a class="nav-link" href="#partners">Для партнёров</a>
+            <a class="nav-link" href="#partner-request">Заявка партнёра</a>
             <a class="nav-link" href="#partners-krasnodar">Партнёры Краснодар</a>
             <a class="nav-link" href="#bonus">Бонусная карта</a>
             <a class="nav-link" href="#structure">Структура сервиса</a>
@@ -338,6 +339,117 @@
         </div>
       </section>
 
+      <section class="section" id="partner-request">
+        <div class="container">
+          <header class="section-header">
+            <h2>Заявка на участие в проекте RemCard (партнёры)</h2>
+            <p class="section-subtitle">
+              Хотите стать партнёром RemCard? Заполните форму — мы свяжемся и расскажем, как подключиться к платформе и начать получать клиентов.
+            </p>
+          </header>
+
+          <div class="grid two-col">
+            <div class="card">
+              <h3>Форма заявки партнёра</h3>
+              <p class="muted">Мастера, компании, магазины — приглашаем к сотрудничеству. Старт в Краснодаре.</p>
+
+              <form class="form" id="partner-form" novalidate>
+                <div class="form-grid">
+                  <div class="field">
+                    <label for="partner-name">Имя / контактное лицо</label>
+                    <input class="input" id="partner-name" name="name" autocomplete="name" required placeholder="Например, Иван Петров" />
+                  </div>
+
+                  <div class="field">
+                    <label for="partner-company">Название компании (если есть)</label>
+                    <input class="input" id="partner-company" name="company" placeholder="ООО «Пример» или оставьте пустым" />
+                  </div>
+
+                  <div class="field">
+                    <label for="partner-phone">Телефон</label>
+                    <input
+                      class="input"
+                      id="partner-phone"
+                      name="phone"
+                      type="tel"
+                      inputmode="tel"
+                      autocomplete="tel"
+                      required
+                      placeholder="+7 (___) ___‑__‑__"
+                    />
+                  </div>
+
+                  <div class="field">
+                    <label for="partner-email">Email</label>
+                    <input class="input" id="partner-email" name="email" type="email" autocomplete="email" required placeholder="name@example.com" />
+                  </div>
+
+                  <div class="field">
+                    <label for="partner-type">Тип партнёра</label>
+                    <select class="input" id="partner-type" name="partnerType" required>
+                      <option value="" selected disabled>Выберите вариант</option>
+                      <option value="individual">Физлицо (мастер, прораб, бригада, дизайнер)</option>
+                      <option value="legal">Юрлицо (магазин, подрядчик, компания)</option>
+                    </select>
+                  </div>
+
+                  <div class="field">
+                    <label for="partner-city">Город / регион</label>
+                    <input class="input" id="partner-city" name="city" required placeholder="Краснодар, Сочи и др." />
+                  </div>
+
+                  <div class="field field-wide">
+                    <label for="partner-services">Услуги или товары</label>
+                    <input
+                      class="input"
+                      id="partner-services"
+                      name="services"
+                      placeholder="Например: ремонт санузлов, плитка, сантехника, магазин стройматериалов"
+                    />
+                  </div>
+
+                  <div class="field field-wide">
+                    <label for="partner-comment">Комментарий</label>
+                    <textarea
+                      class="input textarea"
+                      id="partner-comment"
+                      name="comment"
+                      rows="4"
+                      placeholder="Расскажите о себе, опыте работы, объёмах…"
+                    ></textarea>
+                  </div>
+                </div>
+
+                <div class="form-actions">
+                  <button class="btn btn-primary" type="submit">Отправить заявку</button>
+                  <p class="fineprint">Нажимая «Отправить заявку», вы соглашаетесь на обработку данных для связи по заявке на партнёрство.</p>
+                </div>
+
+                <div class="form-result" id="partner-result" role="status" aria-live="polite" hidden>
+                  <div class="form-result-title">Спасибо!</div>
+                  <div class="form-result-text">Заявка отправлена. Команда RemCard свяжется с вами в ближайшее время.</div>
+                </div>
+              </form>
+            </div>
+
+            <div class="card">
+              <h3>Кто может стать партнёром</h3>
+              <ul class="list">
+                <li><strong>Физлица:</strong> мастера, прорабы, бригады, дизайнеры интерьеров, декораторы.</li>
+                <li><strong>Юрлица:</strong> магазины стройматериалов, сантехники, мебели; подрядчики; консалтинг и финсервисы.</li>
+              </ul>
+              <h3 style="margin-top: 18px">Что даёт партнёрство</h3>
+              <ul class="list">
+                <li>Витрина в каталоге RemCard</li>
+                <li>Личный кабинет для управления профилем</li>
+                <li>Акции и привлечение клиентов</li>
+                <li>Бонусная программа без своей разработки</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="section" id="partners-krasnodar">
         <div class="container">
           <header class="section-header">
@@ -506,8 +618,7 @@
             <div class="card cta">
               <h3>Стать партнёром</h3>
               <p>Оставьте заявку — мы свяжемся и подскажем, как быстро подключиться к RemCard.</p>
-              <a class="btn btn-primary" href="mailto:remcard@example.com?subject=RemCard%20—%20Партнёрство">Связаться</a>
-              <p class="fineprint">Пока форма не подключена — используйте email.</p>
+              <a class="btn btn-primary" href="#partner-request">Заполнить форму заявки</a>
             </div>
           </div>
         </div>

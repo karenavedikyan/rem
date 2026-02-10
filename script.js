@@ -170,4 +170,107 @@
       }
     });
   }
+
+  // Partner form (static stub — same Telegram bot)
+  const partnerForm = document.getElementById("partner-form");
+  const partnerResult = document.getElementById("partner-result");
+
+  if (partnerForm) {
+    const BOT_TOKEN = "8371908218:AAFX2-mU-7bHFSEMFm8C3Im8oRJwTgT1dT4";
+    const CHAT_ID = "-5034197708";
+
+    const submitBtn = partnerForm.querySelector("button[type='submit']");
+    const resultTitle = partnerResult ? partnerResult.querySelector(".form-result-title") : null;
+    const resultText = partnerResult ? partnerResult.querySelector(".form-result-text") : null;
+
+    const setResult = ({ type, title, text }) => {
+      if (!partnerResult) return;
+      partnerResult.hidden = false;
+      partnerResult.classList.toggle("is-error", type === "error");
+      if (resultTitle) resultTitle.textContent = title;
+      if (resultText) resultText.textContent = text;
+    };
+
+    const setLoading = (loading) => {
+      if (submitBtn) submitBtn.disabled = loading;
+      partnerForm.setAttribute("aria-busy", loading ? "true" : "false");
+    };
+
+    const getValue = (name) => {
+      const el = partnerForm.querySelector(`[name="${CSS.escape(name)}"]`);
+      return el && "value" in el ? String(el.value).trim() : "";
+    };
+
+    partnerForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      if (!partnerForm.checkValidity()) {
+        partnerForm.reportValidity();
+        return;
+      }
+
+      const partnerTypeVal = getValue("partnerType");
+      const partnerTypeLabel =
+        partnerTypeVal === "individual" ? "Физлицо (мастер, прораб, дизайнер)" : partnerTypeVal === "legal" ? "Юрлицо (компания, магазин)" : partnerTypeVal || "-";
+
+      const message =
+        "🟢 Новая заявка ПАРТНЁРА RemCard:\n" +
+        `Имя / контакт: ${getValue("name") || "-"}\n` +
+        `Компания: ${getValue("company") || "-"}\n` +
+        `Телефон: ${getValue("phone") || "-"}\n` +
+        `Email: ${getValue("email") || "-"}\n` +
+        `Тип: ${partnerTypeLabel}\n` +
+        `Город: ${getValue("city") || "-"}\n` +
+        `Услуги: ${getValue("services") || "-"}\n` +
+        `Комментарий: ${getValue("comment") || "-"}`;
+
+      setLoading(true);
+      if (partnerResult) partnerResult.hidden = true;
+
+      try {
+        if (!BOT_TOKEN || BOT_TOKEN.includes("ТУТ_Я_ПОДСТАВЛЮ_САМ")) {
+          throw new Error("BOT_TOKEN is not set");
+        }
+        if (!CHAT_ID || CHAT_ID.includes("ТУТ_Я_ПОДСТАВЛЮ_САМ")) {
+          throw new Error("CHAT_ID is not set");
+        }
+
+        const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: CHAT_ID,
+            text: message,
+          }),
+        });
+
+        const data = await res.json().catch(() => null);
+
+        if (!res.ok || !data || data.ok !== true) {
+          const desc = data && typeof data.description === "string" ? data.description : "Unknown error";
+          throw new Error(desc);
+        }
+
+        setResult({
+          type: "success",
+          title: "Спасибо!",
+          text: "Заявка на партнёрство отправлена. Мы свяжемся с вами в ближайшее время.",
+        });
+
+        partnerForm.reset();
+
+        if (partnerResult) partnerResult.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      } catch (err) {
+        setResult({
+          type: "error",
+          title: "Ошибка",
+          text: "Не удалось отправить заявку. Попробуйте позже или свяжитесь с нами напрямую.",
+        });
+        // eslint-disable-next-line no-console
+        console.error("RemCard partner form error:", err);
+      } finally {
+        setLoading(false);
+      }
+    });
+  }
 })();
