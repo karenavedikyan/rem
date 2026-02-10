@@ -1,0 +1,14 @@
+### Create approved partner from Telegram bot
+POST https://<BASE_URL>/partners
+Content-Type: application/json
+
+{
+  "name": "Иван Петров",
+  "type": "individual",
+  "city": "Краснодар",
+  "description": "Мастер по ремонту санузлов",
+  "isApproved": true
+}
+
+### Get only approved partners for website
+GET https://<BASE_URL>/partners?approved=true
