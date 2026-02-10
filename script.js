@@ -64,8 +64,9 @@
   if (form) {
     // TEMPORARY (unsafe): tokens in frontend are visible to everyone.
     // TODO: Move BOT_TOKEN/CHAT_ID to backend/serverless (Cloudflare Workers, etc.).
-    const BOT_TOKEN = "ТУТ_Я_ПОДСТАВЛЮ_САМ";
-    const CHAT_ID = "ТУТ_Я_ПОДСТАВЛЮ_САМ";
+    // Note: the bot must be able to write to the target chat (open bot chat and press /start, or add the bot to a group).
+    const BOT_TOKEN = "8371908218:AAFX2-mU-7bHFSEMFm8C3Im8oRJwTgT1dT4";
+    const CHAT_ID = "5034197708";
 
     const submitBtn = form.querySelector("button[type='submit']");
     const resultTitle = result ? result.querySelector(".form-result-title") : null;
@@ -103,7 +104,7 @@
         phone: getValue("phone"),
         email: getValue("email"),
         city: getValue("city") || "Краснодар",
-        taskType: getValue("taskType"),
+        taskType: getValue("taskType") || getValue("jobType"),
         comment: getValue("comment"),
       };
 
