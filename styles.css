@@ -110,6 +110,16 @@ img {
   letter-spacing: 0.2px;
 }
 
+.brand-logo {
+  height: 34px;
+  width: auto;
+  display: block;
+}
+
+.footer-brand .brand-logo {
+  height: 28px;
+}
+
 .brand-mark {
   width: 16px;
   height: 16px;

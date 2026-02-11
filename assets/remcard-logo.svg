@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="520" height="170" viewBox="0 0 520 170" role="img" aria-label="RemCard  B2>9 :>7K@L 2 @5<>=B5">
+  <title>RemCard  B2>9 :>7K@L 2 @5<>=B5</title>
+  <defs>
+    <style>
+      .t1{font:700 64px ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial}
+      .t2{font:600 22px ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial;letter-spacing:.5px}
+    </style>
+  </defs>
+
+  <!-- Icon (stylized, close to provided mark) -->
+  <g transform="translate(28,28)">
+    <!-- black fan -->
+    <path d="M44 78 L18 10 Q44 4 62 18 Z" fill="#121212"/>
+    <path d="M60 86 L44 8 Q70 10 84 30 Z" fill="#121212"/>
+    <path d="M76 92 L74 14 Q98 22 106 46 Z" fill="#121212"/>
+    <path d="M90 96 L102 24 Q124 38 126 64 Z" fill="#121212"/>
+    <path d="M102 98 L128 40 Q144 60 140 84 Z" fill="#121212"/>
+
+    <!-- red block -->
+    <rect x="88" y="44" width="64" height="64" rx="10" fill="#E53935"/>
+    <!-- white arrow / check -->
+    <path d="M104 76 h24 v-16 l20 24 -20 24 v-16 h-24z" fill="#F5F5F5"/>
+  </g>
+
+  <!-- Wordmark -->
+  <text x="210" y="82" class="t1" fill="#121212">RemCard</text>
+  <text x="210" y="120" class="t2" fill="#121212">B2>9 :>7K@L 2 @5<>=B5</text>
+</svg>
