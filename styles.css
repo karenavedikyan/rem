@@ -716,6 +716,12 @@ img {
   margin-top: 12px;
 }
 
+.promo-more {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+}
+
 /* Partners (Krasnodar) */
 .partner-meta {
   display: flex;

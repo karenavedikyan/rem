@@ -122,7 +122,12 @@
 
     const link = document.createElement("a");
     link.className = "btn btn-ghost";
-    link.href = promo.link || "#request";
+    let href = promo.link || "#request";
+    if (href.startsWith("#")) {
+      const id = href.slice(1);
+      if (id && !document.getElementById(id)) href = `index.html${href}`;
+    }
+    link.href = href;
     link.textContent = "Перейти к предложению";
     link.dataset.promoTitle = promo.title || "";
     link.dataset.promoPartner = promo.partnerName || "";
@@ -154,52 +159,56 @@
   const sortSel = document.getElementById("offers-sort");
 
   if (promotions.length) {
-    const featured = promotions.filter((p) => p && p.isFeatured).slice(0, 6);
-    renderPromotionsInto(featuredEl, featured);
+    if (featuredEl) {
+      const featured = promotions.filter((p) => p && p.isFeatured).slice(0, 6);
+      renderPromotionsInto(featuredEl, featured);
+    }
 
-    const cities = unique(promotions.map((p) => p.city));
-    const categories = unique(promotions.map((p) => p.category));
+    if (allEl) {
+      const cities = unique(promotions.map((p) => p.city));
+      const categories = unique(promotions.map((p) => p.category));
 
-    const fillSelect = (select, values) => {
-      if (!select) return;
-      values.forEach((v) => {
-        const opt = document.createElement("option");
-        opt.value = v;
-        opt.textContent = v;
-        select.appendChild(opt);
+      const fillSelect = (select, values) => {
+        if (!select) return;
+        values.forEach((v) => {
+          const opt = document.createElement("option");
+          opt.value = v;
+          opt.textContent = v;
+          select.appendChild(opt);
+        });
+      };
+
+      fillSelect(citySel, cities);
+      fillSelect(catSel, categories);
+
+      const applyFiltersAndRender = () => {
+        let list = promotions.slice();
+        const city = citySel && citySel.value !== "all" ? citySel.value : null;
+        const cat = catSel && catSel.value !== "all" ? catSel.value : null;
+        const sort = sortSel ? sortSel.value : "soon";
+
+        if (city) list = list.filter((p) => p.city === city);
+        if (cat) list = list.filter((p) => p.category === cat);
+
+        if (sort === "featured") {
+          list.sort((a, b) => Number(Boolean(b.isFeatured)) - Number(Boolean(a.isFeatured)) || promoSortSoon(a, b));
+        } else if (sort === "title") {
+          list.sort((a, b) => String(a.title || "").localeCompare(String(b.title || ""), "ru"));
+        } else {
+          list.sort(promoSortSoon);
+        }
+
+        renderPromotionsInto(allEl, list);
+        if (emptyEl) emptyEl.hidden = list.length > 0;
+      };
+
+      applyFiltersAndRender();
+
+      [citySel, catSel, sortSel].forEach((s) => {
+        if (!s) return;
+        s.addEventListener("change", applyFiltersAndRender);
       });
-    };
-
-    fillSelect(citySel, cities);
-    fillSelect(catSel, categories);
-
-    const applyFiltersAndRender = () => {
-      let list = promotions.slice();
-      const city = citySel && citySel.value !== "all" ? citySel.value : null;
-      const cat = catSel && catSel.value !== "all" ? catSel.value : null;
-      const sort = sortSel ? sortSel.value : "soon";
-
-      if (city) list = list.filter((p) => p.city === city);
-      if (cat) list = list.filter((p) => p.category === cat);
-
-      if (sort === "featured") {
-        list.sort((a, b) => Number(Boolean(b.isFeatured)) - Number(Boolean(a.isFeatured)) || promoSortSoon(a, b));
-      } else if (sort === "title") {
-        list.sort((a, b) => String(a.title || "").localeCompare(String(b.title || ""), "ru"));
-      } else {
-        list.sort(promoSortSoon);
-      }
-
-      renderPromotionsInto(allEl, list);
-      if (emptyEl) emptyEl.hidden = list.length > 0;
-    };
-
-    applyFiltersAndRender();
-
-    [citySel, catSel, sortSel].forEach((s) => {
-      if (!s) return;
-      s.addEventListener("change", applyFiltersAndRender);
-    });
+    }
   } else {
     renderPromotionsInto(featuredEl, []);
     renderPromotionsInto(allEl, []);

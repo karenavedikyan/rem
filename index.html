@@ -28,7 +28,7 @@
             <a class="nav-link" href="#about">О проекте</a>
             <a class="nav-link" href="#client-site">Для клиентов</a>
             <a class="nav-link" href="#request">Заявка (Краснодар)</a>
-            <a class="nav-link" href="#offers">Акции</a>
+            <a class="nav-link" href="./offers.html">Акции</a>
             <a class="nav-link" href="#partner-site">Для партнёров</a>
             <a class="nav-link" href="#partners-krasnodar">Партнёры Краснодар</a>
             <a class="nav-link" href="#bonus">Бонусная карта</a>
@@ -290,10 +290,13 @@
               <h2>Акции RemCard (Краснодар)</h2>
               <p class="section-subtitle">Лучшие предложения партнёров по товарам и услугам. Обновляется по мере подключения партнёров.</p>
             </div>
-            <a class="section-link" href="#offers">Все акции</a>
+            <a class="section-link" href="./offers.html">Все акции</a>
           </header>
 
           <div class="grid cards-promotions" id="featured-promotions" aria-label="Топ акций"></div>
+          <div class="promo-more">
+            <a class="btn btn-ghost" href="./offers.html">Все акции</a>
+          </div>
         </div>
       </section>
 
@@ -324,43 +327,6 @@
               <p>Оплачивайте часть следующего заказа бонусами у других партнёров.</p>
             </article>
           </div>
-        </div>
-      </section>
-
-      <section class="section" id="offers">
-        <div class="container">
-          <header class="section-header">
-            <h2>Все акции</h2>
-            <p class="section-subtitle">Полный список актуальных предложений. Выберите акцию и перейдите к заявке.</p>
-          </header>
-
-          <div class="card offers-controls" aria-label="Фильтры акций">
-            <div class="offers-grid">
-              <div class="field">
-                <label for="offers-city">Город</label>
-                <select class="input" id="offers-city" name="offersCity">
-                  <option value="all">Все</option>
-                </select>
-              </div>
-              <div class="field">
-                <label for="offers-category">Категория</label>
-                <select class="input" id="offers-category" name="offersCategory">
-                  <option value="all">Все</option>
-                </select>
-              </div>
-              <div class="field">
-                <label for="offers-sort">Сортировка</label>
-                <select class="input" id="offers-sort" name="offersSort">
-                  <option value="soon">Сначала “горящие”</option>
-                  <option value="featured">Сначала избранные</option>
-                  <option value="title">По названию</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <div class="grid cards-promotions" id="all-promotions" aria-label="Список акций"></div>
-          <p class="muted offers-empty" id="offers-empty" hidden>Пока нет акций по выбранным фильтрам.</p>
         </div>
       </section>
 
