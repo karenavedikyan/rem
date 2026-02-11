@@ -3,6 +3,13 @@
   const toggle = document.querySelector(".nav-toggle");
   const menu = document.querySelector("#nav-menu");
 
+  // TEMPORARY (unsafe): tokens in frontend are visible to everyone.
+  // TODO: Move BOT_TOKEN/CHAT_ID to backend/serverless (Cloudflare Workers, etc.).
+  // Note: the bot must be able to write to the target chat (open bot chat and press /start, or add the bot to a group).
+  const BOT_TOKEN = "8371908218:AAFX2-mU-7bHFSEMFm8C3Im8oRJwTgT1dT4";
+  // earlier: const CHAT_ID = "5034197708";
+  const CHAT_ID = "-5034197708";
+
   // Footer year
   const yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
@@ -239,18 +246,28 @@
     }
   });
 
-  // Request form (static stub)
-  const form = document.getElementById("request-form");
-  const result = document.getElementById("request-result");
+  const sendTelegram = async (text) => {
+    if (!BOT_TOKEN || BOT_TOKEN.includes("ТУТ_Я_ПОДСТАВЛЮ_САМ")) throw new Error("BOT_TOKEN is not set");
+    if (!CHAT_ID || CHAT_ID.includes("ТУТ_Я_ПОДСТАВЛЮ_САМ")) throw new Error("CHAT_ID is not set");
 
-  if (form) {
-    // TEMPORARY (unsafe): tokens in frontend are visible to everyone.
-    // TODO: Move BOT_TOKEN/CHAT_ID to backend/serverless (Cloudflare Workers, etc.).
-    // Note: the bot must be able to write to the target chat (open bot chat and press /start, or add the bot to a group).
-    const BOT_TOKEN = "8371908218:AAFX2-mU-7bHFSEMFm8C3Im8oRJwTgT1dT4";
-    // earlier: const CHAT_ID = "5034197708";
-    const CHAT_ID = "-5034197708";
+    const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ chat_id: CHAT_ID, text }),
+    });
+    const data = await res.json().catch(() => null);
+    if (!res.ok || !data || data.ok !== true) {
+      const desc = data && typeof data.description === "string" ? data.description : "Unknown error";
+      throw new Error(desc);
+    }
+    return data;
+  };
 
+  const bindTelegramForm = ({ formId, resultId, buildMessage, successText }) => {
+    const form = document.getElementById(formId);
+    if (!form) return;
+
+    const result = resultId ? document.getElementById(resultId) : null;
     const submitBtn = form.querySelector("button[type='submit']");
     const resultTitle = result ? result.querySelector(".form-result-title") : null;
     const resultText = result ? result.querySelector(".form-result-text") : null;
@@ -275,62 +292,22 @@
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
-
-      // Let browser show native validation UI
       if (!form.checkValidity()) {
         form.reportValidity();
         return;
       }
 
-      const payload = {
-        name: getValue("name"),
-        phone: getValue("phone"),
-        email: getValue("email"),
-        city: getValue("city") || "Краснодар",
-        taskType: getValue("taskType") || getValue("jobType"),
-        comment: getValue("comment"),
-      };
-
-      const message =
-        "Новая заявка RemCard:\n" +
-        `Имя: ${payload.name || "-"}\n` +
-        `Телефон: ${payload.phone || "-"}\n` +
-        `Email: ${payload.email || "-"}\n` +
-        `Город: ${payload.city || "-"}\n` +
-        `Тип задачи: ${payload.taskType || "-"}\n` +
-        `Комментарий: ${payload.comment || "-"}`;
-
       setLoading(true);
       if (result) result.hidden = true;
 
       try {
-        if (!BOT_TOKEN || BOT_TOKEN.includes("ТУТ_Я_ПОДСТАВЛЮ_САМ")) {
-          throw new Error("BOT_TOKEN is not set");
-        }
-        if (!CHAT_ID || CHAT_ID.includes("ТУТ_Я_ПОДСТАВЛЮ_САМ")) {
-          throw new Error("CHAT_ID is not set");
-        }
-
-        const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            chat_id: CHAT_ID,
-            text: message,
-          }),
-        });
-
-        const data = await res.json().catch(() => null);
-
-        if (!res.ok || !data || data.ok !== true) {
-          const desc = data && typeof data.description === "string" ? data.description : "Unknown error";
-          throw new Error(desc);
-        }
+        const message = buildMessage(getValue);
+        await sendTelegram(message);
 
         setResult({
           type: "success",
           title: "Спасибо!",
-          text: "Заявка отправлена в RemCard. Мы свяжемся с вами в ближайшее время.",
+          text: successText,
         });
 
         const city = form.querySelector("input[name='city']");
@@ -346,10 +323,41 @@
           text: "Не удалось отправить заявку. Попробуйте позже или свяжитесь с нами напрямую.",
         });
         // eslint-disable-next-line no-console
-        console.error("RemCard request form error:", err);
+        console.error(`RemCard ${formId} error:`, err);
       } finally {
         setLoading(false);
       }
     });
-  }
+  };
+
+  // Client request form (index.html)
+  bindTelegramForm({
+    formId: "request-form",
+    resultId: "request-result",
+    successText: "Заявка отправлена в RemCard. Мы свяжемся с вами в ближайшее время.",
+    buildMessage: (get) =>
+      "Новая заявка RemCard (клиент):\n" +
+      `Имя: ${get("name") || "-"}\n` +
+      `Телефон: ${get("phone") || "-"}\n` +
+      `Email: ${get("email") || "-"}\n` +
+      `Город: ${get("city") || "Краснодар"}\n` +
+      `Тип задачи: ${get("taskType") || get("jobType") || "-"}\n` +
+      `Комментарий: ${get("comment") || "-"}`,
+  });
+
+  // Partner request form (partners page)
+  bindTelegramForm({
+    formId: "partner-form",
+    resultId: "partner-result",
+    successText: "Заявка партнёра отправлена. Мы свяжемся с вами в ближайшее время.",
+    buildMessage: (get) =>
+      "Новая заявка RemCard (партнёр):\n" +
+      `Имя/Компания: ${get("name") || "-"}\n` +
+      `Телефон: ${get("phone") || "-"}\n` +
+      `Email: ${get("email") || "-"}\n` +
+      `Город: ${get("city") || "Краснодар"}\n` +
+      `Тип партнёра: ${get("partnerType") || "-"}\n` +
+      `Специализация: ${get("specialization") || "-"}\n` +
+      `Комментарий: ${get("comment") || "-"}`,
+  });
 })();
