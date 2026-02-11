@@ -50,7 +50,7 @@
             </p>
             <div class="hero-actions">
               <a class="btn btn-primary" href="#request">Оставить заявку на ремонт</a>
-              <a class="btn btn-ghost" href="./partners/">Стать партнёром</a>
+              <a class="btn btn-ghost" href="#partner-request">Стать партнёром</a>
             </div>
 
             <div class="hero-metrics" aria-label="Ключевые преимущества">
@@ -240,6 +240,109 @@
           </div>
         </div>
       </section>
+
+      <section class="section" id="partner-request">
+        <div class="container">
+          <header class="section-header">
+            <h2>Заявка партнёра (Краснодар)</h2>
+            <p class="section-subtitle">
+              Если вы мастер или компания — оставьте заявку на подключение. Заявка отправляется в Telegram‑группу RemCard.
+            </p>
+          </header>
+
+          <div class="grid two-col">
+            <div class="card">
+              <h3>Форма партнёра</h3>
+              <p class="muted">Быстрый старт: позже подключим анкету и кабинет партнёра.</p>
+
+              <!-- TODO: Подключить реальный backend (телеграм‑бот / почта / API). -->
+              <form class="form" id="partner-form" novalidate>
+                <div class="form-grid">
+                  <div class="field">
+                    <label for="hp-name">Имя / Компания</label>
+                    <input class="input" id="hp-name" name="name" autocomplete="name" required placeholder="Например, Иван / ООО “…”" />
+                  </div>
+
+                  <div class="field">
+                    <label for="hp-phone">Телефон</label>
+                    <input
+                      class="input"
+                      id="hp-phone"
+                      name="phone"
+                      type="tel"
+                      inputmode="tel"
+                      autocomplete="tel"
+                      required
+                      placeholder="+7 (___) ___‑__‑__"
+                    />
+                  </div>
+
+                  <div class="field">
+                    <label for="hp-email">Email</label>
+                    <input class="input" id="hp-email" name="email" type="email" autocomplete="email" placeholder="name@example.com" />
+                  </div>
+
+                  <div class="field">
+                    <label for="hp-city">Город</label>
+                    <input class="input" id="hp-city" name="city" value="Краснодар" readonly />
+                  </div>
+
+                  <div class="field field-wide">
+                    <label for="hp-type">Тип партнёра</label>
+                    <select class="input" id="hp-type" name="partnerType" required>
+                      <option value="" selected disabled>Выберите вариант</option>
+                      <option>Физ лицо (мастер/бригада)</option>
+                      <option>Юр лицо (компания/магазин)</option>
+                    </select>
+                  </div>
+
+                  <div class="field field-wide">
+                    <label for="hp-spec">Специализация / виды работ</label>
+                    <input
+                      class="input"
+                      id="hp-spec"
+                      name="specialization"
+                      required
+                      placeholder="Например: ремонт ванной, плитка, сантехника, электрика…"
+                    />
+                  </div>
+
+                  <div class="field field-wide">
+                    <label for="hp-comment">Комментарий</label>
+                    <textarea
+                      class="input textarea"
+                      id="hp-comment"
+                      name="comment"
+                      rows="5"
+                      placeholder="Опишите: зоны работы, примеры объектов, наличие договора/гарантии, ссылка на портфолио…"
+                    ></textarea>
+                  </div>
+                </div>
+
+                <div class="form-actions">
+                  <button class="btn btn-primary" type="submit">Отправить заявку партнёра</button>
+                  <p class="fineprint">Нажимая “Отправить”, вы соглашаетесь на обработку данных для связи по заявке.</p>
+                </div>
+
+                <div class="form-result" id="partner-result" role="status" aria-live="polite" hidden>
+                  <div class="form-result-title">Спасибо!</div>
+                  <div class="form-result-text">Заявка отправлена. Мы свяжемся с вами в ближайшее время.</div>
+                </div>
+              </form>
+            </div>
+
+            <div class="card">
+              <h3>Что будет дальше</h3>
+              <ul class="list">
+                <li>Связь и уточнение услуг/товаров</li>
+                <li>Проверка базовой информации</li>
+                <li>Добавление в каталог и запуск акций (при необходимости)</li>
+              </ul>
+              <p class="muted" style="margin-top: 12px">Заявка сразу попадает в Telegram‑группу RemCard.</p>
+            </div>
+          </div>
+        </div>
+      </section>
       <section class="section" id="contacts">
         <div class="container">
           <header class="section-header">
@@ -267,7 +370,7 @@
             <div class="card cta">
               <h3>Стать партнёром</h3>
               <p>Оставьте заявку — мы свяжемся и подскажем, как быстро подключиться к RemCard.</p>
-              <a class="btn btn-primary" href="mailto:kraavediks@gmail.com?subject=RemCard%20—%20Партнёрство">Связаться</a>
+              <a class="btn btn-primary" href="#partner-request">Оставить заявку партнёра</a>
               <p class="fineprint">Пока форма не подключена — используйте email.</p>
             </div>
           </div>
