@@ -26,9 +26,9 @@
 
           <div class="nav-menu" id="nav-menu">
             <a class="nav-link" href="#about">О проекте</a>
-            <a class="nav-link" href="#clients">Для клиентов</a>
+            <a class="nav-link" href="#client-site">Для клиентов</a>
             <a class="nav-link" href="#request">Заявка (Краснодар)</a>
-            <a class="nav-link" href="#partners">Для партнёров</a>
+            <a class="nav-link" href="#partner-site">Для партнёров</a>
             <a class="nav-link" href="#partners-krasnodar">Партнёры Краснодар</a>
             <a class="nav-link" href="#bonus">Бонусная карта</a>
             <a class="nav-link" href="#structure">Структура сервиса</a>
@@ -40,6 +40,7 @@
     </header>
 
     <main id="main">
+      <section id="client-site">
       <section class="hero" id="hero">
         <div class="container hero-inner">
           <div class="hero-copy">
@@ -50,8 +51,8 @@
               планируется в Краснодаре — дальше будем расширяться по другим регионам России.
             </p>
             <div class="hero-actions">
-              <a class="btn btn-primary" href="#clients">Для клиентов</a>
-              <a class="btn btn-ghost" href="#partners">Для партнёров</a>
+              <a class="btn btn-primary" href="#client-site">Для клиентов</a>
+              <a class="btn btn-ghost" href="#partner-site">Для партнёров</a>
             </div>
 
             <div class="hero-metrics" aria-label="Ключевые преимущества">
@@ -281,6 +282,98 @@
         </div>
       </section>
 
+      <section class="section" id="bonus">
+        <div class="container">
+          <header class="section-header">
+            <h2>Бонусная карта RemCard</h2>
+            <p class="section-subtitle">
+              Клиент получает бонусы за каждую покупку (процент задаёт партнёр). Бонусы копятся на RemCard и могут быть потрачены у любых
+              партнёров. Общие правила начисления и списания определяет платформа.
+            </p>
+          </header>
+
+          <div class="grid cards-3">
+            <article class="card step">
+              <div class="step-number" aria-hidden="true">1</div>
+              <h3>Выбор</h3>
+              <p>Выбирайте товар или услугу в каталоге, сравнивайте предложения и условия.</p>
+            </article>
+            <article class="card step">
+              <div class="step-number" aria-hidden="true">2</div>
+              <h3>Покупка</h3>
+              <p>Оплачивайте заказ — бонусы начисляются автоматически по правилам партнёра.</p>
+            </article>
+            <article class="card step">
+              <div class="step-number" aria-hidden="true">3</div>
+              <h3>Оплата бонусами</h3>
+              <p>Оплачивайте часть следующего заказа бонусами у других партнёров.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="structure">
+        <div class="container">
+          <header class="section-header">
+            <h2>Структура сервиса</h2>
+            <p class="section-subtitle">Карта ключевых разделов RemCard — от справочника партнёров до админ‑панели.</p>
+          </header>
+
+          <div class="grid tiles">
+            <div class="tile">
+              <div class="tile-title">Партнёры</div>
+              <div class="tile-text">Справочник</div>
+            </div>
+            <div class="tile">
+              <div class="tile-title">Каталог</div>
+              <div class="tile-text">Товары и услуги</div>
+            </div>
+            <div class="tile">
+              <div class="tile-title">Акции</div>
+              <div class="tile-text">Выгодные предложения</div>
+            </div>
+            <div class="tile">
+              <div class="tile-title">Бонусная карта</div>
+              <div class="tile-text">Баланс и история</div>
+            </div>
+            <div class="tile">
+              <div class="tile-title">Профиль клиента</div>
+              <div class="tile-text">Данные и объекты</div>
+            </div>
+            <div class="tile">
+              <div class="tile-title">Кабинет партнёра</div>
+              <div class="tile-text">Профиль, позиции, акции</div>
+            </div>
+            <div class="tile tile-accent">
+              <div class="tile-title">Админ‑панель</div>
+              <div class="tile-text">Управление пользователями, категориями и правилами лояльности</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="roadmap">
+        <div class="container">
+          <header class="section-header">
+            <h2>Дорожная карта</h2>
+            <p class="section-subtitle">Куда движется RemCard — ключевые направления развития.</p>
+          </header>
+
+          <div class="card">
+            <ul class="list roadmap">
+              <li>Онлайн‑оплата и безопасные сделки.</li>
+              <li>Расширенный подбор мастеров (рейтинг, рекомендации).</li>
+              <li>Гарантийные механизмы и страхование.</li>
+              <li>Мобильное приложение RemCard.</li>
+              <li>Расширение сети партнёров по регионам.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      </section>
+
+      <section id="partner-site">
       <section class="section" id="partners">
         <div class="container">
           <header class="section-header">
@@ -390,94 +483,6 @@
           </div>
         </div>
       </section>
-
-      <section class="section" id="bonus">
-        <div class="container">
-          <header class="section-header">
-            <h2>Бонусная карта RemCard</h2>
-            <p class="section-subtitle">
-              Клиент получает бонусы за каждую покупку (процент задаёт партнёр). Бонусы копятся на RemCard и могут быть потрачены у любых
-              партнёров. Общие правила начисления и списания определяет платформа.
-            </p>
-          </header>
-
-          <div class="grid cards-3">
-            <article class="card step">
-              <div class="step-number" aria-hidden="true">1</div>
-              <h3>Выбор</h3>
-              <p>Выбирайте товар или услугу в каталоге, сравнивайте предложения и условия.</p>
-            </article>
-            <article class="card step">
-              <div class="step-number" aria-hidden="true">2</div>
-              <h3>Покупка</h3>
-              <p>Оплачивайте заказ — бонусы начисляются автоматически по правилам партнёра.</p>
-            </article>
-            <article class="card step">
-              <div class="step-number" aria-hidden="true">3</div>
-              <h3>Оплата бонусами</h3>
-              <p>Оплачивайте часть следующего заказа бонусами у других партнёров.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="structure">
-        <div class="container">
-          <header class="section-header">
-            <h2>Структура сервиса</h2>
-            <p class="section-subtitle">Карта ключевых разделов RemCard — от справочника партнёров до админ‑панели.</p>
-          </header>
-
-          <div class="grid tiles">
-            <div class="tile">
-              <div class="tile-title">Партнёры</div>
-              <div class="tile-text">Справочник</div>
-            </div>
-            <div class="tile">
-              <div class="tile-title">Каталог</div>
-              <div class="tile-text">Товары и услуги</div>
-            </div>
-            <div class="tile">
-              <div class="tile-title">Акции</div>
-              <div class="tile-text">Выгодные предложения</div>
-            </div>
-            <div class="tile">
-              <div class="tile-title">Бонусная карта</div>
-              <div class="tile-text">Баланс и история</div>
-            </div>
-            <div class="tile">
-              <div class="tile-title">Профиль клиента</div>
-              <div class="tile-text">Данные и объекты</div>
-            </div>
-            <div class="tile">
-              <div class="tile-title">Кабинет партнёра</div>
-              <div class="tile-text">Профиль, позиции, акции</div>
-            </div>
-            <div class="tile tile-accent">
-              <div class="tile-title">Админ‑панель</div>
-              <div class="tile-text">Управление пользователями, категориями и правилами лояльности</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="roadmap">
-        <div class="container">
-          <header class="section-header">
-            <h2>Дорожная карта</h2>
-            <p class="section-subtitle">Куда движется RemCard — ключевые направления развития.</p>
-          </header>
-
-          <div class="card">
-            <ul class="list roadmap">
-              <li>Онлайн‑оплата и безопасные сделки.</li>
-              <li>Расширенный подбор мастеров (рейтинг, рекомендации).</li>
-              <li>Гарантийные механизмы и страхование.</li>
-              <li>Мобильное приложение RemCard.</li>
-              <li>Расширение сети партнёров по регионам.</li>
-            </ul>
-          </div>
-        </div>
       </section>
 
       <section class="section" id="contacts">
