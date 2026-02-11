@@ -120,12 +120,20 @@
     const actions = document.createElement("div");
     actions.className = "promo-actions";
 
+    const getHomeBase = () => {
+      const brand = document.querySelector("a.brand[href]");
+      const raw = brand ? brand.getAttribute("href") || "" : "";
+      const base = raw.split("#")[0];
+      if (!base || base.startsWith("#")) return "index.html";
+      return base;
+    };
+
     const link = document.createElement("a");
     link.className = "btn btn-ghost";
     let href = promo.link || "#request";
     if (href.startsWith("#")) {
       const id = href.slice(1);
-      if (id && !document.getElementById(id)) href = `index.html${href}`;
+      if (id && !document.getElementById(id)) href = `${getHomeBase()}${href}`;
     }
     link.href = href;
     link.textContent = "Перейти к предложению";

@@ -25,15 +25,13 @@
           </button>
 
           <div class="nav-menu" id="nav-menu">
-            <a class="nav-link" href="#about">О проекте</a>
-            <a class="nav-link" href="#client-site">Для клиентов</a>
-            <a class="nav-link" href="#request">Заявка (Краснодар)</a>
-            <a class="nav-link" href="./offers.html">Акции</a>
-            <a class="nav-link" href="#partner-site">Для партнёров</a>
-            <a class="nav-link" href="#partners-krasnodar">Партнёры Краснодар</a>
-            <a class="nav-link" href="#bonus">Бонусная карта</a>
-            <a class="nav-link" href="#structure">Структура сервиса</a>
-            <a class="nav-link" href="#roadmap">Дорожная карта</a>
+            <a class="nav-link" href="./clients/">Для клиентов</a>
+            <a class="nav-link" href="./partners/">Для партнёров</a>
+            <a class="nav-link" href="./catalog/">Каталог</a>
+            <a class="nav-link" href="./offers/">Акции</a>
+            <a class="nav-link" href="./bonus-card/">Бонусная карта</a>
+            <a class="nav-link" href="./about/">О проекте</a>
+            <a class="nav-link" href="#request">Оставить заявку</a>
             <a class="nav-link" href="#contacts">Контакты</a>
           </div>
         </nav>
@@ -41,7 +39,6 @@
     </header>
 
     <main id="main">
-      <section id="client-site">
       <section class="hero" id="hero">
         <div class="container hero-inner">
           <div class="hero-copy">
@@ -52,8 +49,8 @@
               планируется в Краснодаре — дальше будем расширяться по другим регионам России.
             </p>
             <div class="hero-actions">
-              <a class="btn btn-primary" href="#client-site">Для клиентов</a>
-              <a class="btn btn-ghost" href="#partner-site">Для партнёров</a>
+              <a class="btn btn-primary" href="#request">Оставить заявку на ремонт</a>
+              <a class="btn btn-ghost" href="./partners/">Стать партнёром</a>
             </div>
 
             <div class="hero-metrics" aria-label="Ключевые преимущества">
@@ -92,94 +89,55 @@
         <div class="hero-glow" aria-hidden="true"></div>
       </section>
 
-      <section class="section" id="about">
+      <section class="section" id="how">
         <div class="container">
           <header class="section-header">
-            <h2>О проекте RemCard</h2>
-            <p class="section-subtitle">
-              RemCard — онлайн‑платформа, которая объединяет клиентов и партнёров рынка ремонта и обустройства. Цель — сделать ремонт и
-              обустройство такими же понятными и удобными, как вызов такси. Начинаем с Краснодара, затем масштабируем модель на другие
-              города.
-            </p>
+            <h2>Как это работает</h2>
+            <p class="section-subtitle">Коротко о процессе: оставляете заявку — мы связываемся — помогаем подобрать исполнителя.</p>
           </header>
 
           <div class="grid cards-3">
-            <article class="card">
-              <h3>Клиенты</h3>
-              <p>Находят мастеров и товары, сравнивают предложения, видят акции и управляют бонусами в одном профиле.</p>
+            <article class="card step">
+              <div class="step-number" aria-hidden="true">1</div>
+              <h3>Оставьте заявку</h3>
+              <p>Опишите задачу: тип ремонта, метраж, сроки, район Краснодара и пожелания.</p>
             </article>
-            <article class="card">
-              <h3>Партнёры</h3>
-              <p>Мастера и компании получают витрину в каталоге, инструменты для продвижения и готовую бонусную программу.</p>
+            <article class="card step">
+              <div class="step-number" aria-hidden="true">2</div>
+              <h3>Связь и уточнение</h3>
+              <p>Команда RemCard уточнит детали и предложит варианты решения под ваш запрос.</p>
             </article>
-            <article class="card">
-              <h3>Платформа</h3>
-              <p>RemCard связывает всех: единые правила лояльности, удобный каталог, акции и аналитика в кабинетах.</p>
+            <article class="card step">
+              <div class="step-number" aria-hidden="true">3</div>
+              <h3>Подбор партнёра</h3>
+              <p>Поможем выбрать мастера/компанию и, при необходимости, проверить смету и условия.</p>
             </article>
           </div>
         </div>
       </section>
 
-      <section class="section" id="clients">
+      <section class="section" id="audience">
         <div class="container">
           <header class="section-header">
-            <h2>Для клиентов</h2>
-            <p class="section-subtitle">
-              На первом этапе RemCard помогает с ремонтом в Краснодаре (и крае): клиент видит партнёров, товары и услуги рядом с собой,
-              выбирает лучшее предложение и получает бонусы за покупки.
-            </p>
-            <p class="section-subtitle">
-              <strong>RemCard бесплатно подберёт мастера в Краснодаре, поможет проверить смету и вернёт вам часть суммы бонусами</strong> на
-              будущие работы и покупки у партнёров.
-            </p>
+            <h2>Кому подойдёт RemCard</h2>
+            <p class="section-subtitle">Главная цель — сделать ремонт в Краснодаре проще и прозрачнее для всех участников.</p>
           </header>
 
-          <div class="grid cards-5">
-            <article class="card">
-              <div class="card-icon" aria-hidden="true">П</div>
-              <h3>Партнёры</h3>
-              <ul class="list">
-                <li>Справочник мастеров, компаний и магазинов.</li>
-                <li>Фильтры по городу, типу, специализации.</li>
-              </ul>
-            </article>
-
+          <div class="grid cards-3">
             <article class="card">
               <div class="card-icon" aria-hidden="true">К</div>
-              <h3>Каталог</h3>
-              <ul class="list">
-                <li>Товары и услуги для ремонта и обустройства.</li>
-                <li>Фильтры по географии, категориям, цене.</li>
-                <li>Возможность оформить заказ (как часть концепции).</li>
-              </ul>
+              <h3>Клиентам</h3>
+              <p>Нужно найти исполнителя, сравнить предложения и спокойно пройти ремонт — без хаоса и переплат.</p>
             </article>
-
             <article class="card">
-              <div class="card-icon" aria-hidden="true">А</div>
-              <h3>Акции</h3>
-              <ul class="list">
-                <li>Раздел “горячих предложений”.</li>
-                <li>Ограничения по времени и территории.</li>
-                <li>Выгодные предложения у партнёров.</li>
-              </ul>
+              <div class="card-icon" aria-hidden="true">М</div>
+              <h3>Мастерам</h3>
+              <p>Хотите больше целевых заявок по Краснодару и удобный формат работы с заказами.</p>
             </article>
-
             <article class="card">
-              <div class="card-icon" aria-hidden="true">B</div>
-              <h3>Бонусная карта RemCard</h3>
-              <ul class="list">
-                <li>Бонусы за каждую покупку у партнёров.</li>
-                <li>Тратьте бонусы в других магазинах и сервисах.</li>
-              </ul>
-            </article>
-
-            <article class="card">
-              <div class="card-icon" aria-hidden="true">П</div>
-              <h3>Профиль клиента</h3>
-              <ul class="list">
-                <li>Личные данные и объекты (адреса).</li>
-                <li>История заказов и бонусов.</li>
-              </ul>
+              <div class="card-icon" aria-hidden="true">Б</div>
+              <h3>Бизнесу</h3>
+              <p>Магазинам и компаниям: витрина услуг/товаров, акции и общая бонусная программа.</p>
             </article>
           </div>
         </div>
@@ -282,227 +240,6 @@
           </div>
         </div>
       </section>
-
-      <section class="section" id="promotions">
-        <div class="container">
-          <header class="section-header section-header-row">
-            <div>
-              <h2>Акции RemCard (Краснодар)</h2>
-              <p class="section-subtitle">Лучшие предложения партнёров по товарам и услугам. Обновляется по мере подключения партнёров.</p>
-            </div>
-            <a class="section-link" href="./offers.html">Все акции</a>
-          </header>
-
-          <div class="grid cards-promotions" id="featured-promotions" aria-label="Топ акций"></div>
-          <div class="promo-more">
-            <a class="btn btn-ghost" href="./offers.html">Все акции</a>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="bonus">
-        <div class="container">
-          <header class="section-header">
-            <h2>Бонусная карта RemCard</h2>
-            <p class="section-subtitle">
-              Клиент получает бонусы за каждую покупку (процент задаёт партнёр). Бонусы копятся на RemCard и могут быть потрачены у любых
-              партнёров. Общие правила начисления и списания определяет платформа.
-            </p>
-          </header>
-
-          <div class="grid cards-3">
-            <article class="card step">
-              <div class="step-number" aria-hidden="true">1</div>
-              <h3>Выбор</h3>
-              <p>Выбирайте товар или услугу в каталоге, сравнивайте предложения и условия.</p>
-            </article>
-            <article class="card step">
-              <div class="step-number" aria-hidden="true">2</div>
-              <h3>Покупка</h3>
-              <p>Оплачивайте заказ — бонусы начисляются автоматически по правилам партнёра.</p>
-            </article>
-            <article class="card step">
-              <div class="step-number" aria-hidden="true">3</div>
-              <h3>Оплата бонусами</h3>
-              <p>Оплачивайте часть следующего заказа бонусами у других партнёров.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="structure">
-        <div class="container">
-          <header class="section-header">
-            <h2>Структура сервиса</h2>
-            <p class="section-subtitle">Карта ключевых разделов RemCard — от справочника партнёров до админ‑панели.</p>
-          </header>
-
-          <div class="grid tiles">
-            <div class="tile">
-              <div class="tile-title">Партнёры</div>
-              <div class="tile-text">Справочник</div>
-            </div>
-            <div class="tile">
-              <div class="tile-title">Каталог</div>
-              <div class="tile-text">Товары и услуги</div>
-            </div>
-            <div class="tile">
-              <div class="tile-title">Акции</div>
-              <div class="tile-text">Выгодные предложения</div>
-            </div>
-            <div class="tile">
-              <div class="tile-title">Бонусная карта</div>
-              <div class="tile-text">Баланс и история</div>
-            </div>
-            <div class="tile">
-              <div class="tile-title">Профиль клиента</div>
-              <div class="tile-text">Данные и объекты</div>
-            </div>
-            <div class="tile">
-              <div class="tile-title">Кабинет партнёра</div>
-              <div class="tile-text">Профиль, позиции, акции</div>
-            </div>
-            <div class="tile tile-accent">
-              <div class="tile-title">Админ‑панель</div>
-              <div class="tile-text">Управление пользователями, категориями и правилами лояльности</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="roadmap">
-        <div class="container">
-          <header class="section-header">
-            <h2>Дорожная карта</h2>
-            <p class="section-subtitle">Куда движется RemCard — ключевые направления развития.</p>
-          </header>
-
-          <div class="card">
-            <ul class="list roadmap">
-              <li>Онлайн‑оплата и безопасные сделки.</li>
-              <li>Расширенный подбор мастеров (рейтинг, рекомендации).</li>
-              <li>Гарантийные механизмы и страхование.</li>
-              <li>Мобильное приложение RemCard.</li>
-              <li>Расширение сети партнёров по регионам.</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      </section>
-
-      <section id="partner-site">
-      <section class="section" id="partners">
-        <div class="container">
-          <header class="section-header">
-            <h2>Для партнёров</h2>
-            <p class="section-subtitle">
-              Партнёры — это мастера и компании, которые предлагают услуги и товары для ремонта и обустройства.
-            </p>
-            <p class="section-subtitle">
-              <strong>RemCard приводит целевых клиентов по ремонту в Краснодаре, помогает продавать услуги</strong> и включать их в общую
-              бонусную программу.
-            </p>
-          </header>
-
-          <div class="grid two-col">
-            <article class="card">
-              <h3>Кто такие партнёры</h3>
-              <ul class="list">
-                <li><strong>Физлица:</strong> мастера, прорабы, бригады, дизайнеры, декораторы.</li>
-                <li><strong>Юрлица:</strong> магазины стройматериалов, мебели, сантехники, подрядчики, консалтинг, финсервисы и др.</li>
-              </ul>
-            </article>
-
-            <article class="card">
-              <h3>Преимущества</h3>
-              <ul class="list">
-                <li>Витрина товаров и услуг в общем каталоге RemCard.</li>
-                <li>Личный кабинет для управления профилем.</li>
-                <li>Раздел акций для привлечения клиентов.</li>
-                <li>Общая бонусная программа без разработки своей системы.</li>
-              </ul>
-            </article>
-          </div>
-
-          <div class="card card-wide">
-            <h3>Разделы кабинета партнёра</h3>
-            <div class="grid cards-4">
-              <div class="mini">
-                <div class="mini-title">Дашборд</div>
-                <div class="mini-text">Статус и краткая статистика</div>
-              </div>
-              <div class="mini">
-                <div class="mini-title">Профиль партнёра</div>
-                <div class="mini-text">Описание, зона работы, реквизиты</div>
-              </div>
-              <div class="mini">
-                <div class="mini-title">Товары и услуги</div>
-                <div class="mini-text">Создание/редактирование, включение/выключение</div>
-              </div>
-              <div class="mini">
-                <div class="mini-title">Акции</div>
-                <div class="mini-text">Создание и управление спецпредложениями</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="partners-krasnodar">
-        <div class="container">
-          <header class="section-header">
-            <h2>Партнёры RemCard в Краснодаре (первые)</h2>
-            <p class="section-subtitle">
-              Ниже — демо‑карточки для примера. В реальном запуске здесь будут реальные мастера и компании Краснодара.
-            </p>
-          </header>
-
-          <div class="grid cards-partners">
-            <article class="card partner">
-              <h3>Иван Петров — мастер по ремонту санузлов</h3>
-              <p>Ремонт ванных комнат и санузлов, Краснодар и пригороды.</p>
-              <div class="partner-meta">
-                <span class="tag">Физ лицо</span>
-                <span class="tag">Плитка • Сантехника • Электрика</span>
-              </div>
-              <p class="partner-note">Демо‑карточка партнёра, для примера. В реальном запуске здесь будут реальные мастера и компании.</p>
-            </article>
-
-            <article class="card partner">
-              <h3>ООО “КрасСтройРемонт” — ремонт квартир под ключ</h3>
-              <p>Полный ремонт под ключ: черновые/чистовые работы, комплектация материалами. Краснодар.</p>
-              <div class="partner-meta">
-                <span class="tag">Юр лицо</span>
-                <span class="tag">Под ключ • Квартиры • Новостройки</span>
-              </div>
-              <p class="partner-note">Демо‑карточка партнёра, для примера. В реальном запуске здесь будут реальные мастера и компании.</p>
-            </article>
-
-            <article class="card partner">
-              <h3>Мария Смирнова — дизайнер интерьеров</h3>
-              <p>Планировка, дизайн‑проект, подбор материалов и авторский надзор. Краснодар.</p>
-              <div class="partner-meta">
-                <span class="tag">Физ лицо</span>
-                <span class="tag">Дизайн • Визуализация • Надзор</span>
-              </div>
-              <p class="partner-note">Демо‑карточка партнёра, для примера. В реальном запуске здесь будут реальные мастера и компании.</p>
-            </article>
-
-            <article class="card partner">
-              <h3>“СантехМаркет Юг” — магазин сантехники</h3>
-              <p>Подбор и поставка сантехники, консультации, доставка по Краснодару.</p>
-              <div class="partner-meta">
-                <span class="tag">Юр лицо</span>
-                <span class="tag">Сантехника • Доставка • Комплектация</span>
-              </div>
-              <p class="partner-note">Демо‑карточка партнёра, для примера. В реальном запуске здесь будут реальные мастера и компании.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-      </section>
-
       <section class="section" id="contacts">
         <div class="container">
           <header class="section-header">
@@ -552,7 +289,6 @@
       </div>
     </footer>
 
-    <script src="./promotions.js" defer></script>
     <script src="./script.js" defer></script>
   </body>
 </html>
