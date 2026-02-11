@@ -458,8 +458,39 @@ img {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.cards-promotions {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .two-col {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.section-header-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.section-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(245, 245, 245, 0.12);
+  background: rgba(30, 30, 30, 0.6);
+  transition: border-color 160ms var(--ease), transform 160ms var(--ease);
+  white-space: nowrap;
+}
+
+.section-link:hover {
+  border-color: rgba(229, 57, 53, 0.35);
+}
+
+.section-link:active {
+  transform: translateY(1px);
 }
 
 .card {
@@ -629,6 +660,60 @@ img {
 
 .muted {
   color: rgba(176, 190, 197, 0.95);
+}
+
+/* Offers / Promotions */
+.promo-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.promo-badge {
+  flex: 0 0 auto;
+  padding: 8px 10px;
+  border-radius: 999px;
+  font-weight: 850;
+  letter-spacing: -0.2px;
+  font-size: 13px;
+  color: rgba(245, 245, 245, 0.95);
+  background: linear-gradient(145deg, rgba(229, 57, 53, 0.95), rgba(183, 28, 28, 0.95));
+  border: 1px solid rgba(229, 57, 53, 0.25);
+  box-shadow: 0 12px 28px rgba(229, 57, 53, 0.22);
+}
+
+.promo-meta {
+  margin-top: 10px;
+  font-size: 13px;
+  color: rgba(176, 190, 197, 0.95);
+}
+
+.promo-valid {
+  margin-top: 10px;
+  font-size: 12.5px;
+  color: rgba(176, 190, 197, 0.9);
+}
+
+.promo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.offers-controls {
+  padding: 14px;
+}
+
+.offers-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.offers-empty {
+  margin-top: 12px;
 }
 
 /* Partners (Krasnodar) */
@@ -803,6 +888,10 @@ img {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .cards-promotions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .cards-4 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -815,6 +904,15 @@ img {
 
   .form-grid {
     grid-template-columns: 1fr;
+  }
+
+  .offers-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-header-row {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .footer-inner {
@@ -869,6 +967,10 @@ img {
   }
 
   .cards-partners {
+    grid-template-columns: 1fr;
+  }
+
+  .cards-promotions {
     grid-template-columns: 1fr;
   }
 }

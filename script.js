@@ -57,6 +57,171 @@
     history.pushState(null, "", href);
   });
 
+  // Promotions / Offers rendering (static data)
+  const promotions = Array.isArray(window.REMCARD_PROMOTIONS) ? window.REMCARD_PROMOTIONS : [];
+
+  const formatDateRu = (iso) => {
+    if (!iso) return "";
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return "";
+    return new Intl.DateTimeFormat("ru-RU", { year: "numeric", month: "long", day: "2-digit" }).format(d);
+  };
+
+  const promoSortSoon = (a, b) => {
+    const da = a.validUntil ? new Date(a.validUntil).getTime() : Number.POSITIVE_INFINITY;
+    const db = b.validUntil ? new Date(b.validUntil).getTime() : Number.POSITIVE_INFINITY;
+    return da - db;
+  };
+
+  const unique = (arr) => Array.from(new Set(arr.filter(Boolean)));
+
+  const createPromoCard = (promo) => {
+    const card = document.createElement("article");
+    card.className = "card";
+    card.dataset.promoId = String(promo.id);
+
+    const top = document.createElement("div");
+    top.className = "promo-top";
+
+    const title = document.createElement("h3");
+    title.textContent = promo.title || "Акция";
+
+    const badge = document.createElement("div");
+    badge.className = "promo-badge";
+    badge.textContent = promo.discount || "Выгодно";
+
+    top.appendChild(title);
+    top.appendChild(badge);
+
+    const meta = document.createElement("div");
+    meta.className = "promo-meta";
+    meta.textContent = `${promo.partnerName || "Партнёр"} • ${promo.city || ""}`.trim();
+
+    const desc = document.createElement("p");
+    desc.textContent = promo.description || "";
+
+    const tagsWrap = document.createElement("div");
+    tagsWrap.className = "partner-meta";
+    (promo.tags || []).slice(0, 6).forEach((t) => {
+      const chip = document.createElement("span");
+      chip.className = "tag";
+      chip.textContent = t;
+      tagsWrap.appendChild(chip);
+    });
+
+    const validStr = formatDateRu(promo.validUntil);
+    let valid = null;
+    if (validStr) {
+      valid = document.createElement("div");
+      valid.className = "promo-valid";
+      valid.textContent = `Действует до ${validStr}`;
+    }
+
+    const actions = document.createElement("div");
+    actions.className = "promo-actions";
+
+    const link = document.createElement("a");
+    link.className = "btn btn-ghost";
+    link.href = promo.link || "#request";
+    link.textContent = "Перейти к предложению";
+    link.dataset.promoTitle = promo.title || "";
+    link.dataset.promoPartner = promo.partnerName || "";
+    link.dataset.promoDiscount = promo.discount || "";
+
+    actions.appendChild(link);
+
+    card.appendChild(top);
+    card.appendChild(meta);
+    card.appendChild(desc);
+    if (valid) card.appendChild(valid);
+    card.appendChild(tagsWrap);
+    card.appendChild(actions);
+    return card;
+  };
+
+  const renderPromotionsInto = (el, promos) => {
+    if (!el) return;
+    el.innerHTML = "";
+    promos.forEach((p) => el.appendChild(createPromoCard(p)));
+  };
+
+  const featuredEl = document.getElementById("featured-promotions");
+  const allEl = document.getElementById("all-promotions");
+  const emptyEl = document.getElementById("offers-empty");
+
+  const citySel = document.getElementById("offers-city");
+  const catSel = document.getElementById("offers-category");
+  const sortSel = document.getElementById("offers-sort");
+
+  if (promotions.length) {
+    const featured = promotions.filter((p) => p && p.isFeatured).slice(0, 6);
+    renderPromotionsInto(featuredEl, featured);
+
+    const cities = unique(promotions.map((p) => p.city));
+    const categories = unique(promotions.map((p) => p.category));
+
+    const fillSelect = (select, values) => {
+      if (!select) return;
+      values.forEach((v) => {
+        const opt = document.createElement("option");
+        opt.value = v;
+        opt.textContent = v;
+        select.appendChild(opt);
+      });
+    };
+
+    fillSelect(citySel, cities);
+    fillSelect(catSel, categories);
+
+    const applyFiltersAndRender = () => {
+      let list = promotions.slice();
+      const city = citySel && citySel.value !== "all" ? citySel.value : null;
+      const cat = catSel && catSel.value !== "all" ? catSel.value : null;
+      const sort = sortSel ? sortSel.value : "soon";
+
+      if (city) list = list.filter((p) => p.city === city);
+      if (cat) list = list.filter((p) => p.category === cat);
+
+      if (sort === "featured") {
+        list.sort((a, b) => Number(Boolean(b.isFeatured)) - Number(Boolean(a.isFeatured)) || promoSortSoon(a, b));
+      } else if (sort === "title") {
+        list.sort((a, b) => String(a.title || "").localeCompare(String(b.title || ""), "ru"));
+      } else {
+        list.sort(promoSortSoon);
+      }
+
+      renderPromotionsInto(allEl, list);
+      if (emptyEl) emptyEl.hidden = list.length > 0;
+    };
+
+    applyFiltersAndRender();
+
+    [citySel, catSel, sortSel].forEach((s) => {
+      if (!s) return;
+      s.addEventListener("change", applyFiltersAndRender);
+    });
+  } else {
+    renderPromotionsInto(featuredEl, []);
+    renderPromotionsInto(allEl, []);
+    if (emptyEl) emptyEl.hidden = false;
+  }
+
+  // Optional: prefill request comment when coming from a promo card
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest("a[data-promo-title]");
+    if (!a) return;
+    const href = a.getAttribute("href") || "";
+    if (!href.startsWith("#request")) return;
+
+    const commentEl = document.querySelector("textarea[name='comment']");
+    if (commentEl && !String(commentEl.value || "").trim()) {
+      const promoTitle = a.dataset.promoTitle || "";
+      const promoPartner = a.dataset.promoPartner || "";
+      const promoDiscount = a.dataset.promoDiscount || "";
+      commentEl.value = `Акция: ${promoTitle}${promoPartner ? " — " + promoPartner : ""}${promoDiscount ? " (" + promoDiscount + ")" : ""}\n`;
+    }
+  });
+
   // Request form (static stub)
   const form = document.getElementById("request-form");
   const result = document.getElementById("request-result");
