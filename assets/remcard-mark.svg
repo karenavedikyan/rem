@@ -10,6 +10,5 @@
   <!-- White paper block -->
   <rect x="74" y="46" width="70" height="70" rx="10" fill="#F5F5F5"/>
 
-  <!-- Inner dark cut / fold -->
-  <path d="M92 82 h26 v-18 l22 27 -22 27 v-18 h-26z" fill="#121212"/>
+  <!-- Note: intentionally no inner arrow/fold -->
 </svg>
