@@ -1,25 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 140" role="img" aria-label="RemCard">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="RemCard">
   <title>RemCard</title>
-  <!-- Red fan -->
-  <path d="M60 118 L18 18 Q62 6 92 32 Z" fill="#E53935"/>
-  <path d="M86 132 L56 10 Q108 12 132 52 Z" fill="#E53935"/>
-  <path d="M112 138 L112 22 Q154 38 168 86 Z" fill="#E53935"/>
-  <path d="M132 140 L154 40 Q182 66 184 108 Z" fill="#E53935"/>
 
-  <!-- White card/paper -->
-  <path
-    d="M92 42
-       h76
-       a10 10 0 0 1 10 10
-       v64
-       a10 10 0 0 1 -10 10
-       h-76
-       a10 10 0 0 1 -10 -10
-       v-64
-       a10 10 0 0 1 10 -10
-       z"
-    fill="#F5F5F5"
-  />
-  <!-- Dark fold/arrow -->
-  <path d="M118 78 h30 v-22 l26 33 -26 33 v-22 h-30z" fill="#121212" opacity="0.9"/>
+  <!-- Red fan (stylized as in provided mark) -->
+  <path d="M52 120 L20 30 Q50 20 72 38 Z" fill="#E53935"/>
+  <path d="M70 132 L48 24 Q88 24 108 56 Z" fill="#E53935"/>
+  <path d="M90 138 L92 34 Q124 44 134 78 Z" fill="#E53935"/>
+  <path d="M106 140 L128 50 Q150 76 146 108 Z" fill="#E53935"/>
+
+  <!-- White paper block -->
+  <rect x="74" y="46" width="70" height="70" rx="10" fill="#F5F5F5"/>
+
+  <!-- Inner dark cut / fold -->
+  <path d="M92 82 h26 v-18 l22 27 -22 27 v-18 h-26z" fill="#121212"/>
 </svg>
