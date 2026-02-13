@@ -1,9 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="RemCard mark">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="RemCard mark" shape-rendering="geometricPrecision">
   <title>RemCard</title>
-  <!-- Red card / trump shape -->
-  <path d="M14 10h26l10 10v30a8 8 0 0 1-8 8H14a8 8 0 0 1-8-8V18a8 8 0 0 1 8-8z" fill="#E53935"/>
-  <!-- Dark cut corner -->
-  <path d="M40 10v10a8 8 0 0 0 8 8h10" fill="none" stroke="#121212" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity="0.25"/>
-  <!-- White notch / arrow hint -->
-  <path d="M24 30h14v-8l10 10-10 10v-8H24z" fill="#F5F5F5" opacity="0.95"/>
+
+  <!-- Card body -->
+  <path
+    d="M16 10h26l8 8v28a8 8 0 0 1-8 8H16a8 8 0 0 1-8-8V18a8 8 0 0 1 8-8z"
+    fill="#E53935"
+  />
+
+  <!-- Folded corner -->
+  <path d="M42 10v10a6 6 0 0 0 6 6h10" fill="#B71C1C" />
+
+  <!-- White notch (minimal accent) -->
+  <path d="M22 30h18v-10l12 12-12 12V34H22z" fill="#F5F5F5" />
 </svg>
