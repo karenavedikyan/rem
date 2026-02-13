@@ -116,6 +116,14 @@ img {
   display: block;
 }
 
+.brand-logo.mark {
+  height: 30px;
+}
+
+.footer-brand .brand-logo.mark {
+  height: 26px;
+}
+
 .footer-brand .brand-logo {
   height: 28px;
 }
