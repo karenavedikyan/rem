@@ -122,6 +122,17 @@ img {
   font-size: 16px;
 }
 
+.brand-logo-img {
+  height: 22px;
+  width: auto;
+  display: block;
+  flex: 0 0 auto;
+}
+
+.footer-brand .brand-logo-img {
+  height: 20px;
+}
+
 .brand-mark-img {
   height: 18px;
   width: auto;
