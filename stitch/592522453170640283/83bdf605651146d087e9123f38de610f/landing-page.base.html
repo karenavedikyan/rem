@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RemCard — Ремонт и обустройство в Краснодаре</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#e53734",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#121212",
+                        "surface-dark": "#1e1e1e",
+                        "border-dark": "#332222",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .glass-nav {
+            backdrop-filter: blur(12px);
+            background-color: rgba(18, 18, 18, 0.8);
+        }
+        .hero-gradient {
+            background: radial-gradient(circle at top right, rgba(229, 55, 52, 0.15), transparent 40%);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white antialiased overflow-x-hidden">
+<!-- Navigation -->
+<nav class="fixed top-0 w-full z-50 glass-nav border-b border-border-dark">
+<div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="text-primary">
+<span class="material-symbols-outlined text-4xl font-bold">diamond</span>
+</div>
+<h1 class="text-2xl font-bold tracking-tighter">RemCard</h1>
+</div>
+<div class="hidden lg:flex items-center gap-8 text-sm font-medium opacity-80">
+<a class="hover:text-primary transition-colors" href="#">About</a>
+<a class="hover:text-primary transition-colors" href="#">For Clients</a>
+<a class="hover:text-primary transition-colors" href="#">For Partners</a>
+<a class="hover:text-primary transition-colors" href="#">Partners</a>
+<a class="hover:text-primary transition-colors" href="#">Bonus Card</a>
+<a class="hover:text-primary transition-colors" href="#">Contacts</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="bg-primary hover:bg-primary/90 text-white px-6 py-2.5 rounded-lg font-bold text-sm transition-all">
+                    Apply Now
+                </button>
+</div>
+</div>
+</nav>
+<main class="pt-20">
+<!-- Hero Section -->
+<section class="relative min-h-[85vh] flex items-center px-6 overflow-hidden hero-gradient">
+<div class="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-12 items-center">
+<div class="z-10">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest mb-6">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+</span>
+                        Marketplace in Krasnodar
+                    </div>
+<h1 class="text-5xl md:text-7xl font-black leading-[1.1] mb-6">
+                        RemCard — платформа для ремонта и обустройства
+                    </h1>
+<p class="text-lg md:text-xl opacity-60 max-w-xl mb-10 leading-relaxed">
+                        Connecting homeowners with the best professionals and exclusive bonuses in the heart of Krasnodar. Your dream interior starts here.
+                    </p>
+<div class="flex flex-wrap gap-4">
+<button class="bg-primary text-white px-8 py-4 rounded-xl font-bold text-lg hover:shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-2">
+                            Get Started <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<button class="border border-border-dark bg-surface-dark/50 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-surface-dark transition-all">
+                            Learn More
+                        </button>
+</div>
+</div>
+<div class="relative hidden lg:block">
+<div class="rounded-2xl overflow-hidden aspect-[4/3] shadow-2xl border border-border-dark">
+<img alt="Modern Luxury Interior Krasnodar" class="w-full h-full object-cover" data-alt="Modern luxury living room with dark accents" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAn7m2O516QUJyCm1GsZ3ijdFa3uN35VOkeeCSD6jCSaadoo2K-EBnGOVstD44aG7T09bp0e2HA7YNLGiJ8C6V0EiQLfW7awViV8XgWddYe0I9KFqBf8R_IrmPJyXYYJlOnxD7PZcbKeF7GsP9ZEs-nmZfebna1CuV1eGm5ojPzmK31lQrHWMmRV6JNcb4SOQFX4JixqWhwzXYaGmHcPiIAYuho3orqBJYB5UAgEb9SbjyhS0BCp8MAObuyWiwZXXqmffhKgK_9_Q"/>
+</div>
+<div class="absolute -bottom-6 -left-6 bg-surface-dark p-6 rounded-xl border border-border-dark shadow-xl max-w-xs">
+<div class="flex items-center gap-4 mb-3">
+<div class="p-2 bg-primary/20 rounded-lg text-primary">
+<span class="material-symbols-outlined">verified</span>
+</div>
+<div>
+<p class="text-sm font-bold">500+ Verified Partners</p>
+<p class="text-xs opacity-50">Local experts in Krasnodar</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- How it Works -->
+<section class="py-24 px-6 bg-surface-dark/30">
+<div class="max-w-7xl mx-auto">
+<div class="mb-16">
+<h2 class="text-3xl font-bold mb-4">How it works</h2>
+<div class="h-1 w-20 bg-primary"></div>
+</div>
+<div class="grid md:grid-cols-3 gap-8">
+<!-- Step 1 -->
+<div class="bg-surface-dark p-8 rounded-2xl border border-border-dark group hover:border-primary/50 transition-all">
+<div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-white transition-all">
+<span class="material-symbols-outlined">search</span>
+</div>
+<h3 class="text-xl font-bold mb-4">Select Service</h3>
+<p class="opacity-60 leading-relaxed">Browse our curated list of renovation services tailored for your specific housing needs in the region.</p>
+</div>
+<!-- Step 2 -->
+<div class="bg-surface-dark p-8 rounded-2xl border border-border-dark group hover:border-primary/50 transition-all">
+<div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-white transition-all">
+<span class="material-symbols-outlined">handshake</span>
+</div>
+<h3 class="text-xl font-bold mb-4">Choose Partner</h3>
+<p class="opacity-60 leading-relaxed">Connect with verified professionals and top-tier companies. Compare portfolios and reviews directly.</p>
+</div>
+<!-- Step 3 -->
+<div class="bg-surface-dark p-8 rounded-2xl border border-border-dark group hover:border-primary/50 transition-all">
+<div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-white transition-all">
+<span class="material-symbols-outlined">workspace_premium</span>
+</div>
+<h3 class="text-xl font-bold mb-4">Get Result &amp; Bonuses</h3>
+<p class="opacity-60 leading-relaxed">Enjoy high-quality renovation results and earn exclusive bonus points for future services or shop partners.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- For Clients Features -->
+<section class="py-24 px-6">
+<div class="max-w-7xl mx-auto">
+<div class="grid lg:grid-cols-2 gap-20 items-center">
+<div>
+<h2 class="text-4xl font-bold mb-8 leading-tight">Everything you need for a <span class="text-primary italic">stress-free</span> renovation</h2>
+<div class="space-y-6">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+<div>
+<h4 class="font-bold">Trusted Contractors</h4>
+<p class="opacity-60 text-sm">Every partner undergoes a rigorous multi-stage verification process.</p>
+</div>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+<div>
+<h4 class="font-bold">Transparent Pricing</h4>
+<p class="opacity-60 text-sm">No hidden fees. Get detailed estimates before starting any work.</p>
+</div>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+<div>
+<h4 class="font-bold">Project Management</h4>
+<p class="opacity-60 text-sm">Track your progress and communicate with pros through our centralized hub.</p>
+</div>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+<div>
+<h4 class="font-bold">Local Expertise</h4>
+<p class="opacity-60 text-sm">Professionals who understand the specific requirements of Krasnodar real estate.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gradient-to-br from-primary/20 to-transparent p-1 rounded-3xl">
+<div class="bg-background-dark rounded-[calc(1.5rem-4px)] p-4">
+<img alt="Tech-driven renovation management" class="rounded-2xl w-full h-full object-cover" data-alt="Close up of architect using tablet at construction site" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZfwPCfofCjVynf2fechsQ5JptOa1_KHKy--2NQZBT_akdSm1lSR2M9knxLyfP9GoVYm3liXDrnK38icuxy0q3F1k3dK6DNpG3hTEZi6jqA8HCnMCMNKfEymMjeeAL6f1s2e21nXah0YQMQCSIUS4tn9fObYyv5Rz0YukcE--2Ng84OnjTm1oMDDvI2vJYYeGqgpQT0qkYwNbByoTZP8GDJZSz7KVigEjRlSWsxfKoqH6kqJr0-kHdrTTIsK0Ts-ZyBDwgyTDFZA"/>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Featured Partners -->
+<section class="py-24 px-6 bg-surface-dark/20">
+<div class="max-w-7xl mx-auto">
+<div class="flex justify-between items-end mb-12">
+<div>
+<h2 class="text-3xl font-bold mb-2">Featured Partners</h2>
+<p class="opacity-60">Top-rated renovation experts in the city</p>
+</div>
+<a class="text-primary font-bold flex items-center gap-2 hover:underline" href="#">
+                        View All <span class="material-symbols-outlined">chevron_right</span>
+</a>
+</div>
+<div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Partner Card 1 -->
+<div class="bg-surface-dark rounded-2xl overflow-hidden border border-border-dark hover:translate-y-[-4px] transition-all">
+<div class="h-48 relative">
+<img alt="Interior Pro" class="w-full h-full object-cover" data-alt="Professional construction worker in dark uniform" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwR4-5DoSC6PaRy14qHUR0HfUnWuY5M9mxrLtC4DtnUZ-79ruWUum1r8qWOAXBR5tjO8oPZ4D0yJRQu_J7uKDAudlMR5dO2IWivz-cy9l2rJojXGJLhIkY-amKFOKbXe5RUKWHemQBRU8FvKo4MWa72b0qNoKO7hLtfYtQ5K8WRVx5jUah4J6NRGiSn2w_lZ5kjIn-OBLmKPubkw35kXiYcPRtXKKTZYep7Zn4FwYylioGaS3LLgiL6RRqUZIMT0BkHxsHIaXA9g"/>
+<div class="absolute top-4 left-4 bg-primary text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-tighter">Verified</div>
+</div>
+<div class="p-6">
+<h4 class="font-bold text-lg mb-1">Interior Pro Masters</h4>
+<p class="text-xs opacity-50 mb-4">Premium Finishing &amp; Design</p>
+<div class="flex items-center gap-1 text-yellow-500 mb-6">
+<span class="material-symbols-outlined fill-1 text-sm">star</span>
+<span class="material-symbols-outlined fill-1 text-sm">star</span>
+<span class="material-symbols-outlined fill-1 text-sm">star</span>
+<span class="material-symbols-outlined fill-1 text-sm">star</span>
+<span class="material-symbols-outlined fill-1 text-sm">star</span>
+<span class="text-white text-xs ml-2 opacity-60">(128)</span>
+</div>
+<button class="w-full py-2 bg-border-dark hover:bg-primary/20 hover:text-primary rounded-lg transition-colors font-bold text-sm">
+                                View Portfolio
+                            </button>
+</div>
+</div>
+<!-- Partner Card 2 -->
+<div class="bg-surface-dark rounded-2xl overflow-hidden border border-border-dark hover:translate-y-[-4px] transition-all">
+<div class="h-48 relative">
+<img alt="Krasnodar Build" class="w-full h-full object-cover" data-alt="Architectural details of a modern building" src="https://lh3.googleusercontent.com/aida-public/AB6AXuABuC54oDzPFyk_vrwMd1VA6VwSola0B4yoLmW0wdD6ARPdWptn2o6zjuzkMalHS89yeoIzhjj-xFkg6lD7NfoN9uOLXix2gm_NlhsFINoeWSYqMj1R2ozgSt83h9ovT8pyCTNMue2BUePYJScxSUTdNZhEjY5mGvE0q8LUmfl-1LaakM4GYgdr36PX3VAEfQHdOX-nWtzs-AGEimpts5WD8svLRh_F2cZUujQleDG6CkH2eAryxp-an-npHV2HxXeiQvUXgQNvpg"/>
+<div class="absolute top-4 left-4 bg-primary text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-tighter">Verified</div>
+</div>
+<div class="p-6">
+<h4 class="font-bold text-lg mb-1">Krasnodar Build Group</h4>
+<p class="text-xs opacity-50 mb-4">Structural Engineering</p>
+<div class="flex items-center gap-1 text-yellow-500 mb-6">
+<span class="material-symbols-outlined fill-1 text-sm">star</span>
+<span class="material-symbols-outlined fill-1 text-sm">star</span>
+<span class="material-symbols-outlined fill-1 text-sm">star</span>
+<span class="material-symbols-outlined fill-1 text-sm">star</span>
+<span class="material-symbols-outlined text-sm">star</span>
+<span class="text-white text-xs ml-2 opacity-60">(94)</span>
+</div>
+<button class="w-full py-2 bg-border-dark hover:bg-primary/20 hover:text-primary rounded-lg transition-colors font-bold text-sm">
+                                View Portfolio
+                            </button>
+</div>
+</div>
+<!-- Partner Card 3 -->
+<div class="bg-surface-dark rounded-2xl overflow-hidden border border-border-dark hover:translate-y-[-4px] transition-all">
+<div class="h-48 relative">
+<img alt="Loft Design" class="w-full h-full object-cover" data-alt="Industrial loft interior style sample" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNzYfxCmPvuY1hmzfFirSiRfb6uzhVnQKcY-agVwHLSPOyByOQNP5DXjlGl9YPke5yIarMEUjUJ75j17mpC0Wh8eUjMHyfPKxfuHfNlyefhuAUf_8MDGZqWawbSGT2raZwyga86u144F0uRrCk3yEewrU6oglUB-qiqGjbe0ByXM0L3x4aqUABBzJYJ_BKy4q4QxrPktxmTOplGMjUPTZreRIWyj5I9Xdf0D2-6B5H6KDR3-Fac672E_t7uS9RgpLapoTSEU4nHA"/>
+<div class="absolute top-4 left-4 bg-primary text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-tighter">Verified</div>
+</div>
+<div class="p-6">
+<h4 class="font-bold text-lg mb-1">Loft Design Lab</h4>
+<p class="text-xs opacity-50 mb-4">Interior Styling</p>
+<div class="flex items-center gap-1 text-yellow-500 mb-6">
+<span class="material-symbols-outlined fill-1 text-sm">star</span>
+<span class="material-symbols-outlined fill-1 text-sm">star</span>
+<span class="material-symbols-outlined fill-1 text-sm">star</span>
+<span class="material-symbols-outlined fill-1 text-sm">star</span>
+<span class="material-symbols-outlined fill-1 text-sm">star</span>
+<span class="text-white text-xs ml-2 opacity-60">(205)</span>
+</div>
+<button class="w-full py-2 bg-border-dark hover:bg-primary/20 hover:text-primary rounded-lg transition-colors font-bold text-sm">
+                                View Portfolio
+                            </button>
+</div>
+</div>
+<!-- Partner Card 4 -->
+<div class="bg-surface-dark rounded-2xl overflow-hidden border border-border-dark hover:translate-y-[-4px] transition-all">
+<div class="h-48 relative">
+<img alt="Eco Renovation" class="w-full h-full object-cover" data-alt="Eco-friendly materials and plants in room" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD436FWWBFk1meOnTWmIq1PGb2O5J3h2fdkkyx4-qqnKq0ycgOIXlflMaTUtJpWU8SiMasWnXNtvJGxgZomB1fMSWPy0eCjlte_H1ngeg8fBUeeVy-dyKnUFpKEnKQ8iBd8TW_72eqg17PFELyYL7LJi8BogBPA5VtwAGZ-PD3GhKn9GA2EhwkcUdPCqfP61glJ2WIMTInh8eSqKzfcPFYuGFeUX8JG3rmSPSggtohy3YdbSqjNtc4Rqw3_2vEIQ-OYI4gyzReZvA"/>
+<div class="absolute top-4 left-4 bg-primary text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-tighter">Verified</div>
+</div>
+<div class="p-6">
+<h4 class="font-bold text-lg mb-1">Eco Renovate</h4>
+<p class="text-xs opacity-50 mb-4">Sustainable Solutions</p>
+<div class="flex items-center gap-1 text-yellow-500 mb-6">
+<span class="material-symbols-outlined fill-1 text-sm">star</span>
+<span class="material-symbols-outlined fill-1 text-sm">star</span>
+<span class="material-symbols-outlined fill-1 text-sm">star</span>
+<span class="material-symbols-outlined fill-1 text-sm">star</span>
+<span class="material-symbols-outlined text-sm">star</span>
+<span class="text-white text-xs ml-2 opacity-60">(52)</span>
+</div>
+<button class="w-full py-2 bg-border-dark hover:bg-primary/20 hover:text-primary rounded-lg transition-colors font-bold text-sm">
+                                View Portfolio
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Bonus Card Block -->
+<section class="py-24 px-6 overflow-hidden">
+<div class="max-w-7xl mx-auto">
+<div class="relative bg-gradient-to-r from-background-dark to-primary/30 rounded-3xl border border-border-dark p-12 lg:p-20 flex flex-col lg:flex-row items-center gap-12">
+<div class="flex-1 text-center lg:text-left">
+<h2 class="text-4xl lg:text-5xl font-black mb-6">Collect Points, Get Exclusive Rewards</h2>
+<p class="text-xl opacity-70 mb-10 leading-relaxed max-w-lg">
+                            Our unique loyalty program allows you to earn up to 10% cashback in bonus points on all renovation services. Redeem them for smart home gadgets, furniture, or professional clean-up.
+                        </p>
+<button class="bg-white text-background-dark px-10 py-4 rounded-xl font-bold text-lg hover:bg-primary hover:text-white transition-all">
+                            Get Your Bonus Card
+                        </button>
+</div>
+<div class="flex-1 flex justify-center perspective-1000">
+<div class="w-full max-w-sm aspect-[1.6/1] bg-gradient-to-br from-primary to-[#8e24aa] rounded-2xl p-8 shadow-2xl rotate-[12deg] flex flex-col justify-between border border-white/20">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-4xl text-white">contactless</span>
+<span class="font-bold tracking-widest text-white italic">REMCARD PLATINUM</span>
+</div>
+<div>
+<p class="text-white/60 text-[10px] tracking-widest mb-1 uppercase font-medium">Bonus Balance</p>
+<p class="text-white text-3xl font-black">24,500 <span class="text-sm">pts</span></p>
+</div>
+<div class="flex justify-between items-end">
+<p class="text-white/80 font-mono text-sm tracking-widest leading-none uppercase">Alexander Nevsky</p>
+<div class="w-12 h-8 bg-white/20 rounded-md"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Lead Form -->
+<section class="py-24 px-6 border-t border-border-dark">
+<div class="max-w-3xl mx-auto text-center">
+<h2 class="text-4xl font-bold mb-4">Start your renovation today</h2>
+<p class="opacity-60 mb-12">Tell us about your project and we'll match you with the best professionals in Krasnodar within 24 hours.</p>
+<form class="space-y-6 text-left">
+<div class="grid md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="text-xs font-bold uppercase tracking-wider opacity-60 ml-1">Full Name</label>
+<input class="w-full bg-surface-dark border-border-dark rounded-xl px-6 py-4 focus:border-primary focus:ring-primary text-white outline-none" placeholder="Ivan Ivanov" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-bold uppercase tracking-wider opacity-60 ml-1">Phone Number</label>
+<input class="w-full bg-surface-dark border-border-dark rounded-xl px-6 py-4 focus:border-primary focus:ring-primary text-white outline-none" placeholder="+7 (900) 000-00-00" type="tel"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-bold uppercase tracking-wider opacity-60 ml-1">Project Type</label>
+<select class="w-full bg-surface-dark border-border-dark rounded-xl px-6 py-4 focus:border-primary focus:ring-primary text-white outline-none">
+<option>Full Apartment Renovation</option>
+<option>Interior Design Only</option>
+<option>Kitchen/Bathroom Refurbishment</option>
+<option>Commercial Space</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-bold uppercase tracking-wider opacity-60 ml-1">Message (Optional)</label>
+<textarea class="w-full bg-surface-dark border-border-dark rounded-xl px-6 py-4 focus:border-primary focus:ring-primary text-white outline-none" placeholder="Briefly describe your dream home..." rows="4"></textarea>
+</div>
+<button class="w-full bg-primary text-white py-5 rounded-xl font-bold text-xl hover:shadow-xl hover:shadow-primary/30 transition-all" type="submit">
+                        Send Request
+                    </button>
+<p class="text-[10px] text-center opacity-40">By clicking the button, you agree to our Terms of Service and Privacy Policy.</p>
+</form>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-background-dark py-16 px-6 border-t border-border-dark">
+<div class="max-w-7xl mx-auto">
+<div class="grid md:grid-cols-4 gap-12 mb-16">
+<div class="col-span-1 md:col-span-1">
+<div class="flex items-center gap-2 mb-6">
+<div class="text-primary">
+<span class="material-symbols-outlined text-3xl font-bold">diamond</span>
+</div>
+<h2 class="text-xl font-bold tracking-tighter">RemCard</h2>
+</div>
+<p class="opacity-50 text-sm leading-relaxed">The leading renovation marketplace in Krasnodar. Quality, trust, and exceptional bonuses for every homeowner.</p>
+</div>
+<div>
+<h4 class="font-bold mb-6">Platform</h4>
+<ul class="space-y-4 text-sm opacity-60">
+<li><a class="hover:text-primary" href="#">For Homeowners</a></li>
+<li><a class="hover:text-primary" href="#">For Business</a></li>
+<li><a class="hover:text-primary" href="#">Partner Portal</a></li>
+<li><a class="hover:text-primary" href="#">Safety &amp; Trust</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold mb-6">Company</h4>
+<ul class="space-y-4 text-sm opacity-60">
+<li><a class="hover:text-primary" href="#">About Us</a></li>
+<li><a class="hover:text-primary" href="#">Bonus Program</a></li>
+<li><a class="hover:text-primary" href="#">Careers</a></li>
+<li><a class="hover:text-primary" href="#">Contact</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold mb-6">Follow Us</h4>
+<div class="flex gap-4 mb-6">
+<a class="w-10 h-10 rounded-full border border-border-dark flex items-center justify-center hover:bg-primary transition-all" href="#">
+<span class="material-symbols-outlined text-sm">public</span>
+</a>
+<a class="w-10 h-10 rounded-full border border-border-dark flex items-center justify-center hover:bg-primary transition-all" href="#">
+<span class="material-symbols-outlined text-sm">alternate_email</span>
+</a>
+<a class="w-10 h-10 rounded-full border border-border-dark flex items-center justify-center hover:bg-primary transition-all" href="#">
+<span class="material-symbols-outlined text-sm">send</span>
+</a>
+</div>
+<p class="text-xs opacity-40">Located in Krasnodar, RU</p>
+</div>
+</div>
+<div class="pt-8 border-t border-border-dark flex flex-col md:row justify-between items-center gap-4 text-[10px] uppercase tracking-widest font-bold opacity-30">
+<p>© 2024 REMCARD. ALL RIGHTS RESERVED.</p>
+<p data-location="Krasnodar">MADE FOR KRASNODAR</p>
+</div>
+</div>
+</footer>
+</body></html>
