@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Акции RemCard — предложения партнёров по товарам и услугам (Краснодар)." />
-    <title>RemCard — Акции партнёров</title>
+    <meta name="description" content="Магазины‑партнёры RemCard: обои, сантехника, окна, инструмент, ремонт под ключ в Краснодаре." />
+    <title>RemCard — Магазины‑партнёры</title>
 
     <link rel="stylesheet" href="../styles.css" />
   </head>
@@ -31,58 +31,54 @@
             <a class="nav-link" href="../index.html">Главная</a>
             <a class="nav-link" href="../clients/">Для клиентов</a>
             <a class="nav-link" href="../partners/">Для партнёров</a>
-            <a class="nav-link" href="../partners-stores/">Магазины‑партнёры</a>
+            <a class="nav-link" href="../partners-stores/" aria-current="page">Магазины‑партнёры</a>
             <a class="nav-link" href="../catalog/">Каталог</a>
-            <a class="nav-link" href="../offers/" aria-current="page">Акции</a>
+            <a class="nav-link" href="../offers/">Акции</a>
             <a class="nav-link" href="../bonus-card/">Бонусная карта</a>
             <a class="nav-link" href="../about/">О проекте</a>
             <a class="nav-link" href="../index.html#request">Оставить заявку</a>
+            <a class="nav-link" href="../index.html#contacts">Контакты</a>
           </div>
         </nav>
       </div>
     </header>
 
     <main id="main">
-      <section class="section" id="offers">
+      <section class="section" id="partners-stores">
         <div class="container">
-          <header class="section-header section-header-row">
-            <div>
-              <h2>Все акции партнёров</h2>
-              <p class="section-subtitle">Полный список актуальных предложений. Выберите акцию и перейдите к заявке.</p>
-            </div>
-            <a class="section-link" href="../index.html">На главную</a>
+          <header class="section-header">
+            <h1>Магазины‑партнёры RemCard</h1>
+            <p class="section-subtitle">
+              Здесь собраны компании и предприниматели — участники программы RemCard. Покупайте у партнёров, копите бонусы и тратьте их в любых магазинах‑партнёрах. Используйте фильтры и поиск, чтобы найти нужную категорию.
+            </p>
           </header>
 
-          <div class="card offers-controls" aria-label="Фильтры акций">
-            <div class="offers-grid">
-              <div class="field">
-                <label for="offers-city">Город</label>
-                <select class="input" id="offers-city" name="offersCity">
-                  <option value="all">Все</option>
-                </select>
+          <div class="card partners-stores-controls" aria-label="Фильтры партнёров">
+            <div class="partners-stores-controls-inner">
+              <div class="field partners-stores-search-wrap">
+                <label for="partners-search" class="sr-only">Поиск по названию</label>
+                <input
+                  class="input partners-stores-search"
+                  id="partners-search"
+                  type="search"
+                  placeholder="Поиск по названию компании…"
+                  autocomplete="off"
+                />
               </div>
-              <div class="field">
-                <label for="offers-category">Категория</label>
-                <select class="input" id="offers-category" name="offersCategory">
-                  <option value="all">Все</option>
-                </select>
-              </div>
-              <div class="field">
-                <label for="offers-sort">Сортировка</label>
-                <select class="input" id="offers-sort" name="offersSort">
-                  <option value="soon">Сначала “горящие”</option>
-                  <option value="featured">Сначала избранные</option>
-                  <option value="title">По названию</option>
+              <div class="field partners-stores-category-wrap">
+                <label for="partners-category">Категория</label>
+                <select class="input" id="partners-category" name="partnersCategory">
+                  <option value="all">Все категории</option>
                 </select>
               </div>
             </div>
           </div>
 
-          <div class="grid cards-promotions" id="all-promotions" aria-label="Список акций"></div>
-          <p class="muted offers-empty" id="offers-empty" hidden>Пока нет акций по выбранным фильтрам.</p>
+          <div class="grid grid-partner-cards" id="partners-cards" aria-label="Список партнёров"></div>
+          <p class="muted partners-stores-empty" id="partners-empty" hidden>Партнёров по выбранным критериям не найдено.</p>
 
           <div class="promo-more">
-            <a class="btn btn-ghost" href="../index.html#request">Перейти к заявке</a>
+            <a class="btn btn-ghost" href="../index.html#request">Оставить заявку на ремонт</a>
           </div>
         </div>
       </section>
@@ -106,7 +102,7 @@
       </div>
     </footer>
 
-    <script src="../promotions.js" defer></script>
+    <script src="../partnersData.js" defer></script>
     <script src="../script.js" defer></script>
   </body>
 </html>

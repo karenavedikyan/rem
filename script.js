@@ -230,6 +230,148 @@
     if (emptyEl) emptyEl.hidden = false;
   }
 
+  // Partners stores (Магазины‑партнёры) rendering
+  const partners = Array.isArray(window.REMCARD_PARTNERS) ? window.REMCARD_PARTNERS : [];
+  const partnersCardsEl = document.getElementById("partners-cards");
+  const partnersEmptyEl = document.getElementById("partners-empty");
+  const partnersSearchEl = document.getElementById("partners-search");
+  const partnersCategoryEl = document.getElementById("partners-category");
+
+  const getInitial = (name) => {
+    if (!name || typeof name !== "string") return "?";
+    const parts = name.trim().split(/\s+/);
+    if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+    return name[0].toUpperCase();
+  };
+
+  const createPartnerCard = (p) => {
+    const article = document.createElement("article");
+    article.className = "card partner-store-card";
+    article.dataset.partnerId = String(p.id);
+
+    const top = document.createElement("div");
+    top.className = "partner-store-card-top";
+    if (p.logo) {
+      const img = document.createElement("img");
+      img.className = "partner-store-logo";
+      img.src = p.logo;
+      img.alt = "";
+      img.loading = "lazy";
+      top.appendChild(img);
+    } else {
+      const placeholder = document.createElement("div");
+      placeholder.className = "partner-store-logo-placeholder";
+      placeholder.textContent = getInitial(p.name);
+      top.appendChild(placeholder);
+    }
+
+    const nameEl = document.createElement("h3");
+    nameEl.className = "partner-store-name";
+    nameEl.textContent = p.name || "Партнёр";
+    top.appendChild(nameEl);
+
+    const categoryEl = document.createElement("span");
+    categoryEl.className = "partner-store-category";
+    categoryEl.textContent = p.category || "";
+
+    const descEl = document.createElement("p");
+    descEl.className = "partner-store-desc";
+    descEl.textContent = p.description || "";
+
+    const addressEl = document.createElement("p");
+    addressEl.className = "partner-store-address";
+    addressEl.textContent = p.address || "";
+
+    const contactsEl = document.createElement("div");
+    contactsEl.className = "partner-store-contacts";
+    const links = [];
+    if (p.website) {
+      const a = document.createElement("a");
+      a.href = p.website;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.textContent = "Сайт";
+      links.push(a);
+    }
+    const phones = Array.isArray(p.phones) ? p.phones : p.phones ? [p.phones] : [];
+    phones.forEach((ph) => {
+      const a = document.createElement("a");
+      a.href = "tel:" + String(ph).replace(/\D/g, "").replace(/^8/, "7");
+      a.textContent = ph;
+      links.push(a);
+    });
+    links.forEach((l, i) => {
+      contactsEl.appendChild(l);
+      if (i < links.length - 1) contactsEl.appendChild(document.createTextNode(" • "));
+    });
+
+    const badgeEl = document.createElement("div");
+    badgeEl.className = "partner-store-badge";
+    badgeEl.textContent = "Участник программы RemCard";
+
+    article.appendChild(top);
+    article.appendChild(categoryEl);
+    article.appendChild(descEl);
+    article.appendChild(addressEl);
+    if (links.length) article.appendChild(contactsEl);
+    article.appendChild(badgeEl);
+
+    if (p.extraLabel) {
+      const extraEl = document.createElement("div");
+      extraEl.className = "partner-store-extra";
+      extraEl.textContent = p.extraLabel;
+      article.appendChild(extraEl);
+    }
+
+    return article;
+  };
+
+  const renderPartnersInto = (el, list) => {
+    if (!el) return;
+    el.innerHTML = "";
+    list.forEach((p) => el.appendChild(createPartnerCard(p)));
+  };
+
+  if (partnersCardsEl) {
+    const uniqueCategories = (arr) => Array.from(new Set(arr.filter(Boolean))).sort((a, b) => a.localeCompare(b, "ru"));
+    const categories = uniqueCategories(partners.map((p) => p.category));
+
+    if (partnersCategoryEl) {
+      categories.forEach((c) => {
+        const opt = document.createElement("option");
+        opt.value = c;
+        opt.textContent = c;
+        partnersCategoryEl.appendChild(opt);
+      });
+    }
+
+    const applyPartnersFilters = () => {
+      const search = partnersSearchEl ? String(partnersSearchEl.value || "").trim().toLowerCase() : "";
+      const category = partnersCategoryEl && partnersCategoryEl.value !== "all" ? partnersCategoryEl.value : null;
+
+      let list = partners.slice();
+      if (category) list = list.filter((p) => p.category === category);
+      if (search) {
+        list = list.filter((p) => String(p.name || "").toLowerCase().includes(search));
+      }
+
+      renderPartnersInto(partnersCardsEl, list);
+      if (partnersEmptyEl) partnersEmptyEl.hidden = list.length > 0;
+    };
+
+    applyPartnersFilters();
+
+    if (partnersSearchEl) {
+      partnersSearchEl.addEventListener("input", () => applyPartnersFilters());
+      partnersSearchEl.addEventListener("search", () => applyPartnersFilters());
+    }
+    if (partnersCategoryEl) {
+      partnersCategoryEl.addEventListener("change", applyPartnersFilters);
+    }
+  } else {
+    if (partnersEmptyEl) partnersEmptyEl.hidden = true;
+  }
+
   // Optional: prefill request comment when coming from a promo card
   document.addEventListener("click", (e) => {
     const a = e.target.closest("a[data-promo-title]");

@@ -755,6 +755,132 @@ img {
   margin-top: 12px;
 }
 
+/* Partner stores / Магазины‑партнёры */
+.partners-stores-controls {
+  margin-bottom: 22px;
+}
+
+.partners-stores-controls-inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: flex-end;
+}
+
+.partners-stores-search-wrap {
+  flex: 1;
+  min-width: 200px;
+}
+
+.partners-stores-category-wrap {
+  min-width: 200px;
+}
+
+.grid-partner-cards {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+@media (max-width: 1100px) {
+  .grid-partner-cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.partner-store-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.partner-store-card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.partner-store-card .partner-store-name {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 750;
+  letter-spacing: -0.2px;
+  line-height: 1.25;
+  flex: 1;
+}
+
+.partner-store-card .partner-store-category {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 650;
+  background: rgba(229, 57, 53, 0.14);
+  border: 1px solid rgba(229, 57, 53, 0.25);
+  color: rgba(245, 245, 245, 0.95);
+}
+
+.partner-store-card .partner-store-logo {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: rgba(18, 18, 18, 0.4);
+}
+
+.partner-store-card .partner-store-logo-placeholder {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: rgba(30, 30, 30, 0.6);
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  font-weight: 700;
+  color: rgba(229, 57, 53, 0.6);
+}
+
+.partner-store-card .partner-store-desc {
+  margin: 0;
+  font-size: 13px;
+  color: rgba(176, 190, 197, 0.95);
+  line-height: 1.5;
+}
+
+.partner-store-card .partner-store-address,
+.partner-store-card .partner-store-contacts {
+  font-size: 13px;
+  color: rgba(176, 190, 197, 0.9);
+}
+
+.partner-store-card .partner-store-contacts a {
+  display: inline-block;
+  border-bottom: 1px dashed rgba(229, 57, 53, 0.35);
+  padding: 8px 6px 1px;
+  margin: -8px -6px -1px;
+}
+
+.partner-store-card .partner-store-contacts a:hover {
+  border-bottom-style: solid;
+}
+
+.partner-store-card .partner-store-badge {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid rgba(245, 245, 245, 0.08);
+  font-size: 12px;
+  color: rgba(229, 57, 53, 0.95);
+  font-weight: 650;
+}
+
+.partner-store-card .partner-store-extra {
+  font-size: 12px;
+  color: rgba(176, 190, 197, 0.95);
+}
+
 .tag {
   display: inline-flex;
   align-items: center;
@@ -919,6 +1045,10 @@ img {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .grid-partner-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .cards-promotions {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -999,6 +1129,23 @@ img {
 
   .cards-partners {
     grid-template-columns: 1fr;
+  }
+
+  .grid-partner-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .partners-stores-controls-inner {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .partners-stores-search-wrap {
+    min-width: 0;
+  }
+
+  .partners-stores-category-wrap {
+    min-width: 0;
   }
 
   .cards-promotions {
