@@ -5,7 +5,6 @@ on:
     branches:
       - main
       - cursor/-bc-41b43a69-c0a1-45b8-8962-e15f7e51b368-47b4
-      - cursor/partner-dashboard-remcard-11ad
   workflow_dispatch:
 
 permissions:
@@ -21,7 +20,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment:
-      name: github-pages-preview
+      name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
