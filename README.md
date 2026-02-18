@@ -36,3 +36,15 @@
    - `GITHUB_REPO` — `karenavedikyan/rem` (или ваш форк)
 3. При деплое на Vercel форма работает: POST идёт на `/api/add-partner`.
 4. При использовании только GitHub Pages: отредактируйте `partners/add/add-partner.js`, укажите полный URL вашего Vercel API в `API_URL`.
+
+### Если «API не настроен» / configured: false
+
+1. Откройте **https://vercel.com** → ваш проект **rem** (не команду, а сам проект).
+2. **Settings** → **Environment Variables**.
+3. Нажмите **Add New**:
+   - **Key:** `REMCARD_GITHUB_TOKEN` (точно так, без пробелов)
+   - **Value:** вставьте токен с https://github.com/settings/tokens (scope: `repo`)
+   - Отметьте **Production** (галочка обязательна).
+4. **Save**.
+5. **Deployments** → откройте последний деплой → **⋮** → **Redeploy**.
+6. Дождитесь завершения. Проверьте: https://rem-navy.vercel.app/api/add-partner → `{"configured":true}`.

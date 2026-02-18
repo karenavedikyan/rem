@@ -64,10 +64,12 @@ export default async function handler(req, res) {
 
   if (req.method === "GET") {
     const token = getToken();
+    const vercelEnv = process.env.VERCEL_ENV || "unknown";
     res.setHeader("Access-Control-Allow-Origin", headers["Access-Control-Allow-Origin"]);
     res.status(200).json({
       configured: !!token,
-      hint: token ? "OK" : "Добавьте REMCARD_GITHUB_TOKEN в Vercel (Production) → Redeploy",
+      vercelEnv,
+      hint: token ? "OK" : "Vercel → rem → Settings → Environment Variables → REMCARD_GITHUB_TOKEN (Production ✓) → Save → Deployments → Redeploy",
     });
     return;
   }
