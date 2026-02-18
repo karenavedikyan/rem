@@ -1,7 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="RemCard mark" shape-rendering="geometricPrecision">
   <title>RemCard</title>
-
-  <!-- Red cross (crisp at small sizes) -->
-  <rect x="26" y="12" width="12" height="40" rx="3" fill="#E53935" />
-  <rect x="12" y="26" width="40" height="12" rx="3" fill="#E53935" />
+  <!-- Red fanned shapes behind (cards/documents fanning to upper left) -->
+  <path d="M6 22 L6 54 L12 58 L12 26 Z" fill="#E73C3C" />
+  <path d="M10 18 L10 50 L18 54 L18 22 Z" fill="#E73C3C" />
+  <path d="M14 14 L14 46 L24 50 L24 18 Z" fill="#E73C3C" />
+  <!-- White foreground - bookmark/card with inverted V-cutout at top center -->
+  <path d="M22 8 L30 8 L32 12 L34 8 L42 8 L42 52 L22 52 Z" fill="#FFFFFF" stroke="rgba(0,0,0,0.06)" stroke-width="0.5" stroke-linejoin="round" />
 </svg>

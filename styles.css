@@ -110,6 +110,20 @@ img {
   letter-spacing: 0.2px;
 }
 
+.brand-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  line-height: 1.2;
+}
+
+.brand-tagline {
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(245, 245, 245, 0.75);
+  letter-spacing: 0;
+}
+
 .brand-mark {
   width: 16px;
   height: 16px;
@@ -123,14 +137,14 @@ img {
 }
 
 .brand-mark-img {
-  height: 18px;
+  height: 28px;
   width: auto;
   display: block;
   flex: 0 0 auto;
 }
 
 .footer-brand .brand-mark-img {
-  height: 16px;
+  height: 24px;
 }
 
 .nav {
