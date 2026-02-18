@@ -25,3 +25,14 @@
 После этого сайт будет доступен по адресу вида:
 
 `https://<username>.github.io/<repo>/`
+
+## Форма добавления партнёров
+
+Страница `/partners/add/` позволяет добавлять партнёров в каталог «Магазины‑партнёры». Для автоматической публикации нужен API на Vercel:
+
+1. Подключите репозиторий к Vercel (Import Project).
+2. В настройках проекта добавьте переменные окружения:
+   - `GITHUB_TOKEN` — Personal Access Token (repo scope)
+   - `GITHUB_REPO` — `karenavedikyan/rem` (или ваш форк)
+3. При деплое на Vercel форма работает: POST идёт на `/api/add-partner`.
+4. При использовании только GitHub Pages: отредактируйте `partners/add/add-partner.js`, укажите полный URL вашего Vercel API в `API_URL`.
