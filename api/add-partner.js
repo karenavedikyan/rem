@@ -2,12 +2,15 @@
  * Vercel Serverless Function: добавление партнёра в partnersData.js через GitHub API.
  *
  * Переменные окружения в Vercel:
- *   GITHUB_TOKEN — Personal Access Token с правами repo
+ *   REMCARD_GITHUB_TOKEN — Personal Access Token с правами repo (предпочтительно)
+ *   GITHUB_TOKEN — альтернатива (может конфликтовать с Vercel)
  *   GITHUB_REPO  — репозиторий (по умолчанию karenavedikyan/rem)
  */
 
 const ALLOWED_ORIGINS = [
   "https://karenavedikyan.github.io",
+  "https://rem-navy.vercel.app",
+  "https://rem.vercel.app",
   "https://remcard.ru",
   "http://localhost:3000",
   "http://127.0.0.1:5500",
@@ -23,17 +26,49 @@ const corsHeaders = (origin) => ({
   "Access-Control-Max-Age": "86400",
 });
 
+function getToken() {
+  // REMCARD_GITHUB_TOKEN — чтобы избежать конфликта с встроенным GITHUB_TOKEN в Vercel
+  const v = process.env.REMCARD_GITHUB_TOKEN || process.env.GITHUB_TOKEN || process.env.GH_TOKEN;
+  return v && String(v).trim() ? v : null;
+}
+
 function escapeJsString(s) {
   if (s == null) return "null";
   return JSON.stringify(String(s));
 }
 
+function getOrigin(req) {
+  const origin = req.headers.origin;
+  if (origin) return origin;
+  const referer = req.headers.referer || "";
+  try {
+    const u = new URL(referer);
+    return u.origin;
+  } catch {
+    return "";
+  }
+}
+
 export default async function handler(req, res) {
-  const origin = req.headers.origin || req.headers.referer || "";
+  const origin = getOrigin(req);
   const headers = { ...corsHeaders(origin), "Content-Type": "application/json" };
 
   if (req.method === "OPTIONS") {
+    res.setHeader("Access-Control-Allow-Origin", headers["Access-Control-Allow-Origin"]);
+    res.setHeader("Access-Control-Allow-Methods", headers["Access-Control-Allow-Methods"]);
+    res.setHeader("Access-Control-Allow-Headers", headers["Access-Control-Allow-Headers"]);
+    res.setHeader("Access-Control-Max-Age", headers["Access-Control-Max-Age"]);
     res.status(204).end();
+    return;
+  }
+
+  if (req.method === "GET") {
+    const token = getToken();
+    res.setHeader("Access-Control-Allow-Origin", headers["Access-Control-Allow-Origin"]);
+    res.status(200).json({
+      configured: !!token,
+      hint: token ? "OK" : "Добавьте REMCARD_GITHUB_TOKEN в Vercel (Production) → Redeploy",
+    });
     return;
   }
 
@@ -43,14 +78,14 @@ export default async function handler(req, res) {
     return;
   }
 
-  const token = process.env.GITHUB_TOKEN;
+  const token = getToken();
   const repo = process.env.GITHUB_REPO || "karenavedikyan/rem";
 
   if (!token) {
     res.setHeader("Access-Control-Allow-Origin", headers["Access-Control-Allow-Origin"]);
     res.status(500).json({
       error: "API не настроен",
-      message: "Отсутствует GITHUB_TOKEN. Настройте переменные окружения в Vercel.",
+      message: "Добавьте REMCARD_GITHUB_TOKEN в Vercel → Settings → Environment Variables (Production) → Redeploy.",
     });
     return;
   }
@@ -120,7 +155,7 @@ export default async function handler(req, res) {
   },
 `;
 
-    const newContent = rawContent.replace(/\n(\s*)\];\s*$/, `${block}$1];\n`);
+    const newContent = rawContent.replace(/\];\s*$/, block + "];\n");
 
     const metaRes = await fetch(`${base}/contents/partnersData.js`, {
       headers: { Authorization: `Bearer ${token}` },
