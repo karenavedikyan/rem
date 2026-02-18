@@ -1,0 +1,12 @@
+{
+  "project": {
+    "title": "Partner Dashboard & Profile",
+    "id": "592522453170640283"
+  },
+  "screen": {
+    "title": "RemCard Landing Page",
+    "id": "83bdf605651146d087e9123f38de610f"
+  },
+  "fetchStatus": "unable_to_resolve_api",
+  "notes": "The Stitch platform API could not be resolved from the cloud agent environment. Confirmed that the Firebase project 'stitch-dev' and S3 buckets 'stitch-assets'/'stitch-images' exist but require authentication that is not available in this environment."
+}
