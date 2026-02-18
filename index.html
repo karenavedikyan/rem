@@ -1,398 +1,465 @@
-<!doctype html>
-<html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="RemCard — платформа для ремонта и обустройства: мастера, товары, акции и бонусы в одном сервисе." />
-    <title>RemCard — платформа для ремонта и обустройства</title>
+<!DOCTYPE html>
+<html class="dark" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RemCard — Весь ремонт в 1 приложении</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#E53935",
+                        "secondary": "#2D2D2D",
+                        "background-dark": "#121212",
+                        "surface-dark": "#1A1A1A",
+                        "border-dark": "#2A2A2A",
+                        "grey-pattern": "#F2F2F2",
+                        "logo-grey": "#263238",
+                        "header-charcoal": "#2C343B",
+                    },
+                    fontFamily: {
+                        "sans": ["Inter", "sans-serif"],
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "none": "0",
+                        "sm": "2px",
+                        "DEFAULT": "4px",
+                        "lg": "8px",
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply bg-background-dark text-white antialiased;
+            }
+        }
+        .brutal-border {
+            border: 1px solid #2A2A2A;
+        }
+        .industrial-card {
+            background-color: #1A1A1A;
+            border: 1px solid #2A2A2A;
+            transition: all 0.2s ease;
+        }
+        .industrial-card:hover {
+            border-color: #E53935;
+        }
+        .hero-pattern {
+            background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo-icon-svg {
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-text-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .logo-text {
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
+            font-size: 1.75rem;
+            letter-spacing: -0.01em;
+            line-height: 1;
+            color: white;
+        }
+        .logo-subtitle {
+            font-size: 0.65rem;
+            font-weight: 400;
+            opacity: 0.8;
+            letter-spacing: 0.02em;
+            color: white;
+            margin-top: 2px;
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+<nav class="site-header fixed top-0 w-full z-50 bg-[#2C343B] border-b border-white/5">
+<div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+<div class="logo-container">
+<div class="logo-icon-svg">
+<svg fill="none" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 45L35 15L42 75L12 45Z" fill="#E53935" opacity="0.8"></path>
+<path d="M22 40L45 10L52 80L22 40Z" fill="#E53935" opacity="0.9"></path>
+<path d="M35 38L60 12L65 85L35 38Z" fill="#E53935"></path>
+<path clip-rule="evenodd" d="M42 25H85V85H42V25ZM63 65V75H75V65L80 70V80H48V70L53 65V60H58V65H63Z" fill="white" fill-rule="evenodd"></path>
+</svg>
+</div>
+<div class="logo-text-wrapper">
+<div class="logo-text">RemCard</div>
+</div>
+</div>
+<div class="hidden lg:flex items-center gap-8 text-xs font-bold uppercase tracking-widest opacity-70">
+<a class="hover:text-primary transition-colors" href="./about/">О проекте</a>
+<a class="hover:text-primary transition-colors" href="./clients/">Для клиентов</a>
+<a class="hover:text-primary transition-colors" href="./partners/">Для партнёров</a>
+<a class="hover:text-primary transition-colors" href="./catalog/">Каталог</a>
+<a class="hover:text-primary transition-colors" href="./bonus-card/">Бонусы</a>
+<a class="hover:text-primary transition-colors" href="#contacts">Контакты</a>
+</div>
+<div class="flex items-center gap-4">
+<a class="bg-primary hover:bg-red-700 text-white px-6 py-2 border-b-2 border-red-900 font-black uppercase text-xs tracking-widest transition-all" href="#request">
+                Оставить заявку
+            </a>
+</div>
+</div>
+</nav>
+<main class="pt-20">
+<section class="relative min-h-[90vh] flex items-center px-6 overflow-hidden hero-pattern">
+<div class="absolute inset-0 bg-gradient-to-b from-transparent to-background-dark pointer-events-none"></div>
+<div class="max-w-7xl mx-auto w-full grid lg:grid-cols-12 gap-12 items-center relative z-10 py-20">
+<div class="lg:col-span-8">
+<div class="flex items-center gap-2 mb-8">
+<div class="h-[2px] w-12 bg-primary"></div>
+<span class="text-primary text-xs font-black uppercase tracking-[0.3em]">Платформа в Краснодаре</span>
+</div>
+<h1 class="text-6xl md:text-[5.5rem] font-black leading-[0.95] mb-8 uppercase tracking-tighter">
+                    ВЕСЬ РЕМОНТ В <span class="text-primary">1</span> ПРИЛОЖЕНИИ
+                </h1>
+<p class="text-xl md:text-2xl opacity-50 max-w-2xl mb-12 font-medium leading-tight">
+                    Профессиональная платформа для поиска мастеров и обустройства жилья в Краснодаре. Технологии ремонта нового уровня.
+                </p>
+<div class="flex flex-wrap gap-6">
+<a class="bg-primary text-white px-10 py-5 font-black uppercase text-sm tracking-widest hover:bg-red-700 transition-all border-b-4 border-red-900" href="#request">
+                        Оставить заявку
+                    </a>
+<a class="border-2 border-white/20 hover:border-white text-white px-10 py-5 font-black uppercase text-sm tracking-widest transition-all" href="#how">
+                        Подробнее
+                    </a>
+</div>
+</div>
+<div class="lg:col-span-4 relative">
+<div class="border-4 border-border-dark bg-surface-dark aspect-square relative group">
+<img alt="Modern Luxury Interior Krasnodar" class="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAn7m2O516QUJyCm1GsZ3ijdFa3uN35VOkeeCSD6jCSaadoo2K-EBnGOVstD44aG7T09bp0e2HA7YNLGiJ8C6V0EiQLfW7awViV8XgWddYe0I9KFqBf8R_IrmPJyXYYJlOnxD7PZcbKeF7GsP9ZEs-nmZfebna1CuV1eGm5ojPzmK31lQrHWMmRV6JNcb4SOQFX4JixqWhwzXYaGmHcPiIAYuho3orqBJYB5UAgEb9SbjyhS0BCp8MAObuyWiwZXXqmffhKgK_9_Q"/>
+<div class="absolute -bottom-8 -left-8 bg-white text-black p-8 border-2 border-black">
+<p class="text-3xl font-black leading-none mb-1">500+</p>
+<p class="text-[10px] font-black uppercase tracking-widest opacity-60">Verified Partners</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="py-32 px-6 relative bg-[#161616]" id="how">
+<div class="max-w-7xl mx-auto">
+<div class="flex items-end justify-between mb-20">
+<div class="max-w-xl">
+<p class="text-primary font-black uppercase tracking-widest text-xs mb-4">Как это работает</p>
+<h2 class="text-5xl font-black uppercase tracking-tighter">3 шага до результата</h2>
+</div>
+<div class="h-[1px] flex-1 bg-border-dark ml-12 mb-4 hidden md:block"></div>
+</div>
+<div class="grid md:grid-cols-3 gap-0 border border-border-dark">
+<div class="p-12 border-b md:border-b-0 md:border-r border-border-dark group hover:bg-primary transition-all duration-300">
+<p class="text-7xl font-black opacity-10 mb-8 group-hover:opacity-100 group-hover:text-white/20 transition-all">01</p>
+<h3 class="text-2xl font-black uppercase mb-4 tracking-tight group-hover:text-white">Выберите задачу</h3>
+<p class="opacity-50 group-hover:opacity-100 transition-all font-medium">Опишите тип ремонта, сроки и пожелания. Сервис предложит подходящих исполнителей.</p>
+</div>
+<div class="p-12 border-b md:border-b-0 md:border-r border-border-dark group hover:bg-primary transition-all duration-300">
+<p class="text-7xl font-black opacity-10 mb-8 group-hover:opacity-100 group-hover:text-white/20 transition-all">02</p>
+<h3 class="text-2xl font-black uppercase mb-4 tracking-tight group-hover:text-white">Выберите партнёра</h3>
+<p class="opacity-50 group-hover:opacity-100 transition-all font-medium">Сравните проверенных мастеров и компании по портфолио, отзывам и условиям.</p>
+</div>
+<div class="p-12 group hover:bg-primary transition-all duration-300">
+<p class="text-7xl font-black opacity-10 mb-8 group-hover:opacity-100 group-hover:text-white/20 transition-all">03</p>
+<h3 class="text-2xl font-black uppercase mb-4 tracking-tight group-hover:text-white">Получите результат</h3>
+<p class="opacity-50 group-hover:opacity-100 transition-all font-medium">Контролируйте прогресс и получайте бонусы, которые можно тратить у партнёров RemCard.</p>
+</div>
+</div>
+</div>
+</section>
+<section class="py-32 px-6" id="clients">
+<div class="max-w-7xl mx-auto">
+<div class="grid lg:grid-cols-2 gap-24 items-center">
+<div>
+<h2 class="text-5xl md:text-6xl font-black mb-12 leading-[0.9] uppercase tracking-tighter">Всё для <span class="text-primary">спокойного</span> ремонта</h2>
+<div class="grid grid-cols-1 gap-8">
+<div class="flex gap-6 p-6 border border-border-dark hover:bg-surface-dark transition-all">
+<span class="material-symbols-outlined text-primary text-4xl">verified_user</span>
+<div>
+<h4 class="font-black uppercase tracking-tight mb-1">Проверенные исполнители</h4>
+<p class="opacity-50 text-sm font-medium">Каждый партнёр проходит проверку перед публикацией в каталоге.</p>
+</div>
+</div>
+<div class="flex gap-6 p-6 border border-border-dark hover:bg-surface-dark transition-all">
+<span class="material-symbols-outlined text-primary text-4xl">payments</span>
+<div>
+<h4 class="font-black uppercase tracking-tight mb-1">Прозрачные условия</h4>
+<p class="opacity-50 text-sm font-medium">Понимаете стоимость и объём работ до старта проекта.</p>
+</div>
+</div>
+<div class="flex gap-6 p-6 border border-border-dark hover:bg-surface-dark transition-all">
+<span class="material-symbols-outlined text-primary text-4xl">architecture</span>
+<div>
+<h4 class="font-black uppercase tracking-tight mb-1">Локальная экспертиза</h4>
+<p class="opacity-50 text-sm font-medium">Специалисты, которые хорошо знают рынок и объекты Краснодара.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="relative bg-surface-dark p-2 border-2 border-border-dark">
+<img alt="Tech-driven renovation management" class="grayscale hover:grayscale-0 transition-all duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZfwPCfofCjVynf2fechsQ5JptOa1_KHKy--2NQZBT_akdSm1lSR2M9knxLyfP9GoVYm3liXDrnK38icuxy0q3F1k3dK6DNpG3hTEZi6jqA8HCnMCMNKfEymMjeeAL6f1s2e21nXah0YQMQCSIUS4tn9fObYyv5Rz0YukcE--2Ng84OnjTm1oMDDvI2vJYYeGqgpQT0qkYwNbByoTZP8GDJZSz7KVigEjRlSWsxfKoqH6kqJr0-kHdrTTIsK0Ts-ZyBDwgyTDFZA"/>
+<div class="absolute -top-4 -right-4 bg-primary text-white p-4 font-black uppercase text-xs tracking-widest">
+                        Цифровой контроль
+                    </div>
+</div>
+</div>
+</div>
+</section>
+<section class="py-32 px-6 bg-surface-dark/50" id="partners">
+<div class="max-w-7xl mx-auto">
+<div class="flex flex-col md:flex-row justify-between items-baseline gap-6 mb-20">
+<h2 class="text-5xl font-black uppercase tracking-tighter">Партнёры RemCard</h2>
+<a class="text-primary font-black uppercase text-xs tracking-[0.2em] flex items-center gap-2 group" href="./catalog/">
+                    Каталог <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_right_alt</span>
+</a>
+</div>
+<div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="industrial-card group overflow-hidden">
+<div class="h-64 relative overflow-hidden">
+<img alt="Interior Pro" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwR4-5DoSC6PaRy14qHUR0HfUnWuY5M9mxrLtC4DtnUZ-79ruWUum1r8qWOAXBR5tjO8oPZ4D0yJRQu_J7uKDAudlMR5dO2IWivz-cy9l2rJojXGJLhIkY-amKFOKbXe5RUKWHemQBRU8FvKo4MWa72b0qNoKO7hLtfYtQ5K8WRVx5jUah4J6NRGiSn2w_lZ5kjIn-OBLmKPubkw35kXiYcPRtXKKTZYep7Zn4FwYylioGaS3LLgiL6RRqUZIMT0BkHxsHIaXA9g"/>
+<div class="absolute top-4 left-4 bg-primary text-white text-[10px] font-black px-2 py-1 uppercase tracking-widest">Verified</div>
+</div>
+<div class="p-6">
+<h4 class="font-black text-lg uppercase tracking-tight mb-4">Interior Pro Masters</h4>
+<div class="flex items-center gap-4 mb-6 opacity-50">
+<div class="flex text-primary">
+<span class="material-symbols-outlined text-sm fill-1">star</span>
+<span class="material-symbols-outlined text-sm fill-1">star</span>
+<span class="material-symbols-outlined text-sm fill-1">star</span>
+<span class="material-symbols-outlined text-sm fill-1">star</span>
+<span class="material-symbols-outlined text-sm fill-1">star</span>
+</div>
+<span class="text-[10px] font-black tracking-widest uppercase">128 отзывов</span>
+</div>
+<a class="block w-full py-3 bg-white/5 hover:bg-primary hover:text-white transition-all font-black uppercase text-[10px] tracking-[0.2em] border border-white/10 text-center" href="./catalog/">
+                            Смотреть профиль
+                        </a>
+</div>
+</div>
+<div class="industrial-card group overflow-hidden">
+<div class="h-64 relative overflow-hidden">
+<img alt="Krasnodar Build" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuABuC54oDzPFyk_vrwMd1VA6VwSola0B4yoLmW0wdD6ARPdWptn2o6zjuzkMalHS89yeoIzhjj-xFkg6lD7NfoN9uOLXix2gm_NlhsFINoeWSYqMj1R2ozgSt83h9ovT8pyCTNMue2BUePYJScxSUTdNZhEjY5mGvE0q8LUmfl-1LaakM4GYgdr36PX3VAEfQHdOX-nWtzs-AGEimpts5WD8svLRh_F2cZUujQleDG6CkH2eAryxp-an-npHV2HxXeiQvUXgQNvpg"/>
+<div class="absolute top-4 left-4 bg-primary text-white text-[10px] font-black px-2 py-1 uppercase tracking-widest">Verified</div>
+</div>
+<div class="p-6">
+<h4 class="font-black text-lg uppercase tracking-tight mb-4">Krasnodar Build Group</h4>
+<div class="flex items-center gap-4 mb-6 opacity-50">
+<div class="flex text-primary">
+<span class="material-symbols-outlined text-sm fill-1">star</span>
+<span class="material-symbols-outlined text-sm fill-1">star</span>
+<span class="material-symbols-outlined text-sm fill-1">star</span>
+<span class="material-symbols-outlined text-sm fill-1">star</span>
+<span class="material-symbols-outlined text-sm">star</span>
+</div>
+<span class="text-[10px] font-black tracking-widest uppercase">94 отзыва</span>
+</div>
+<a class="block w-full py-3 bg-white/5 hover:bg-primary hover:text-white transition-all font-black uppercase text-[10px] tracking-[0.2em] border border-white/10 text-center" href="./catalog/">
+                            Смотреть профиль
+                        </a>
+</div>
+</div>
+<div class="industrial-card group overflow-hidden">
+<div class="h-64 relative overflow-hidden">
+<img alt="Loft Design" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNzYfxCmPvuY1hmzfFirSiRfb6uzhVnQKcY-agVwHLSPOyByOQNP5DXjlGl9YPke5yIarMEUjUJ75j17mpC0Wh8eUjMHyfPKxfuHfNlyefhuAUf_8MDGZqWawbSGT2raZwyga86u144F0uRrCk3yEewrU6oglUB-qiqGjbe0ByXM0L3x4aqUABBzJYJ_BKy4q4QxrPktxmTOplGMjUPTZreRIWyj5I9Xdf0D2-6B5H6KDR3-Fac672E_t7uS9RgpLapoTSEU4nHA"/>
+<div class="absolute top-4 left-4 bg-primary text-white text-[10px] font-black px-2 py-1 uppercase tracking-widest">Verified</div>
+</div>
+<div class="p-6">
+<h4 class="font-black text-lg uppercase tracking-tight mb-4">Loft Design Lab</h4>
+<div class="flex items-center gap-4 mb-6 opacity-50">
+<div class="flex text-primary">
+<span class="material-symbols-outlined text-sm fill-1">star</span>
+<span class="material-symbols-outlined text-sm fill-1">star</span>
+<span class="material-symbols-outlined text-sm fill-1">star</span>
+<span class="material-symbols-outlined text-sm fill-1">star</span>
+<span class="material-symbols-outlined text-sm fill-1">star</span>
+</div>
+<span class="text-[10px] font-black tracking-widest uppercase">205 отзывов</span>
+</div>
+<a class="block w-full py-3 bg-white/5 hover:bg-primary hover:text-white transition-all font-black uppercase text-[10px] tracking-[0.2em] border border-white/10 text-center" href="./catalog/">
+                            Смотреть профиль
+                        </a>
+</div>
+</div>
+<div class="industrial-card group overflow-hidden">
+<div class="h-64 relative overflow-hidden">
+<img alt="Eco Renovation" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD436FWWBFk1meOnTWmIq1PGb2O5J3h2fdkkyx4-qqnKq0ycgOIXlflMaTUtJpWU8SiMasWnXNtvJGxgZomB1fMSWPy0eCjlte_H1ngeg8fBUeeVy-dyKnUFpKEnKQ8iBd8TW_72eqg17PFELyYL7LJi8BogBPA5VtwAGZ-PD3GhKn9GA2EhwkcUdPCqfP61glJ2WIMTInh8eSqKzfcPFYuGFeUX8JG3rmSPSggtohy3YdbSqjNtc4Rqw3_2vEIQ-OYI4gyzReZvA"/>
+<div class="absolute top-4 left-4 bg-primary text-white text-[10px] font-black px-2 py-1 uppercase tracking-widest">Verified</div>
+</div>
+<div class="p-6">
+<h4 class="font-black text-lg uppercase tracking-tight mb-4">Eco Renovate</h4>
+<div class="flex items-center gap-4 mb-6 opacity-50">
+<div class="flex text-primary">
+<span class="material-symbols-outlined text-sm fill-1">star</span>
+<span class="material-symbols-outlined text-sm fill-1">star</span>
+<span class="material-symbols-outlined text-sm fill-1">star</span>
+<span class="material-symbols-outlined text-sm fill-1">star</span>
+<span class="material-symbols-outlined text-sm">star</span>
+</div>
+<span class="text-[10px] font-black tracking-widest uppercase">52 отзыва</span>
+</div>
+<a class="block w-full py-3 bg-white/5 hover:bg-primary hover:text-white transition-all font-black uppercase text-[10px] tracking-[0.2em] border border-white/10 text-center" href="./catalog/">
+                            Смотреть профиль
+                        </a>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="py-32 px-6">
+<div class="max-w-7xl mx-auto">
+<div class="relative bg-white text-black p-12 lg:p-24 overflow-hidden border-4 border-black">
+<div class="absolute top-0 right-0 w-full h-full opacity-5 pointer-events-none hero-pattern grayscale"></div>
+<div class="relative z-10 flex flex-col lg:flex-row items-center gap-16">
+<div class="flex-1">
+<h2 class="text-5xl lg:text-7xl font-black uppercase leading-none mb-8 tracking-tighter">Копите бонусы, <span class="text-primary">получайте выгоду</span></h2>
+<p class="text-xl opacity-60 mb-12 font-bold max-w-lg">
+                            Получайте до 10% бонусами за услуги и покупки у партнёров. Тратьте баллы по всей экосистеме RemCard.
+                        </p>
+<a class="inline-block bg-black text-white px-12 py-6 font-black uppercase text-sm tracking-widest hover:bg-primary transition-all" href="./bonus-card/">
+                            Получить бонусную карту
+                        </a>
+</div>
+<div class="flex-1 flex justify-center">
+<div class="w-full max-w-md aspect-[1.6/1] bg-black rounded-sm p-8 shadow-[20px_20px_0px_0px_#E53935] border border-white/10 flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-4xl text-primary">contactless</span>
+<span class="font-black tracking-widest text-white italic text-xs uppercase">REMCARD PLATINUM</span>
+</div>
+<div>
+<p class="text-white/40 text-[10px] tracking-[0.3em] mb-2 uppercase font-black">Bonus Balance</p>
+<p class="text-white text-4xl font-black">24,500 <span class="text-sm opacity-50 uppercase">pts</span></p>
+</div>
+<div class="flex justify-between items-end">
+<p class="text-white/80 font-mono text-sm tracking-widest uppercase">Alexander Nevsky</p>
+<div class="w-12 h-8 bg-white/20"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="py-32 px-6 bg-surface-dark border-y border-border-dark hero-pattern" id="request">
+<div class="max-w-4xl mx-auto">
+<div class="text-center mb-16">
+<h2 class="text-5xl md:text-6xl font-black uppercase tracking-tighter mb-6">Оставьте заявку на ремонт</h2>
+<p class="opacity-50 font-bold">Опишите задачу, и мы подберём проверенных исполнителей под ваш запрос.</p>
+</div>
+<form class="grid grid-cols-1 md:grid-cols-2 gap-8" id="request-form" novalidate>
+<div class="space-y-2">
+<label class="text-[10px] font-black uppercase tracking-widest opacity-60 ml-1" for="req-name">Имя</label>
+<input class="w-full bg-background-dark border-border-dark rounded-none px-6 py-5 focus:border-primary focus:ring-0 text-white outline-none font-bold placeholder:opacity-20" id="req-name" name="name" placeholder="ИВАН ИВАНОВ" required type="text"/>
+</div>
+<div class="space-y-2">
+<label class="text-[10px] font-black uppercase tracking-widest opacity-60 ml-1" for="req-phone">Телефон</label>
+<input class="w-full bg-background-dark border-border-dark rounded-none px-6 py-5 focus:border-primary focus:ring-0 text-white outline-none font-bold placeholder:opacity-20" id="req-phone" name="phone" placeholder="+7 (900) 000-00-00" required type="tel"/>
+</div>
+<div class="md:col-span-2 space-y-2">
+<label class="text-[10px] font-black uppercase tracking-widest opacity-60 ml-1" for="req-type">Тип задачи</label>
+<select class="w-full bg-background-dark border-border-dark rounded-none px-6 py-5 focus:border-primary focus:ring-0 text-white outline-none font-black uppercase text-xs tracking-widest" id="req-type" name="taskType" required>
+<option value="">Выберите вариант</option>
+<option>Косметический ремонт квартиры</option>
+<option>Ремонт ванной/санузла</option>
+<option>Ремонт кухни</option>
+<option>Полный ремонт под ключ</option>
+</select>
+</div>
+<div class="md:col-span-2 space-y-2">
+<label class="text-[10px] font-black uppercase tracking-widest opacity-60 ml-1" for="req-comment">Комментарий</label>
+<textarea class="w-full bg-background-dark border-border-dark rounded-none px-6 py-5 focus:border-primary focus:ring-0 text-white outline-none font-bold placeholder:opacity-20" id="req-comment" name="comment" placeholder="ОПИШИТЕ ПРОЕКТ..." rows="4"></textarea>
+</div>
+<div class="md:col-span-2">
+<button class="w-full bg-primary text-white py-6 font-black uppercase text-sm tracking-widest hover:bg-red-700 transition-all border-b-4 border-red-900" type="submit">
+                        Отправить заявку
+                    </button>
+<input name="city" type="hidden" value="Краснодар"/>
+<p class="text-[10px] text-center opacity-30 mt-6 font-black uppercase tracking-widest">Нажимая кнопку, вы соглашаетесь с условиями обработки данных.</p>
+<div class="form-result mt-6 p-4 border border-border-dark bg-background-dark" id="request-result" role="status" aria-live="polite" hidden>
+<div class="form-result-title text-sm font-black uppercase tracking-widest text-primary">Спасибо!</div>
+<div class="form-result-text text-xs opacity-70 mt-2">Заявка отправлена. Команда RemCard свяжется с вами в ближайшее время.</div>
+</div>
+</div>
+</form>
+</div>
+</section>
+</main>
+<footer class="bg-background-dark py-24 px-6 border-t border-border-dark" id="contacts">
+<div class="max-w-7xl mx-auto">
+<div class="grid md:grid-cols-4 gap-16 mb-20">
+<div class="col-span-1 md:col-span-1">
+<div class="logo-container mb-8">
+<div class="logo-icon-svg scale-75 -ml-2">
+<svg fill="none" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 45L35 15L42 75L12 45Z" fill="#E53935" opacity="0.8"></path>
+<path d="M22 40L45 10L52 80L22 40Z" fill="#E53935" opacity="0.9"></path>
+<path d="M35 38L60 12L65 85L35 38Z" fill="#E53935"></path>
+<path clip-rule="evenodd" d="M42 25H85V85H42V25ZM63 65V75H75V65L80 70V80H48V70L53 65V60H58V65H63Z" fill="white" fill-rule="evenodd"></path>
+</svg>
+</div>
+<div class="logo-text-wrapper">
+<div class="logo-text text-xl">RemCard</div>
+</div>
+</div>
+<p class="opacity-40 text-xs font-bold uppercase tracking-widest leading-loose">Платформа для ремонта и обустройства в Краснодаре. Проверенные партнёры и единая бонусная система.</p>
+</div>
+<div>
+<h4 class="font-black uppercase text-[10px] tracking-[0.3em] mb-8 text-primary">Platform</h4>
+<ul class="space-y-4 text-xs font-black uppercase tracking-widest opacity-60">
+<li><a class="hover:text-primary" href="./clients/">Для клиентов</a></li>
+<li><a class="hover:text-primary" href="./partners/">Для партнёров</a></li>
+<li><a class="hover:text-primary" href="./catalog/">Каталог</a></li>
+<li><a class="hover:text-primary" href="./offers/">Акции</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-black uppercase text-[10px] tracking-[0.3em] mb-8 text-primary">Company</h4>
+<ul class="space-y-4 text-xs font-black uppercase tracking-widest opacity-60">
+<li><a class="hover:text-primary" href="./about/">О проекте</a></li>
+<li><a class="hover:text-primary" href="./bonus-card/">Бонусная карта</a></li>
+<li><a class="hover:text-primary" href="mailto:kraavediks@gmail.com">Email</a></li>
+<li><a class="hover:text-primary" href="#contacts">Контакты</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-black uppercase text-[10px] tracking-[0.3em] mb-8 text-primary">Connect</h4>
+<div class="flex gap-4 mb-8">
+<a class="w-12 h-12 border border-border-dark flex items-center justify-center hover:bg-primary hover:border-primary transition-all" href="#">
+<span class="material-symbols-outlined text-sm">public</span>
+</a>
+<a class="w-12 h-12 border border-border-dark flex items-center justify-center hover:bg-primary hover:border-primary transition-all" href="#">
+<span class="material-symbols-outlined text-sm">alternate_email</span>
+</a>
+<a class="w-12 h-12 border border-border-dark flex items-center justify-center hover:bg-primary hover:border-primary transition-all" href="#">
+<span class="material-symbols-outlined text-sm">send</span>
+</a>
+</div>
+<p class="text-[10px] font-black uppercase tracking-widest opacity-30">Krasnodar, Russian Federation</p>
+</div>
+</div>
+<div class="pt-12 border-t border-border-dark flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] uppercase tracking-[0.3em] font-black opacity-20">
+<p>© <span id="year">2026</span> REMCARD. ALL RIGHTS RESERVED.</p>
+<p>MADE FOR KRASNODAR</p>
+</div>
+</div>
+</footer>
+<script src="./script.js" defer></script>
 
-    <link rel="stylesheet" href="./styles.css" />
-  </head>
-  <body>
-    <a class="skip-link" href="#main">Перейти к содержимому</a>
-
-    <header class="site-header" id="top">
-      <div class="container header-inner">
-        <a class="brand" href="./index.html" aria-label="RemCard — на главную">
-          <span class="brand-text">RemCard</span>
-          <img class="brand-mark-img" src="./assets/img/remcard-mark.svg" alt="" aria-hidden="true" />
-        </a>
-
-        <nav class="nav" aria-label="Основная навигация">
-          <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
-            <span class="nav-toggle-lines" aria-hidden="true"></span>
-            <span class="sr-only">Открыть меню</span>
-          </button>
-
-          <div class="nav-menu" id="nav-menu">
-            <a class="nav-link" href="./clients/">Для клиентов</a>
-            <a class="nav-link" href="./partners/">Для партнёров</a>
-            <a class="nav-link" href="./catalog/">Каталог</a>
-            <a class="nav-link" href="./offers/">Акции</a>
-            <a class="nav-link" href="./bonus-card/">Бонусная карта</a>
-            <a class="nav-link" href="./about/">О проекте</a>
-            <a class="nav-link" href="#request">Оставить заявку</a>
-            <a class="nav-link" href="#contacts">Контакты</a>
-          </div>
-        </nav>
-      </div>
-    </header>
-
-    <main id="main">
-      <section class="hero" id="hero">
-        <div class="container hero-inner">
-          <div class="hero-copy">
-            <p class="eyebrow">Платформа • Каталог • Акции • Бонусы</p>
-            <h1>RemCard — платформа для ремонта и обустройства</h1>
-            <p class="lead">
-              Сделать ремонт так же просто, как вызвать такси: мастера, товары, акции и бонусы в одном сервисе. Первый запуск RemCard
-              планируется в Краснодаре — дальше будем расширяться по другим регионам России.
-            </p>
-            <div class="hero-actions">
-              <a class="btn btn-primary" href="#request">Оставить заявку на ремонт</a>
-              <a class="btn btn-ghost" href="#partner-request">Стать партнёром</a>
-            </div>
-
-            <div class="hero-metrics" aria-label="Ключевые преимущества">
-              <div class="metric">
-                <div class="metric-title">Единый сервис</div>
-                <div class="metric-text">Партнёры, каталог, акции и бонусы</div>
-              </div>
-              <div class="metric">
-                <div class="metric-title">Понятная логика</div>
-                <div class="metric-text">Поиск, сравнение, заказ, история</div>
-              </div>
-              <div class="metric">
-                <div class="metric-title">Лояльность</div>
-                <div class="metric-text">Бонусы можно тратить у любых партнёров</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="hero-card" aria-hidden="true">
-            <div class="hero-card-top">
-              <div class="chip">RemCard</div>
-              <div class="hero-card-badge">BONUS</div>
-            </div>
-            <div class="hero-card-mid">
-              <div class="hero-card-line"></div>
-              <div class="hero-card-line short"></div>
-            </div>
-            <div class="hero-card-bottom">
-              <div class="hero-card-name">Bonus Card</div>
-              <div class="hero-card-dots">
-                <span></span><span></span><span></span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="hero-glow" aria-hidden="true"></div>
-      </section>
-
-      <section class="section" id="how">
-        <div class="container">
-          <header class="section-header">
-            <h2>Как это работает</h2>
-            <p class="section-subtitle">Коротко о процессе: оставляете заявку — мы связываемся — помогаем подобрать исполнителя.</p>
-          </header>
-
-          <div class="grid cards-3">
-            <article class="card step">
-              <div class="step-number" aria-hidden="true">1</div>
-              <h3>Оставьте заявку</h3>
-              <p>Опишите задачу: тип ремонта, метраж, сроки, район Краснодара и пожелания.</p>
-            </article>
-            <article class="card step">
-              <div class="step-number" aria-hidden="true">2</div>
-              <h3>Связь и уточнение</h3>
-              <p>Команда RemCard уточнит детали и предложит варианты решения под ваш запрос.</p>
-            </article>
-            <article class="card step">
-              <div class="step-number" aria-hidden="true">3</div>
-              <h3>Подбор партнёра</h3>
-              <p>Поможем выбрать мастера/компанию и, при необходимости, проверить смету и условия.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="audience">
-        <div class="container">
-          <header class="section-header">
-            <h2>Кому подойдёт RemCard</h2>
-            <p class="section-subtitle">Главная цель — сделать ремонт в Краснодаре проще и прозрачнее для всех участников.</p>
-          </header>
-
-          <div class="grid cards-3">
-            <article class="card">
-              <div class="card-icon" aria-hidden="true">К</div>
-              <h3>Клиентам</h3>
-              <p>Нужно найти исполнителя, сравнить предложения и спокойно пройти ремонт — без хаоса и переплат.</p>
-            </article>
-            <article class="card">
-              <div class="card-icon" aria-hidden="true">М</div>
-              <h3>Мастерам</h3>
-              <p>Хотите больше целевых заявок по Краснодару и удобный формат работы с заказами.</p>
-            </article>
-            <article class="card">
-              <div class="card-icon" aria-hidden="true">Б</div>
-              <h3>Бизнесу</h3>
-              <p>Магазинам и компаниям: витрина услуг/товаров, акции и общая бонусная программа.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="request">
-        <div class="container">
-          <header class="section-header">
-            <h2>Оставить заявку на ремонт (Краснодар)</h2>
-            <p class="section-subtitle">
-              Оставьте контакты и кратко опишите задачу — мы свяжемся и подскажем, как быстро подобрать исполнителя под ваш запрос.
-            </p>
-          </header>
-
-          <div class="grid two-col">
-            <div class="card">
-              <h3>Форма заявки</h3>
-              <p class="muted">Запуск: Краснодар. Дальше — подключение других городов.</p>
-
-              <!-- TODO: Подключить реальный backend (телеграм‑бот / почта / API). -->
-              <form class="form" id="request-form" novalidate>
-                <div class="form-grid">
-                  <div class="field">
-                    <label for="req-name">Имя</label>
-                    <input class="input" id="req-name" name="name" autocomplete="name" required placeholder="Например, Алексей" />
-                  </div>
-
-                  <div class="field">
-                    <label for="req-phone">Телефон</label>
-                    <input
-                      class="input"
-                      id="req-phone"
-                      name="phone"
-                      type="tel"
-                      inputmode="tel"
-                      autocomplete="tel"
-                      required
-                      placeholder="+7 (___) ___‑__‑__"
-                    />
-                  </div>
-
-                  <div class="field">
-                    <label for="req-email">Email</label>
-                    <input class="input" id="req-email" name="email" type="email" autocomplete="email" placeholder="name@example.com" />
-                  </div>
-
-                  <div class="field">
-                    <label for="req-city">Город</label>
-                    <input class="input" id="req-city" name="city" value="Краснодар" readonly />
-                  </div>
-
-                  <div class="field field-wide">
-                    <label for="req-type">Тип задачи</label>
-                    <select class="input" id="req-type" name="taskType" required>
-                      <option value="" selected disabled>Выберите вариант</option>
-                      <option>Косметический ремонт квартиры</option>
-                      <option>Ремонт ванной/санузла</option>
-                      <option>Ремонт кухни</option>
-                      <option>Полный ремонт под ключ</option>
-                      <option>Другое</option>
-                    </select>
-                  </div>
-
-                  <div class="field field-wide">
-                    <label for="req-comment">Комментарий</label>
-                    <textarea
-                      class="input textarea"
-                      id="req-comment"
-                      name="comment"
-                      rows="5"
-                      placeholder="Опишите задачу: метраж, сроки, адрес/район, пожелания…"
-                    ></textarea>
-                  </div>
-                </div>
-
-                <div class="form-actions">
-                  <button class="btn btn-primary" type="submit">Отправить заявку</button>
-                  <p class="fineprint">Нажимая “Отправить заявку”, вы соглашаетесь на обработку данных для связи по заявке.</p>
-                </div>
-
-                <div class="form-result" id="request-result" role="status" aria-live="polite" hidden>
-                  <div class="form-result-title">Спасибо!</div>
-                  <div class="form-result-text">Заявка отправлена. В ближайшее время команда RemCard свяжется с вами.</div>
-                </div>
-              </form>
-            </div>
-
-            <div class="card">
-              <h3>Что указать в комментарии</h3>
-              <ul class="list">
-                <li>Тип объекта и примерный метраж</li>
-                <li>Желаемые сроки начала и окончания</li>
-                <li>Район/адрес (Краснодар)</li>
-                <li>Пожелания по материалам и бюджету</li>
-              </ul>
-              <p class="muted" style="margin-top: 12px">
-                Это демо‑форма для статического сайта. Подключение отправки заявок будет добавлено на этапе запуска.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="partner-request">
-        <div class="container">
-          <header class="section-header">
-            <h2>Заявка партнёра (Краснодар)</h2>
-            <p class="section-subtitle">
-              Если вы мастер или компания — оставьте заявку на подключение. Заявка отправляется в Telegram‑группу RemCard.
-            </p>
-          </header>
-
-          <div class="grid two-col">
-            <div class="card">
-              <h3>Форма партнёра</h3>
-              <p class="muted">Быстрый старт: позже подключим анкету и кабинет партнёра.</p>
-
-              <!-- TODO: Подключить реальный backend (телеграм‑бот / почта / API). -->
-              <form class="form" id="partner-form" novalidate>
-                <div class="form-grid">
-                  <div class="field">
-                    <label for="hp-name">Имя / Компания</label>
-                    <input class="input" id="hp-name" name="name" autocomplete="name" required placeholder="Например, Иван / ООО “…”" />
-                  </div>
-
-                  <div class="field">
-                    <label for="hp-phone">Телефон</label>
-                    <input
-                      class="input"
-                      id="hp-phone"
-                      name="phone"
-                      type="tel"
-                      inputmode="tel"
-                      autocomplete="tel"
-                      required
-                      placeholder="+7 (___) ___‑__‑__"
-                    />
-                  </div>
-
-                  <div class="field">
-                    <label for="hp-email">Email</label>
-                    <input class="input" id="hp-email" name="email" type="email" autocomplete="email" placeholder="name@example.com" />
-                  </div>
-
-                  <div class="field">
-                    <label for="hp-city">Город</label>
-                    <input class="input" id="hp-city" name="city" value="Краснодар" readonly />
-                  </div>
-
-                  <div class="field field-wide">
-                    <label for="hp-type">Тип партнёра</label>
-                    <select class="input" id="hp-type" name="partnerType" required>
-                      <option value="" selected disabled>Выберите вариант</option>
-                      <option>Физ лицо (мастер/бригада)</option>
-                      <option>Юр лицо (компания/магазин)</option>
-                    </select>
-                  </div>
-
-                  <div class="field field-wide">
-                    <label for="hp-spec">Специализация / виды работ</label>
-                    <input
-                      class="input"
-                      id="hp-spec"
-                      name="specialization"
-                      required
-                      placeholder="Например: ремонт ванной, плитка, сантехника, электрика…"
-                    />
-                  </div>
-
-                  <div class="field field-wide">
-                    <label for="hp-comment">Комментарий</label>
-                    <textarea
-                      class="input textarea"
-                      id="hp-comment"
-                      name="comment"
-                      rows="5"
-                      placeholder="Опишите: зоны работы, примеры объектов, наличие договора/гарантии, ссылка на портфолио…"
-                    ></textarea>
-                  </div>
-                </div>
-
-                <div class="form-actions">
-                  <button class="btn btn-primary" type="submit">Отправить заявку партнёра</button>
-                  <p class="fineprint">Нажимая “Отправить”, вы соглашаетесь на обработку данных для связи по заявке.</p>
-                </div>
-
-                <div class="form-result" id="partner-result" role="status" aria-live="polite" hidden>
-                  <div class="form-result-title">Спасибо!</div>
-                  <div class="form-result-text">Заявка отправлена. Мы свяжемся с вами в ближайшее время.</div>
-                </div>
-              </form>
-            </div>
-
-            <div class="card">
-              <h3>Что будет дальше</h3>
-              <ul class="list">
-                <li>Связь и уточнение услуг/товаров</li>
-                <li>Проверка базовой информации</li>
-                <li>Добавление в каталог и запуск акций (при необходимости)</li>
-              </ul>
-              <p class="muted" style="margin-top: 12px">Заявка сразу попадает в Telegram‑группу RemCard.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section class="section" id="contacts">
-        <div class="container">
-          <header class="section-header">
-            <h2>Контакты</h2>
-            <p class="section-subtitle">
-              Хотите стать партнёром RemCard, инвестором или помочь в развитии проекта — свяжитесь со мной.
-            </p>
-          </header>
-
-          <div class="grid two-col">
-            <div class="card">
-              <h3>Написать</h3>
-              <p class="contacts-line">
-                <span class="contacts-label">Email</span>
-                <a class="contacts-link" href="mailto:kraavediks@gmail.com">kraavediks@gmail.com</a>
-              </p>
-              <p class="contacts-line">
-                <span class="contacts-label">Telegram</span>
-                <!-- TODO: Вставить публичную ссылку-приглашение в Telegram-группу (например https://t.me/...). -->
-                <a class="contacts-link" href="#" aria-label="Ссылка на Telegram-группу RemCard">RemCard заявки (группа)</a>
-              </p>
-              <p class="muted">Замените контакты на реальные перед публикацией.</p>
-            </div>
-
-            <div class="card cta">
-              <h3>Стать партнёром</h3>
-              <p>Оставьте заявку — мы свяжемся и подскажем, как быстро подключиться к RemCard.</p>
-              <a class="btn btn-primary" href="#partner-request">Оставить заявку партнёра</a>
-              <p class="fineprint">Пока форма не подключена — используйте email.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer class="site-footer">
-      <div class="container footer-inner">
-        <div class="footer-left">
-          <div class="brand footer-brand">
-            <span class="brand-text">RemCard</span>
-            <img class="brand-mark-img" src="./assets/img/remcard-mark.svg" alt="" aria-hidden="true" />
-          </div>
-          <p class="muted">© <span id="year">2026</span> RemCard. Все права защищены.</p>
-        </div>
-        <div class="footer-right">
-          <a class="footer-link" href="#top">Наверх</a>
-        </div>
-      </div>
-    </footer>
-
-    <script src="./script.js" defer></script>
-  </body>
-</html>
+</body></html>
