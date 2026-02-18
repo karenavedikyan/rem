@@ -1,7 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="RemCard mark" shape-rendering="geometricPrecision">
   <title>RemCard</title>
-
-  <!-- Red cross (crisp at small sizes) -->
-  <rect x="26" y="12" width="12" height="40" rx="3" fill="#E53935" />
-  <rect x="12" y="26" width="40" height="12" rx="3" fill="#E53935" />
+  <!-- Stacked cards - red base, white middle, top card with folded corner -->
+  <!-- Back card (red) -->
+  <rect x="8" y="18" width="48" height="34" rx="4" fill="#E73C3C" />
+  <!-- Middle card (white) -->
+  <rect x="12" y="14" width="48" height="34" rx="4" fill="#FFFFFF" stroke="rgba(0,0,0,0.05)" stroke-width="0.5" />
+  <!-- Top card with folded corner - main rect clipped -->
+  <path d="M16 10 L16 48 L52 48 L52 10 L42 10 L42 20 L52 20 Z" fill="#FFFFFF" stroke="rgba(0,0,0,0.05)" stroke-width="0.5" stroke-linejoin="round" />
+  <!-- Folded corner (red) -->
+  <path d="M42 10 L52 10 L52 20 Z" fill="#E73C3C" />
 </svg>

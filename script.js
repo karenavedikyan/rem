@@ -330,6 +330,18 @@
     });
   };
 
+  // Hero quick form (index.html)
+  bindTelegramForm({
+    formId: "hero-request-form",
+    resultId: "hero-request-result",
+    successText: "Заявка отправлена. Мы свяжемся с вами в ближайшее время.",
+    buildMessage: (get) =>
+      "Новая заявка RemCard (герой-форма):\n" +
+      `Имя: ${get("name") || "-"}\n` +
+      `Телефон: ${get("phone") || "-"}\n` +
+      `Тип проекта: ${get("projectType") || "-"}`,
+  });
+
   // Client request form (index.html)
   bindTelegramForm({
     formId: "request-form",

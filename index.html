@@ -14,8 +14,8 @@
     <header class="site-header" id="top">
       <div class="container header-inner">
         <a class="brand" href="./index.html" aria-label="RemCard — на главную">
-          <span class="brand-text">RemCard</span>
           <img class="brand-mark-img" src="./assets/img/remcard-mark.svg" alt="" aria-hidden="true" />
+          <span class="brand-text">RemCard</span>
         </a>
 
         <nav class="nav" aria-label="Основная навигация">
@@ -25,14 +25,12 @@
           </button>
 
           <div class="nav-menu" id="nav-menu">
+            <a class="nav-link" href="./about/">О сервисе</a>
             <a class="nav-link" href="./clients/">Для клиентов</a>
             <a class="nav-link" href="./partners/">Для партнёров</a>
-            <a class="nav-link" href="./catalog/">Каталог</a>
-            <a class="nav-link" href="./offers/">Акции</a>
-            <a class="nav-link" href="./bonus-card/">Бонусная карта</a>
-            <a class="nav-link" href="./about/">О проекте</a>
-            <a class="nav-link" href="#request">Оставить заявку</a>
+            <a class="nav-link" href="#how">Вопросы</a>
             <a class="nav-link" href="#contacts">Контакты</a>
+            <a class="btn btn-primary btn-header" href="#request">Отправить ремонт</a>
           </div>
         </nav>
       </div>
@@ -40,50 +38,63 @@
 
     <main id="main">
       <section class="hero" id="hero">
-        <div class="container hero-inner">
-          <div class="hero-copy">
-            <p class="eyebrow">Платформа • Каталог • Акции • Бонусы</p>
-            <h1>RemCard — платформа для ремонта и обустройства</h1>
-            <p class="lead">
-              Сделать ремонт так же просто, как вызвать такси: мастера, товары, акции и бонусы в одном сервисе. Первый запуск RemCard
-              планируется в Краснодаре — дальше будем расширяться по другим регионам России.
-            </p>
-            <div class="hero-actions">
-              <a class="btn btn-primary" href="#request">Оставить заявку на ремонт</a>
-              <a class="btn btn-ghost" href="#partner-request">Стать партнёром</a>
+        <div class="hero-inner">
+          <div class="hero-left">
+            <div class="hero-copy">
+              <p class="eyebrow">
+                <span class="eyebrow-dot"></span>
+                Ведущая платформа для ремонта
+              </p>
+              <h1>Весь ремонт <span class="h1-muted">в одном</span> приложении</h1>
+              <p class="lead">
+                Профессиональная платформа для подбора проверенных мастеров и поставщиков материалов. Мы превратили хаос ремонта в цифровой комфорт.
+              </p>
+              <div class="hero-actions">
+                <a class="btn btn-primary" href="#request">Начать ремонт</a>
+                <a class="btn btn-ghost" href="#how">Узнать больше</a>
+              </div>
             </div>
-
-            <div class="hero-metrics" aria-label="Ключевые преимущества">
-              <div class="metric">
-                <div class="metric-title">Единый сервис</div>
-                <div class="metric-text">Партнёры, каталог, акции и бонусы</div>
-              </div>
-              <div class="metric">
-                <div class="metric-title">Понятная логика</div>
-                <div class="metric-text">Поиск, сравнение, заказ, история</div>
-              </div>
-              <div class="metric">
-                <div class="metric-title">Лояльность</div>
-                <div class="metric-text">Бонусы можно тратить у любых партнёров</div>
+            <div class="hero-mockup" aria-hidden="true">
+              <div class="mockup-panel">
+                <span class="mockup-label">LIVE DASHBOARD</span>
+                <div class="mockup-progress">
+                  <span class="mockup-progress-label">Прогресс ремонта</span>
+                  <div class="mockup-progress-bar"><span class="mockup-progress-fill" style="width: 75%"></span></div>
+                  <span class="mockup-progress-value">75%</span>
+                </div>
               </div>
             </div>
           </div>
 
-          <div class="hero-card" aria-hidden="true">
-            <div class="hero-card-top">
-              <div class="chip">RemCard</div>
-              <div class="hero-card-badge">BONUS</div>
-            </div>
-            <div class="hero-card-mid">
-              <div class="hero-card-line"></div>
-              <div class="hero-card-line short"></div>
-            </div>
-            <div class="hero-card-bottom">
-              <div class="hero-card-name">Bonus Card</div>
-              <div class="hero-card-dots">
-                <span></span><span></span><span></span>
+          <div class="hero-form-block">
+            <h2 class="hero-form-title">Начните ремонт мечты</h2>
+            <p class="hero-form-subtitle">Заполните данные, и мы подберём лучшие варианты под ваш бюджет и задачи.</p>
+            <form class="hero-form" id="hero-request-form" novalidate>
+              <div class="hero-form-field">
+                <label for="hero-name">Имя</label>
+                <input class="input hero-input" id="hero-name" name="name" autocomplete="name" required placeholder="Иван Иванов" />
               </div>
-            </div>
+              <div class="hero-form-field">
+                <label for="hero-phone">Телефон</label>
+                <input class="input hero-input" id="hero-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="+7 (701) 000-00-00" />
+              </div>
+              <div class="hero-form-field">
+                <label for="hero-type">Тип проекта</label>
+                <select class="input hero-input hero-select" id="hero-type" name="projectType" required>
+                  <option value="" selected disabled>Выберите тип проекта</option>
+                  <option value="Полный ремонт квартиры">Полный ремонт квартиры</option>
+                  <option value="Косметический ремонт">Косметический ремонт</option>
+                  <option value="Ремонт ванной/санузла">Ремонт ванной/санузла</option>
+                  <option value="Ремонт кухни">Ремонт кухни</option>
+                  <option value="Полный ремонт под ключ">Полный ремонт под ключ</option>
+                </select>
+              </div>
+              <button class="btn btn-primary btn-full" type="submit">Отправить запрос</button>
+              <div class="form-result hero-form-result" id="hero-request-result" role="status" aria-live="polite" hidden>
+                <div class="form-result-title">Спасибо!</div>
+                <div class="form-result-text">Заявка отправлена. Мы свяжемся с вами в ближайшее время.</div>
+              </div>
+            </form>
           </div>
         </div>
         <div class="hero-glow" aria-hidden="true"></div>
@@ -380,15 +391,41 @@
 
     <footer class="site-footer">
       <div class="container footer-inner">
-        <div class="footer-left">
-          <div class="brand footer-brand">
-            <span class="brand-text">RemCard</span>
+        <div class="footer-col footer-brand-block">
+          <a class="brand footer-brand" href="./index.html">
             <img class="brand-mark-img" src="./assets/img/remcard-mark.svg" alt="" aria-hidden="true" />
-          </div>
-          <p class="muted">© <span id="year">2026</span> RemCard. Все права защищены.</p>
+            <span class="brand-text">Навигатор ремонта</span>
+          </a>
+          <p class="footer-desc">мобильное приложение</p>
+          <p class="footer-desc muted">Безупречный ремонт, удобное управление…</p>
         </div>
-        <div class="footer-right">
-          <a class="footer-link" href="#top">Наверх</a>
+        <div class="footer-col">
+          <h4 class="footer-heading">Платформа</h4>
+          <a class="footer-link" href="./clients/">Для клиентов</a>
+          <a class="footer-link" href="./partners/">Для партнёров</a>
+          <a class="footer-link" href="./bonus-card/">Партнёрская программа</a>
+          <a class="footer-link" href="#request">Безопасность</a>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-heading">Компания</h4>
+          <a class="footer-link" href="./about/">О нас</a>
+          <a class="footer-link" href="./bonus-card/">Бонусная программа</a>
+          <a class="footer-link" href="./about/">Карьера</a>
+          <a class="footer-link" href="#contacts">Контакты</a>
+        </div>
+        <div class="footer-col footer-social">
+          <h4 class="footer-heading">Соцсети</h4>
+          <div class="footer-social-icons">
+            <a class="footer-social-icon" href="#" aria-label="Google"><span aria-hidden="true">G</span></a>
+            <a class="footer-social-icon" href="#" aria-label="Instagram"><span aria-hidden="true">IG</span></a>
+            <a class="footer-social-icon" href="#" aria-label="X"><span aria-hidden="true">X</span></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="container footer-bottom-inner">
+          <p class="muted">© <span id="year">2026</span> Навигатор ремонта. Все права защищены.</p>
+          <p class="muted footer-designed">RemCard</p>
         </div>
       </div>
     </footer>
