@@ -13,9 +13,12 @@
 
     <header class="site-header" id="top">
       <div class="container header-inner">
-        <a class="brand" href="#hero" aria-label="RemCard — на главную">
-          <span class="brand-mark" aria-hidden="true"></span>
-          <span class="brand-text">RemCard</span>
+        <a class="brand" href="./index.html" aria-label="RemCard — на главную">
+          <img class="brand-mark-img" src="./assets/img/remcard-mark.svg" alt="" aria-hidden="true" />
+          <span class="brand-wrap">
+            <span class="brand-text">RemCard</span>
+            <span class="brand-tagline">мобильное приложение</span>
+          </span>
         </a>
 
         <nav class="nav" aria-label="Основная навигация">
@@ -25,77 +28,18 @@
           </button>
 
           <div class="nav-menu" id="nav-menu">
-            <a class="nav-link" href="#about">О проекте</a>
-            <a class="nav-link" href="#clients">Для клиентов</a>
-            <a class="nav-link" href="#request">Заявка (Краснодар)</a>
-            <a class="nav-link" href="#partners">Для партнёров</a>
-            <a class="nav-link" href="#partner-request">Заявка партнёра</a>
-            <a class="nav-link" href="#partners-krasnodar">Подтверждённые заявки</a>
-            <a class="nav-link" href="#bonus">Бонусная карта</a>
-            <a class="nav-link" href="#structure">Структура сервиса</a>
-            <a class="nav-link" href="#roadmap">Дорожная карта</a>
+            <a class="nav-link" href="./clients/">Для клиентов</a>
+            <a class="nav-link" href="./partners/">Для партнёров</a>
+            <a class="nav-link" href="./catalog/">Каталог</a>
+            <a class="nav-link" href="./offers/">Акции</a>
+            <a class="nav-link" href="./bonus-card/">Бонусная карта</a>
+            <a class="nav-link" href="./about/">О проекте</a>
+            <a class="nav-link" href="#request">Оставить заявку</a>
             <a class="nav-link" href="#contacts">Контакты</a>
-            <button class="nav-link nav-admin-trigger" id="admin-profile-toggle" type="button" aria-expanded="false" aria-controls="admin-profile">
-              Профиль админа
-            </button>
           </div>
         </nav>
       </div>
     </header>
-
-    <aside class="admin-profile" id="admin-profile" aria-label="Профиль админа" hidden>
-      <div class="admin-details admin-profile-details card admin-card">
-        <div class="admin-profile-head">
-          <span class="admin-summary-main">
-            <span class="admin-avatar" aria-hidden="true">A</span>
-            <span class="admin-summary-text">
-              <span class="admin-summary-title">Профиль админа</span>
-              <span class="admin-summary-subtitle">@kraavediks • публикация заявок</span>
-            </span>
-          </span>
-          <button class="admin-close" id="admin-profile-close" type="button" aria-label="Закрыть профиль админа">×</button>
-        </div>
-
-        <form class="form" id="admin-partner-form" novalidate>
-          <div class="field field-wide">
-            <label for="admin-telegram-text">Текст заявки из Telegram</label>
-            <textarea
-              class="input textarea"
-              id="admin-telegram-text"
-              name="telegramText"
-              rows="8"
-              required
-              placeholder="Новая заявка партнера RemCard:
-Контактное лицо: Алексей Петров
-Компания / бренд: ИП Петров
-Город: Краснодар
-Тип партнера: Частный мастер / бригада
-Услуги / товары: Плитка, сантехника"
-            ></textarea>
-          </div>
-        </form>
-
-        <div class="form-actions">
-          <button class="btn btn-primary" form="admin-partner-form" type="submit">Сформировать/добавить</button>
-          <p class="fineprint">
-            Заявка будет добавлена в список на этой странице. Для публикации нажмите “Скачать confirmed-partners.json” и замените файл в
-            репозитории.
-          </p>
-        </div>
-
-        <div class="admin-actions">
-          <button class="btn btn-ghost" id="admin-copy-json" type="button" disabled>Скопировать JSON заявки</button>
-          <button class="btn btn-ghost" id="admin-download-json" type="button" disabled>Скачать confirmed-partners.json</button>
-        </div>
-
-        <pre class="admin-json-output" id="admin-json-output" hidden></pre>
-
-        <div class="form-result" id="admin-parser-result" role="status" aria-live="polite" hidden>
-          <div class="form-result-title">Готово</div>
-          <div class="form-result-text">Заявка обработана.</div>
-        </div>
-      </div>
-    </aside>
 
     <main id="main">
       <section class="hero" id="hero">
@@ -108,8 +52,8 @@
               планируется в Краснодаре — дальше будем расширяться по другим регионам России.
             </p>
             <div class="hero-actions">
-              <a class="btn btn-primary" href="#clients">Для клиентов</a>
-              <a class="btn btn-ghost" href="#partners">Для партнёров</a>
+              <a class="btn btn-primary" href="#request">Оставить заявку на ремонт</a>
+              <a class="btn btn-ghost" href="#partner-request">Стать партнёром</a>
             </div>
 
             <div class="hero-metrics" aria-label="Ключевые преимущества">
@@ -148,94 +92,55 @@
         <div class="hero-glow" aria-hidden="true"></div>
       </section>
 
-      <section class="section" id="about">
+      <section class="section" id="how">
         <div class="container">
           <header class="section-header">
-            <h2>О проекте RemCard</h2>
-            <p class="section-subtitle">
-              RemCard — онлайн‑платформа, которая объединяет клиентов и партнёров рынка ремонта и обустройства. Цель — сделать ремонт и
-              обустройство такими же понятными и удобными, как вызов такси. Начинаем с Краснодара, затем масштабируем модель на другие
-              города.
-            </p>
+            <h2>Как это работает</h2>
+            <p class="section-subtitle">Коротко о процессе: оставляете заявку — мы связываемся — помогаем подобрать исполнителя.</p>
           </header>
 
           <div class="grid cards-3">
-            <article class="card">
-              <h3>Клиенты</h3>
-              <p>Находят мастеров и товары, сравнивают предложения, видят акции и управляют бонусами в одном профиле.</p>
+            <article class="card step">
+              <div class="step-number" aria-hidden="true">1</div>
+              <h3>Оставьте заявку</h3>
+              <p>Опишите задачу: тип ремонта, метраж, сроки, район Краснодара и пожелания.</p>
             </article>
-            <article class="card">
-              <h3>Партнёры</h3>
-              <p>Мастера и компании получают витрину в каталоге, инструменты для продвижения и готовую бонусную программу.</p>
+            <article class="card step">
+              <div class="step-number" aria-hidden="true">2</div>
+              <h3>Связь и уточнение</h3>
+              <p>Команда RemCard уточнит детали и предложит варианты решения под ваш запрос.</p>
             </article>
-            <article class="card">
-              <h3>Платформа</h3>
-              <p>RemCard связывает всех: единые правила лояльности, удобный каталог, акции и аналитика в кабинетах.</p>
+            <article class="card step">
+              <div class="step-number" aria-hidden="true">3</div>
+              <h3>Подбор партнёра</h3>
+              <p>Поможем выбрать мастера/компанию и, при необходимости, проверить смету и условия.</p>
             </article>
           </div>
         </div>
       </section>
 
-      <section class="section" id="clients">
+      <section class="section" id="audience">
         <div class="container">
           <header class="section-header">
-            <h2>Для клиентов</h2>
-            <p class="section-subtitle">
-              На первом этапе RemCard помогает с ремонтом в Краснодаре (и крае): клиент видит партнёров, товары и услуги рядом с собой,
-              выбирает лучшее предложение и получает бонусы за покупки.
-            </p>
-            <p class="section-subtitle">
-              <strong>RemCard бесплатно подберёт мастера в Краснодаре, поможет проверить смету и вернёт вам часть суммы бонусами</strong> на
-              будущие работы и покупки у партнёров.
-            </p>
+            <h2>Кому подойдёт RemCard</h2>
+            <p class="section-subtitle">Главная цель — сделать ремонт в Краснодаре проще и прозрачнее для всех участников.</p>
           </header>
 
-          <div class="grid cards-5">
-            <article class="card">
-              <div class="card-icon" aria-hidden="true">П</div>
-              <h3>Партнёры</h3>
-              <ul class="list">
-                <li>Справочник мастеров, компаний и магазинов.</li>
-                <li>Фильтры по городу, типу, специализации.</li>
-              </ul>
-            </article>
-
+          <div class="grid cards-3">
             <article class="card">
               <div class="card-icon" aria-hidden="true">К</div>
-              <h3>Каталог</h3>
-              <ul class="list">
-                <li>Товары и услуги для ремонта и обустройства.</li>
-                <li>Фильтры по географии, категориям, цене.</li>
-                <li>Возможность оформить заказ (как часть концепции).</li>
-              </ul>
+              <h3>Клиентам</h3>
+              <p>Нужно найти исполнителя, сравнить предложения и спокойно пройти ремонт — без хаоса и переплат.</p>
             </article>
-
             <article class="card">
-              <div class="card-icon" aria-hidden="true">А</div>
-              <h3>Акции</h3>
-              <ul class="list">
-                <li>Раздел “горячих предложений”.</li>
-                <li>Ограничения по времени и территории.</li>
-                <li>Выгодные предложения у партнёров.</li>
-              </ul>
+              <div class="card-icon" aria-hidden="true">М</div>
+              <h3>Мастерам</h3>
+              <p>Хотите больше целевых заявок по Краснодару и удобный формат работы с заказами.</p>
             </article>
-
             <article class="card">
-              <div class="card-icon" aria-hidden="true">B</div>
-              <h3>Бонусная карта RemCard</h3>
-              <ul class="list">
-                <li>Бонусы за каждую покупку у партнёров.</li>
-                <li>Тратьте бонусы в других магазинах и сервисах.</li>
-              </ul>
-            </article>
-
-            <article class="card">
-              <div class="card-icon" aria-hidden="true">П</div>
-              <h3>Профиль клиента</h3>
-              <ul class="list">
-                <li>Личные данные и объекты (адреса).</li>
-                <li>История заказов и бонусов.</li>
-              </ul>
+              <div class="card-icon" aria-hidden="true">Б</div>
+              <h3>Бизнесу</h3>
+              <p>Магазинам и компаниям: витрина услуг/товаров, акции и общая бонусная программа.</p>
             </article>
           </div>
         </div>
@@ -339,326 +244,108 @@
         </div>
       </section>
 
-      <section class="section" id="partners">
-        <div class="container">
-          <header class="section-header">
-            <h2>Для партнёров</h2>
-            <p class="section-subtitle">
-              Партнёры — это мастера и компании, которые предлагают услуги и товары для ремонта и обустройства.
-            </p>
-            <p class="section-subtitle">
-              <strong>RemCard приводит целевых клиентов по ремонту в Краснодаре, помогает продавать услуги</strong> и включать их в общую
-              бонусную программу.
-            </p>
-          </header>
-
-          <div class="grid two-col">
-            <article class="card">
-              <h3>Кто такие партнёры</h3>
-              <ul class="list">
-                <li><strong>Физлица:</strong> мастера, прорабы, бригады, дизайнеры, декораторы.</li>
-                <li><strong>Юрлица:</strong> магазины стройматериалов, мебели, сантехники, подрядчики, консалтинг, финсервисы и др.</li>
-              </ul>
-            </article>
-
-            <article class="card">
-              <h3>Преимущества</h3>
-              <ul class="list">
-                <li>Витрина товаров и услуг в общем каталоге RemCard.</li>
-                <li>Личный кабинет для управления профилем.</li>
-                <li>Раздел акций для привлечения клиентов.</li>
-                <li>Общая бонусная программа без разработки своей системы.</li>
-              </ul>
-            </article>
-          </div>
-
-          <div class="card card-wide">
-            <h3>Разделы кабинета партнёра</h3>
-            <div class="grid cards-4">
-              <div class="mini">
-                <div class="mini-title">Дашборд</div>
-                <div class="mini-text">Статус и краткая статистика</div>
-              </div>
-              <div class="mini">
-                <div class="mini-title">Профиль партнёра</div>
-                <div class="mini-text">Описание, зона работы, реквизиты</div>
-              </div>
-              <div class="mini">
-                <div class="mini-title">Товары и услуги</div>
-                <div class="mini-text">Создание/редактирование, включение/выключение</div>
-              </div>
-              <div class="mini">
-                <div class="mini-title">Акции</div>
-                <div class="mini-text">Создание и управление спецпредложениями</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <section class="section" id="partner-request">
         <div class="container">
           <header class="section-header">
-            <h2>Заявка на участие для партнёров</h2>
+            <h2>Заявка партнёра (Краснодар)</h2>
             <p class="section-subtitle">
-              Заполните форму — заявка отправится в Telegram, а также откроется черновик в GitHub. Останется только нажать кнопку Create
-              issue.
+              Если вы мастер или компания — оставьте заявку на подключение. Заявка отправляется в Telegram‑группу RemCard.
             </p>
           </header>
 
           <div class="grid two-col">
             <div class="card">
-              <h3>Форма заявки партнёра</h3>
-              <p class="muted">Форма подходит для мастеров, бригад, магазинов и компаний, которые хотят подключиться к RemCard.</p>
+              <h3>Форма партнёра</h3>
+              <p class="muted">Быстрый старт: позже подключим анкету и кабинет партнёра.</p>
 
+              <!-- TODO: Подключить реальный backend (телеграм‑бот / почта / API). -->
               <form class="form" id="partner-form" novalidate>
                 <div class="form-grid">
                   <div class="field">
-                    <label for="partner-contact">Контактное лицо</label>
-                    <input
-                      class="input"
-                      id="partner-contact"
-                      name="contactName"
-                      autocomplete="name"
-                      required
-                      placeholder="Например, Алексей Петров"
-                    />
+                    <label for="hp-name">Имя / Компания</label>
+                    <input class="input" id="hp-name" name="name" autocomplete="name" required placeholder="Например, Иван / ООО “…”" />
                   </div>
 
                   <div class="field">
-                    <label for="partner-business">Название компании / бренда</label>
+                    <label for="hp-phone">Телефон</label>
                     <input
                       class="input"
-                      id="partner-business"
-                      name="businessName"
-                      required
-                      placeholder="Например, КрасСтройПлюс"
-                    />
-                  </div>
-
-                  <div class="field">
-                    <label for="partner-phone">Телефон</label>
-                    <input
-                      class="input"
-                      id="partner-phone"
+                      id="hp-phone"
                       name="phone"
                       type="tel"
                       inputmode="tel"
                       autocomplete="tel"
                       required
-                      placeholder="+7 (___) ___-__-__"
+                      placeholder="+7 (___) ___‑__‑__"
                     />
                   </div>
 
                   <div class="field">
-                    <label for="partner-email">Email</label>
-                    <input
-                      class="input"
-                      id="partner-email"
-                      name="email"
-                      type="email"
-                      autocomplete="email"
-                      required
-                      placeholder="name@example.com"
-                    />
+                    <label for="hp-email">Email</label>
+                    <input class="input" id="hp-email" name="email" type="email" autocomplete="email" placeholder="name@example.com" />
                   </div>
 
                   <div class="field">
-                    <label for="partner-city">Город</label>
-                    <input class="input" id="partner-city" name="city" value="Краснодар" required placeholder="Например, Краснодар" />
+                    <label for="hp-city">Город</label>
+                    <input class="input" id="hp-city" name="city" value="Краснодар" readonly />
                   </div>
 
-                  <div class="field">
-                    <label for="partner-type">Тип партнёра</label>
-                    <select class="input" id="partner-type" name="partnerType" required>
+                  <div class="field field-wide">
+                    <label for="hp-type">Тип партнёра</label>
+                    <select class="input" id="hp-type" name="partnerType" required>
                       <option value="" selected disabled>Выберите вариант</option>
-                      <option>Частный мастер / бригада</option>
-                      <option>Магазин / салон</option>
-                      <option>Сервисная компания</option>
-                      <option>Дизайнер / проектировщик</option>
-                      <option>Другое</option>
+                      <option>Физ лицо (мастер/бригада)</option>
+                      <option>Юр лицо (компания/магазин)</option>
                     </select>
                   </div>
 
                   <div class="field field-wide">
-                    <label for="partner-offerings">Услуги / товары / специализация</label>
-                    <textarea
-                      class="input textarea"
-                      id="partner-offerings"
-                      name="offerings"
-                      rows="4"
+                    <label for="hp-spec">Специализация / виды работ</label>
+                    <input
+                      class="input"
+                      id="hp-spec"
+                      name="specialization"
                       required
-                      placeholder="Кратко опишите, чем занимаетесь и что хотите продвигать в RemCard"
-                    ></textarea>
-                  </div>
-
-                  <div class="field">
-                    <label for="partner-experience">Опыт работы</label>
-                    <input class="input" id="partner-experience" name="experience" placeholder="Например, 7 лет" />
-                  </div>
-
-                  <div class="field">
-                    <label for="partner-site">Сайт / соцсети (опционально)</label>
-                    <input class="input" id="partner-site" name="website" type="url" placeholder="https://example.com" />
+                      placeholder="Например: ремонт ванной, плитка, сантехника, электрика…"
+                    />
                   </div>
 
                   <div class="field field-wide">
-                    <label for="partner-comment">Комментарий</label>
+                    <label for="hp-comment">Комментарий</label>
                     <textarea
                       class="input textarea"
-                      id="partner-comment"
+                      id="hp-comment"
                       name="comment"
-                      rows="4"
-                      placeholder="Например: интересует подключение к бонусной программе, условия и сроки старта"
+                      rows="5"
+                      placeholder="Опишите: зоны работы, примеры объектов, наличие договора/гарантии, ссылка на портфолио…"
                     ></textarea>
-                  </div>
-
-                  <div class="field field-wide">
-                    <label class="checkbox-field" for="partner-consent">
-                      <input id="partner-consent" name="consent" type="checkbox" required />
-                      <span>Согласен(на) на обработку контактных данных для связи по заявке.</span>
-                    </label>
                   </div>
                 </div>
 
                 <div class="form-actions">
-                  <button class="btn btn-primary" type="submit">Отправить заявку</button>
-                  <p class="fineprint">После отправки заявка уйдёт в Telegram и откроется GitHub с автозаполненным текстом.</p>
+                  <button class="btn btn-primary" type="submit">Отправить заявку партнёра</button>
+                  <p class="fineprint">Нажимая “Отправить”, вы соглашаетесь на обработку данных для связи по заявке.</p>
                 </div>
 
                 <div class="form-result" id="partner-result" role="status" aria-live="polite" hidden>
-                  <div class="form-result-title">Черновик заявки готов</div>
-                  <div class="form-result-text">Заявка отправлена в Telegram. Открылся GitHub — проверьте данные и нажмите Create issue.</div>
-                  <a class="form-result-link" id="partner-result-link" href="#" target="_blank" rel="noopener noreferrer">
-                    Открыть черновик заявки
-                  </a>
+                  <div class="form-result-title">Спасибо!</div>
+                  <div class="form-result-text">Заявка отправлена. Мы свяжемся с вами в ближайшее время.</div>
                 </div>
               </form>
             </div>
 
             <div class="card">
-              <h3>Что будет в заявке</h3>
+              <h3>Что будет дальше</h3>
               <ul class="list">
-                <li>Тип партнёра и контактные данные</li>
-                <li>Город, специализация и опыт</li>
-                <li>Комментарий по подключению к RemCard</li>
+                <li>Связь и уточнение услуг/товаров</li>
+                <li>Проверка базовой информации</li>
+                <li>Добавление в каталог и запуск акций (при необходимости)</li>
               </ul>
-              <p class="muted" style="margin-top: 12px">
-                Если GitHub уже открыт в браузере, заявка создаётся в несколько кликов. Это позволяет фиксировать обращения прямо в проекте.
-              </p>
+              <p class="muted" style="margin-top: 12px">Заявка сразу попадает в Telegram‑группу RemCard.</p>
             </div>
           </div>
         </div>
       </section>
-
-      <section class="section" id="partners-krasnodar">
-        <div class="container">
-          <header class="section-header">
-            <h2>Подтверждённые заявки партнёров из Telegram</h2>
-            <p class="section-subtitle">
-              Ниже опубликованы подтверждённые обращения на вступление в проект RemCard. Источник обращений — Telegram.
-            </p>
-            <p class="section-subtitle muted" id="confirmed-partners-meta">Загрузка списка заявок...</p>
-          </header>
-
-          <div class="grid cards-partners" id="confirmed-partners-list" aria-live="polite" aria-busy="true">
-            <article class="card partner">
-              <h3>Загрузка подтверждённых заявок...</h3>
-              <p>Подождите, мы обновляем данные из файла confirmed-partners.json.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="bonus">
-        <div class="container">
-          <header class="section-header">
-            <h2>Бонусная карта RemCard</h2>
-            <p class="section-subtitle">
-              Клиент получает бонусы за каждую покупку (процент задаёт партнёр). Бонусы копятся на RemCard и могут быть потрачены у любых
-              партнёров. Общие правила начисления и списания определяет платформа.
-            </p>
-          </header>
-
-          <div class="grid cards-3">
-            <article class="card step">
-              <div class="step-number" aria-hidden="true">1</div>
-              <h3>Выбор</h3>
-              <p>Выбирайте товар или услугу в каталоге, сравнивайте предложения и условия.</p>
-            </article>
-            <article class="card step">
-              <div class="step-number" aria-hidden="true">2</div>
-              <h3>Покупка</h3>
-              <p>Оплачивайте заказ — бонусы начисляются автоматически по правилам партнёра.</p>
-            </article>
-            <article class="card step">
-              <div class="step-number" aria-hidden="true">3</div>
-              <h3>Оплата бонусами</h3>
-              <p>Оплачивайте часть следующего заказа бонусами у других партнёров.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="structure">
-        <div class="container">
-          <header class="section-header">
-            <h2>Структура сервиса</h2>
-            <p class="section-subtitle">Карта ключевых разделов RemCard — от справочника партнёров до админ‑панели.</p>
-          </header>
-
-          <div class="grid tiles">
-            <div class="tile">
-              <div class="tile-title">Партнёры</div>
-              <div class="tile-text">Справочник</div>
-            </div>
-            <div class="tile">
-              <div class="tile-title">Каталог</div>
-              <div class="tile-text">Товары и услуги</div>
-            </div>
-            <div class="tile">
-              <div class="tile-title">Акции</div>
-              <div class="tile-text">Выгодные предложения</div>
-            </div>
-            <div class="tile">
-              <div class="tile-title">Бонусная карта</div>
-              <div class="tile-text">Баланс и история</div>
-            </div>
-            <div class="tile">
-              <div class="tile-title">Профиль клиента</div>
-              <div class="tile-text">Данные и объекты</div>
-            </div>
-            <div class="tile">
-              <div class="tile-title">Кабинет партнёра</div>
-              <div class="tile-text">Профиль, позиции, акции</div>
-            </div>
-            <div class="tile tile-accent">
-              <div class="tile-title">Админ‑панель</div>
-              <div class="tile-text">Управление пользователями, категориями и правилами лояльности</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="roadmap">
-        <div class="container">
-          <header class="section-header">
-            <h2>Дорожная карта</h2>
-            <p class="section-subtitle">Куда движется RemCard — ключевые направления развития.</p>
-          </header>
-
-          <div class="card">
-            <ul class="list roadmap">
-              <li>Онлайн‑оплата и безопасные сделки.</li>
-              <li>Расширенный подбор мастеров (рейтинг, рекомендации).</li>
-              <li>Гарантийные механизмы и страхование.</li>
-              <li>Мобильное приложение RemCard.</li>
-              <li>Расширение сети партнёров по регионам.</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
       <section class="section" id="contacts">
         <div class="container">
           <header class="section-header">
@@ -677,60 +364,17 @@
               </p>
               <p class="contacts-line">
                 <span class="contacts-label">Telegram</span>
-                <a class="contacts-link" href="https://t.me/kraavediks" aria-label="Ссылка на Telegram">@kraavediks</a>
+                <!-- TODO: Вставить публичную ссылку-приглашение в Telegram-группу (например https://t.me/...). -->
+                <a class="contacts-link" href="#" aria-label="Ссылка на Telegram-группу RemCard">RemCard заявки (группа)</a>
               </p>
-              <p class="muted">Связь по вопросам сотрудничества и развития проекта.</p>
+              <p class="muted">Замените контакты на реальные перед публикацией.</p>
             </div>
 
             <div class="card cta">
               <h3>Стать партнёром</h3>
               <p>Оставьте заявку — мы свяжемся и подскажем, как быстро подключиться к RemCard.</p>
-
-              <form class="form" id="partner-cta-form" novalidate>
-                <div class="form-grid">
-                  <div class="field">
-                    <label for="partner-cta-name">Имя</label>
-                    <input class="input" id="partner-cta-name" name="name" autocomplete="name" required placeholder="Например, Алексей" />
-                  </div>
-
-                  <div class="field">
-                    <label for="partner-cta-phone">Телефон</label>
-                    <input
-                      class="input"
-                      id="partner-cta-phone"
-                      name="phone"
-                      type="tel"
-                      inputmode="tel"
-                      autocomplete="tel"
-                      required
-                      placeholder="+7 (___) ___-__-__"
-                    />
-                  </div>
-
-                  <div class="field field-wide">
-                    <label for="partner-cta-company">Компания / специализация</label>
-                    <input
-                      class="input"
-                      id="partner-cta-company"
-                      name="company"
-                      required
-                      placeholder="Например, бригада отделочников или магазин сантехники"
-                    />
-                  </div>
-                </div>
-
-                <div class="form-actions">
-                  <button class="btn btn-primary" type="submit">Стать партнёром</button>
-                  <p class="fineprint">Заявка отправится в Telegram.</p>
-                </div>
-
-                <div class="form-result" id="partner-cta-result" role="status" aria-live="polite" hidden>
-                  <div class="form-result-title">Спасибо!</div>
-                  <div class="form-result-text">Заявка отправлена в Telegram. Мы свяжемся с вами в ближайшее время.</div>
-                </div>
-              </form>
-
-              <p class="fineprint">Нужна подробная анкета? <a class="contacts-link" href="#partner-request">Откройте расширенную форму</a>.</p>
+              <a class="btn btn-primary" href="#partner-request">Оставить заявку партнёра</a>
+              <p class="fineprint">Пока форма не подключена — используйте email.</p>
             </div>
           </div>
         </div>
@@ -741,8 +385,11 @@
       <div class="container footer-inner">
         <div class="footer-left">
           <div class="brand footer-brand">
-            <span class="brand-mark" aria-hidden="true"></span>
-            <span class="brand-text">RemCard</span>
+            <img class="brand-mark-img" src="./assets/img/remcard-mark.svg" alt="" aria-hidden="true" />
+            <span class="brand-wrap">
+              <span class="brand-text">RemCard</span>
+              <span class="brand-tagline">мобильное приложение</span>
+            </span>
           </div>
           <p class="muted">© <span id="year">2026</span> RemCard. Все права защищены.</p>
         </div>
@@ -752,9 +399,6 @@
       </div>
     </footer>
 
-    <script>
-      window.REMCARD_PARTNERS_API_BASE_URL = "https://remcard-partners-api.up.railway.app";
-    </script>
     <script src="./script.js" defer></script>
   </body>
 </html>
