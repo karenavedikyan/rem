@@ -48,3 +48,7 @@
 4. **Save**.
 5. **Deployments** → откройте последний деплой → **⋮** → **Redeploy**.
 6. Дождитесь завершения. Проверьте: https://rem-navy.vercel.app/api/add-partner → `{"configured":true}`.
+
+**Проверка переменных:** https://rem-navy.vercel.app/api/debug-env — покажет, какие переменные видны (без значений).
+
+**Резерв:** если API не настроен, форма отправляет заявку в Telegram — партнёра можно добавить вручную в `partnersData.js`.

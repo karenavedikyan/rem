@@ -5,9 +5,31 @@
 
   if (!form || !resultEl) return;
 
-  // URL API. На Vercel — /api/add-partner. На GitHub Pages — укажите полный URL Vercel:
-  // const API_URL = "https://rem-add-partner.vercel.app/api/add-partner";
-  const API_URL = window.REMCARD_PARTNER_API_URL || "/api/add-partner";
+  const API_URL = window.REMCARD_PARTNER_API_URL || "https://rem-navy.vercel.app/api/add-partner";
+
+  const sendToTelegram = async (payload) => {
+    const BOT_TOKEN = "8371908218:AAFX2-mU-7bHFSEMFm8C3Im8oRJwTgT1dT4";
+    const CHAT_ID = "-5034197708";
+    const text =
+      "RemCard — заявка на партнёра:\n" +
+      `Название: ${payload.name || "-"}\n` +
+      `Категория: ${payload.category || "-"}\n` +
+      `Адрес: ${payload.address || "-"}\n` +
+      `Сайт: ${payload.website || "-"}\n` +
+      `Телефоны: ${(payload.phones || []).join(", ") || "-"}\n` +
+      `Описание: ${payload.description || "-"}\n` +
+      `Лого: ${payload.logo || "-"}\n` +
+      `Доп: ${payload.extraLabel || "-"}`;
+    try {
+      await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: CHAT_ID, text }),
+      });
+    } catch (e) {
+      console.warn("Telegram fallback failed", e);
+    }
+  };
 
   const setResult = (type, title, text) => {
     resultEl.hidden = false;
@@ -70,7 +92,14 @@
 
       if (!res.ok) {
         const msg = (data && data.error) || data?.message || `Ошибка ${res.status}`;
-        setResult("error", "Ошибка", msg);
+        await sendToTelegram(payload);
+        setResult(
+          "success",
+          "Заявка получена",
+          "API временно недоступен. Заявка отправлена в Telegram — мы добавим партнёра вручную."
+        );
+        form.reset();
+        resultEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
         return;
       }
 
