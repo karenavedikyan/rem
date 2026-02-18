@@ -1,0 +1,4 @@
+No hosted HTML/code URL is currently returned by Stitch for screen ID:
+83bdf605651146d087e9123f38de610f
+
+Image was successfully downloaded via curl -L.

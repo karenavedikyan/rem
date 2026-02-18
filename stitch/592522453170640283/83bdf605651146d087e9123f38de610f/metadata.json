@@ -1,0 +1,27 @@
+{
+  "project": {
+    "title": "Partner Dashboard & Profile",
+    "id": "592522453170640283"
+  },
+  "screen": {
+    "name": "RemCard Landing Page",
+    "id": "83bdf605651146d087e9123f38de610f",
+    "resource_name": "projects/592522453170640283/screens/83bdf605651146d087e9123f38de610f",
+    "dimensions": {
+      "width": 1776,
+      "height": 592
+    }
+  },
+  "assets": {
+    "image": {
+      "file": "screen.jpg",
+      "source_url": "https://lh3.googleusercontent.com/aida/AOfcidWS_IjIf7McFgOR17uXUQaY5xx7oCqPbyNkPSgA9Xe4Gzv2eLUvNxUVL67YYJEt1pXswMyNMUvzbim0yzbqSDeX-Dqyh69XavjTiWlwK8etR5ICk7CfK2sZ-62EfdJUeZEcEKSPPnWoJ-1i0wLFX-_WyRnhE9VV8I2N4UQbZUXt429lidvvEX0HORWk_Gkx47DMO6zy8JR-vYDkkd8JFEiYEoNjZnZv3srcNGmqf0E9jd0o-ZO1Gq--PA",
+      "content_type": "image/jpeg"
+    },
+    "code": {
+      "source_url": null,
+      "status": "unavailable_for_this_screen_id"
+    }
+  },
+  "download_method": "curl -L"
+}
