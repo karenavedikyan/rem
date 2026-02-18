@@ -111,11 +111,13 @@
       form.reset();
       resultEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
     } catch (err) {
+      await sendToTelegram(payload);
       setResult(
-        "error",
-        "Ошибка сети",
-        "Не удалось отправить данные. Проверьте подключение или попробуйте позже. При необходимости свяжитесь с нами напрямую."
+        "success",
+        "Заявка отправлена",
+        "Заявка передана в Telegram. Мы добавим партнёра вручную. Проверьте группу/чат RemCard."
       );
+      form.reset();
       console.error("Add partner error:", err);
     } finally {
       setLoading(false);

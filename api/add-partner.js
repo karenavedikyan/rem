@@ -17,14 +17,16 @@ const ALLOWED_ORIGINS = [
   "http://localhost:5500",
 ];
 
-const corsHeaders = (origin) => ({
-  "Access-Control-Allow-Origin": origin && ALLOWED_ORIGINS.some((o) => origin.startsWith(o.replace(/\/$/, "")))
-    ? origin
-    : ALLOWED_ORIGINS[0],
-  "Access-Control-Allow-Methods": "OPTIONS, POST",
-  "Access-Control-Allow-Headers": "Content-Type",
-  "Access-Control-Max-Age": "86400",
-});
+const corsHeaders = (origin) => {
+  const allowed =
+    origin && ALLOWED_ORIGINS.some((o) => origin.startsWith(o.replace(/\/$/, ""))) ? origin : null;
+  return {
+    "Access-Control-Allow-Origin": allowed || "*",
+    "Access-Control-Allow-Methods": "OPTIONS, POST",
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Max-Age": "86400",
+  };
+};
 
 function getToken() {
   // REMCARD_GITHUB_TOKEN — чтобы избежать конфликта с встроенным GITHUB_TOKEN в Vercel
