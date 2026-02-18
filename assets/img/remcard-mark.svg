@@ -1,9 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="RemCard mark" shape-rendering="geometricPrecision">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" role="img" aria-label="RemCard mark" shape-rendering="geometricPrecision">
   <title>RemCard</title>
-  <!-- Red fanned shapes behind (cards/documents fanning to upper left) -->
-  <path d="M6 22 L6 54 L12 58 L12 26 Z" fill="#E73C3C" />
-  <path d="M10 18 L10 50 L18 54 L18 22 Z" fill="#E73C3C" />
-  <path d="M14 14 L14 46 L24 50 L24 18 Z" fill="#E73C3C" />
-  <!-- White foreground - bookmark/card with inverted V-cutout at top center -->
-  <path d="M22 8 L30 8 L32 12 L34 8 L42 8 L42 52 L22 52 Z" fill="#FFFFFF" stroke="rgba(0,0,0,0.06)" stroke-width="0.5" stroke-linejoin="round" />
+  <!-- House/roof shape - primary brand mark -->
+  <path d="M24 4L8 16V40H40V16L24 4Z" fill="#E53935" />
+  <!-- White center element (door/window) -->
+  <rect x="20" y="28" width="8" height="12" fill="white" />
+  <!-- Side accents (fan/construction elements) -->
+  <path d="M4 20L10 8L16 20" stroke="#E53935" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.4" />
+  <path d="M32 20L38 8L44 20" stroke="#E53935" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.4" />
 </svg>
