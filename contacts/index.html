@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Акции RemCard — предложения партнёров по товарам и услугам (Краснодар)." />
-    <title>RemCard — Акции партнёров</title>
+    <meta name="description" content="Контакты RemCard — свяжитесь с нами по вопросам партнёрства и ремонта." />
+    <title>RemCard — Контакты</title>
 
     <link rel="stylesheet" href="../styles.css" />
   </head>
@@ -14,8 +14,8 @@
     <header class="site-header" id="top">
       <div class="container header-inner">
         <a class="brand" href="../index.html" aria-label="RemCard — на главную">
-          <img class="brand-mark-img" src="../assets/img/remcard-mark.svg" alt="" aria-hidden="true" />
           <span class="brand-text">RemCard</span>
+          <img class="brand-mark-img" src="../assets/img/remcard-mark.svg" alt="" aria-hidden="true" />
         </a>
 
         <nav class="nav" aria-label="Основная навигация">
@@ -30,59 +30,47 @@
             <a class="nav-link" href="../clients/">Для клиентов</a>
             <a class="nav-link" href="../partners/">Для партнёров</a>
             <a class="nav-link" href="../catalog/">Каталог</a>
-            <a class="nav-link" href="../offers/" aria-current="page">Акции</a>
+            <a class="nav-link" href="../offers/">Акции</a>
             <a class="nav-link" href="../bonus-card/">Бонусная карта</a>
             <a class="nav-link" href="../how/">Как это работает</a>
             <a class="nav-link" href="../audience/">Кому подойдёт</a>
             <a class="nav-link" href="../request/">Оставить заявку</a>
             <a class="nav-link" href="../partner-request/">Заявка партнёра</a>
-            <a class="nav-link" href="../contacts/">Контакты</a>
+            <a class="nav-link" href="../contacts/" aria-current="page">Контакты</a>
           </div>
         </nav>
       </div>
     </header>
 
     <main id="main">
-      <section class="section" id="offers">
+      <section class="section" id="contacts">
         <div class="container">
-          <header class="section-header section-header-row">
-            <div>
-              <h2>Все акции партнёров</h2>
-              <p class="section-subtitle">Полный список актуальных предложений. Выберите акцию и перейдите к заявке.</p>
-            </div>
-            <a class="section-link" href="../index.html">На главную</a>
+          <header class="section-header">
+            <h2>Контакты</h2>
+            <p class="section-subtitle">
+              Хотите стать партнёром RemCard, инвестором или помочь в развитии проекта — свяжитесь со мной.
+            </p>
           </header>
 
-          <div class="card offers-controls" aria-label="Фильтры акций">
-            <div class="offers-grid">
-              <div class="field">
-                <label for="offers-city">Город</label>
-                <select class="input" id="offers-city" name="offersCity">
-                  <option value="all">Все</option>
-                </select>
-              </div>
-              <div class="field">
-                <label for="offers-category">Категория</label>
-                <select class="input" id="offers-category" name="offersCategory">
-                  <option value="all">Все</option>
-                </select>
-              </div>
-              <div class="field">
-                <label for="offers-sort">Сортировка</label>
-                <select class="input" id="offers-sort" name="offersSort">
-                  <option value="soon">Сначала “горящие”</option>
-                  <option value="featured">Сначала избранные</option>
-                  <option value="title">По названию</option>
-                </select>
-              </div>
+          <div class="grid two-col">
+            <div class="card">
+              <h3>Написать</h3>
+              <p class="contacts-line">
+                <span class="contacts-label">Email</span>
+                <a class="contacts-link" href="mailto:kraavediks@gmail.com">kraavediks@gmail.com</a>
+              </p>
+              <p class="contacts-line">
+                <span class="contacts-label">Telegram</span>
+                <a class="contacts-link" href="#" aria-label="Ссылка на Telegram-группу RemCard">RemCard заявки (группа)</a>
+              </p>
+              <p class="muted">Замените контакты на реальные перед публикацией.</p>
             </div>
-          </div>
 
-          <div class="grid cards-promotions" id="all-promotions" aria-label="Список акций"></div>
-          <p class="muted offers-empty" id="offers-empty" hidden>Пока нет акций по выбранным фильтрам.</p>
-
-          <div class="promo-more">
-            <a class="btn btn-ghost" href="../request/">Перейти к заявке</a>
+            <div class="card cta">
+              <h3>Стать партнёром</h3>
+              <p>Оставьте заявку — мы свяжемся и подскажем, как быстро подключиться к RemCard.</p>
+              <a class="btn btn-primary" href="../partner-request/">Оставить заявку партнёра</a>
+            </div>
           </div>
         </div>
       </section>
@@ -103,7 +91,6 @@
       </div>
     </footer>
 
-    <script src="../promotions.js" defer></script>
     <script src="../script.js" defer></script>
   </body>
 </html>

@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Оставить заявку на ремонт в Краснодаре — RemCard подберёт исполнителя." />
+    <title>RemCard — Оставить заявку на ремонт</title>
+
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Перейти к содержимому</a>
+
+    <header class="site-header" id="top">
+      <div class="container header-inner">
+        <a class="brand" href="../index.html" aria-label="RemCard — на главную">
+          <span class="brand-text">RemCard</span>
+          <img class="brand-mark-img" src="../assets/img/remcard-mark.svg" alt="" aria-hidden="true" />
+        </a>
+
+        <nav class="nav" aria-label="Основная навигация">
+          <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
+            <span class="nav-toggle-lines" aria-hidden="true"></span>
+            <span class="sr-only">Открыть меню</span>
+          </button>
+
+          <div class="nav-menu" id="nav-menu">
+            <a class="nav-link" href="../index.html">Главная</a>
+            <a class="nav-link" href="../about/">О проекте</a>
+            <a class="nav-link" href="../clients/">Для клиентов</a>
+            <a class="nav-link" href="../partners/">Для партнёров</a>
+            <a class="nav-link" href="../catalog/">Каталог</a>
+            <a class="nav-link" href="../offers/">Акции</a>
+            <a class="nav-link" href="../bonus-card/">Бонусная карта</a>
+            <a class="nav-link" href="../how/">Как это работает</a>
+            <a class="nav-link" href="../audience/">Кому подойдёт</a>
+            <a class="nav-link" href="../request/" aria-current="page">Оставить заявку</a>
+            <a class="nav-link" href="../partner-request/">Заявка партнёра</a>
+            <a class="nav-link" href="../contacts/">Контакты</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="section" id="request">
+        <div class="container">
+          <header class="section-header">
+            <h2>Оставить заявку на ремонт (Краснодар)</h2>
+            <p class="section-subtitle">
+              Оставьте контакты и кратко опишите задачу — мы свяжемся и подскажем, как быстро подобрать исполнителя под ваш запрос.
+            </p>
+          </header>
+
+          <div class="grid two-col">
+            <div class="card">
+              <h3>Форма заявки</h3>
+              <p class="muted">Запуск: Краснодар. Дальше — подключение других городов.</p>
+
+              <form class="form" id="request-form" novalidate>
+                <div class="form-grid">
+                  <div class="field">
+                    <label for="req-name">Имя</label>
+                    <input class="input" id="req-name" name="name" autocomplete="name" required placeholder="Например, Алексей" />
+                  </div>
+
+                  <div class="field">
+                    <label for="req-phone">Телефон</label>
+                    <input
+                      class="input"
+                      id="req-phone"
+                      name="phone"
+                      type="tel"
+                      inputmode="tel"
+                      autocomplete="tel"
+                      required
+                      placeholder="+7 (___) ___‑__‑__"
+                    />
+                  </div>
+
+                  <div class="field">
+                    <label for="req-email">Email</label>
+                    <input class="input" id="req-email" name="email" type="email" autocomplete="email" placeholder="name@example.com" />
+                  </div>
+
+                  <div class="field">
+                    <label for="req-city">Город</label>
+                    <input class="input" id="req-city" name="city" value="Краснодар" readonly />
+                  </div>
+
+                  <div class="field field-wide">
+                    <label for="req-type">Тип задачи</label>
+                    <select class="input" id="req-type" name="taskType" required>
+                      <option value="" selected disabled>Выберите вариант</option>
+                      <option>Косметический ремонт квартиры</option>
+                      <option>Ремонт ванной/санузла</option>
+                      <option>Ремонт кухни</option>
+                      <option>Полный ремонт под ключ</option>
+                      <option>Другое</option>
+                    </select>
+                  </div>
+
+                  <div class="field field-wide">
+                    <label for="req-comment">Комментарий</label>
+                    <textarea
+                      class="input textarea"
+                      id="req-comment"
+                      name="comment"
+                      rows="5"
+                      placeholder="Опишите задачу: метраж, сроки, адрес/район, пожелания…"
+                    ></textarea>
+                  </div>
+                </div>
+
+                <div class="form-actions">
+                  <button class="btn btn-primary" type="submit">Отправить заявку</button>
+                  <p class="fineprint">Нажимая "Отправить заявку", вы соглашаетесь на обработку данных для связи по заявке.</p>
+                </div>
+
+                <div class="form-result" id="request-result" role="status" aria-live="polite" hidden>
+                  <div class="form-result-title">Спасибо!</div>
+                  <div class="form-result-text">Заявка отправлена. В ближайшее время команда RemCard свяжется с вами.</div>
+                </div>
+              </form>
+            </div>
+
+            <div class="card">
+              <h3>Что указать в комментарии</h3>
+              <ul class="list">
+                <li>Тип объекта и примерный метраж</li>
+                <li>Желаемые сроки начала и окончания</li>
+                <li>Район/адрес (Краснодар)</li>
+                <li>Пожелания по материалам и бюджету</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="footer-left">
+          <div class="brand footer-brand">
+            <span class="brand-text">RemCard</span>
+            <img class="brand-mark-img" src="../assets/img/remcard-mark.svg" alt="" aria-hidden="true" />
+          </div>
+          <p class="muted">© <span id="year">2026</span> RemCard. Все права защищены.</p>
+        </div>
+        <div class="footer-right">
+          <a class="footer-link" href="#top">Наверх</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../script.js" defer></script>
+  </body>
+</html>

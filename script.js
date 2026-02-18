@@ -14,6 +14,17 @@
   const yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
+  // Prefill request form from promo (when navigating from offers to request page)
+  const reqForm = document.getElementById("request-form");
+  if (reqForm) {
+    const saved = sessionStorage.getItem("remcard_promo_comment");
+    if (saved) {
+      const commentEl = reqForm.querySelector("textarea[name='comment']");
+      if (commentEl && !String(commentEl.value || "").trim()) commentEl.value = saved;
+      sessionStorage.removeItem("remcard_promo_comment");
+    }
+  }
+
   // Mobile menu (burger)
   if (toggle && menu) {
     const setExpanded = (expanded) => {
@@ -140,7 +151,11 @@
     let href = promo.link || "#request";
     if (href.startsWith("#")) {
       const id = href.slice(1);
-      if (id && !document.getElementById(id)) href = `${getHomeBase()}${href}`;
+      if (id === "request") {
+        href = getHomeBase().replace(/index\.html$/, "") + "request/";
+      } else if (id && !document.getElementById(id)) {
+        href = `${getHomeBase()}${href}`;
+      }
     }
     link.href = href;
     link.textContent = "Перейти к предложению";
@@ -230,19 +245,25 @@
     if (emptyEl) emptyEl.hidden = false;
   }
 
-  // Optional: prefill request comment when coming from a promo card
+  // Optional: prefill request comment when coming from a promo card (same page or request page)
   document.addEventListener("click", (e) => {
     const a = e.target.closest("a[data-promo-title]");
     if (!a) return;
     const href = a.getAttribute("href") || "";
-    if (!href.startsWith("#request")) return;
+    const goesToRequest = href.includes("request");
+    if (!goesToRequest && !href.startsWith("#request")) return;
 
     const commentEl = document.querySelector("textarea[name='comment']");
     if (commentEl && !String(commentEl.value || "").trim()) {
       const promoTitle = a.dataset.promoTitle || "";
       const promoPartner = a.dataset.promoPartner || "";
       const promoDiscount = a.dataset.promoDiscount || "";
-      commentEl.value = `Акция: ${promoTitle}${promoPartner ? " — " + promoPartner : ""}${promoDiscount ? " (" + promoDiscount + ")" : ""}\n`;
+      const text = `Акция: ${promoTitle}${promoPartner ? " — " + promoPartner : ""}${promoDiscount ? " (" + promoDiscount + ")" : ""}\n`;
+      if (goesToRequest) {
+        sessionStorage.setItem("remcard_promo_comment", text);
+      } else {
+        commentEl.value = text;
+      }
     }
   });
 
