@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Ищем 4 сильных дизайнера карточек для Wildberries и Ozon. Долгосрочная работа, стабильный поток, честная оплата." />
+    <title>Дизайн-агентство — Дизайнеры карточек маркетплейсов</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main>
+      <section class="hero" id="hero">
+        <div class="hero-inner">
+          <h1 class="hero-title">Ищем сильных дизайнеров карточек маркетплейсов</h1>
+          <p class="hero-subtitle">
+            Присоединяйтесь к агентству по созданию продающих карточек для Wildberries, Ozon и других маркетплейсов. Мы ищем 4 лучших дизайнера для долгосрочной работы с реальными заказами, стабильным потоком и честной оплатой.
+          </p>
+          <a class="btn btn-primary" href="#form">Хочу в команду</a>
+        </div>
+      </section>
+
+      <section class="section" id="about">
+        <div class="container">
+          <h2 class="section-title">О проекте и условиях</h2>
+          <div class="content-block">
+            <p>
+              Агентство занимается созданием продающих карточек. Основатель команды (номер указан ниже) отвечает за поиск клиентов, продажи и контроль задач. Дизайнеры выполняют проекты качественно по техническому заданию (ТЗ).
+            </p>
+            <p class="mt">
+              <strong>Условия:</strong> удалённая работа, оплата за каждый проект, чёткое ТЗ, долгосрочное сотрудничество, деление прибыли 40–50% дизайнеру.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="requirements">
+        <div class="container">
+          <h2 class="section-title">Требования и отбор</h2>
+          <div class="content-block">
+            <h3 class="block-title">Требования</h3>
+            <p>Опыт работы с карточками WB/Ozon, портфолио, соблюдение сроков, ответственность.</p>
+            <h3 class="block-title mt">Этапы отбора</h3>
+            <p>
+              Заполнение заявки → проверка портфолио (3 лучшие работы) → тестовое задание → формирование основной команды из 4 дизайнеров.
+            </p>
+            <p class="badge">Количество мест ограничено</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-dark" id="form">
+        <div class="container">
+          <h2 class="section-title">Контакты и заявка</h2>
+          <p class="contact-line">
+            Связь:
+            <a class="contact-link" href="https://wa.me/79186360011" target="_blank" rel="noopener noreferrer">+7 918 636 00 11</a>
+            <span class="contact-hint">(WhatsApp / Telegram)</span>
+          </p>
+
+          <form class="form" id="application-form" novalidate>
+            <div class="form-grid">
+              <div class="field">
+                <label for="name">Имя</label>
+                <input class="input" id="name" name="name" required placeholder="Как к вам обращаться" />
+              </div>
+              <div class="field">
+                <label for="telegram">Telegram</label>
+                <input class="input" id="telegram" name="telegram" required placeholder="@username" />
+              </div>
+              <div class="field field-full">
+                <label for="portfolio">Ссылка на портфолио или 3 лучших работы</label>
+                <input class="input" id="portfolio" name="portfolio" type="url" required placeholder="https://..." />
+              </div>
+              <div class="field field-full">
+                <label for="experience">Опыт работы</label>
+                <textarea class="input textarea" id="experience" name="experience" rows="3" placeholder="Опыт с карточками WB/Ozon, количество проектов..."></textarea>
+              </div>
+              <div class="field field-full">
+                <label class="checkbox-label">
+                  <input type="checkbox" name="ready" required />
+                  <span>Готов(а) выполнить тестовое задание</span>
+                </label>
+              </div>
+            </div>
+            <button class="btn btn-primary btn-submit" type="submit">Отправить заявку</button>
+            <div class="form-result" id="form-result" hidden>
+              <div class="form-result-title"></div>
+              <div class="form-result-text"></div>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,289 @@
+/* Premium minimal dark theme — дизайнеры маркетплейсов */
+
+:root {
+  --bg: #0a0a0b;
+  --bg-elevated: #141416;
+  --surface: #1c1c1f;
+  --border: rgba(255, 255, 255, 0.06);
+  --text: #fafafa;
+  --text-muted: #a1a1aa;
+  --accent: #6366f1;
+  --accent-hover: #818cf8;
+  --radius: 12px;
+  --font: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+}
+
+main {
+  min-height: 100vh;
+}
+
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(99, 102, 241, 0.08), transparent),
+    radial-gradient(ellipse 60% 40% at 80% 20%, rgba(99, 102, 241, 0.04), transparent),
+    var(--bg);
+}
+
+.hero-inner {
+  max-width: 640px;
+  text-align: center;
+}
+
+.hero-title {
+  margin: 0 0 24px;
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.hero-subtitle {
+  margin: 0 0 32px;
+  font-size: clamp(16px, 2vw, 18px);
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 28px;
+  font-family: var(--font);
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+}
+
+.section {
+  padding: 80px 24px;
+}
+
+.section-dark {
+  background: var(--bg-elevated);
+  border-top: 1px solid var(--border);
+}
+
+.container {
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.section-title {
+  margin: 0 0 24px;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.content-block {
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.content-block p {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.content-block .mt {
+  margin-top: 16px;
+}
+
+.block-title {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.content-block .block-title.mt {
+  margin-top: 20px;
+}
+
+.badge {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  background: rgba(99, 102, 241, 0.12);
+  border-radius: 8px;
+}
+
+.contact-line {
+  margin: 0 0 32px;
+  font-size: 17px;
+  color: var(--text-muted);
+}
+
+.contact-link {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.contact-link:hover {
+  text-decoration: underline;
+}
+
+.contact-hint {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.form {
+  margin-top: 24px;
+}
+
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field-full {
+  grid-column: 1 / -1;
+}
+
+.field label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.input {
+  width: 100%;
+  padding: 12px 16px;
+  font-family: var(--font);
+  font-size: 15px;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+.input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 15px;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.checkbox-label input {
+  margin-top: 4px;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+}
+
+.btn-submit {
+  margin-top: 24px;
+  width: 100%;
+  max-width: 320px;
+}
+
+.form-result {
+  margin-top: 20px;
+  padding: 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.form-result.is-error {
+  border-color: rgba(239, 68, 68, 0.3);
+  background: rgba(239, 68, 68, 0.08);
+}
+
+.form-result-title {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.form-result-text {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+@media (max-width: 560px) {
+  .hero {
+    padding: 32px 20px;
+  }
+
+  .section {
+    padding: 56px 20px;
+  }
+
+  .content-block {
+    padding: 20px;
+  }
+}
