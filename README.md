@@ -55,3 +55,24 @@
 **Проверка переменных:** https://rem-navy.vercel.app/api/debug-env — покажет, какие переменные видны (без значений).
 
 **Резерв:** если API не настроен, форма отправляет заявку в Telegram — партнёра можно добавить вручную в `partnersData.js`.
+
+## Навигатор ремонта (AI + fallback)
+
+Страница: `/navigator/`
+
+- `POST /api/navigator-route` — строит маршрут ремонта (`steps[]`).
+  - если настроен OpenAI ключ, маршрут генерируется моделью;
+  - если нет — возвращается шаблонный маршрут (fallback).
+- `POST /api/navigator-submit` — отправляет маршрут в канал RemCard (Telegram).
+
+### Переменные окружения для Vercel
+
+AI:
+
+- `REMCARD_OPENAI_API_KEY` (или `OPENAI_API_KEY`)
+- `REMCARD_OPENAI_MODEL` (опционально, default: `gpt-4o-mini`)
+
+Telegram:
+
+- `REMCARD_TELEGRAM_BOT_TOKEN` (или `TELEGRAM_BOT_TOKEN`)
+- `REMCARD_TELEGRAM_CHAT_ID` (или `TELEGRAM_CHAT_ID`)

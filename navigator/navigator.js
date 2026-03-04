@@ -7,10 +7,9 @@
   const sendResult = document.getElementById("navigator-send-result");
   if (!form || !resultSection || !stepsEl || !summaryEl || !sendBtn || !sendResult) return;
 
-  // TEMPORARY (unsafe): tokens in frontend are visible to everyone.
-  // TODO: Move BOT_TOKEN/CHAT_ID to backend/serverless.
-  const BOT_TOKEN = "8371908218:AAFX2-mU-7bHFSEMFm8C3Im8oRJwTgT1dT4";
-  const CHAT_ID = "-5034197708";
+  const buildBtn = form.querySelector("button[type='submit']");
+  const ROUTE_API_URL = window.REMCARD_NAVIGATOR_ROUTE_API_URL || "https://rem-navy.vercel.app/api/navigator-route";
+  const SUBMIT_API_URL = window.REMCARD_NAVIGATOR_SUBMIT_API_URL || "https://rem-navy.vercel.app/api/navigator-submit";
 
   const STEP_TEMPLATES = {
     planning: {
@@ -24,13 +23,7 @@
         "Сделайте фото и видео всех помещений до начала ремонта.",
         "Согласуйте приоритеты: что обязательно сделать в первую очередь."
       ],
-      resources: [
-        {
-          type: "article",
-          title: "Чек-лист подготовки к ремонту",
-          url: "https://example.com/remont-checklist"
-        }
-      ]
+      resources: [{ type: "article", title: "Чек-лист подготовки к ремонту", url: "https://example.com/remont-checklist" }]
     },
     rough: {
       id: "rough",
@@ -40,13 +33,7 @@
       recommended_professionals: ["мастер-универсал", "отделочник", "прораб"],
       recommended_categories: ["демонтаж", "черновые смеси", "выравнивание стен/пола"],
       tips: ["Не экономьте на базовой подготовке поверхностей — это влияет на весь результат.", "Фиксируйте скрытые работы на фото."],
-      resources: [
-        {
-          type: "video",
-          title: "Что важно на этапе черновых работ",
-          url: "https://example.com/rough-works-video"
-        }
-      ]
+      resources: [{ type: "video", title: "Что важно на этапе черновых работ", url: "https://example.com/rough-works-video" }]
     },
     engineering: {
       id: "engineering",
@@ -56,13 +43,7 @@
       recommended_professionals: ["электрик", "сантехник", "инженер-проектировщик (по необходимости)"],
       recommended_categories: ["электромонтаж", "сантехника", "инженерные комплектующие"],
       tips: ["Закладывайте резерв по количеству розеток и выводов.", "Проверьте зоны обслуживания и доступ к узлам после ремонта."],
-      resources: [
-        {
-          type: "article",
-          title: "Базовый список инженерных решений",
-          url: "https://example.com/engineering-basics"
-        }
-      ]
+      resources: [{ type: "article", title: "Базовый список инженерных решений", url: "https://example.com/engineering-basics" }]
     },
     finishing: {
       id: "finishing",
@@ -72,13 +53,7 @@
       recommended_professionals: ["отделочник", "плиточник", "маляр"],
       recommended_categories: ["чистовые материалы", "двери", "покрытия пола и стен"],
       tips: ["Сначала проверьте образцы материалов при вашем освещении.", "Планируйте поставки так, чтобы не было простоев у мастеров."],
-      resources: [
-        {
-          type: "video",
-          title: "Как выбрать чистовые материалы без ошибок",
-          url: "https://example.com/finishing-materials"
-        }
-      ]
+      resources: [{ type: "video", title: "Как выбрать чистовые материалы без ошибок", url: "https://example.com/finishing-materials" }]
     },
     furniture: {
       id: "furniture",
@@ -88,13 +63,7 @@
       recommended_professionals: ["мебельщик", "светотехник", "дизайнер интерьера (по желанию)"],
       recommended_categories: ["кухни и шкафы", "свет", "декор и текстиль"],
       tips: ["Оставляйте проходы и функциональные зоны свободными.", "Проверьте совместимость мебели с розетками и выводами."],
-      resources: [
-        {
-          type: "article",
-          title: "Финальный чек-лист перед въездом",
-          url: "https://example.com/move-in-checklist"
-        }
-      ]
+      resources: [{ type: "article", title: "Финальный чек-лист перед въездом", url: "https://example.com/move-in-checklist" }]
     }
   };
 
@@ -114,29 +83,58 @@
 
   let currentPayload = null;
 
-  const sendTelegram = async (text) => {
-    if (!BOT_TOKEN || BOT_TOKEN.includes("ТУТ_Я_ПОДСТАВЛЮ_САМ")) throw new Error("BOT_TOKEN is not set");
-    if (!CHAT_ID || CHAT_ID.includes("ТУТ_Я_ПОДСТАВЛЮ_САМ")) throw new Error("CHAT_ID is not set");
+  const escapeHtml = (value) =>
+    String(value || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
 
-    const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chat_id: CHAT_ID, text })
-    });
-    const data = await res.json().catch(() => null);
-    if (!res.ok || !data || data.ok !== true) {
-      const desc = data && typeof data.description === "string" ? data.description : "Unknown error";
-      throw new Error(desc);
+  const safeUrl = (value) => {
+    try {
+      const u = new URL(String(value || ""));
+      return u.protocol === "http:" || u.protocol === "https:" ? u.href : "#";
+    } catch {
+      return "#";
     }
-    return data;
   };
 
-  const uniq = (arr) => Array.from(new Set(arr.filter(Boolean)));
+  const uniq = (arr) => Array.from(new Set((arr || []).filter(Boolean)));
 
   const getSelectedText = (selectEl) => {
     if (!selectEl) return "";
     const opt = selectEl.options[selectEl.selectedIndex];
     return opt ? String(opt.textContent || "").trim() : "";
+  };
+
+  const postJSON = async (url, payload) => {
+    const target = String(url || "").startsWith("http") ? url : new URL(url, window.location.origin).href;
+    const res = await fetch(target, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json().catch(() => null);
+    if (!res.ok) {
+      const message = (data && (data.error || data.message)) || `HTTP ${res.status}`;
+      throw new Error(message);
+    }
+    return data || {};
+  };
+
+  const setFormLoading = (loading) => {
+    if (buildBtn) buildBtn.disabled = loading;
+    form.setAttribute("aria-busy", loading ? "true" : "false");
+  };
+
+  const setSendResult = ({ type, title, text }) => {
+    sendResult.hidden = false;
+    sendResult.classList.toggle("is-error", type === "error");
+    const titleEl = sendResult.querySelector(".form-result-title");
+    const textEl = sendResult.querySelector(".form-result-text");
+    if (titleEl) titleEl.textContent = title;
+    if (textEl) textEl.textContent = text;
   };
 
   const getBaseFlow = (status) => {
@@ -159,20 +157,14 @@
     if (flow.length >= minSteps) return flow.slice();
     const out = flow.slice();
 
-    // Keep chronology: first try to prepend earlier phases from the same scenario.
-    for (let i = startIdx - 1; i >= 0 && out.length < minSteps; i -= 1) {
-      out.unshift(baseFlow[i]);
-    }
-
-    // Fallback: if scenario is too short, append missing tail phases.
+    for (let i = startIdx - 1; i >= 0 && out.length < minSteps; i -= 1) out.unshift(baseFlow[i]);
     for (let i = 0; i < baseFlow.length && out.length < minSteps; i += 1) {
       if (!out.includes(baseFlow[i])) out.push(baseFlow[i]);
     }
-
     return out;
   };
 
-  const buildSteps = (answers) => {
+  const buildTemplateSteps = (answers) => {
     const baseFlow = getBaseFlow(answers.objectStatus);
     const startIdx = getStartIndex(baseFlow, answers.currentStage);
     let selectedFlow = baseFlow.slice(startIdx);
@@ -217,13 +209,66 @@
     return { steps };
   };
 
+  const sanitizeStr = (value, fallback = "") => {
+    const v = typeof value === "string" ? value.trim() : "";
+    return v || fallback;
+  };
+
+  const sanitizeList = (values, fallback = []) => {
+    if (!Array.isArray(values)) return fallback.slice();
+    return uniq(
+      values
+        .map((v) => sanitizeStr(v))
+        .filter(Boolean)
+        .slice(0, 8)
+    );
+  };
+
+  const sanitizeResources = (resources) => {
+    if (!Array.isArray(resources)) return [];
+    return resources
+      .map((r) => ({
+        type: sanitizeStr(r && r.type, "article"),
+        title: sanitizeStr(r && r.title),
+        url: safeUrl(r && r.url)
+      }))
+      .filter((r) => r.title && r.url !== "#")
+      .slice(0, 4);
+  };
+
+  const sanitizeStep = (step, fallback, idx) => ({
+    id: sanitizeStr(step && step.id, `step_${idx + 1}`),
+    title: sanitizeStr(step && step.title, fallback.title),
+    description: sanitizeStr(step && step.description, fallback.description),
+    stage_type: sanitizeStr(step && step.stage_type, fallback.stage_type),
+    recommended_professionals: sanitizeList(step && step.recommended_professionals, fallback.recommended_professionals),
+    recommended_categories: sanitizeList(step && step.recommended_categories, fallback.recommended_categories),
+    tips: sanitizeList(step && step.tips, fallback.tips),
+    resources: sanitizeResources(step && step.resources)
+  });
+
+  const sanitizeSteps = (steps, fallbackSteps) => {
+    if (!Array.isArray(steps) || !steps.length) return fallbackSteps.slice(0, 6);
+    const out = [];
+    for (let i = 0; i < Math.min(steps.length, 6); i += 1) {
+      const fallback = fallbackSteps[i] || fallbackSteps[fallbackSteps.length - 1];
+      out.push(sanitizeStep(steps[i], fallback, i));
+    }
+    if (out.length < 3) {
+      for (let i = out.length; i < Math.min(3, fallbackSteps.length); i += 1) {
+        out.push(fallbackSteps[i]);
+      }
+    }
+    return out.slice(0, 6);
+  };
+
   const listToHTML = (title, values) => {
     if (!Array.isArray(values) || !values.length) return "";
     return `
       <div class="navigator-step-group">
-        <div class="navigator-step-label">${title}</div>
+        <div class="navigator-step-label">${escapeHtml(title)}</div>
         <ul class="list navigator-step-list">
-          ${values.map((v) => `<li>${v}</li>`).join("")}
+          ${values.map((v) => `<li>${escapeHtml(v)}</li>`).join("")}
         </ul>
       </div>
     `;
@@ -236,25 +281,29 @@
         <div class="navigator-step-label">Полезные материалы</div>
         <ul class="list navigator-step-list">
           ${resources
-            .map((r) => `<li><a class="contacts-link" href="${r.url}" target="_blank" rel="noopener noreferrer">${r.title}</a></li>`)
+            .map((r) => `<li><a class="contacts-link" href="${safeUrl(r.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(r.title)}</a></li>`)
             .join("")}
         </ul>
       </div>
     `;
   };
 
+  const buildSummary = (answers) =>
+    `${answers.objectTypeLabel} • ${answers.objectStatusLabel} • ${answers.stageLabel} • ${answers.budgetLabel} • старт: ${answers.timelineLabel}`;
+
   const renderRoute = (payload) => {
-    const { steps, summaryText } = payload;
+    const { steps, summaryText, source } = payload;
+    const sourceText = source === "ai" ? "Маршрут сгенерирован ИИ." : "Маршрут собран по типовым сценариям RemCard.";
     stepsEl.innerHTML = "";
-    summaryEl.textContent = summaryText;
+    summaryEl.textContent = `${summaryText}. ${sourceText}`;
 
     steps.forEach((step, idx) => {
       const card = document.createElement("article");
       card.className = "card navigator-step";
       card.innerHTML = `
         <div class="step-number" aria-hidden="true">${idx + 1}</div>
-        <h3>${step.title}</h3>
-        <p>${step.description}</p>
+        <h3>${escapeHtml(step.title)}</h3>
+        <p>${escapeHtml(step.description)}</p>
         <div class="navigator-step-grid">
           ${listToHTML("Кого подключить", step.recommended_professionals)}
           ${listToHTML("Категории работ и материалов", step.recommended_categories)}
@@ -269,52 +318,12 @@
     resultSection.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  const buildSummary = (answers) =>
-    `${answers.objectTypeLabel} • ${answers.objectStatusLabel} • ${answers.stageLabel} • ${answers.budgetLabel} • старт: ${answers.timelineLabel}`;
-
-  const buildTelegramMessage = (payload) => {
-    const lines = [
-      "Новая заявка RemCard (Навигатор ремонта):",
-      `Имя: ${payload.answers.name || "-"}`,
-      `Контакт: ${payload.answers.contact || "-"}`,
-      `Тип объекта: ${payload.answers.objectTypeLabel || "-"}`,
-      `Статус объекта: ${payload.answers.objectStatusLabel || "-"}`,
-      `Стадия: ${payload.answers.stageLabel || "-"}`,
-      `Бюджет: ${payload.answers.budgetLabel || "-"}`,
-      `Срок старта: ${payload.answers.timelineLabel || "-"}`,
-      `Особенности: ${payload.answers.features || "-"}`,
-      "",
-      "Маршрут:"
-    ];
-
-    payload.steps.forEach((step, idx) => {
-      lines.push(
-        `${idx + 1}. ${step.title}`,
-        `   Что делаем: ${step.description}`,
-        `   Кого подключить: ${step.recommended_professionals.join(", ")}`,
-        `   Категории: ${step.recommended_categories.join(", ")}`
-      );
-    });
-
-    return lines.join("\n");
-  };
-
-  const setSendResult = ({ type, title, text }) => {
-    sendResult.hidden = false;
-    sendResult.classList.toggle("is-error", type === "error");
-    const titleEl = sendResult.querySelector(".form-result-title");
-    const textEl = sendResult.querySelector(".form-result-text");
-    if (titleEl) titleEl.textContent = title;
-    if (textEl) textEl.textContent = text;
-  };
-
   const readAnswers = () => {
     const objectTypeEl = form.querySelector("#nv-object-type");
     const objectStatusEl = form.querySelector("#nv-object-status");
     const stageEl = form.querySelector("#nv-stage");
     const budgetEl = form.querySelector("#nv-budget");
     const timelineEl = form.querySelector("#nv-timeline");
-
     const getValue = (name) => {
       const el = form.querySelector(`[name="${CSS.escape(name)}"]`);
       return el && "value" in el ? String(el.value).trim() : "";
@@ -337,24 +346,42 @@
     };
   };
 
-  form.addEventListener("submit", (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
     if (!form.checkValidity()) {
       form.reportValidity();
       return;
     }
 
-    const answers = readAnswers();
-    const route = buildSteps(answers);
-    const payload = {
-      answers,
-      steps: route.steps,
-      summaryText: buildSummary(answers)
-    };
-    currentPayload = payload;
-
+    setFormLoading(true);
     sendResult.hidden = true;
-    renderRoute(payload);
+    try {
+      const answers = readAnswers();
+      const localRoute = buildTemplateSteps(answers);
+      let steps = localRoute.steps;
+      let source = "template";
+
+      try {
+        const data = await postJSON(ROUTE_API_URL, { answers });
+        if (Array.isArray(data.steps) && data.steps.length) {
+          steps = sanitizeSteps(data.steps, localRoute.steps);
+          source = data.source === "ai" ? "ai" : "template";
+        }
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.warn("Navigator AI route fallback:", err);
+      }
+
+      currentPayload = {
+        answers,
+        steps,
+        summaryText: buildSummary(answers),
+        source
+      };
+      renderRoute(currentPayload);
+    } finally {
+      setFormLoading(false);
+    }
   });
 
   sendBtn.addEventListener("click", async () => {
@@ -363,7 +390,7 @@
     sendResult.hidden = true;
 
     try {
-      await sendTelegram(buildTelegramMessage(currentPayload));
+      await postJSON(SUBMIT_API_URL, currentPayload);
       setSendResult({
         type: "success",
         title: "Спасибо!",

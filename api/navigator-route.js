@@ -1,0 +1,432 @@
+const ALLOWED_ORIGINS = [
+  "https://karenavedikyan.github.io",
+  "https://rem-navy.vercel.app",
+  "https://rem.vercel.app",
+  "https://remcard.ru",
+  "http://localhost:3000",
+  "http://127.0.0.1:5500",
+  "http://localhost:5500",
+];
+
+const corsHeaders = (origin) => {
+  const allowed = origin && ALLOWED_ORIGINS.some((o) => origin.startsWith(o.replace(/\/$/, ""))) ? origin : null;
+  return {
+    "Access-Control-Allow-Origin": allowed || "*",
+    "Access-Control-Allow-Methods": "OPTIONS, GET, POST",
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Max-Age": "86400",
+  };
+};
+
+const STEP_TEMPLATES = {
+  planning: {
+    title: "Планирование и замеры",
+    description: "Определяем задачи ремонта, делаем базовые замеры и фиксируем маршрут работ для объекта.",
+    stage_type: "planning",
+    recommended_professionals: ["прораб", "мастер-универсал", "дизайнер (по желанию)"],
+    recommended_categories: ["замеры и планировка", "черновые материалы", "базовый список работ"],
+    tips: ["Сделайте фото и видео всех помещений до начала ремонта.", "Согласуйте приоритеты: что обязательно сделать в первую очередь."],
+    resources: [{ type: "article", title: "Чек-лист подготовки к ремонту", url: "https://example.com/remont-checklist" }],
+  },
+  rough: {
+    title: "Черновые работы",
+    description: "Готовим основание: демонтаж, выравнивание и подготовка поверхностей к инженерным и чистовым этапам.",
+    stage_type: "rough",
+    recommended_professionals: ["мастер-универсал", "отделочник", "прораб"],
+    recommended_categories: ["демонтаж", "черновые смеси", "выравнивание стен/пола"],
+    tips: ["Не экономьте на базовой подготовке поверхностей — это влияет на весь результат.", "Фиксируйте скрытые работы на фото."],
+    resources: [{ type: "video", title: "Что важно на этапе черновых работ", url: "https://example.com/rough-works-video" }],
+  },
+  engineering: {
+    title: "Инженерные работы",
+    description: "Планируем и выполняем электрику, сантехнику и ключевые коммуникации до финальной отделки.",
+    stage_type: "engineering",
+    recommended_professionals: ["электрик", "сантехник", "инженер-проектировщик (по необходимости)"],
+    recommended_categories: ["электромонтаж", "сантехника", "инженерные комплектующие"],
+    tips: ["Закладывайте резерв по количеству розеток и выводов.", "Проверьте зоны обслуживания и доступ к узлам после ремонта."],
+    resources: [{ type: "article", title: "Базовый список инженерных решений", url: "https://example.com/engineering-basics" }],
+  },
+  finishing: {
+    title: "Чистовая отделка",
+    description: "Переходим к финишным материалам и внешнему виду: стены, пол, потолок, двери и финальные узлы.",
+    stage_type: "finishing",
+    recommended_professionals: ["отделочник", "плиточник", "маляр"],
+    recommended_categories: ["чистовые материалы", "двери", "покрытия пола и стен"],
+    tips: ["Сначала проверьте образцы материалов при вашем освещении.", "Планируйте поставки так, чтобы не было простоев у мастеров."],
+    resources: [{ type: "video", title: "Как выбрать чистовые материалы без ошибок", url: "https://example.com/finishing-materials" }],
+  },
+  furniture: {
+    title: "Мебель, свет и декор",
+    description: "Завершаем ремонт: подбираем мебель, освещение, декор и доводим пространство до готовности к жизни.",
+    stage_type: "furniture",
+    recommended_professionals: ["мебельщик", "светотехник", "дизайнер интерьера (по желанию)"],
+    recommended_categories: ["кухни и шкафы", "свет", "декор и текстиль"],
+    tips: ["Оставляйте проходы и функциональные зоны свободными.", "Проверьте совместимость мебели с розетками и выводами."],
+    resources: [{ type: "article", title: "Финальный чек-лист перед въездом", url: "https://example.com/move-in-checklist" }],
+  },
+};
+
+const objectLabels = {
+  apartment: "квартиры",
+  house: "дома",
+  commercial: "коммерческого помещения",
+};
+
+const stagePriority = {
+  planning: ["planning"],
+  measurements: ["planning"],
+  rough: ["rough", "engineering", "finishing"],
+  finishing: ["finishing", "furniture"],
+  furniture: ["furniture"],
+};
+
+const allowedObjectType = new Set(["apartment", "house", "commercial"]);
+const allowedObjectStatus = new Set(["new_without_finish", "new_basic_finish", "secondary_partial", "secondary_full"]);
+const allowedStage = new Set(["planning", "measurements", "rough", "finishing", "furniture"]);
+const allowedBudget = new Set(["up_to_300", "300_700", "700_1500", "1500_plus", "unknown"]);
+const allowedTimeline = new Set(["now", "month", "three_months", "later"]);
+
+const normalizeString = (value, fallback = "") => {
+  const v = typeof value === "string" ? value.trim() : "";
+  return v || fallback;
+};
+
+const uniq = (arr) => Array.from(new Set((arr || []).filter(Boolean)));
+
+const normalizeList = (value, fallback = []) => {
+  if (!Array.isArray(value)) return fallback.slice();
+  return uniq(
+    value
+      .map((v) => normalizeString(v))
+      .filter(Boolean)
+      .slice(0, 8)
+  );
+};
+
+const normalizeResources = (value) => {
+  if (!Array.isArray(value)) return [];
+  return value
+    .map((r) => ({
+      type: normalizeString(r && r.type, "article"),
+      title: normalizeString(r && r.title),
+      url: normalizeString(r && r.url),
+    }))
+    .filter((r) => r.title && /^https?:\/\//.test(r.url))
+    .slice(0, 4);
+};
+
+function getOrigin(req) {
+  const origin = req.headers.origin;
+  if (origin) return origin;
+  const referer = req.headers.referer || "";
+  try {
+    const u = new URL(referer);
+    return u.origin;
+  } catch {
+    return "";
+  }
+}
+
+function getBaseFlow(status) {
+  const full = ["planning", "rough", "engineering", "finishing", "furniture"];
+  if (status === "new_basic_finish") return ["planning", "engineering", "finishing", "furniture"];
+  if (status === "secondary_partial") return ["planning", "finishing", "furniture"];
+  return full;
+}
+
+function getStartIndex(flow, stage) {
+  const preferred = stagePriority[stage] || ["planning"];
+  for (const key of preferred) {
+    const idx = flow.indexOf(key);
+    if (idx >= 0) return idx;
+  }
+  return 0;
+}
+
+function ensureMinSteps(flow, baseFlow, startIdx, minSteps) {
+  if (flow.length >= minSteps) return flow.slice();
+  const out = flow.slice();
+
+  for (let i = startIdx - 1; i >= 0 && out.length < minSteps; i -= 1) out.unshift(baseFlow[i]);
+  for (let i = 0; i < baseFlow.length && out.length < minSteps; i += 1) {
+    if (!out.includes(baseFlow[i])) out.push(baseFlow[i]);
+  }
+  return out;
+}
+
+function buildTemplateRoute(answers) {
+  const baseFlow = getBaseFlow(answers.objectStatus);
+  const startIdx = getStartIndex(baseFlow, answers.currentStage);
+  let selectedFlow = baseFlow.slice(startIdx);
+  selectedFlow = ensureMinSteps(selectedFlow, baseFlow, startIdx, 3).slice(0, 6);
+
+  const objectLabel = objectLabels[answers.objectType] || "объекта";
+  const steps = selectedFlow.map((key, idx) => {
+    const tpl = STEP_TEMPLATES[key];
+    const tips = tpl.tips.slice();
+    const professionals = tpl.recommended_professionals.slice();
+    const categories = tpl.recommended_categories.slice();
+
+    if (answers.objectType === "commercial" && key === "engineering") {
+      professionals.push("инженер ОВиК");
+      categories.push("вентиляция и климат");
+    }
+    if (answers.objectType === "house" && (key === "finishing" || key === "planning")) {
+      categories.push("фасадные и наружные решения");
+    }
+    if (answers.budget === "unknown" && idx === 0) {
+      tips.push("Сформируйте верхний лимит бюджета и резерв 10–15% на непредвиденные расходы.");
+    }
+    if (answers.timeline === "now" && idx === 0) {
+      tips.push("Если старт нужен срочно, заранее согласуйте график работ и поставок материалов.");
+    }
+    if (answers.features && idx === 0) {
+      tips.push(`Учитывайте особенности объекта: ${answers.features}`);
+    }
+
+    return {
+      id: `step_${idx + 1}`,
+      title: tpl.title,
+      description: tpl.description.replace("объекта", objectLabel),
+      stage_type: tpl.stage_type,
+      recommended_professionals: uniq(professionals),
+      recommended_categories: uniq(categories),
+      tips: uniq(tips),
+      resources: tpl.resources.slice(),
+    };
+  });
+
+  return { steps };
+}
+
+function sanitizeStep(step, fallbackStep, idx) {
+  return {
+    id: normalizeString(step && step.id, `step_${idx + 1}`),
+    title: normalizeString(step && step.title, fallbackStep.title),
+    description: normalizeString(step && step.description, fallbackStep.description),
+    stage_type: normalizeString(step && step.stage_type, fallbackStep.stage_type),
+    recommended_professionals: normalizeList(step && step.recommended_professionals, fallbackStep.recommended_professionals),
+    recommended_categories: normalizeList(step && step.recommended_categories, fallbackStep.recommended_categories),
+    tips: normalizeList(step && step.tips, fallbackStep.tips),
+    resources: normalizeResources(step && step.resources),
+  };
+}
+
+function sanitizeRoute(route, fallbackSteps) {
+  const raw = route && Array.isArray(route.steps) ? route.steps : [];
+  if (!raw.length) return fallbackSteps.slice(0, 6);
+
+  const out = [];
+  for (let i = 0; i < Math.min(raw.length, 6); i += 1) {
+    const fb = fallbackSteps[i] || fallbackSteps[fallbackSteps.length - 1];
+    out.push(sanitizeStep(raw[i], fb, i));
+  }
+  if (out.length < 3) {
+    for (let i = out.length; i < Math.min(3, fallbackSteps.length); i += 1) out.push(fallbackSteps[i]);
+  }
+  return out.slice(0, 6);
+}
+
+async function generateRouteWithAI(answers) {
+  const apiKey = process.env.REMCARD_OPENAI_API_KEY || process.env.OPENAI_API_KEY;
+  const model = process.env.REMCARD_OPENAI_MODEL || process.env.OPENAI_MODEL || "gpt-4o-mini";
+  if (!apiKey) return null;
+
+  const schema = {
+    type: "object",
+    properties: {
+      steps: {
+        type: "array",
+        minItems: 3,
+        maxItems: 6,
+        items: {
+          type: "object",
+          properties: {
+            id: { type: "string" },
+            title: { type: "string" },
+            description: { type: "string" },
+            stage_type: { type: "string" },
+            recommended_professionals: { type: "array", items: { type: "string" } },
+            recommended_categories: { type: "array", items: { type: "string" } },
+            tips: { type: "array", items: { type: "string" } },
+            resources: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  type: { type: "string" },
+                  title: { type: "string" },
+                  url: { type: "string" },
+                },
+                required: ["type", "title", "url"],
+                additionalProperties: false,
+              },
+            },
+          },
+          required: [
+            "id",
+            "title",
+            "description",
+            "stage_type",
+            "recommended_professionals",
+            "recommended_categories",
+            "tips",
+            "resources",
+          ],
+          additionalProperties: false,
+        },
+      },
+    },
+    required: ["steps"],
+    additionalProperties: false,
+  };
+
+  const systemPrompt =
+    "Ты эксперт по ремонтам в России. Сформируй краткий, практичный маршрут ремонта на русском языке для клиента RemCard. " +
+    "Учитывай локальный контекст Краснодара. Возвращай только JSON по заданной схеме. " +
+    "Не используй HTML и markdown, не добавляй поля вне схемы, не пиши вступления.";
+
+  const userPrompt = `Ответы клиента: ${JSON.stringify(answers)}.
+Сделай 3-6 шагов. Для каждого шага:
+- title и description короткие и понятные,
+- recommended_professionals и recommended_categories максимально практичные,
+- tips ориентированы на предотвращение ошибок,
+- resources укажи как безопасные плейсхолдеры https://example.com/... если нет точных ссылок.`;
+
+  const aiRes = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      model,
+      temperature: 0.2,
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userPrompt },
+      ],
+      response_format: {
+        type: "json_schema",
+        json_schema: {
+          name: "remcard_route",
+          schema,
+          strict: true,
+        },
+      },
+    }),
+  });
+
+  const aiData = await aiRes.json().catch(() => null);
+  if (!aiRes.ok) {
+    const msg = aiData && aiData.error && aiData.error.message ? aiData.error.message : `OpenAI error ${aiRes.status}`;
+    throw new Error(msg);
+  }
+
+  const content = aiData && aiData.choices && aiData.choices[0] && aiData.choices[0].message ? aiData.choices[0].message.content : "";
+  if (!content || typeof content !== "string") throw new Error("OpenAI empty content");
+
+  const parsed = JSON.parse(content);
+  return { route: parsed, model };
+}
+
+function normalizeAnswers(raw) {
+  const answers = raw && typeof raw === "object" ? raw : {};
+  return {
+    objectType: normalizeString(answers.objectType),
+    objectStatus: normalizeString(answers.objectStatus),
+    currentStage: normalizeString(answers.currentStage),
+    budget: normalizeString(answers.budget),
+    timeline: normalizeString(answers.timeline),
+    features: normalizeString(answers.features),
+    name: normalizeString(answers.name),
+    contact: normalizeString(answers.contact),
+    objectTypeLabel: normalizeString(answers.objectTypeLabel),
+    objectStatusLabel: normalizeString(answers.objectStatusLabel),
+    stageLabel: normalizeString(answers.stageLabel),
+    budgetLabel: normalizeString(answers.budgetLabel),
+    timelineLabel: normalizeString(answers.timelineLabel),
+  };
+}
+
+function validateAnswers(answers) {
+  if (!allowedObjectType.has(answers.objectType)) return "Некорректный тип объекта";
+  if (!allowedObjectStatus.has(answers.objectStatus)) return "Некорректный статус объекта";
+  if (!allowedStage.has(answers.currentStage)) return "Некорректная стадия";
+  if (!allowedBudget.has(answers.budget)) return "Некорректный бюджет";
+  if (!allowedTimeline.has(answers.timeline)) return "Некорректный срок";
+  return null;
+}
+
+export default async function handler(req, res) {
+  const origin = getOrigin(req);
+  const headers = { ...corsHeaders(origin), "Content-Type": "application/json" };
+
+  if (req.method === "OPTIONS") {
+    res.setHeader("Access-Control-Allow-Origin", headers["Access-Control-Allow-Origin"]);
+    res.setHeader("Access-Control-Allow-Methods", headers["Access-Control-Allow-Methods"]);
+    res.setHeader("Access-Control-Allow-Headers", headers["Access-Control-Allow-Headers"]);
+    res.setHeader("Access-Control-Max-Age", headers["Access-Control-Max-Age"]);
+    res.status(204).end();
+    return;
+  }
+
+  if (req.method === "GET") {
+    const configured = !!(process.env.REMCARD_OPENAI_API_KEY || process.env.OPENAI_API_KEY);
+    res.setHeader("Access-Control-Allow-Origin", headers["Access-Control-Allow-Origin"]);
+    res.status(200).json({
+      configured,
+      model: process.env.REMCARD_OPENAI_MODEL || process.env.OPENAI_MODEL || "gpt-4o-mini",
+      hint: configured
+        ? "AI generation is enabled."
+        : "Set REMCARD_OPENAI_API_KEY in Vercel for AI generation. Template fallback remains active.",
+    });
+    return;
+  }
+
+  if (req.method !== "POST") {
+    res.setHeader("Access-Control-Allow-Origin", headers["Access-Control-Allow-Origin"]);
+    res.status(405).json({ error: "Метод не разрешён" });
+    return;
+  }
+
+  let body;
+  try {
+    body = typeof req.body === "string" ? JSON.parse(req.body) : req.body || {};
+  } catch {
+    res.setHeader("Access-Control-Allow-Origin", headers["Access-Control-Allow-Origin"]);
+    res.status(400).json({ error: "Неверный JSON" });
+    return;
+  }
+
+  const answers = normalizeAnswers(body.answers || body);
+  const validationError = validateAnswers(answers);
+  if (validationError) {
+    res.setHeader("Access-Control-Allow-Origin", headers["Access-Control-Allow-Origin"]);
+    res.status(400).json({ error: validationError });
+    return;
+  }
+
+  const template = buildTemplateRoute(answers);
+  try {
+    const ai = await generateRouteWithAI(answers);
+    if (!ai) {
+      res.setHeader("Access-Control-Allow-Origin", headers["Access-Control-Allow-Origin"]);
+      res.status(200).json({ success: true, source: "template", steps: template.steps });
+      return;
+    }
+
+    const steps = sanitizeRoute(ai.route, template.steps);
+    res.setHeader("Access-Control-Allow-Origin", headers["Access-Control-Allow-Origin"]);
+    res.status(200).json({ success: true, source: "ai", model: ai.model, steps });
+  } catch (err) {
+    console.error("navigator-route AI error:", err);
+    res.setHeader("Access-Control-Allow-Origin", headers["Access-Control-Allow-Origin"]);
+    res.status(200).json({
+      success: true,
+      source: "template",
+      warning: "AI unavailable; template route returned",
+      steps: template.steps,
+    });
+  }
+}
