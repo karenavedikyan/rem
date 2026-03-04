@@ -293,42 +293,88 @@ async function generateRouteWithAI(answers) {
 - tips ориентированы на предотвращение ошибок,
 - resources укажи как безопасные плейсхолдеры https://example.com/... если нет точных ссылок.`;
 
-  const aiRes = await fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model,
+  const parseContentToJSON = (content) => {
+    if (!content || typeof content !== "string") throw new Error("OpenAI empty content");
+    try {
+      return JSON.parse(content);
+    } catch {
+      const start = content.indexOf("{");
+      const end = content.lastIndexOf("}");
+      if (start >= 0 && end > start) return JSON.parse(content.slice(start, end + 1));
+      throw new Error("OpenAI returned non-JSON content");
+    }
+  };
+
+  const callChatCompletions = async ({ targetModel, responseFormat }) => {
+    const payload = {
+      model: targetModel,
       temperature: 0.2,
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: userPrompt },
       ],
-      response_format: {
-        type: "json_schema",
-        json_schema: {
-          name: "remcard_route",
-          schema,
-          strict: true,
-        },
-      },
-    }),
-  });
+    };
+    if (responseFormat) payload.response_format = responseFormat;
 
-  const aiData = await aiRes.json().catch(() => null);
-  if (!aiRes.ok) {
-    const msg = aiData && aiData.error && aiData.error.message ? aiData.error.message : `OpenAI error ${aiRes.status}`;
-    throw new Error(msg);
+    const aiRes = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const aiData = await aiRes.json().catch(() => null);
+    if (!aiRes.ok) {
+      const msg = aiData && aiData.error && aiData.error.message ? aiData.error.message : `OpenAI error ${aiRes.status}`;
+      throw new Error(msg);
+    }
+
+    const content = aiData && aiData.choices && aiData.choices[0] && aiData.choices[0].message ? aiData.choices[0].message.content : "";
+    const parsed = parseContentToJSON(content);
+    return parsed;
+  };
+
+  const modelsToTry = uniq([model, "gpt-4o-mini"]);
+  const errors = [];
+
+  for (const targetModel of modelsToTry) {
+    try {
+      const parsed = await callChatCompletions({
+        targetModel,
+        responseFormat: {
+          type: "json_schema",
+          json_schema: {
+            name: "remcard_route",
+            schema,
+            strict: true,
+          },
+        },
+      });
+      return { route: parsed, model: targetModel };
+    } catch (err) {
+      errors.push(`json_schema/${targetModel}: ${err.message}`);
+    }
+
+    try {
+      const parsed = await callChatCompletions({
+        targetModel,
+        responseFormat: { type: "json_object" },
+      });
+      return { route: parsed, model: targetModel };
+    } catch (err) {
+      errors.push(`json_object/${targetModel}: ${err.message}`);
+    }
   }
 
-  const content = aiData && aiData.choices && aiData.choices[0] && aiData.choices[0].message ? aiData.choices[0].message.content : "";
-  if (!content || typeof content !== "string") throw new Error("OpenAI empty content");
-
-  const parsed = JSON.parse(content);
-  return { route: parsed, model };
+  throw new Error(errors.join(" | "));
 }
+
+const sanitizeErrorMessage = (message) =>
+  String(message || "Unknown error")
+    .replace(/sk-[A-Za-z0-9_-]+/g, "sk-***")
+    .slice(0, 900);
 
 function normalizeAnswers(raw) {
   const answers = raw && typeof raw === "object" ? raw : {};
@@ -421,11 +467,13 @@ export default async function handler(req, res) {
     res.status(200).json({ success: true, source: "ai", model: ai.model, steps });
   } catch (err) {
     console.error("navigator-route AI error:", err);
+    const details = sanitizeErrorMessage(err && err.message);
     res.setHeader("Access-Control-Allow-Origin", headers["Access-Control-Allow-Origin"]);
     res.status(200).json({
       success: true,
       source: "template",
       warning: "AI unavailable; template route returned",
+      warning_details: details,
       steps: template.steps,
     });
   }
