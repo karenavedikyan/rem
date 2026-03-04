@@ -85,6 +85,7 @@ const allowedObjectStatus = new Set(["new_without_finish", "new_basic_finish", "
 const allowedStage = new Set(["planning", "measurements", "rough", "finishing", "furniture"]);
 const allowedBudget = new Set(["up_to_300", "300_700", "700_1500", "1500_plus", "unknown"]);
 const allowedTimeline = new Set(["now", "month", "three_months", "later"]);
+const DEFAULT_OPENAI_MODEL = "gpt-4o-mini";
 
 const normalizeString = (value, fallback = "") => {
   const v = typeof value === "string" ? value.trim() : "";
@@ -113,6 +114,24 @@ const normalizeResources = (value) => {
     }))
     .filter((r) => r.title && /^https?:\/\//.test(r.url))
     .slice(0, 4);
+};
+
+const looksLikeApiKey = (value) => /^sk-[A-Za-z0-9._-]{20,}$/.test(normalizeString(value));
+
+const getOpenAIKey = () => {
+  const candidate = normalizeString(process.env.REMCARD_OPENAI_API_KEY || process.env.OPENAI_API_KEY);
+  if (!candidate) return null;
+  if (/openai key/i.test(candidate)) return null;
+  return looksLikeApiKey(candidate) ? candidate : null;
+};
+
+const getPreferredModel = () => {
+  const candidate = normalizeString(process.env.REMCARD_OPENAI_MODEL || process.env.OPENAI_MODEL);
+  if (!candidate) return DEFAULT_OPENAI_MODEL;
+  if (looksLikeApiKey(candidate)) return DEFAULT_OPENAI_MODEL;
+  if (/openai key/i.test(candidate)) return DEFAULT_OPENAI_MODEL;
+  if (/\s/.test(candidate)) return DEFAULT_OPENAI_MODEL;
+  return candidate;
 };
 
 function getOrigin(req) {
@@ -228,8 +247,8 @@ function sanitizeRoute(route, fallbackSteps) {
 }
 
 async function generateRouteWithAI(answers) {
-  const apiKey = process.env.REMCARD_OPENAI_API_KEY || process.env.OPENAI_API_KEY;
-  const model = process.env.REMCARD_OPENAI_MODEL || process.env.OPENAI_MODEL || "gpt-4o-mini";
+  const apiKey = getOpenAIKey();
+  const model = getPreferredModel();
   if (!apiKey) return null;
 
   const schema = {
@@ -336,7 +355,7 @@ async function generateRouteWithAI(answers) {
     return parsed;
   };
 
-  const modelsToTry = uniq([model, "gpt-4o-mini"]);
+  const modelsToTry = uniq([model, DEFAULT_OPENAI_MODEL]);
   const errors = [];
 
   for (const targetModel of modelsToTry) {
@@ -418,14 +437,14 @@ export default async function handler(req, res) {
   }
 
   if (req.method === "GET") {
-    const configured = !!(process.env.REMCARD_OPENAI_API_KEY || process.env.OPENAI_API_KEY);
+    const configured = !!getOpenAIKey();
     res.setHeader("Access-Control-Allow-Origin", headers["Access-Control-Allow-Origin"]);
     res.status(200).json({
       configured,
-      model: process.env.REMCARD_OPENAI_MODEL || process.env.OPENAI_MODEL || "gpt-4o-mini",
+      model: getPreferredModel(),
       hint: configured
         ? "AI generation is enabled."
-        : "Set REMCARD_OPENAI_API_KEY in Vercel for AI generation. Template fallback remains active.",
+        : "Set valid REMCARD_OPENAI_API_KEY in Vercel for AI generation. Template fallback remains active.",
     });
     return;
   }
