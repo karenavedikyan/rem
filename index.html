@@ -215,16 +215,16 @@
       <section class="section" id="request">
         <div class="container">
           <header class="section-header">
-            <h2>Оставить заявку на ремонт (Краснодар)</h2>
+            <h2>Заявка клиента в RemCard (Краснодар)</h2>
             <p class="section-subtitle">
-              Короткая форма на 1 минуту: укажите базовые данные, и мы свяжемся по вашей задаче.
+              Заполните 5 полей — мы подберём мастера или компанию под вашу задачу, район и бюджет.
             </p>
           </header>
 
           <div class="grid two-col">
             <div class="card">
-              <h3>Форма заявки</h3>
-              <p class="muted">Запуск в Краснодаре. Подключение других городов — следующим этапом.</p>
+              <h3>Быстрая заявка клиента</h3>
+              <p class="muted">Сейчас работаем в Краснодаре. Оставьте заявку — ответим и уточним детали.</p>
 
               <!-- TODO: Подключить реальный backend (телеграм‑бот / почта / API). -->
               <form class="form" id="request-form" novalidate>
@@ -239,27 +239,28 @@
                       <option>Ремонт под ключ</option>
                       <option>Другое</option>
                     </select>
+                    <p class="field-hint">Что нужно сделать в первую очередь.</p>
                   </div>
 
                   <div class="field">
-                    <label for="req-district">Район</label>
-                    <input class="input" id="req-district" name="district" required placeholder="Например, Фестивальный / ЮМР" />
+                    <label for="req-district">Район объекта</label>
+                    <input class="input" id="req-district" name="district" required placeholder="Например: Фестивальный, ЮМР, Гидрострой" />
                   </div>
 
                   <div class="field">
-                    <label for="req-budget">Бюджет</label>
+                    <label for="req-budget">Бюджет / диапазон</label>
                     <select class="input" id="req-budget" name="budget" required>
                       <option value="" selected disabled>Выберите диапазон</option>
-                      <option>До 100 000 ₽</option>
-                      <option>100 000–300 000 ₽</option>
-                      <option>300 000–700 000 ₽</option>
-                      <option>700 000 ₽ и выше</option>
+                      <option>До 150 000 ₽</option>
+                      <option>150 000–400 000 ₽</option>
+                      <option>400 000–900 000 ₽</option>
+                      <option>900 000 ₽ и выше</option>
                     </select>
                   </div>
 
                   <div class="field">
                     <label for="req-name">Имя</label>
-                    <input class="input" id="req-name" name="name" autocomplete="name" required placeholder="Например, Алексей" />
+                    <input class="input" id="req-name" name="name" autocomplete="name" required placeholder="Как к вам обращаться" />
                   </div>
 
                   <div class="field">
@@ -270,7 +271,7 @@
                       name="contact"
                       autocomplete="tel"
                       required
-                      placeholder="+7 (...) ...-..-.. или @username"
+                      placeholder="+7 (...) ...-..-.. или @telegram"
                     />
                   </div>
                 </div>
@@ -288,14 +289,15 @@
             </div>
 
             <div class="card">
-              <h3>Что важно в заявке</h3>
+              <h3>Как получить подходящие предложения быстрее</h3>
               <ul class="list">
-                <li>Чем точнее район и бюджет, тем быстрее подберём исполнителя.</li>
-                <li>Контакт указывайте тот, где вам удобно ответить в течение дня.</li>
-                <li>После заявки обычно связываемся в ближайшее рабочее время.</li>
+                <li>Укажите реальный район объекта — это сразу сужает круг исполнителей.</li>
+                <li>Выберите диапазон бюджета: так проще подобрать адекватные варианты.</li>
+                <li>Оставьте контакт, где вы точно отвечаете в течение дня.</li>
+                <li>После отправки мы связываемся и уточняем детали по задаче.</li>
               </ul>
               <p class="muted" style="margin-top: 12px">
-                Это демо‑форма для статического сайта. Подключение отправки заявок будет добавлено на этапе запуска.
+                Сервис запускается в Краснодаре. Далее подключим другие города России.
               </p>
             </div>
           </div>
@@ -305,48 +307,49 @@
       <section class="section" id="partner-request">
         <div class="container">
           <header class="section-header">
-            <h2>Заявка партнёра (Краснодар)</h2>
+            <h2>Заявка партнёра в RemCard (Краснодар)</h2>
             <p class="section-subtitle">
-              Укажите базовые данные для подключения: мы свяжемся и согласуем следующий шаг.
+              Для мастеров, бригад, компаний и магазинов. Заполните короткую форму — обсудим подключение и условия.
             </p>
           </header>
 
           <div class="grid two-col">
             <div class="card">
-              <h3>Форма партнёра</h3>
-              <p class="muted">Короткая форма для мастеров и компаний Краснодара.</p>
+              <h3>Быстрая форма партнёра</h3>
+              <p class="muted">Нужно 4 поля, чтобы начать диалог по подключению.</p>
 
               <!-- TODO: Подключить реальный backend (телеграм‑бот / почта / API). -->
               <form class="form" id="partner-form" novalidate>
                 <div class="form-grid">
                   <div class="field">
-                    <label for="hp-role">Роль</label>
+                    <label for="hp-role">Кто вы</label>
                     <select class="input" id="hp-role" name="role" required>
                       <option value="" selected disabled>Выберите роль</option>
                       <option>Мастер / бригада</option>
-                      <option>Компания / магазин</option>
+                      <option>Компания услуг</option>
+                      <option>Магазин материалов / товаров</option>
                     </select>
                   </div>
 
                   <div class="field">
-                    <label for="hp-spec">Специализация</label>
+                    <label for="hp-spec">Специализация / направление</label>
                     <input
                       class="input"
                       id="hp-spec"
                       name="specialization"
                       required
-                      placeholder="Например: санузлы, электрика, кухни, двери"
+                      placeholder="Например: санузлы под ключ, электрика, кухни, двери, плитка"
                     />
                   </div>
 
                   <div class="field">
-                    <label for="hp-location">Город / район</label>
-                    <input class="input" id="hp-location" name="location" required placeholder="Краснодар, район работы" />
+                    <label for="hp-location">Город и район работы</label>
+                    <input class="input" id="hp-location" name="location" required placeholder="Например: Краснодар, ФМР и Юбилейный" />
                   </div>
 
                   <div class="field">
-                    <label for="hp-contact">Контакт</label>
-                    <input class="input" id="hp-contact" name="contact" required placeholder="+7 (...) ...-..-.. или @username" />
+                    <label for="hp-contact">Телефон / Telegram</label>
+                    <input class="input" id="hp-contact" name="contact" required placeholder="+7 (...) ...-..-.. или @telegram" />
                   </div>
                 </div>
 
@@ -363,13 +366,13 @@
             </div>
 
             <div class="card">
-              <h3>Что будет дальше</h3>
+              <h3>Что происходит после заявки</h3>
               <ul class="list">
-                <li>Связываемся и уточняем формат сотрудничества.</li>
-                <li>Фиксируем специализацию и район обслуживания.</li>
-                <li>Подключаем к потоку заявок и бонусной программе.</li>
+                <li>Связываемся и уточняем ваш профиль и районы работы.</li>
+                <li>Проверяем базовые данные и формат сотрудничества.</li>
+                <li>Подключаем к RemCard и согласовываем первые заявки или акции.</li>
               </ul>
-              <p class="muted" style="margin-top: 12px">Заявка сразу попадает в Telegram‑группу RemCard.</p>
+              <p class="muted" style="margin-top: 12px">Первые партнёры формируют локальную сеть RemCard в Краснодаре.</p>
             </div>
           </div>
         </div>
