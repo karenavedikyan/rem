@@ -441,6 +441,20 @@ img {
   filter: blur(4px);
 }
 
+.launch-note {
+  padding: 4px 0 18px;
+}
+
+.launch-note-text {
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(229, 57, 53, 0.2);
+  background: rgba(229, 57, 53, 0.08);
+  color: rgba(245, 245, 245, 0.95);
+  font-weight: 600;
+}
+
 /* Sections */
 .section {
   padding: 56px 0;
@@ -554,6 +568,20 @@ img {
 
 .card-wide {
   margin-top: 14px;
+}
+
+.role-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-action {
+  margin-top: 14px;
+  align-self: flex-start;
+}
+
+.partner-flow .list {
+  margin-top: 0;
 }
 
 .card-icon {
@@ -1009,6 +1037,30 @@ img {
   background: rgba(18, 18, 18, 0.65);
 }
 
+.section-compact {
+  padding-top: 20px;
+  padding-bottom: 56px;
+}
+
+.logos-grid {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.logo-placeholder {
+  border-radius: 12px;
+  border: 1px dashed rgba(245, 245, 245, 0.22);
+  background: rgba(18, 18, 18, 0.3);
+  color: rgba(176, 190, 197, 0.9);
+  min-height: 66px;
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  font-weight: 600;
+}
+
 .footer-inner {
   display: flex;
   align-items: center;
@@ -1071,6 +1123,10 @@ img {
   .two-col,
   .tiles {
     grid-template-columns: 1fr;
+  }
+
+  .logos-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .form-grid {
@@ -1159,6 +1215,10 @@ img {
   }
 
   .cards-promotions {
+    grid-template-columns: 1fr;
+  }
+
+  .logos-grid {
     grid-template-columns: 1fr;
   }
 }

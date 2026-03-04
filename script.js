@@ -479,12 +479,12 @@
     successText: "Заявка отправлена в RemCard. Мы свяжемся с вами в ближайшее время.",
     buildMessage: (get) =>
       "Новая заявка RemCard (клиент):\n" +
-      `Имя: ${get("name") || "-"}\n` +
-      `Телефон: ${get("phone") || "-"}\n` +
-      `Email: ${get("email") || "-"}\n` +
-      `Город: ${get("city") || "Краснодар"}\n` +
       `Тип задачи: ${get("taskType") || get("jobType") || "-"}\n` +
-      `Комментарий: ${get("comment") || "-"}`,
+      `Район: ${get("district") || get("city") || "Краснодар"}\n` +
+      `Бюджет: ${get("budget") || "-"}\n` +
+      `Имя: ${get("name") || "-"}\n` +
+      `Контакт: ${get("contact") || get("phone") || get("email") || "-"}` +
+      (get("comment") ? `\nКомментарий: ${get("comment")}` : ""),
   });
 
   // Partner request form (partners page)
@@ -494,12 +494,11 @@
     successText: "Заявка партнёра отправлена. Мы свяжемся с вами в ближайшее время.",
     buildMessage: (get) =>
       "Новая заявка RemCard (партнёр):\n" +
-      `Имя/Компания: ${get("name") || "-"}\n` +
-      `Телефон: ${get("phone") || "-"}\n` +
-      `Email: ${get("email") || "-"}\n` +
-      `Город: ${get("city") || "Краснодар"}\n` +
-      `Тип партнёра: ${get("partnerType") || "-"}\n` +
+      `Роль: ${get("role") || get("partnerType") || "-"}\n` +
       `Специализация: ${get("specialization") || "-"}\n` +
-      `Комментарий: ${get("comment") || "-"}`,
+      `Город/район: ${get("location") || get("city") || "Краснодар"}\n` +
+      `Контакт: ${get("contact") || get("phone") || get("email") || "-"}\n` +
+      `Имя/Компания: ${get("name") || "-"}` +
+      (get("comment") ? `\nКомментарий: ${get("comment")}` : ""),
   });
 })();
