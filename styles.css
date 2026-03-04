@@ -567,6 +567,12 @@ img {
   letter-spacing: -0.2px;
 }
 
+.card h2 {
+  margin: 0 0 8px;
+  font-size: 21px;
+  letter-spacing: -0.2px;
+}
+
 .card p {
   margin: 0;
   color: rgba(176, 190, 197, 0.95);
@@ -574,6 +580,13 @@ img {
 
 .card-wide {
   margin-top: 14px;
+}
+
+.navigator-cta {
+  margin-top: 18px;
+  display: grid;
+  gap: 8px;
+  justify-items: flex-start;
 }
 
 .role-card {
@@ -1036,6 +1049,43 @@ img {
   color: rgba(176, 190, 197, 0.95);
 }
 
+.navigator-page-hero .section-header h1 {
+  margin: 0 0 10px;
+  font-size: clamp(28px, 3vw, 44px);
+  letter-spacing: -0.5px;
+  line-height: 1.15;
+}
+
+.navigator-steps {
+  display: grid;
+  gap: 14px;
+}
+
+.navigator-step-grid {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.navigator-step-group {
+  border: 1px solid rgba(245, 245, 245, 0.08);
+  border-radius: 12px;
+  background: rgba(18, 18, 18, 0.32);
+  padding: 10px 12px;
+}
+
+.navigator-step-label {
+  font-weight: 700;
+  font-size: 13px;
+  color: rgba(245, 245, 245, 0.94);
+}
+
+.navigator-step-list {
+  margin-top: 8px;
+  font-size: 13.5px;
+}
+
 /* Footer */
 .site-footer {
   border-top: 1px solid rgba(245, 245, 245, 0.06);
@@ -1128,6 +1178,10 @@ img {
   .cards-3,
   .two-col,
   .tiles {
+    grid-template-columns: 1fr;
+  }
+
+  .navigator-step-grid {
     grid-template-columns: 1fr;
   }
 

@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Навигатор ремонта RemCard: ответьте на вопросы и получите маршрут этапов, исполнителей, материалов и советов по ремонту."
+    />
+    <title>RemCard — Навигатор ремонта</title>
+
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Перейти к содержимому</a>
+
+    <header class="site-header" id="top">
+      <div class="container header-inner">
+        <a class="brand" href="../index.html" aria-label="RemCard — на главную">
+          <img class="brand-mark-img" src="../assets/img/remcard-mark.svg" alt="" aria-hidden="true" />
+          <span class="brand-wrap">
+            <span class="brand-text">RemCard</span>
+            <span class="brand-tagline">навигатор ремонта</span>
+          </span>
+        </a>
+
+        <nav class="nav" aria-label="Основная навигация">
+          <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
+            <span class="nav-toggle-lines" aria-hidden="true"></span>
+            <span class="sr-only">Открыть меню</span>
+          </button>
+
+          <div class="nav-menu" id="nav-menu">
+            <a class="nav-link" href="../index.html">Главная</a>
+            <a class="nav-link" href="../index.html#clients">Клиентам</a>
+            <a class="nav-link" href="../index.html#masters">Мастерам</a>
+            <a class="nav-link" href="../index.html#business">Бизнесу</a>
+            <a class="nav-link" href="../index.html#how">Как это работает</a>
+            <a class="nav-link" href="./" aria-current="page">Навигатор</a>
+            <a class="nav-link" href="../index.html#contacts">Контакты</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="section navigator-page-hero">
+        <div class="container">
+          <header class="section-header">
+            <h1>Навигатор ремонта RemCard</h1>
+            <p class="section-subtitle">
+              Ответьте на несколько вопросов и получите маршрут ремонта: этапы, нужных специалистов, категории материалов и практичные советы.
+            </p>
+          </header>
+
+          <div class="grid two-col">
+            <article class="card navigator-form-card">
+              <h2>1) Расскажите о задаче</h2>
+              <form class="form" id="navigator-form" novalidate>
+                <div class="form-grid">
+                  <div class="field">
+                    <label for="nv-object-type">Тип объекта</label>
+                    <select class="input" id="nv-object-type" name="objectType" required>
+                      <option value="" selected disabled>Выберите вариант</option>
+                      <option value="apartment">Квартира</option>
+                      <option value="house">Дом</option>
+                      <option value="commercial">Коммерческое помещение</option>
+                    </select>
+                  </div>
+
+                  <div class="field">
+                    <label for="nv-object-status">Статус объекта</label>
+                    <select class="input" id="nv-object-status" name="objectStatus" required>
+                      <option value="" selected disabled>Выберите вариант</option>
+                      <option value="new_without_finish">Новостройка без отделки</option>
+                      <option value="new_basic_finish">Новостройка с базовой отделкой</option>
+                      <option value="secondary_partial">Вторичка, частичный ремонт</option>
+                      <option value="secondary_full">Вторичка, полный ремонт</option>
+                    </select>
+                  </div>
+
+                  <div class="field">
+                    <label for="nv-stage">Стадия сейчас</label>
+                    <select class="input" id="nv-stage" name="currentStage" required>
+                      <option value="" selected disabled>Выберите стадию</option>
+                      <option value="planning">Только планирую ремонт</option>
+                      <option value="measurements">Делаю замеры / планировку</option>
+                      <option value="rough">Иду к черновым / идут черновые</option>
+                      <option value="finishing">Иду к чистовой / идёт чистовая</option>
+                      <option value="furniture">Выбираю мебель / свет</option>
+                    </select>
+                  </div>
+
+                  <div class="field">
+                    <label for="nv-budget">Примерный бюджет</label>
+                    <select class="input" id="nv-budget" name="budget" required>
+                      <option value="" selected disabled>Выберите диапазон</option>
+                      <option value="up_to_300">До 300 000 ₽</option>
+                      <option value="300_700">300 000–700 000 ₽</option>
+                      <option value="700_1500">700 000–1 500 000 ₽</option>
+                      <option value="1500_plus">1 500 000 ₽ и выше</option>
+                      <option value="unknown">Пока не знаю</option>
+                    </select>
+                  </div>
+
+                  <div class="field">
+                    <label for="nv-timeline">Когда хотите стартовать</label>
+                    <select class="input" id="nv-timeline" name="timeline" required>
+                      <option value="" selected disabled>Выберите срок</option>
+                      <option value="now">Уже сейчас</option>
+                      <option value="month">В течение месяца</option>
+                      <option value="three_months">В течение 3 месяцев</option>
+                      <option value="later">Позже</option>
+                    </select>
+                  </div>
+
+                  <div class="field">
+                    <label for="nv-name">Имя</label>
+                    <input class="input" id="nv-name" name="name" autocomplete="name" required placeholder="Как к вам обращаться" />
+                  </div>
+
+                  <div class="field">
+                    <label for="nv-contact">Телефон / Telegram</label>
+                    <input
+                      class="input"
+                      id="nv-contact"
+                      name="contact"
+                      required
+                      autocomplete="tel"
+                      placeholder="+7 (...) ...-..-.. или @telegram"
+                    />
+                  </div>
+
+                  <div class="field field-wide">
+                    <label for="nv-features">Особенности (опционально)</label>
+                    <textarea
+                      class="input textarea"
+                      id="nv-features"
+                      name="features"
+                      rows="4"
+                      placeholder="Например: дети, питомцы, срочный въезд, ипотека, шумные работы только по выходным."
+                    ></textarea>
+                  </div>
+                </div>
+
+                <div class="form-actions">
+                  <button class="btn btn-primary" type="submit">Построить маршрут ремонта</button>
+                  <p class="fineprint">Маршрут формируется сразу и бесплатно. Ничего устанавливать не нужно.</p>
+                </div>
+              </form>
+            </article>
+
+            <article class="card">
+              <h2>2) Получите маршрут</h2>
+              <ul class="list">
+                <li>3–6 шагов в зависимости от вашей стадии ремонта.</li>
+                <li>Для каждого шага: что делать, кто нужен, какие категории материалов смотреть.</li>
+                <li>Практичные советы и типичные ошибки на каждом этапе.</li>
+                <li>Готовая кнопка «Отправить заявку в RemCard по этому маршруту».</li>
+              </ul>
+              <p class="muted" style="margin-top: 12px">Стартовая версия для Краснодара. Дальше добавим адаптацию под другие города.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-compact" id="navigator-result-section" hidden>
+        <div class="container">
+          <header class="section-header">
+            <h2>Ваш маршрут ремонта</h2>
+            <p class="section-subtitle" id="navigator-summary"></p>
+          </header>
+
+          <div class="navigator-steps" id="navigator-steps"></div>
+
+          <article class="card card-wide">
+            <h3>3) Отправьте заявку по этому маршруту</h3>
+            <p class="muted">Сформируем заявку с параметрами объекта и этапами работ, чтобы команда RemCard быстрее подобрала решение.</p>
+            <div class="form-actions">
+              <button class="btn btn-primary" id="send-route-btn" type="button">Отправить заявку в RemCard по этому маршруту</button>
+              <p class="fineprint">Заявка уйдёт в канал RemCard с пометкой «Навигатор ремонта».</p>
+            </div>
+
+            <div class="form-result" id="navigator-send-result" role="status" aria-live="polite" hidden>
+              <div class="form-result-title">Спасибо!</div>
+              <div class="form-result-text">Маршрут отправлен в RemCard. Мы свяжемся с вами в ближайшее время.</div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="footer-left">
+          <div class="brand footer-brand">
+            <img class="brand-mark-img" src="../assets/img/remcard-mark.svg" alt="" aria-hidden="true" />
+            <span class="brand-wrap">
+              <span class="brand-text">RemCard</span>
+              <span class="brand-tagline">навигатор ремонта</span>
+            </span>
+          </div>
+          <p class="muted">© <span id="year">2026</span> RemCard. Все права защищены.</p>
+        </div>
+        <div class="footer-right">
+          <a class="footer-link" href="#top">Наверх</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../script.js" defer></script>
+    <script src="./navigator.js" defer></script>
+  </body>
+</html>
