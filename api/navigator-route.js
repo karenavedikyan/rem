@@ -273,6 +273,105 @@ function sanitizeRoute(route, fallbackSteps) {
   return alignStageTypesWithFallback(out.slice(0, 6), fallbackSteps);
 }
 
+const squeezeSpaces = (text) => normalizeString(text).replace(/\s+/g, " ").trim();
+
+const shortenText = (text, maxLen) => {
+  const t = squeezeSpaces(text);
+  if (!t || t.length <= maxLen) return t;
+  const cut = t.slice(0, maxLen);
+  const splitAt = Math.max(cut.lastIndexOf(". "), cut.lastIndexOf("; "), cut.lastIndexOf(", "), cut.lastIndexOf(" "));
+  const base = splitAt > Math.floor(maxLen * 0.55) ? cut.slice(0, splitAt) : cut;
+  return `${base.trim()}…`;
+};
+
+const firstSentence = (text) => {
+  const t = squeezeSpaces(text);
+  if (!t) return t;
+  const m = t.match(/^(.+?[.!?])(\s|$)/);
+  return m ? m[1].trim() : t;
+};
+
+const normalizeForDedup = (text) => squeezeSpaces(text).toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, "");
+
+const buildFeatureHints = (features) => {
+  const f = normalizeString(features).toLowerCase();
+  const hints = new Set();
+  if (!f) return [];
+  if (/(реб|дет|малыш)/.test(f)) hints.add("реб");
+  if (/питом|живот|кот|собак/.test(f)) hints.add("питом");
+  if (/ипотек/.test(f)) hints.add("ипот");
+  if (/сроч|быстр|въезд/.test(f)) hints.add("сроч");
+  if (/шум|тишин/.test(f)) hints.add("шум");
+
+  // Add first meaningful words from free-text features.
+  const words = f
+    .split(/[^a-zа-яё0-9]+/i)
+    .map((w) => w.trim())
+    .filter((w) => w.length >= 4)
+    .slice(0, 4);
+  for (const w of words) hints.add(w);
+  return Array.from(hints);
+};
+
+const containsFeatureHint = (text, hints) => {
+  if (!hints.length) return false;
+  const t = normalizeString(text).toLowerCase();
+  return hints.some((h) => t.includes(h));
+};
+
+function humanizeAiRoute(steps, features, fallbackSteps) {
+  if (!Array.isArray(steps) || !steps.length) return steps;
+  const hints = buildFeatureHints(features);
+  const seenTips = new Set();
+  let featureMentions = 0;
+
+  return steps.map((step, idx) => {
+    const fb = fallbackSteps[idx] || fallbackSteps[fallbackSteps.length - 1];
+    let description = firstSentence(step.description);
+    description = shortenText(description, 170) || fb.description;
+
+    if (containsFeatureHint(description, hints)) {
+      featureMentions += 1;
+      if (featureMentions > 1) description = fb.description;
+    }
+
+    const outputTips = [];
+    const candidates = Array.isArray(step.tips) && step.tips.length ? step.tips : fb.tips;
+    for (const tipRaw of candidates) {
+      let tip = shortenText(tipRaw, 120);
+      if (!tip) continue;
+      const dedupKey = normalizeForDedup(tip);
+      if (!dedupKey || seenTips.has(dedupKey)) continue;
+
+      if (containsFeatureHint(tip, hints)) {
+        if (featureMentions >= 2) continue;
+        featureMentions += 1;
+      }
+
+      seenTips.add(dedupKey);
+      outputTips.push(tip);
+      if (outputTips.length >= 3) break;
+    }
+
+    if (outputTips.length < 2) {
+      for (const fallbackTip of fb.tips) {
+        const tip = shortenText(fallbackTip, 120);
+        const dedupKey = normalizeForDedup(tip);
+        if (!tip || seenTips.has(dedupKey)) continue;
+        seenTips.add(dedupKey);
+        outputTips.push(tip);
+        if (outputTips.length >= 2) break;
+      }
+    }
+
+    return {
+      ...step,
+      description,
+      tips: outputTips.slice(0, 3),
+    };
+  });
+}
+
 async function generateRouteWithAI(answers) {
   const apiKey = getOpenAIKey();
   const model = getPreferredModel();
@@ -345,11 +444,11 @@ ${JSON.stringify(referenceRoute)}
 1) Количество шагов = ${referenceRoute.length}.
 2) Порядок stage_type должен быть ровно: ${JSON.stringify(referenceStageOrder)}.
 3) Не делай все шаги "planning" и не повторяй абстрактные формулировки.
-4) description — 1-2 предложения, по делу.
+4) description — 1 короткое человеческое предложение (обычно до 18 слов), без канцелярита.
 5) recommended_professionals: 2-4 пункта, конкретные роли (например: прораб, электрик, сантехник, плиточник, маляр, мебельщик).
 6) recommended_categories: 2-4 практичных категории (например: электромонтаж, сантехника, черновые смеси, плитка, двери, кухни, освещение).
-7) tips: 2-4 практичных совета с фокусом на типичные ошибки.
-8) Учитывай особенности клиента из поля features.
+7) tips: 2-3 коротких практичных совета с фокусом на типичные ошибки.
+8) Учитывай особенности клиента из поля features, но не повторяй один и тот же мотив на каждом шаге (максимум в 1-2 шагах).
 9) resources: 1-2 элемента на шаг; если нет реальных ссылок, используй https://example.com/... .`;
 
   const parseContentToJSON = (content) => {
@@ -521,7 +620,7 @@ export default async function handler(req, res) {
       return;
     }
 
-    const steps = sanitizeRoute(ai.route, template.steps);
+    const steps = humanizeAiRoute(sanitizeRoute(ai.route, template.steps), answers.features, template.steps);
     res.setHeader("Access-Control-Allow-Origin", headers["Access-Control-Allow-Origin"]);
     res.status(200).json({ success: true, source: "ai", model: ai.model, steps });
   } catch (err) {
