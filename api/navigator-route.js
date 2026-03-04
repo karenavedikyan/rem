@@ -80,6 +80,10 @@ const stagePriority = {
   furniture: ["furniture"],
 };
 
+const CANONICAL_STAGES = ["planning", "rough", "engineering", "finishing", "furniture"];
+const CANONICAL_STAGE_SET = new Set(CANONICAL_STAGES);
+const STAGE_ORDER = Object.fromEntries(CANONICAL_STAGES.map((s, i) => [s, i]));
+
 const allowedObjectType = new Set(["apartment", "house", "commercial"]);
 const allowedObjectStatus = new Set(["new_without_finish", "new_basic_finish", "secondary_partial", "secondary_full"]);
 const allowedStage = new Set(["planning", "measurements", "rough", "finishing", "furniture"]);
@@ -219,16 +223,39 @@ function buildTemplateRoute(answers) {
 }
 
 function sanitizeStep(step, fallbackStep, idx) {
+  const stageTypeRaw = normalizeString(step && step.stage_type, fallbackStep.stage_type);
+  const stageType = CANONICAL_STAGE_SET.has(stageTypeRaw) ? stageTypeRaw : fallbackStep.stage_type;
   return {
     id: normalizeString(step && step.id, `step_${idx + 1}`),
     title: normalizeString(step && step.title, fallbackStep.title),
     description: normalizeString(step && step.description, fallbackStep.description),
-    stage_type: normalizeString(step && step.stage_type, fallbackStep.stage_type),
+    stage_type: stageType,
     recommended_professionals: normalizeList(step && step.recommended_professionals, fallbackStep.recommended_professionals),
     recommended_categories: normalizeList(step && step.recommended_categories, fallbackStep.recommended_categories),
     tips: normalizeList(step && step.tips, fallbackStep.tips),
     resources: normalizeResources(step && step.resources),
   };
+}
+
+function alignStageTypesWithFallback(steps, fallbackSteps) {
+  if (!Array.isArray(steps) || !steps.length) return steps;
+
+  const uniqueAiStages = new Set(steps.map((s) => s.stage_type)).size;
+  const uniqueFallbackStages = new Set((fallbackSteps || []).map((s) => s.stage_type)).size;
+  const hasBackwardJump = steps.some((step, idx) => {
+    if (idx === 0) return false;
+    const prev = STAGE_ORDER[steps[idx - 1].stage_type] ?? -1;
+    const cur = STAGE_ORDER[step.stage_type] ?? -1;
+    return cur < prev;
+  });
+
+  if ((uniqueAiStages === 1 && uniqueFallbackStages > 1) || hasBackwardJump) {
+    return steps.map((step, idx) => ({
+      ...step,
+      stage_type: (fallbackSteps[idx] && fallbackSteps[idx].stage_type) || step.stage_type,
+    }));
+  }
+  return steps;
 }
 
 function sanitizeRoute(route, fallbackSteps) {
@@ -243,13 +270,15 @@ function sanitizeRoute(route, fallbackSteps) {
   if (out.length < 3) {
     for (let i = out.length; i < Math.min(3, fallbackSteps.length); i += 1) out.push(fallbackSteps[i]);
   }
-  return out.slice(0, 6);
+  return alignStageTypesWithFallback(out.slice(0, 6), fallbackSteps);
 }
 
 async function generateRouteWithAI(answers) {
   const apiKey = getOpenAIKey();
   const model = getPreferredModel();
   if (!apiKey) return null;
+  const referenceRoute = buildTemplateRoute(answers).steps;
+  const referenceStageOrder = referenceRoute.map((s) => s.stage_type);
 
   const schema = {
     type: "object",
@@ -264,7 +293,7 @@ async function generateRouteWithAI(answers) {
             id: { type: "string" },
             title: { type: "string" },
             description: { type: "string" },
-            stage_type: { type: "string" },
+            stage_type: { type: "string", enum: CANONICAL_STAGES },
             recommended_professionals: { type: "array", items: { type: "string" } },
             recommended_categories: { type: "array", items: { type: "string" } },
             tips: { type: "array", items: { type: "string" } },
@@ -301,16 +330,27 @@ async function generateRouteWithAI(answers) {
   };
 
   const systemPrompt =
-    "Ты эксперт по ремонтам в России. Сформируй краткий, практичный маршрут ремонта на русском языке для клиента RemCard. " +
-    "Учитывай локальный контекст Краснодара. Возвращай только JSON по заданной схеме. " +
-    "Не используй HTML и markdown, не добавляй поля вне схемы, не пиши вступления.";
+    "Ты продуктовый эксперт RemCard по ремонтам в России. " +
+    "Сформируй маршрут ремонта на русском языке, практичный и пригодный для передачи клиенту и команде. " +
+    "Контекст запуска — Краснодар. Используй понятные российские формулировки специалистов и категорий материалов. " +
+    "Возвращай только JSON по заданной схеме, без markdown/HTML и без полей вне схемы.";
 
-  const userPrompt = `Ответы клиента: ${JSON.stringify(answers)}.
-Сделай 3-6 шагов. Для каждого шага:
-- title и description короткие и понятные,
-- recommended_professionals и recommended_categories максимально практичные,
-- tips ориентированы на предотвращение ошибок,
-- resources укажи как безопасные плейсхолдеры https://example.com/... если нет точных ссылок.`;
+  const userPrompt = `Данные клиента:
+${JSON.stringify(answers)}
+
+Опорный маршрут RemCard (используй как каркас и порядок этапов):
+${JSON.stringify(referenceRoute)}
+
+Обязательные правила:
+1) Количество шагов = ${referenceRoute.length}.
+2) Порядок stage_type должен быть ровно: ${JSON.stringify(referenceStageOrder)}.
+3) Не делай все шаги "planning" и не повторяй абстрактные формулировки.
+4) description — 1-2 предложения, по делу.
+5) recommended_professionals: 2-4 пункта, конкретные роли (например: прораб, электрик, сантехник, плиточник, маляр, мебельщик).
+6) recommended_categories: 2-4 практичных категории (например: электромонтаж, сантехника, черновые смеси, плитка, двери, кухни, освещение).
+7) tips: 2-4 практичных совета с фокусом на типичные ошибки.
+8) Учитывай особенности клиента из поля features.
+9) resources: 1-2 элемента на шаг; если нет реальных ссылок, используй https://example.com/... .`;
 
   const parseContentToJSON = (content) => {
     if (!content || typeof content !== "string") throw new Error("OpenAI empty content");
@@ -327,7 +367,7 @@ async function generateRouteWithAI(answers) {
   const callChatCompletions = async ({ targetModel, responseFormat }) => {
     const payload = {
       model: targetModel,
-      temperature: 0.2,
+      temperature: 0.1,
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: userPrompt },
