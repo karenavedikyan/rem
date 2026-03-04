@@ -1,4 +1,23 @@
 (() => {
+  const PRIMARY_ORIGIN = "https://rem-navy.vercel.app";
+  const LEGACY_HOST = "karenavedikyan.github.io";
+  const LEGACY_BASE_PATH = "/rem";
+
+  // Use Vercel as the single public domain.
+  if (window.location.hostname === LEGACY_HOST) {
+    let targetPath = window.location.pathname || "/";
+    if (targetPath === LEGACY_BASE_PATH) {
+      targetPath = "/";
+    } else if (targetPath.startsWith(`${LEGACY_BASE_PATH}/`)) {
+      targetPath = targetPath.slice(LEGACY_BASE_PATH.length);
+    }
+    if (!targetPath.startsWith("/")) targetPath = `/${targetPath}`;
+
+    const targetUrl = `${PRIMARY_ORIGIN}${targetPath}${window.location.search || ""}${window.location.hash || ""}`;
+    window.location.replace(targetUrl);
+    return;
+  }
+
   const header = document.querySelector(".site-header");
   const toggle = document.querySelector(".nav-toggle");
   const menu = document.querySelector("#nav-menu");
