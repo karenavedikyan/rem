@@ -84,6 +84,33 @@ const CANONICAL_STAGES = ["planning", "rough", "engineering", "finishing", "furn
 const CANONICAL_STAGE_SET = new Set(CANONICAL_STAGES);
 const STAGE_ORDER = Object.fromEntries(CANONICAL_STAGES.map((s, i) => [s, i]));
 
+const REMCARD_KB_CORE = {
+  planning: [
+    "Перед стартом зафиксировать замеры и схему работ; хранить план электрики в архиве.",
+    "Под тяжёлые решения (перегородки, двери, окна) учитывать несущую способность и геометрию проёма.",
+    "Если ставится входная дверь, технологический зазор проёма 4–5 см даёт нормальный монтаж и утепление."
+  ],
+  rough: [
+    "Штукатурка и стяжка идут с технологическими паузами на высыхание.",
+    "Стяжка: очистка основания, двойная грунтовка, демпферная лента и гидроизоляция по периметру.",
+    "Не переливать воду в растворе: это ведёт к усадке и трещинам."
+  ],
+  engineering: [
+    "Проводка прокладывается только вертикально/горизонтально, без случайных диагоналей.",
+    "Для влажных зон: УЗО до 30 мА, корректное заземление, розетки не ближе 60 см к душевой зоне.",
+    "Радиаторы: типичные отступы 6–10 см от пола и подоконника, 3–5 см от стены."
+  ],
+  finishing: [
+    "Грунтование перед покраской снижает расход и риск пятен/отслоений.",
+    "По плитке нужен запас: около 10% (прямая раскладка) и больше при сложной раскладке.",
+    "Клей и затирку считать с поправкой на неровность основания."
+  ],
+  furniture: [
+    "Финал: уборка после стройки, затем монтаж мебели и контрольные проверки.",
+    "До установки мебели и кухни убедиться, что скрытые узлы и подключение доступны для сервиса."
+  ]
+};
+
 const allowedObjectType = new Set(["apartment", "house", "commercial"]);
 const allowedObjectStatus = new Set(["new_without_finish", "new_basic_finish", "secondary_partial", "secondary_full"]);
 const allowedStage = new Set(["planning", "measurements", "rough", "finishing", "furniture"]);
@@ -378,6 +405,11 @@ async function generateRouteWithAI(answers) {
   if (!apiKey) return null;
   const referenceRoute = buildTemplateRoute(answers).steps;
   const referenceStageOrder = referenceRoute.map((s) => s.stage_type);
+  const stageKnowledge = referenceRoute.map((step, idx) => ({
+    step: idx + 1,
+    stage_type: step.stage_type,
+    knowledge: REMCARD_KB_CORE[step.stage_type] || [],
+  }));
 
   const schema = {
     type: "object",
@@ -439,6 +471,9 @@ ${JSON.stringify(answers)}
 
 Опорный маршрут RemCard (используй как каркас и порядок этапов):
 ${JSON.stringify(referenceRoute)}
+
+Ключевые знания из внутренней базы RemCard (используй по смыслу и этапам):
+${JSON.stringify(stageKnowledge)}
 
 Обязательные правила:
 1) Количество шагов = ${referenceRoute.length}.
