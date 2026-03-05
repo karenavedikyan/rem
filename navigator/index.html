@@ -50,13 +50,52 @@
           <header class="section-header">
             <h1>Навигатор ремонта RemCard</h1>
             <p class="section-subtitle">
-              Ответьте на несколько вопросов и получите маршрут ремонта: этапы, нужных специалистов, категории материалов и практичные советы.
+              Помогаем пройти ремонт по шагам — от планирования до мебели. Простые правила, ошибки и подсказки.
             </p>
+            <div class="navigator-hero-actions">
+              <a class="btn btn-primary" href="#navigator-map">Начать с моего этапа</a>
+            </div>
           </header>
 
-          <div class="grid two-col">
+          <div class="grid two-col navigator-workspace">
+            <article class="card navigator-timeline-card" id="navigator-map">
+              <h2>Карта этапов ремонта</h2>
+              <p class="muted">Выберите ваш текущий этап. Карточка справа покажет, что делать дальше и какие ошибки не допускать.</p>
+              <div class="navigator-timeline" id="navigator-timeline" role="tablist" aria-label="Этапы ремонта"></div>
+            </article>
+
+            <article class="card navigator-stage-card" id="navigator-stage-card">
+              <h2 id="navigator-stage-title">Планирование и замеры: решаем, что и как делать</h2>
+              <p class="muted" id="navigator-stage-description"></p>
+
+              <div class="stage-diagram" id="stage-diagram" aria-label="Схема этапа"></div>
+
+              <div class="navigator-stage-grid">
+                <div class="navigator-step-group">
+                  <div class="navigator-step-label">Что здесь делаем</div>
+                  <ul class="list navigator-step-list" id="stage-what-list"></ul>
+                </div>
+                <div class="navigator-step-group">
+                  <div class="navigator-step-label">Что главное не напутать</div>
+                  <ul class="list navigator-step-list" id="stage-pitfalls-list"></ul>
+                </div>
+                <div class="navigator-step-group">
+                  <div class="navigator-step-label">Кто нужен на этом этапе</div>
+                  <ul class="list navigator-step-list" id="stage-who-list"></ul>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button class="btn btn-ghost" id="stage-next-btn" type="button">Следующий этап</button>
+                <a class="btn btn-primary" id="stage-apply-btn" href="#navigator-form-card">Оставить заявку в RemCard по этому этапу</a>
+                <a class="section-link" id="stage-knowledge-link" href="../knowledge/?stage=planning">Подробнее про этот этап</a>
+              </div>
+            </article>
+          </div>
+
+          <div class="grid two-col" id="navigator-form-card">
             <article class="card navigator-form-card">
-              <h2>1) Расскажите о задаче</h2>
+              <h2>Уточните вашу задачу</h2>
               <form class="form" id="navigator-form" novalidate>
                 <div class="form-grid">
                   <div class="field">
@@ -87,6 +126,7 @@
                       <option value="planning">Только планирую ремонт</option>
                       <option value="measurements">Делаю замеры / планировку</option>
                       <option value="rough">Иду к черновым / идут черновые</option>
+                      <option value="engineering">Идут инженерные работы</option>
                       <option value="finishing">Иду к чистовой / идёт чистовая</option>
                       <option value="furniture">Выбираю мебель / свет</option>
                     </select>
@@ -142,6 +182,8 @@
                       placeholder="Например: дети, питомцы, срочный въезд, ипотека, шумные работы только по выходным."
                     ></textarea>
                   </div>
+
+                  <input type="hidden" id="nv-stage-id" name="stageId" value="planning" />
                 </div>
 
                 <div class="form-actions">
@@ -152,7 +194,7 @@
             </article>
 
             <article class="card">
-              <h2>2) Получите маршрут</h2>
+              <h2>Что получите на выходе</h2>
               <ul class="list">
                 <li>3–6 шагов в зависимости от вашей стадии ремонта.</li>
                 <li>Для каждого шага: что делать, кто нужен, какие категории материалов смотреть.</li>
@@ -211,6 +253,7 @@
     </footer>
 
     <script src="../script.js" defer></script>
+    <script src="./stages.js" defer></script>
     <script src="./navigator.js" defer></script>
   </body>
 </html>

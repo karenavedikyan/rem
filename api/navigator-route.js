@@ -78,6 +78,7 @@ const stagePriority = {
   planning: ["planning"],
   measurements: ["planning"],
   rough: ["rough", "engineering", "finishing"],
+  engineering: ["engineering", "finishing"],
   finishing: ["finishing", "furniture"],
   furniture: ["furniture"],
 };
@@ -186,7 +187,7 @@ const EFFECTIVE_KB_CORE = mergeKbCore(REMCARD_KB_CORE, KNOWLEDGE_BASE);
 
 const allowedObjectType = new Set(["apartment", "house", "commercial"]);
 const allowedObjectStatus = new Set(["new_without_finish", "new_basic_finish", "secondary_partial", "secondary_full"]);
-const allowedStage = new Set(["planning", "measurements", "rough", "finishing", "furniture"]);
+const allowedStage = new Set(["planning", "measurements", "rough", "engineering", "finishing", "furniture"]);
 const allowedBudget = new Set(["up_to_300", "300_700", "700_1500", "1500_plus", "unknown"]);
 const allowedTimeline = new Set(["now", "month", "three_months", "later"]);
 const DEFAULT_OPENAI_MODEL = "gpt-4o-mini";

@@ -5,6 +5,17 @@
   const summaryEl = document.getElementById("navigator-summary");
   const sendBtn = document.getElementById("send-route-btn");
   const sendResult = document.getElementById("navigator-send-result");
+  const timelineEl = document.getElementById("navigator-timeline");
+  const stageTitleEl = document.getElementById("navigator-stage-title");
+  const stageDescriptionEl = document.getElementById("navigator-stage-description");
+  const stageWhatListEl = document.getElementById("stage-what-list");
+  const stagePitfallsListEl = document.getElementById("stage-pitfalls-list");
+  const stageWhoListEl = document.getElementById("stage-who-list");
+  const stageDiagramEl = document.getElementById("stage-diagram");
+  const stageNextBtn = document.getElementById("stage-next-btn");
+  const stageApplyBtn = document.getElementById("stage-apply-btn");
+  const stageKnowledgeLink = document.getElementById("stage-knowledge-link");
+  const stageIdInput = document.getElementById("nv-stage-id");
   if (!form || !resultSection || !stepsEl || !summaryEl || !sendBtn || !sendResult) return;
 
   const buildBtn = form.querySelector("button[type='submit']");
@@ -69,6 +80,74 @@
   };
   let dynamicStepTemplates = { ...STEP_TEMPLATES };
   let dynamicKbCore = {};
+  const STAGE_ORDER = ["planning", "rough", "engineering", "finishing", "furniture"];
+  const STAGE_TO_FORM_VALUE = {
+    planning: "planning",
+    rough: "rough",
+    engineering: "engineering",
+    finishing: "finishing",
+    furniture: "furniture"
+  };
+
+  const DEFAULT_NAVIGATOR_STAGES = [
+    {
+      id: "planning",
+      order: 1,
+      title: "Планирование и замеры: решаем, что и как делать",
+      shortLabel: "Планирование",
+      description: "На этом этапе вы фиксируете задачи, бюджет и порядок работ, чтобы ремонт не стал хаосом.",
+      whatWeDo: ["Делаем замеры по помещениям и ключевым узлам.", "Определяем приоритеты: что критично, что можно отложить.", "Собираем базовую смету по этапам."],
+      pitfalls: ["Старт без точных замеров и этапности.", "Одна общая смета без разбивки по шагам.", "Закупка материалов до утверждения плана."],
+      whoYouNeed: ["прораб", "мастер-универсал", "дизайнер (по желанию)"],
+      icon: "plan"
+    },
+    {
+      id: "rough",
+      order: 2,
+      title: "Черновые работы: готовим основу",
+      shortLabel: "Черновые",
+      description: "Здесь создаётся база, на которой держится весь результат: демонтаж, выравнивание, стяжка, подготовка.",
+      whatWeDo: ["Делаем демонтаж и готовим поверхности.", "Выполняем штукатурку и стяжку с технологическими паузами.", "Проверяем геометрию перед переходом дальше."],
+      pitfalls: ["Спешка с финишем до набора прочности стяжки.", "Избыток воды в растворах (риск трещин).", "Отсутствие контроля маяков и уровня."],
+      whoYouNeed: ["мастер-универсал", "отделочник", "прораб"],
+      icon: "layers"
+    },
+    {
+      id: "engineering",
+      order: 3,
+      title: "Инженерные работы: прячем важное правильно",
+      shortLabel: "Инженерия",
+      description: "Электрика и сантехника делаются до чистовой, чтобы потом не вскрывать стены и пол.",
+      whatWeDo: ["Прокладываем электрику и сантехнические линии.", "Разносим точки розеток, выключателей и выводов воды.", "Проверяем узлы до закрытия отделкой."],
+      pitfalls: ["Случайные диагонали проводки вместо понятной схемы.", "Недооценка влажных зон: нет УЗО и заземления.", "Скрытые соединения без фотофиксации."],
+      whoYouNeed: ["электрик", "сантехник", "инженер-проектировщик (по необходимости)"],
+      icon: "engineering"
+    },
+    {
+      id: "finishing",
+      order: 4,
+      title: "Чистовая отделка: собираем внешний вид",
+      shortLabel: "Чистовая",
+      description: "На этом шаге ремонт становится визуально завершённым: стены, пол, плитка, двери и финальные поверхности.",
+      whatWeDo: ["Подбираем и укладываем чистовые материалы.", "Проверяем геометрию перед плиткой и покраской.", "Формируем аккуратные финишные узлы."],
+      pitfalls: ["Старт чистовой на неподготовленном основании.", "Нет запаса плитки и материалов на подрезку.", "Игнорирование проб и образцов при освещении объекта."],
+      whoYouNeed: ["отделочник", "плиточник", "маляр"],
+      icon: "finish"
+    },
+    {
+      id: "furniture",
+      order: 5,
+      title: "Мебель, свет и декор: готовим к жизни",
+      shortLabel: "Мебель и декор",
+      description: "Финальный этап: установка мебели, настройка света и проверка, что всем удобно пользоваться.",
+      whatWeDo: ["Делаем финальную уборку после стройки.", "Устанавливаем мебель, кухню и свет.", "Проводим контрольную проверку перед въездом."],
+      pitfalls: ["Монтаж мебели без проверки доступности сервисных узлов.", "Конфликт мебели с розетками и выводами.", "Пропуск финального чек-листа перед сдачей."],
+      whoYouNeed: ["мебельщик", "светотехник", "дизайнер интерьера (по желанию)"],
+      icon: "furniture"
+    }
+  ];
+  let navigatorStages = Array.isArray(window.REMCARD_NAVIGATOR_STAGES) && window.REMCARD_NAVIGATOR_STAGES.length ? window.REMCARD_NAVIGATOR_STAGES : DEFAULT_NAVIGATOR_STAGES;
+  let activeStageId = "planning";
 
   const objectLabels = {
     apartment: "квартиры",
@@ -80,6 +159,7 @@
     planning: ["planning"],
     measurements: ["planning"],
     rough: ["rough", "engineering", "finishing"],
+    engineering: ["engineering", "finishing"],
     finishing: ["finishing", "furniture"],
     furniture: ["furniture"]
   };
@@ -137,6 +217,168 @@
         if (list.length) dynamicKbCore[key] = uniq(list).slice(0, 6);
       });
     }
+
+    if (Array.isArray(knowledge.navigator_stages) && knowledge.navigator_stages.length) {
+      navigatorStages = normalizeNavigatorStages(knowledge.navigator_stages);
+      return;
+    }
+
+    // If explicit navigator stages are absent, softly enrich labels from stage templates.
+    navigatorStages = normalizeNavigatorStages(
+      navigatorStages.map((stage) => {
+        const tpl = stageTemplates && isObject(stageTemplates[stage.id]) ? stageTemplates[stage.id] : null;
+        return tpl
+          ? {
+              ...stage,
+              shortLabel: String(tpl.title || stage.shortLabel || stage.title),
+              description: String(tpl.description || stage.description)
+            }
+          : stage;
+      })
+    );
+  };
+
+  const normalizeStageId = (value) => (STAGE_ORDER.includes(String(value || "")) ? String(value) : "planning");
+
+  const normalizeStageList = (values) =>
+    uniq(
+      (Array.isArray(values) ? values : [])
+        .map((item) => String(item || "").trim())
+        .filter(Boolean)
+        .slice(0, 6)
+    );
+
+  const normalizeNavigatorStage = (raw, fallback, index) => ({
+    id: normalizeStageId(raw && raw.id ? raw.id : fallback.id),
+    order: Number.isFinite(Number(raw && raw.order)) ? Number(raw.order) : index + 1,
+    title: String((raw && raw.title) || fallback.title || ""),
+    shortLabel: String((raw && raw.shortLabel) || fallback.shortLabel || ""),
+    description: String((raw && raw.description) || fallback.description || ""),
+    whatWeDo: normalizeStageList((raw && raw.whatWeDo) || fallback.whatWeDo),
+    pitfalls: normalizeStageList((raw && raw.pitfalls) || fallback.pitfalls),
+    whoYouNeed: normalizeStageList((raw && raw.whoYouNeed) || fallback.whoYouNeed),
+    icon: String((raw && raw.icon) || fallback.icon || "")
+  });
+
+  const normalizeNavigatorStages = (source) => {
+    const fallbackById = Object.fromEntries(DEFAULT_NAVIGATOR_STAGES.map((s) => [s.id, s]));
+    const rawStages = Array.isArray(source) ? source : [];
+    const rawById = Object.fromEntries(rawStages.filter((s) => isObject(s)).map((s) => [normalizeStageId(s.id), s]));
+    const merged = STAGE_ORDER.map((id, idx) => normalizeNavigatorStage(rawById[id] || null, fallbackById[id], idx));
+    return merged.sort((a, b) => a.order - b.order);
+  };
+
+  navigatorStages = normalizeNavigatorStages(navigatorStages);
+
+  const getStageById = (id) => navigatorStages.find((stage) => stage.id === id) || navigatorStages[0];
+
+  const stageListToHTML = (list, title) => {
+    if (!Array.isArray(list) || !list.length) return `<li>${escapeHtml(title)}</li>`;
+    return list.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+  };
+
+  const getDiagramHTML = (stageId) => {
+    if (stageId === "rough") {
+      return `
+        <div class="stage-diagram-layers" aria-hidden="true">
+          <div class="stage-layer">Основание</div>
+          <div class="stage-layer">Гидроизоляция</div>
+          <div class="stage-layer">Стяжка</div>
+          <div class="stage-layer">Покрытие</div>
+        </div>
+      `;
+    }
+    if (stageId === "engineering") {
+      return `
+        <div class="stage-diagram-icons" aria-hidden="true">
+          <div class="stage-icon-box">Розетки и линии</div>
+          <div class="stage-icon-box">Трубы и точки воды</div>
+        </div>
+      `;
+    }
+    if (stageId === "planning") {
+      return `
+        <div class="stage-diagram-plan" aria-hidden="true">
+          <div class="stage-room stage-room-wide">Кухня</div>
+          <div class="stage-room">Спальня</div>
+          <div class="stage-room">Санузел</div>
+        </div>
+      `;
+    }
+    if (stageId === "finishing") {
+      return `
+        <div class="stage-diagram-icons" aria-hidden="true">
+          <div class="stage-icon-box">Стены и пол</div>
+          <div class="stage-icon-box">Плитка и двери</div>
+        </div>
+      `;
+    }
+    return `
+      <div class="stage-diagram-icons" aria-hidden="true">
+        <div class="stage-icon-box">Мебель</div>
+        <div class="stage-icon-box">Свет и декор</div>
+      </div>
+    `;
+  };
+
+  const syncStageToForm = (stageId) => {
+    const normalized = normalizeStageId(stageId);
+    if (stageIdInput) stageIdInput.value = normalized;
+    const stageSelect = form.querySelector("#nv-stage");
+    if (stageSelect && stageSelect instanceof HTMLSelectElement) {
+      const targetValue = STAGE_TO_FORM_VALUE[normalized] || "planning";
+      const hasOption = Array.from(stageSelect.options).some((opt) => opt.value === targetValue);
+      if (hasOption) stageSelect.value = targetValue;
+    }
+  };
+
+  const renderTimeline = () => {
+    if (!timelineEl) return;
+    timelineEl.innerHTML = "";
+    navigatorStages.forEach((stage, idx) => {
+      const isActive = stage.id === activeStageId;
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = `navigator-timeline-step${isActive ? " is-active" : ""}`;
+      button.setAttribute("aria-selected", isActive ? "true" : "false");
+      button.setAttribute("role", "tab");
+      button.dataset.stageId = stage.id;
+      button.innerHTML = `
+        <span class="navigator-timeline-index">${idx + 1}</span>
+        <span class="navigator-timeline-label">${escapeHtml(stage.shortLabel || stage.title)}</span>
+      `;
+      timelineEl.appendChild(button);
+    });
+  };
+
+  const renderActiveStageCard = () => {
+    const stage = getStageById(activeStageId);
+    if (!stage) return;
+    if (stageTitleEl) stageTitleEl.textContent = stage.title;
+    if (stageDescriptionEl) stageDescriptionEl.textContent = stage.description;
+    if (stageWhatListEl) stageWhatListEl.innerHTML = stageListToHTML(stage.whatWeDo, "Проверьте базовый план этапа.");
+    if (stagePitfallsListEl) stagePitfallsListEl.innerHTML = stageListToHTML(stage.pitfalls, "Проверяйте типовые риски перед стартом.");
+    if (stageWhoListEl) stageWhoListEl.innerHTML = stageListToHTML(stage.whoYouNeed, "Нужен профильный специалист.");
+    if (stageDiagramEl) stageDiagramEl.innerHTML = getDiagramHTML(stage.id);
+
+    if (stageKnowledgeLink) {
+      stageKnowledgeLink.setAttribute("href", `../knowledge/?stage=${encodeURIComponent(stage.id)}`);
+    }
+    if (stageApplyBtn) {
+      stageApplyBtn.setAttribute("href", "#navigator-form-card");
+    }
+    if (stageNextBtn) {
+      const isLast = STAGE_ORDER.indexOf(stage.id) === STAGE_ORDER.length - 1;
+      stageNextBtn.disabled = isLast;
+    }
+
+    syncStageToForm(stage.id);
+    renderTimeline();
+  };
+
+  const setActiveStage = (stageId) => {
+    activeStageId = normalizeStageId(stageId);
+    renderActiveStageCard();
   };
 
   const getSelectedText = (selectEl) => {
@@ -389,6 +631,8 @@
       objectType: getValue("objectType"),
       objectStatus: getValue("objectStatus"),
       currentStage: getValue("currentStage"),
+      stageId: getValue("stageId") || activeStageId,
+      stageTitle: (getStageById(getValue("stageId") || activeStageId) || {}).title || "",
       budget: getValue("budget"),
       timeline: getValue("timeline"),
       features: getValue("features"),
@@ -402,7 +646,44 @@
     };
   };
 
-  loadKnowledgeBase();
+  const getInitialStageFromURL = () => {
+    try {
+      const url = new URL(window.location.href);
+      return normalizeStageId(url.searchParams.get("stage"));
+    } catch {
+      return "planning";
+    }
+  };
+
+  if (timelineEl) {
+    timelineEl.addEventListener("click", (e) => {
+      const btn = e.target && e.target.closest ? e.target.closest("button[data-stage-id]") : null;
+      if (!btn) return;
+      setActiveStage(btn.getAttribute("data-stage-id"));
+    });
+  }
+
+  if (stageNextBtn) {
+    stageNextBtn.addEventListener("click", () => {
+      const currentIndex = STAGE_ORDER.indexOf(activeStageId);
+      const nextIndex = currentIndex >= 0 ? Math.min(currentIndex + 1, STAGE_ORDER.length - 1) : 0;
+      setActiveStage(STAGE_ORDER[nextIndex]);
+      const stageCard = document.getElementById("navigator-stage-card");
+      if (stageCard) stageCard.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+  }
+
+  if (stageApplyBtn) {
+    stageApplyBtn.addEventListener("click", () => {
+      syncStageToForm(activeStageId);
+    });
+  }
+
+  activeStageId = getInitialStageFromURL();
+  renderActiveStageCard();
+  loadKnowledgeBase().finally(() => {
+    renderActiveStageCard();
+  });
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();

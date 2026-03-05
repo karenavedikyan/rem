@@ -1086,6 +1086,138 @@ img {
   font-size: 13.5px;
 }
 
+.navigator-hero-actions {
+  margin-top: 14px;
+}
+
+.navigator-workspace {
+  margin-bottom: 14px;
+}
+
+.navigator-timeline-card .muted {
+  margin-top: 8px;
+}
+
+.navigator-timeline {
+  margin-top: 14px;
+  display: grid;
+  gap: 10px;
+}
+
+.navigator-timeline-step {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(245, 245, 245, 0.12);
+  background: rgba(18, 18, 18, 0.35);
+  color: rgba(245, 245, 245, 0.95);
+  text-align: left;
+  cursor: pointer;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: border-color 160ms var(--ease), transform 160ms var(--ease), background 160ms var(--ease);
+}
+
+.navigator-timeline-step:hover {
+  border-color: rgba(229, 57, 53, 0.35);
+}
+
+.navigator-timeline-step:active {
+  transform: translateY(1px);
+}
+
+.navigator-timeline-step.is-active {
+  border-color: rgba(229, 57, 53, 0.5);
+  background: linear-gradient(180deg, rgba(229, 57, 53, 0.16), rgba(18, 18, 18, 0.4));
+}
+
+.navigator-timeline-index {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 850;
+  background: rgba(229, 57, 53, 0.14);
+  border: 1px solid rgba(229, 57, 53, 0.28);
+}
+
+.navigator-timeline-label {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.navigator-stage-card .muted {
+  margin-top: 6px;
+}
+
+.navigator-stage-grid {
+  margin-top: 12px;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.stage-diagram {
+  margin-top: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(245, 245, 245, 0.1);
+  background: rgba(18, 18, 18, 0.35);
+  padding: 10px 12px;
+}
+
+.stage-diagram-layers {
+  display: grid;
+  gap: 8px;
+}
+
+.stage-layer {
+  border-radius: 10px;
+  border: 1px solid rgba(229, 57, 53, 0.2);
+  background: linear-gradient(145deg, rgba(229, 57, 53, 0.14), rgba(30, 30, 30, 0.6));
+  padding: 8px 10px;
+  font-size: 12.5px;
+  color: rgba(245, 245, 245, 0.95);
+}
+
+.stage-diagram-icons {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.stage-icon-box {
+  border-radius: 10px;
+  border: 1px solid rgba(245, 245, 245, 0.12);
+  background: rgba(30, 30, 30, 0.6);
+  padding: 10px;
+  font-size: 12.5px;
+  text-align: center;
+  color: rgba(245, 245, 245, 0.94);
+}
+
+.stage-diagram-plan {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.stage-room {
+  border-radius: 10px;
+  border: 1px solid rgba(245, 245, 245, 0.12);
+  background: rgba(30, 30, 30, 0.6);
+  min-height: 44px;
+  display: grid;
+  place-items: center;
+  font-size: 12.5px;
+}
+
+.stage-room-wide {
+  grid-column: span 2;
+}
+
 .kb-infographics-grid {
   margin-top: 14px;
 }
@@ -1417,6 +1549,10 @@ img {
     grid-template-columns: 1fr;
   }
 
+  .navigator-stage-grid {
+    grid-template-columns: 1fr;
+  }
+
   .logos-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1511,6 +1647,10 @@ img {
   }
 
   .logos-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stage-diagram-icons {
     grid-template-columns: 1fr;
   }
 }
