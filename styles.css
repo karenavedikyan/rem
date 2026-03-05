@@ -1086,6 +1086,155 @@ img {
   font-size: 13.5px;
 }
 
+.kb-infographics-grid {
+  margin-top: 14px;
+}
+
+.kb-kpi-card {
+  min-height: 160px;
+  display: grid;
+  align-content: start;
+  gap: 8px;
+}
+
+.kb-kpi-value {
+  font-size: clamp(30px, 3vw, 44px);
+  font-weight: 900;
+  letter-spacing: -0.8px;
+  line-height: 1;
+  color: rgba(245, 245, 245, 0.98);
+}
+
+.kb-kpi-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(245, 245, 245, 0.96);
+}
+
+.kb-kpi-note {
+  font-size: 13px;
+  color: rgba(176, 190, 197, 0.95);
+}
+
+.kb-risk-bars {
+  display: grid;
+  gap: 12px;
+}
+
+.kb-risk-row {
+  border-radius: 12px;
+  border: 1px solid rgba(245, 245, 245, 0.08);
+  background: rgba(18, 18, 18, 0.34);
+  padding: 10px 12px;
+}
+
+.kb-risk-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13px;
+  color: rgba(245, 245, 245, 0.95);
+}
+
+.kb-risk-head strong {
+  font-size: 14px;
+  font-weight: 800;
+  color: rgba(229, 57, 53, 0.96);
+}
+
+.kb-risk-track {
+  height: 10px;
+  margin-top: 8px;
+  border-radius: 999px;
+  background: rgba(245, 245, 245, 0.1);
+  border: 1px solid rgba(245, 245, 245, 0.08);
+  overflow: hidden;
+}
+
+.kb-risk-track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(145deg, rgba(229, 57, 53, 0.96), rgba(183, 28, 28, 0.96));
+}
+
+.kb-risk-note {
+  margin-top: 8px;
+  font-size: 12.5px;
+  color: rgba(176, 190, 197, 0.93);
+}
+
+.kb-stage-flow {
+  display: grid;
+  gap: 12px;
+}
+
+.kb-flow-step {
+  border-radius: 12px;
+  border: 1px solid rgba(245, 245, 245, 0.08);
+  background: rgba(18, 18, 18, 0.34);
+  padding: 10px 12px;
+}
+
+.kb-flow-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.kb-flow-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.kb-flow-index {
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 850;
+  background: rgba(229, 57, 53, 0.16);
+  border: 1px solid rgba(229, 57, 53, 0.32);
+}
+
+.kb-flow-stage {
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(245, 245, 245, 0.96);
+}
+
+.kb-flow-weight {
+  font-size: 13px;
+  font-weight: 800;
+  color: rgba(229, 57, 53, 0.95);
+}
+
+.kb-flow-track {
+  margin-top: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(245, 245, 245, 0.1);
+  overflow: hidden;
+}
+
+.kb-flow-track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(145deg, rgba(229, 57, 53, 0.95), rgba(183, 28, 28, 0.95));
+}
+
+.kb-flow-note {
+  margin-top: 8px;
+  font-size: 12.5px;
+  color: rgba(176, 190, 197, 0.93);
+}
+
 /* Footer */
 .site-footer {
   border-top: 1px solid rgba(245, 245, 245, 0.06);

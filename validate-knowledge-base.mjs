@@ -159,6 +159,71 @@ const validateCardArray = (value, fieldPath) => {
   });
 };
 
+const validateInfographics = (value, fieldPath) => {
+  const infographics = ensureObject(value, fieldPath);
+  if (!infographics) return;
+
+  ensureString(infographics.title, `${fieldPath}.title`);
+  ensureString(infographics.subtitle, `${fieldPath}.subtitle`);
+  ensureString(infographics.risk_title, `${fieldPath}.risk_title`);
+  ensureString(infographics.flow_title, `${fieldPath}.flow_title`);
+
+  if (!Array.isArray(infographics.kpis)) {
+    addError(`${fieldPath}.kpis`, "must be an array");
+  } else {
+    if (infographics.kpis.length < 1) addError(`${fieldPath}.kpis`, "must contain at least 1 item");
+    if (infographics.kpis.length > 6) addError(`${fieldPath}.kpis`, "must contain at most 6 items");
+    infographics.kpis.forEach((item, index) => {
+      const ip = `${fieldPath}.kpis[${index}]`;
+      const obj = ensureObject(item, ip);
+      if (!obj) return;
+      ensureString(obj.value, `${ip}.value`);
+      ensureString(obj.label, `${ip}.label`);
+      if (obj.note !== undefined && !isNonEmptyString(obj.note)) addError(`${ip}.note`, "must be a non-empty string when provided");
+    });
+  }
+
+  if (!Array.isArray(infographics.risk_bars)) {
+    addError(`${fieldPath}.risk_bars`, "must be an array");
+  } else {
+    if (infographics.risk_bars.length < 1) addError(`${fieldPath}.risk_bars`, "must contain at least 1 item");
+    if (infographics.risk_bars.length > 8) addError(`${fieldPath}.risk_bars`, "must contain at most 8 items");
+    infographics.risk_bars.forEach((item, index) => {
+      const ip = `${fieldPath}.risk_bars[${index}]`;
+      const obj = ensureObject(item, ip);
+      if (!obj) return;
+      ensureString(obj.label, `${ip}.label`);
+      const valueNum = Number(obj.value);
+      if (!Number.isFinite(valueNum)) {
+        addError(`${ip}.value`, "must be a number");
+      } else if (valueNum < 0 || valueNum > 100) {
+        addError(`${ip}.value`, "must be between 0 and 100");
+      }
+      if (obj.note !== undefined && !isNonEmptyString(obj.note)) addError(`${ip}.note`, "must be a non-empty string when provided");
+    });
+  }
+
+  if (!Array.isArray(infographics.stage_flow)) {
+    addError(`${fieldPath}.stage_flow`, "must be an array");
+  } else {
+    if (infographics.stage_flow.length < 3) addError(`${fieldPath}.stage_flow`, "must contain at least 3 items");
+    if (infographics.stage_flow.length > 8) addError(`${fieldPath}.stage_flow`, "must contain at most 8 items");
+    infographics.stage_flow.forEach((item, index) => {
+      const ip = `${fieldPath}.stage_flow[${index}]`;
+      const obj = ensureObject(item, ip);
+      if (!obj) return;
+      ensureString(obj.stage, `${ip}.stage`);
+      const valueNum = Number(obj.weight);
+      if (!Number.isFinite(valueNum)) {
+        addError(`${ip}.weight`, "must be a number");
+      } else if (valueNum < 0 || valueNum > 100) {
+        addError(`${ip}.weight`, "must be between 0 and 100");
+      }
+      if (obj.note !== undefined && !isNonEmptyString(obj.note)) addError(`${ip}.note`, "must be a non-empty string when provided");
+    });
+  }
+};
+
 const validateKnowledgePage = (json) => {
   const knowledgePage = ensureObject(json.knowledge_page, "knowledge_page");
   if (!knowledgePage) return;
@@ -167,6 +232,7 @@ const validateKnowledgePage = (json) => {
   ensureString(knowledgePage.hero_subtitle, "knowledge_page.hero_subtitle");
   validateCardArray(knowledgePage.top_cards, "knowledge_page.top_cards");
   validateCardArray(knowledgePage.checklists, "knowledge_page.checklists");
+  validateInfographics(knowledgePage.infographics, "knowledge_page.infographics");
 
   const cta = ensureObject(knowledgePage.cta, "knowledge_page.cta");
   if (!cta) return;
