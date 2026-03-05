@@ -98,3 +98,4 @@ node validate-knowledge-base.mjs
 ```
 
 Проверяются обязательные секции, поля этапов, массивы, URL ресурсов и согласованность ключей стадий.
+Эта же проверка автоматически запускается в GitHub Actions workflow `Validate knowledge base` на каждый push и pull request.
