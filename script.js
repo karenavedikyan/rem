@@ -1,4 +1,6 @@
 (() => {
+  const I18N = window.REMCARD_I18N || { t: (ru, en) => ru };
+  const t = (ru, en) => (I18N && typeof I18N.t === "function" ? I18N.t(ru, en) : ru);
   const PRIMARY_ORIGIN = "https://rem-navy.vercel.app";
   const LEGACY_HOST = "karenavedikyan.github.io";
   const LEGACY_BASE_PATH = "/rem";
@@ -467,7 +469,7 @@
 
         setResult({
           type: "success",
-          title: "Спасибо!",
+          title: t("Спасибо!", "Thank you!"),
           text: successText,
         });
 
@@ -480,8 +482,11 @@
       } catch (err) {
         setResult({
           type: "error",
-          title: "Ошибка",
-          text: "Не удалось отправить заявку. Попробуйте позже или свяжитесь с нами напрямую.",
+          title: t("Ошибка", "Error"),
+          text: t(
+            "Не удалось отправить заявку. Попробуйте позже или свяжитесь с нами напрямую.",
+            "Could not send the request. Please try again later or contact us directly."
+          ),
         });
         // eslint-disable-next-line no-console
         console.error(`RemCard ${formId} error:`, err);
@@ -495,7 +500,10 @@
   bindTelegramForm({
     formId: "request-form",
     resultId: "request-result",
-    successText: "Заявка отправлена в RemCard. Мы свяжемся с вами в ближайшее время.",
+    successText: t(
+      "Заявка отправлена в RemCard. Мы свяжемся с вами в ближайшее время.",
+      "Your request was sent to RemCard. We will contact you shortly."
+    ),
     buildMessage: (get) =>
       "Новая заявка RemCard (клиент):\n" +
       `Тип задачи: ${get("taskType") || get("jobType") || "-"}\n` +
@@ -510,7 +518,10 @@
   bindTelegramForm({
     formId: "partner-form",
     resultId: "partner-result",
-    successText: "Заявка партнёра отправлена. Мы свяжемся с вами в ближайшее время.",
+    successText: t(
+      "Заявка партнёра отправлена. Мы свяжемся с вами в ближайшее время.",
+      "Partner request sent. We will contact you shortly."
+    ),
     buildMessage: (get) =>
       "Новая заявка RemCard (партнёр):\n" +
       `Роль: ${get("role") || get("partnerType") || "-"}\n` +

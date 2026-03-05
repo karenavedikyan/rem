@@ -1,4 +1,6 @@
 (() => {
+  const I18N = window.REMCARD_I18N || { isEn: false, applyTo: () => {} };
+  const t = (ru, en) => (I18N && typeof I18N.t === "function" ? I18N.t(ru, en) : ru);
   const DATA_URL = window.REMCARD_KNOWLEDGE_BASE_URL || "../knowledge/knowledge-base.json";
   const titleEl = document.getElementById("navigator-knowledge-title");
   const subtitleEl = document.getElementById("navigator-knowledge-subtitle");
@@ -88,13 +90,13 @@
 
   loadKnowledge()
     .then((page) => {
-      titleEl.textContent = "База знаний внутри навигатора";
-      subtitleEl.textContent = toText(
-        page.hero_subtitle,
-        "Короткие чек-листы и красные флаги по этапам ремонта. Эти принципы используются в маршрутах RemCard."
-      );
+      titleEl.textContent = t("База знаний внутри навигатора", "Knowledge base inside the navigator");
+      subtitleEl.textContent = I18N.isEn
+        ? "Quick checklists and red flags by stage. These principles are used to build RemCard routes."
+        : toText(page.hero_subtitle, "Короткие чек-листы и красные флаги по этапам ремонта. Эти принципы используются в маршрутах RemCard.");
       renderCards(topCardsEl, page.top_cards);
       renderCards(checklistsEl, page.checklists);
+      if (I18N.isEn) I18N.applyTo(document.getElementById("navigator-knowledge"));
     })
     .catch((err) => {
       // eslint-disable-next-line no-console

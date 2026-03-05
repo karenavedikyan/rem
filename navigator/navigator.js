@@ -1,4 +1,6 @@
 (() => {
+  const I18N = window.REMCARD_I18N || { isEn: false, t: (ru, en) => ru, applyTo: () => {} };
+  const t = (ru, en) => (I18N && typeof I18N.t === "function" ? I18N.t(ru, en) : ru);
   const form = document.getElementById("navigator-form");
   const resultSection = document.getElementById("navigator-result-section");
   const stepsEl = document.getElementById("navigator-steps");
@@ -281,42 +283,42 @@
     if (stageId === "rough") {
       return `
         <div class="stage-diagram-layers" aria-hidden="true">
-          <div class="stage-layer">Основание</div>
-          <div class="stage-layer">Гидроизоляция</div>
-          <div class="stage-layer">Стяжка</div>
-          <div class="stage-layer">Покрытие</div>
+          <div class="stage-layer">${escapeHtml(t("Основание", "Base"))}</div>
+          <div class="stage-layer">${escapeHtml(t("Гидроизоляция", "Waterproofing"))}</div>
+          <div class="stage-layer">${escapeHtml(t("Стяжка", "Screed"))}</div>
+          <div class="stage-layer">${escapeHtml(t("Покрытие", "Final finish"))}</div>
         </div>
       `;
     }
     if (stageId === "engineering") {
       return `
         <div class="stage-diagram-icons" aria-hidden="true">
-          <div class="stage-icon-box">Розетки и линии</div>
-          <div class="stage-icon-box">Трубы и точки воды</div>
+          <div class="stage-icon-box">${escapeHtml(t("Розетки и линии", "Sockets and power lines"))}</div>
+          <div class="stage-icon-box">${escapeHtml(t("Трубы и точки воды", "Pipes and water points"))}</div>
         </div>
       `;
     }
     if (stageId === "planning") {
       return `
         <div class="stage-diagram-plan" aria-hidden="true">
-          <div class="stage-room stage-room-wide">Кухня</div>
-          <div class="stage-room">Спальня</div>
-          <div class="stage-room">Санузел</div>
+          <div class="stage-room stage-room-wide">${escapeHtml(t("Кухня", "Kitchen"))}</div>
+          <div class="stage-room">${escapeHtml(t("Спальня", "Bedroom"))}</div>
+          <div class="stage-room">${escapeHtml(t("Санузел", "Bathroom"))}</div>
         </div>
       `;
     }
     if (stageId === "finishing") {
       return `
         <div class="stage-diagram-icons" aria-hidden="true">
-          <div class="stage-icon-box">Стены и пол</div>
-          <div class="stage-icon-box">Плитка и двери</div>
+          <div class="stage-icon-box">${escapeHtml(t("Стены и пол", "Walls and floor"))}</div>
+          <div class="stage-icon-box">${escapeHtml(t("Плитка и двери", "Tiles and doors"))}</div>
         </div>
       `;
     }
     return `
       <div class="stage-diagram-icons" aria-hidden="true">
-        <div class="stage-icon-box">Мебель</div>
-        <div class="stage-icon-box">Свет и декор</div>
+        <div class="stage-icon-box">${escapeHtml(t("Мебель", "Furniture"))}</div>
+        <div class="stage-icon-box">${escapeHtml(t("Свет и декор", "Lighting and decor"))}</div>
       </div>
     `;
   };
@@ -356,9 +358,10 @@
     if (!stage) return;
     if (stageTitleEl) stageTitleEl.textContent = stage.title;
     if (stageDescriptionEl) stageDescriptionEl.textContent = stage.description;
-    if (stageWhatListEl) stageWhatListEl.innerHTML = stageListToHTML(stage.whatWeDo, "Проверьте базовый план этапа.");
-    if (stagePitfallsListEl) stagePitfallsListEl.innerHTML = stageListToHTML(stage.pitfalls, "Проверяйте типовые риски перед стартом.");
-    if (stageWhoListEl) stageWhoListEl.innerHTML = stageListToHTML(stage.whoYouNeed, "Нужен профильный специалист.");
+    if (stageWhatListEl) stageWhatListEl.innerHTML = stageListToHTML(stage.whatWeDo, t("Проверьте базовый план этапа.", "Review the basic stage plan."));
+    if (stagePitfallsListEl)
+      stagePitfallsListEl.innerHTML = stageListToHTML(stage.pitfalls, t("Проверяйте типовые риски перед стартом.", "Check common risks before starting."));
+    if (stageWhoListEl) stageWhoListEl.innerHTML = stageListToHTML(stage.whoYouNeed, t("Нужен профильный специалист.", "A specialist is required."));
     if (stageDiagramEl) stageDiagramEl.innerHTML = getDiagramHTML(stage.id);
 
     if (stageKnowledgeLink) {
@@ -576,7 +579,7 @@
     if (!Array.isArray(resources) || !resources.length) return "";
     return `
       <div class="navigator-step-group">
-        <div class="navigator-step-label">Полезные материалы</div>
+        <div class="navigator-step-label">${escapeHtml(t("Полезные материалы", "Useful resources"))}</div>
         <ul class="list navigator-step-list">
           ${resources
             .map((r) => `<li><a class="contacts-link" href="${safeUrl(r.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(r.title)}</a></li>`)
@@ -587,11 +590,14 @@
   };
 
   const buildSummary = (answers) =>
-    `${answers.objectTypeLabel} • ${answers.objectStatusLabel} • ${answers.stageLabel} • ${answers.budgetLabel} • старт: ${answers.timelineLabel}`;
+    `${answers.objectTypeLabel} • ${answers.objectStatusLabel} • ${answers.stageLabel} • ${answers.budgetLabel} • ${t("старт", "start")}: ${answers.timelineLabel}`;
 
   const renderRoute = (payload) => {
     const { steps, summaryText, source } = payload;
-    const sourceText = source === "ai" ? "Маршрут сгенерирован ИИ." : "Маршрут собран по типовым сценариям RemCard.";
+    const sourceText =
+      source === "ai"
+        ? t("Маршрут сгенерирован ИИ.", "Route generated by AI.")
+        : t("Маршрут собран по типовым сценариям RemCard.", "Route built using RemCard standard scenarios.");
     stepsEl.innerHTML = "";
     summaryEl.textContent = `${summaryText}. ${sourceText}`;
 
@@ -603,13 +609,14 @@
         <h3>${escapeHtml(step.title)}</h3>
         <p>${escapeHtml(step.description)}</p>
         <div class="navigator-step-grid">
-          ${listToHTML("Кого подключить", step.recommended_professionals)}
-          ${listToHTML("Категории работ и материалов", step.recommended_categories)}
-          ${listToHTML("Лайфхаки и типичные ошибки", step.tips)}
+          ${listToHTML(t("Кого подключить", "Who to involve"), step.recommended_professionals)}
+          ${listToHTML(t("Категории работ и материалов", "Work & material categories"), step.recommended_categories)}
+          ${listToHTML(t("Лайфхаки и типичные ошибки", "Tips and common mistakes"), step.tips)}
           ${resourcesToHTML(step.resources)}
         </div>
       `;
       stepsEl.appendChild(card);
+      if (I18N.isEn) I18N.applyTo(card);
     });
 
     resultSection.hidden = false;
@@ -732,14 +739,20 @@
       await postJSON(SUBMIT_API_URL, currentPayload);
       setSendResult({
         type: "success",
-        title: "Спасибо!",
-        text: "Заявка по маршруту отправлена в RemCard. Мы свяжемся с вами в ближайшее время."
+        title: t("Спасибо!", "Thank you!"),
+        text: t(
+          "Заявка по маршруту отправлена в RemCard. Мы свяжемся с вами в ближайшее время.",
+          "Your route request was sent to RemCard. We will contact you shortly."
+        )
       });
     } catch (err) {
       setSendResult({
         type: "error",
-        title: "Ошибка",
-        text: "Не удалось отправить маршрут. Попробуйте позже или отправьте обычную заявку через главную страницу."
+        title: t("Ошибка", "Error"),
+        text: t(
+          "Не удалось отправить маршрут. Попробуйте позже или отправьте обычную заявку через главную страницу.",
+          "Could not send the route. Please try later or submit a standard request from the home page."
+        )
       });
       // eslint-disable-next-line no-console
       console.error("RemCard navigator send error:", err);
