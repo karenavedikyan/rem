@@ -119,6 +119,8 @@
     "навигация ремонта": "repair navigator",
     "навигатор ремонта": "repair navigator",
     "RemCard — платформа для ремонта и обустройства": "RemCard — renovation and home improvement platform",
+    "RemCard — платформа для ремонта и обустройства: мастера, товары, акции и бонусы в одном сервисе.":
+      "RemCard — renovation and home improvement platform: contractors, products, promotions, and bonuses in one service.",
     "RemCard — Навигатор ремонта": "RemCard — Repair Navigator",
     "RemCard — на главную": "RemCard — Home",
     "Основная навигация": "Main navigation",
@@ -237,7 +239,346 @@
     "Логотип 2": "Logo 2",
     "Логотип 3": "Logo 3",
     "Логотип 4": "Logo 4",
-    "Все права защищены.": "All rights reserved."
+    "Все права защищены.": "All rights reserved.",
+    "Для клиентов": "For Clients",
+    "Для партнёров": "For Partners",
+    "Магазины‑партнёры": "Partner Stores",
+    "Каталог": "Catalog",
+    "Акции": "Promotions",
+    "Бонусная карта": "Bonus Card",
+    "О проекте": "About",
+    "Оставить заявку": "Submit request",
+    "Оставить заявку на ремонт": "Submit renovation request",
+    "Оставить заявку партнёра": "Submit partner request",
+    "Оставить заявку партнёра": "Submit partner request",
+    "О проекте RemCard": "About RemCard",
+    "RemCard — О проекте": "RemCard — About",
+    "О проекте RemCard: концепция, структура сервиса и дорожная карта.": "About RemCard: concept, service structure, and roadmap.",
+    "RemCard — Для клиентов": "RemCard — For Clients",
+    "RemCard для клиентов в Краснодаре: подбор мастеров, акции и бонусная программа.":
+      "RemCard for clients in Krasnodar: contractor selection, promotions, and bonus program.",
+    "Для клиентов (Краснодар)": "For Clients (Krasnodar)",
+    "На первом этапе RemCard помогает с ремонтом в Краснодаре (и крае): подбор мастеров, проверка сметы и бонусы на будущие работы и покупки у партнёров.":
+      "At the first stage, RemCard helps with renovation in Krasnodar (and region): contractor matching, estimate review, and bonuses for future works and partner purchases.",
+    "Партнёры": "Partners",
+    "Справочник мастеров, компаний и магазинов.": "Directory of contractors, companies, and stores.",
+    "Фильтры по городу, типу, специализации.": "Filters by city, type, and specialization.",
+    "Каталог": "Catalog",
+    "Товары и услуги для ремонта и обустройства.": "Products and services for renovation and improvement.",
+    "Фильтры по географии, категориям, цене.": "Filters by location, category, and price.",
+    "Акции": "Promotions",
+    "Горячие предложения партнёров.": "Hot partner offers.",
+    "Ограничения по времени и территории.": "Time and area limits.",
+    "Бонусная карта RemCard": "RemCard Bonus Card",
+    "Клиент получает бонусы за каждую покупку (процент задаёт партнёр). Бонусы можно тратить у любых партнёров по правилам платформы.":
+      "Clients receive bonuses for each purchase (rate defined by partner). Bonuses can be spent with any partner under platform rules.",
+    "Выбор": "Selection",
+    "Выбирайте товар или услугу в каталоге и сравнивайте предложения.": "Choose products or services in the catalog and compare offers.",
+    "Покупка": "Purchase",
+    "Оплачивайте заказ — бонусы начисляются автоматически.": "Pay for the order — bonuses are credited automatically.",
+    "Оплата бонусами": "Pay with bonuses",
+    "Оплачивайте часть следующего заказа бонусами у других партнёров.": "Pay part of your next order with bonuses at other partners.",
+    "RemCard — Для партнёров": "RemCard — For Partners",
+    "RemCard для партнёров в Краснодаре: заявки, витрина услуг, акции и бонусная программа.":
+      "RemCard for partners in Krasnodar: incoming requests, service showcase, promotions, and loyalty system.",
+    "Для партнёров (Краснодар)": "For Partners (Krasnodar)",
+    "RemCard приводит целевых клиентов по ремонту в Краснодаре, помогает продавать услуги и включать их в общую бонусную программу.":
+      "RemCard brings qualified renovation clients in Krasnodar, helps sell services, and integrates them into a shared bonus program.",
+    "Кто такие партнёры": "Who partners are",
+    "Физлица: мастера, прорабы, бригады, дизайнеры, декораторы.": "Individuals: contractors, foremen, crews, designers, decorators.",
+    "Юрлица: магазины стройматериалов, мебели, сантехники, подрядчики, консалтинг и др.":
+      "Legal entities: building stores, furniture, plumbing, contractors, consulting, etc.",
+    "Преимущества": "Benefits",
+    "Витрина товаров и услуг в общем каталоге RemCard.": "Showcase of products and services in shared RemCard catalog.",
+    "Инструменты для акций и продвижения.": "Tools for promotions and visibility.",
+    "Единая бонусная программа без разработки своей системы.": "Unified bonus program without building your own system.",
+    "Разделы кабинета партнёра": "Partner cabinet sections",
+    "Дашборд": "Dashboard",
+    "Статус и краткая статистика": "Status and quick stats",
+    "Профиль": "Profile",
+    "Описание, зона работы, реквизиты": "Description, service area, company details",
+    "Товары и услуги": "Products and services",
+    "Управление позициями": "Item management",
+    "Спецпредложения и условия": "Special offers and terms",
+    "Добавить партнёра в каталог": "Add partner to catalog",
+    "Нужны заявки как клиент": "Need requests as a client",
+    "Заявка на подключение партнёра (Краснодар)": "Partner onboarding request (Krasnodar)",
+    "Оставьте контакты и кратко опишите услуги/товары — команда RemCard свяжется с вами. Заявка отправляется в Telegram.":
+      "Leave contacts and briefly describe your services/products — RemCard team will contact you. Request is sent to Telegram.",
+    "Форма партнёра": "Partner form",
+    "Это быстрый старт. Позже подключим личный кабинет и полноценную анкету.": "This is a quick start form. Full partner cabinet and profile form will come later.",
+    "Имя / Компания": "Name / Company",
+    "Телефон": "Phone",
+    "Город": "City",
+    "Выберите вариант": "Select an option",
+    "Физ лицо (мастер/бригада)": "Individual (contractor/crew)",
+    "Юр лицо (компания/магазин)": "Legal entity (company/store)",
+    "Специализация / виды работ": "Specialization / work types",
+    "Комментарий": "Comment",
+    "Отправить заявку партнёра": "Submit partner request",
+    "Нажимая “Отправить”, вы соглашаетесь на обработку данных для связи по заявке.": "By clicking “Submit”, you agree to data processing for request follow-up.",
+    "Что будет дальше": "What happens next",
+    "Связь и уточнение услуг/товаров": "Contact and clarification of services/products",
+    "Проверка базовой информации (контакты, зона работы)": "Verification of basic information (contacts, service area)",
+    "Добавление в каталог и запуск первых акций (при необходимости)": "Catalog onboarding and launch of first promotions (if needed)",
+    "Заявка сразу попадает в Telegram‑группу RemCard.": "Request is immediately sent to the RemCard Telegram group.",
+    "Партнёры RemCard в Краснодаре (первые)": "RemCard partners in Krasnodar (initial)",
+    "Ниже — демо‑карточки для примера. В реальном запуске здесь будут реальные мастера и компании Краснодара.":
+      "Below are demo cards for reference. In real launch, this section will show real contractors and companies in Krasnodar.",
+    "Демо‑карточка партнёра, для примера. В реальном запуске здесь будут реальные мастера и компании.":
+      "Demo partner card for reference. In real launch, this section will contain real partners.",
+    "RemCard — Магазины‑партнёры": "RemCard — Partner Stores",
+    "Магазины‑партнёры RemCard: обои, сантехника, окна, инструмент, ремонт под ключ в Краснодаре.":
+      "RemCard partner stores: wallpaper, plumbing, windows, tools, turnkey renovation in Krasnodar.",
+    "Магазины‑партнёры RemCard": "RemCard Partner Stores",
+    "Здесь собраны компании и предприниматели — участники программы RemCard. Покупайте у партнёров, копите бонусы и тратьте их в любых магазинах‑партнёрах. Используйте фильтры и поиск, чтобы найти нужную категорию.":
+      "Here are companies and entrepreneurs participating in RemCard. Buy from partners, collect bonuses, and spend them in any partner store. Use filters and search to find needed categories.",
+    "Фильтры партнёров": "Partner filters",
+    "Поиск по названию": "Search by name",
+    "Поиск по названию компании…": "Search by company name…",
+    "Категория": "Category",
+    "Все категории": "All categories",
+    "Список партнёров": "Partner list",
+    "Партнёров по выбранным критериям не найдено.": "No partners found for selected criteria.",
+    "Добавить партнёра": "Add partner",
+    "Перейти к каталогу партнёров": "Open partner catalog",
+    "RemCard — Акции партнёров": "RemCard — Partner promotions",
+    "Акции RemCard — предложения партнёров по товарам и услугам (Краснодар).":
+      "RemCard promotions — partner offers on products and services (Krasnodar).",
+    "Все акции партнёров": "All partner promotions",
+    "Полный список актуальных предложений. Выберите акцию и перейдите к заявке.":
+      "Full list of active offers. Pick a promotion and proceed to request.",
+    "На главную": "Back to home",
+    "Фильтры акций": "Promotion filters",
+    "Город": "City",
+    "Все": "All",
+    "Сортировка": "Sorting",
+    "Сначала “горящие”": "Urgent first",
+    "Сначала избранные": "Featured first",
+    "По названию": "By title",
+    "Список акций": "Promotion list",
+    "Пока нет акций по выбранным фильтрам.": "No promotions for selected filters yet.",
+    "Перейти к заявке": "Go to request",
+    "RemCard — Каталог (демо)": "RemCard — Catalog (demo)",
+    "Демо‑каталог RemCard: товары и услуги для ремонта и обустройства (Краснодар).":
+      "RemCard demo catalog: products and services for renovation and home improvement (Krasnodar).",
+    "Каталог (демо)": "Catalog (demo)",
+    "Это демо‑страница: здесь будет каталог товаров и услуг партнёров RemCard по Краснодару. Сейчас — примеры карточек.":
+      "This is a demo page: here will be a catalog of RemCard partner products and services in Krasnodar. For now, sample cards.",
+    "Ремонт ванной/санузла": "Bathroom renovation",
+    "Работы: демонтаж, плитка, сантехника, электрика. Краснодар.": "Works: demolition, tiling, plumbing, electrical. Krasnodar.",
+    "Услуга": "Service",
+    "Санузел": "Bathroom",
+    "Под ключ": "Turnkey",
+    "Дизайн‑проект квартиры": "Apartment design project",
+    "Планировка, визуализация, подбор материалов и авторский надзор.": "Layout, visualization, material selection, and author supervision.",
+    "Дизайн": "Design",
+    "Консультация": "Consultation",
+    "Уточнить стоимость": "Check pricing",
+    "Сантехника и комплектация": "Plumbing and equipment",
+    "Подбор и поставка: смесители, инсталляции, ванны, душевые.": "Selection and delivery: faucets, systems, bathtubs, showers.",
+    "Товар": "Product",
+    "Сантехника": "Plumbing",
+    "Доставка": "Delivery",
+    "Посмотреть акции": "View promotions",
+    "RemCard — Бонусная карта": "RemCard — Bonus Card",
+    "Бонусная карта RemCard: как начисляются и тратятся бонусы (Краснодар).":
+      "RemCard bonus card: how bonuses are earned and spent (Krasnodar).",
+    "Клиент получает бонусы за каждую покупку (процент задаёт партнёр). Бонусы копятся на RemCard и могут быть потрачены у любых партнёров. Общие правила начисления и списания определяет платформа.":
+      "Clients receive bonuses for every purchase (rate is set by partner). Bonuses accumulate on RemCard and can be spent with any partner. Platform defines general accrual and redemption rules.",
+    "Выбор товара/услуги": "Choose product/service",
+    "Выбирайте предложение партнёра и условия.": "Choose partner offer and terms.",
+    "Покупка и начисление": "Purchase and accrual",
+    "После оплаты начисляются бонусы по правилам партнёра.": "After payment, bonuses are accrued according to partner rules.",
+    "Списание бонусов": "Bonus redemption",
+    "Оплачивайте часть следующих заказов бонусами у других партнёров.": "Pay part of next orders with bonuses at other partners.",
+    "Начисление": "Accrual",
+    "Процент/условия задаёт партнёр.": "Rate/conditions are set by partner.",
+    "Бонусы видны в профиле и истории операций.": "Bonuses are visible in profile and operation history.",
+    "Списание": "Redemption",
+    "Бонусами можно оплатить часть заказа у партнёров.": "Bonuses can cover part of partner orders.",
+    "Правила определяются платформой и партнёром.": "Rules are defined by platform and partner.",
+    "RemCard — Добавить партнёра": "RemCard — Add partner",
+    "Добавить партнёра в каталог RemCard.": "Add a partner to RemCard catalog.",
+    "Добавить партнёра в каталог": "Add partner to catalog",
+    "Заполните форму — новый партнёр появится на странице «Магазины‑партнёры» в течение 1–2 минут после публикации.":
+      "Fill the form — new partner will appear on “Partner Stores” page within 1–2 minutes after publishing.",
+    "Название компании / ФИО": "Company name / Full name",
+    "Например: ООО «СтройМастер» или Иван Петров": "For example: BuildMaster LLC or Ivan Petrov",
+    "Обои": "Wallpaper",
+    "Окна": "Windows",
+    "Инструмент": "Tools",
+    "Дизайн и ремонт под ключ": "Design and turnkey renovation",
+    "Адрес (город, улица, дом)": "Address (city, street, building)",
+    "г. Краснодар, ул. Примерная, д. 1": "Krasnodar, Example street, 1",
+    "Сайт": "Website",
+    "Телефоны": "Phones",
+    "Несколько номеров через запятую": "Multiple numbers separated by comma",
+    "Описание товаров и услуг": "Description of products and services",
+    "Кратко опишите, чем занимается компания (2–3 предложения)": "Briefly describe what the company does (2–3 sentences)",
+    "URL логотипа": "Logo URL",
+    "Доп. бонусы / спецусловия": "Extra bonuses / special terms",
+    "Например: Скидка 10% по карте RemCard": "For example: 10% discount with RemCard",
+    "Добавить партнёра": "Add partner",
+    "Партнёр будет опубликован на странице «Магазины‑партнёры» и появится в поиске.":
+      "Partner will be published on “Partner Stores” page and appear in search.",
+    "Действует до": "Valid until",
+    "Выгодно": "Hot deal",
+    "Партнёр": "Partner",
+    "Перейти к предложению": "Go to offer",
+    "Участник программы RemCard": "RemCard program participant",
+    "Акция:": "Promotion:",
+    "Новая заявка RemCard (клиент):": "New RemCard request (client):",
+    "Тип задачи:": "Task type:",
+    "Район:": "District:",
+    "Бюджет:": "Budget:",
+    "Имя:": "Name:",
+    "Контакт:": "Contact:",
+    "Комментарий:": "Comment:",
+    "Новая заявка RemCard (партнёр):": "New RemCard request (partner):",
+    "Роль:": "Role:",
+    "Специализация:": "Specialization:",
+    "Город/район:": "City/district:",
+    "Имя/Компания:": "Name/Company:",
+    "Краснодар": "Krasnodar",
+    "RemCard — заявка на партнёра:": "RemCard — partner request:",
+    "Название:": "Name:",
+    "Категория:": "Category:",
+    "Адрес:": "Address:",
+    "Лого:": "Logo:",
+    "Доп:": "Extra:",
+    "Ошибка": "Error",
+    "Заявка получена": "Request received",
+    "API временно недоступен. Заявка отправлена в Telegram — мы добавим партнёра вручную.":
+      "API is temporarily unavailable. Request was sent to Telegram — we will add the partner manually.",
+    "Партнёр добавлен!": "Partner added!",
+    "Он появится на странице «Магазины‑партнёры» в течение 1–2 минут.": "It will appear on “Partner Stores” page within 1–2 minutes.",
+    "Заявка отправлена": "Request sent",
+    "Заявка передана в Telegram. Мы добавим партнёра вручную. Проверьте группу/чат RemCard.":
+      "Request was forwarded to Telegram. We will add the partner manually. Check RemCard group/chat.",
+    "Бонусы 5% на следующий ремонт": "5% bonus on next renovation",
+    "Доп. бонусы при заказе от 20 000 ₽": "Extra bonuses for orders over ₽20,000",
+    "Спецусловия для владельцев RemCard": "Special conditions for RemCard holders",
+    "Скидка 10% по карте RemCard": "10% discount with RemCard"
+  });
+
+  Object.assign(EN_DICT, {
+    "RemCard помогает быстро найти проверенных мастеров и компании под ваш ремонт, сравнить предложения и не переплатить.":
+      "RemCard helps you quickly find trusted contractors and companies for your renovation, compare offers, and avoid overpaying.",
+    "RemCard приводит целевых клиентов по ремонту в Краснодаре, помогает продавать услуги":
+      "RemCard brings qualified renovation clients in Krasnodar and helps you sell services",
+    "и включать их в общую бонусную программу.": "and connect them to a shared bonus program.",
+    "RemCard связывает всех: единые правила лояльности, каталог, акции и аналитика.":
+      "RemCard connects everyone with shared loyalty rules, catalog, promotions, and analytics.",
+    "RemCard — онлайн‑платформа, которая объединяет клиентов и партнёров рынка ремонта и обустройства. Цель — сделать ремонт и обустройство такими же понятными и удобными, как вызов такси. Начинаем с Краснодара, затем масштабируем модель на другие города.":
+      "RemCard is an online platform uniting clients and partners in renovation and home improvement. Our goal is to make renovation as clear and simple as calling a taxi. We start in Krasnodar, then scale to other cities.",
+    "RemCard. Все права защищены.": "RemCard. All rights reserved.",
+    "А": "P",
+    "Б": "B",
+    "К": "C",
+    "М": "P",
+    "П": "P",
+    "Админ‑панель": "Admin panel",
+    "Баланс и история": "Balance and history",
+    "Бонусная программа для клиентов мотивирует их возвращаться именно к вам.":
+      "Bonus program encourages clients to return specifically to you.",
+    "Бонусы за покупки у партнёров.": "Bonuses for purchases at partner stores.",
+    "Витрина товаров и услуг в общем каталоге RemCard: вас видят клиенты и мастера.":
+      "Showcase of products and services in RemCard catalog, visible to clients and contractors.",
+    "Возможность попасть в подборки и акции RemCard, чтобы выделяться среди конкурентов.":
+      "Opportunity to be featured in RemCard selections and promotions to stand out.",
+    "Вся история обращений и заказов хранится в одном месте, вам проще контролировать ремонт.":
+      "All request and order history is stored in one place, making renovation easier to control.",
+    "Выберите диапазон бюджета: так проще подобрать адекватные варианты.": "Choose a budget range so we can match realistic options faster.",
+    "Выберите категорию": "Select category",
+    "Выберите срок": "Select timeline",
+    "Выгодные предложения": "Best offers",
+    "Гарантийные механизмы и страхование.": "Warranty mechanisms and insurance.",
+    "Данные и объекты": "Data and properties",
+    "Данные, объекты (адреса), история.": "Data, properties (addresses), and history.",
+    "Дизайн • Визуализация • Надзор": "Design • Visualization • Supervision",
+    "Для мастеров, бригад, компаний и магазинов. Заполните короткую форму — обсудим подключение и условия.":
+      "For contractors, crews, companies, and stores. Fill in the short form and we will discuss onboarding terms.",
+    "Дорожная карта": "Roadmap",
+    "За каждый заказ вы получаете бонусы RemCard, которые можно использовать у других партнёров.":
+      "For every order, you receive RemCard bonuses that can be used with other partners.",
+    "Заполните 5 полей — мы подберём мастера или компанию под вашу задачу, район и бюджет.":
+      "Fill in 5 fields and we will match a contractor or company to your task, district, and budget.",
+    "Заявка отправлена. В ближайшее время команда RemCard свяжется с вами.":
+      "Request sent. RemCard team will contact you shortly.",
+    "Заявка отправлена. Мы свяжемся с вами в ближайшее время.": "Request sent. We will contact you shortly.",
+    "Иван Петров — мастер по ремонту санузлов": "Ivan Petrov — bathroom renovation specialist",
+    "Кабинет партнёра": "Partner cabinet",
+    "Карта ключевых разделов RemCard — от справочника партнёров до админ‑панели.":
+      "Map of key RemCard sections — from partner directory to admin panel.",
+    "Клиенты": "Clients",
+    "Куда движется RemCard — ключевые направления развития.": "Where RemCard is heading — key development directions.",
+    "Локальный фокус на Краснодар с возможностью расширения на другие города.":
+      "Local focus on Krasnodar with expansion potential to other cities.",
+    "Магазины, студии и сервисные компании могут подключиться к RemCard и получать поток клиентов из экосистемы ремонта.":
+      "Stores, studios, and service companies can join RemCard and receive customer flow from the renovation ecosystem.",
+    "Мария Смирнова — дизайнер интерьеров": "Maria Smirnova — interior designer",
+    "Мобильное приложение RemCard.": "RemCard mobile app.",
+    "Навигатор ремонта RemCard: ответьте на вопросы и получите маршрут этапов, исполнителей, материалов и советов по ремонту.":
+      "RemCard Repair Navigator: answer a few questions and get your step-by-step route, specialists, materials, and practical tips.",
+    "Например, Иван / ООО “…”": "For example: Ivan / LLC “...”",
+    "Например: ремонт ванной, плитка, сантехника, электрика…": "For example: bathroom renovation, tiling, plumbing, electrical...",
+    "Находят мастеров и товары, сравнивают предложения, видят акции и управляют бонусами в одном профиле.":
+      "Find contractors and products, compare offers, view promotions, and manage bonuses in one profile.",
+    "ООО “КрасСтройРемонт” — ремонт квартир под ключ": "KrasStroyRemont LLC — turnkey apartment renovation",
+    "Общая бонусная программа: клиент получает бонусы за ремонт и может потратить их именно у вас.":
+      "Shared bonus program: client earns bonuses on renovation and can spend them with you.",
+    "Одна заявка — несколько предложений от мастеров и компаний по вашему району и задаче.":
+      "One request gives multiple offers from contractors and companies in your district and task.",
+    "Онлайн‑оплата и безопасные сделки.": "Online payments and secure transactions.",
+    "Опишите: зоны работы, примеры объектов, наличие договора/гарантии, ссылка на портфолио (если есть)…":
+      "Describe service areas, project examples, contract/warranty availability, and portfolio link (if any)…",
+    "Оставьте контакт, где вы точно отвечаете в течение дня.": "Leave a contact where you can reliably respond during the day.",
+    "Планировка, дизайн‑проект, подбор материалов и авторский надзор. Краснодар.":
+      "Layout, design project, material selection, and author supervision. Krasnodar.",
+    "Платформа": "Platform",
+    "Плитка • Сантехника • Электрика": "Tiles • Plumbing • Electrical",
+    "Под ключ • Квартиры • Новостройки": "Turnkey • Apartments • New builds",
+    "Подбор и поставка сантехники, консультации, доставка по Краснодару.": "Plumbing selection and supply, consultations, delivery in Krasnodar.",
+    "Подключаем к RemCard и согласовываем первые заявки или акции.": "We connect you to RemCard and align first requests or promotions.",
+    "Подключитесь к RemCard, чтобы получать заявки от клиентов, которые уже готовы к ремонту.":
+      "Join RemCard to receive requests from clients already ready for renovation.",
+    "Полный ремонт под ключ: черновые/чистовые работы, комплектация материалами. Краснодар.":
+      "Full turnkey renovation: rough and finishing works, material supply. Krasnodar.",
+    "Получают витрину в каталоге, инструменты для продвижения и готовую бонусную программу.":
+      "Get a catalog showcase, promotion tools, and ready bonus program.",
+    "Помогаем навести порядок в смете: можно уточнить работы и исключить лишнее.":
+      "We help structure estimates: clarify scope and remove unnecessary items.",
+    "После отправки мы связываемся и уточняем детали по задаче.": "After submission, we contact you and clarify task details.",
+    "Проверяем базовые данные и формат сотрудничества.": "We verify basic data and cooperation format.",
+    "Профиль клиента": "Client profile",
+    "Профиль, позиции, акции": "Profile, items, promotions",
+    "Расширение сети партнёров по регионам.": "Expansion of partner network across regions.",
+    "Расширенный подбор мастеров (рейтинг, рекомендации).": "Advanced contractor matching (ratings, recommendations).",
+    "Ремонт ванных комнат и санузлов, Краснодар и пригороды.": "Bathroom and restroom renovation in Krasnodar and nearby areas.",
+    "Сантехника • Доставка • Комплектация": "Plumbing • Delivery • Supply",
+    "Сводка по бонусам и заказам.": "Summary of bonuses and orders.",
+    "Связываемся и уточняем ваш профиль и районы работы.": "We contact you to clarify your profile and service districts.",
+    "Справочник": "Directory",
+    "Структура сервиса": "Service structure",
+    "Тип партнёра": "Partner type",
+    "Тратьте бонусы в других магазинах и сервисах.": "Spend bonuses in other stores and services.",
+    "Удобный учёт: заявки, статусы и история заказов — в одном сервисе.": "Convenient tracking: requests, statuses, and order history in one service.",
+    "Укажите реальный район объекта — это сразу сужает круг исполнителей.": "Specify the real project district — it immediately narrows relevant contractors.",
+    "Управление пользователями, категориями и правилами лояльности": "Manage users, categories, and loyalty rules",
+    "Участие в акциях и специальных предложениях RemCard для привлечения трафика.":
+      "Participation in RemCard promotions and special offers to attract demand.",
+    "Физ лицо": "Individual",
+    "Физлица:": "Individuals:",
+    "Целевые заявки по Краснодару: клиенты уже описали задачу и оставили контакты.":
+      "Qualified requests in Krasnodar: clients already described task and left contacts.",
+    "Этапы ремонта": "Renovation stages",
+    "Юр лицо": "Legal entity",
+    "Юрлица:": "Legal entities:",
+    "магазины стройматериалов, мебели, сантехники, подрядчики, консалтинг и др.":
+      "building material stores, furniture, plumbing, contractors, consulting, etc.",
+    "мастера, прорабы, бригады, дизайнеры, декораторы.": "contractors, foremen, crews, designers, decorators.",
+    "“СантехМаркет Юг” — магазин сантехники": "SantehMarket Yug — plumbing store"
   });
 
   const EXCLUDED_PARENTS = new Set(["SCRIPT", "STYLE", "NOSCRIPT"]);
@@ -268,6 +609,12 @@
         const translated = EN_DICT[normalize(raw)];
         if (translated) el.setAttribute(attr, translated);
       });
+    });
+
+    root.querySelectorAll('meta[name="description"][content]').forEach((meta) => {
+      const raw = meta.getAttribute("content") || "";
+      const translated = EN_DICT[normalize(raw)];
+      if (translated) meta.setAttribute("content", translated);
     });
   };
 

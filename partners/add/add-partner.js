@@ -1,4 +1,6 @@
 (() => {
+  const I18N = window.REMCARD_I18N || { t: (ru, en) => ru };
+  const t = (ru, en) => (I18N && typeof I18N.t === "function" ? I18N.t(ru, en) : ru);
   const form = document.getElementById("add-partner-form");
   const resultEl = document.getElementById("ap-result");
   const submitBtn = document.getElementById("ap-submit");
@@ -11,15 +13,15 @@
     const BOT_TOKEN = "8371908218:AAFX2-mU-7bHFSEMFm8C3Im8oRJwTgT1dT4";
     const CHAT_ID = "-5034197708";
     const text =
-      "RemCard — заявка на партнёра:\n" +
-      `Название: ${payload.name || "-"}\n` +
-      `Категория: ${payload.category || "-"}\n` +
-      `Адрес: ${payload.address || "-"}\n` +
-      `Сайт: ${payload.website || "-"}\n` +
-      `Телефоны: ${(payload.phones || []).join(", ") || "-"}\n` +
-      `Описание: ${payload.description || "-"}\n` +
-      `Лого: ${payload.logo || "-"}\n` +
-      `Доп: ${payload.extraLabel || "-"}`;
+      `${t("RemCard — заявка на партнёра:", "RemCard — partner request:")}\n` +
+      `${t("Название:", "Name:")} ${payload.name || "-"}\n` +
+      `${t("Категория:", "Category:")} ${payload.category || "-"}\n` +
+      `${t("Адрес:", "Address:")} ${payload.address || "-"}\n` +
+      `${t("Сайт:", "Website:")} ${payload.website || "-"}\n` +
+      `${t("Телефоны:", "Phones:")} ${(payload.phones || []).join(", ") || "-"}\n` +
+      `${t("Описание:", "Description:")} ${payload.description || "-"}\n` +
+      `${t("Лого:", "Logo:")} ${payload.logo || "-"}\n` +
+      `${t("Доп:", "Extra:")} ${payload.extraLabel || "-"}`;
     try {
       await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
         method: "POST",
@@ -91,12 +93,15 @@
       const data = await res.json().catch(() => null);
 
       if (!res.ok) {
-        const msg = (data && data.error) || data?.message || `Ошибка ${res.status}`;
+        const msg = (data && data.error) || data?.message || `${t("Ошибка", "Error")} ${res.status}`;
         await sendToTelegram(payload);
         setResult(
           "success",
-          "Заявка получена",
-          "API временно недоступен. Заявка отправлена в Telegram — мы добавим партнёра вручную."
+          t("Заявка получена", "Request received"),
+          t(
+            "API временно недоступен. Заявка отправлена в Telegram — мы добавим партнёра вручную.",
+            "API is temporarily unavailable. Request was sent to Telegram — we will add the partner manually."
+          )
         );
         form.reset();
         resultEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
@@ -105,8 +110,11 @@
 
       setResult(
         "success",
-        "Партнёр добавлен!",
-        "Он появится на странице «Магазины‑партнёры» в течение 1–2 минут."
+        t("Партнёр добавлен!", "Partner added!"),
+        t(
+          "Он появится на странице «Магазины‑партнёры» в течение 1–2 минут.",
+          "It will appear on “Partner Stores” page within 1–2 minutes."
+        )
       );
       form.reset();
       resultEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
@@ -114,8 +122,11 @@
       await sendToTelegram(payload);
       setResult(
         "success",
-        "Заявка отправлена",
-        "Заявка передана в Telegram. Мы добавим партнёра вручную. Проверьте группу/чат RemCard."
+        t("Заявка отправлена", "Request sent"),
+        t(
+          "Заявка передана в Telegram. Мы добавим партнёра вручную. Проверьте группу/чат RemCard.",
+          "Request was forwarded to Telegram. We will add the partner manually. Please check RemCard group/chat."
+        )
       );
       form.reset();
       console.error("Add partner error:", err);

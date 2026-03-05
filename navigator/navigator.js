@@ -262,7 +262,7 @@
   const applyKnowledgeBase = (knowledge) => {
     if (!isObject(knowledge)) return;
     const stageTemplates = isObject(knowledge.stage_templates) ? knowledge.stage_templates : null;
-    if (stageTemplates) {
+    if (stageTemplates && !I18N.isEn) {
       dynamicStepTemplates = { ...STEP_TEMPLATES };
       Object.keys(STEP_TEMPLATES).forEach((key) => {
         if (isObject(stageTemplates[key])) {
@@ -272,7 +272,7 @@
     }
 
     const kbCore = isObject(knowledge.kb_core) ? knowledge.kb_core : null;
-    if (kbCore) {
+    if (kbCore && !I18N.isEn) {
       dynamicKbCore = {};
       Object.keys(kbCore).forEach((key) => {
         const list = Array.isArray(kbCore[key]) ? kbCore[key].map((item) => String(item || "").trim()).filter(Boolean) : [];
@@ -286,18 +286,20 @@
     }
 
     // If explicit navigator stages are absent, softly enrich labels from stage templates.
-    navigatorStages = normalizeNavigatorStages(
-      navigatorStages.map((stage) => {
-        const tpl = stageTemplates && isObject(stageTemplates[stage.id]) ? stageTemplates[stage.id] : null;
-        return tpl
-          ? {
-              ...stage,
-              shortLabel: String(tpl.title || stage.shortLabel || stage.title),
-              description: String(tpl.description || stage.description)
-            }
-          : stage;
-      })
-    );
+    if (!I18N.isEn) {
+      navigatorStages = normalizeNavigatorStages(
+        navigatorStages.map((stage) => {
+          const tpl = stageTemplates && isObject(stageTemplates[stage.id]) ? stageTemplates[stage.id] : null;
+          return tpl
+            ? {
+                ...stage,
+                shortLabel: String(tpl.title || stage.shortLabel || stage.title),
+                description: String(tpl.description || stage.description)
+              }
+            : stage;
+        })
+      );
+    }
   };
 
   const normalizeStageId = (value) => (STAGE_ORDER.includes(String(value || "")) ? String(value) : "planning");

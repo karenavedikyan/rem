@@ -1,6 +1,11 @@
 (() => {
   const I18N = window.REMCARD_I18N || { t: (ru, en) => ru };
   const t = (ru, en) => (I18N && typeof I18N.t === "function" ? I18N.t(ru, en) : ru);
+  const applyI18n = (root) => {
+    if (I18N && I18N.isEn && typeof I18N.applyTo === "function") {
+      I18N.applyTo(root || document);
+    }
+  };
   const PRIMARY_ORIGIN = "https://rem-navy.vercel.app";
   const LEGACY_HOST = "karenavedikyan.github.io";
   const LEGACY_BASE_PATH = "/rem";
@@ -112,18 +117,18 @@
     top.className = "promo-top";
 
     const title = document.createElement("h3");
-    title.textContent = promo.title || "Акция";
+    title.textContent = promo.title || t("Акция", "Promotion");
 
     const badge = document.createElement("div");
     badge.className = "promo-badge";
-    badge.textContent = promo.discount || "Выгодно";
+    badge.textContent = promo.discount || t("Выгодно", "Hot deal");
 
     top.appendChild(title);
     top.appendChild(badge);
 
     const meta = document.createElement("div");
     meta.className = "promo-meta";
-    meta.textContent = `${promo.partnerName || "Партнёр"} • ${promo.city || ""}`.trim();
+    meta.textContent = `${promo.partnerName || t("Партнёр", "Partner")} • ${promo.city || ""}`.trim();
 
     const desc = document.createElement("p");
     desc.textContent = promo.description || "";
@@ -142,7 +147,7 @@
     if (validStr) {
       valid = document.createElement("div");
       valid.className = "promo-valid";
-      valid.textContent = `Действует до ${validStr}`;
+      valid.textContent = `${t("Действует до", "Valid until")} ${validStr}`;
     }
 
     const actions = document.createElement("div");
@@ -164,7 +169,7 @@
       if (id && !document.getElementById(id)) href = `${getHomeBase()}${href}`;
     }
     link.href = href;
-    link.textContent = "Перейти к предложению";
+    link.textContent = t("Перейти к предложению", "Go to offer");
     link.dataset.promoTitle = promo.title || "";
     link.dataset.promoPartner = promo.partnerName || "";
     link.dataset.promoDiscount = promo.discount || "";
@@ -177,6 +182,7 @@
     if (valid) card.appendChild(valid);
     card.appendChild(tagsWrap);
     card.appendChild(actions);
+    applyI18n(card);
     return card;
   };
 
@@ -234,7 +240,8 @@
           list.sort(promoSortSoon);
         }
 
-        renderPromotionsInto(allEl, list);
+      renderPromotionsInto(allEl, list);
+      applyI18n(allEl);
         if (emptyEl) emptyEl.hidden = list.length > 0;
       };
 
@@ -288,7 +295,7 @@
 
     const nameEl = document.createElement("h3");
     nameEl.className = "partner-store-name";
-    nameEl.textContent = p.name || "Партнёр";
+    nameEl.textContent = p.name || t("Партнёр", "Partner");
     top.appendChild(nameEl);
 
     const categoryEl = document.createElement("span");
@@ -311,7 +318,7 @@
       a.href = p.website;
       a.target = "_blank";
       a.rel = "noopener noreferrer";
-      a.textContent = "Сайт";
+      a.textContent = t("Сайт", "Website");
       links.push(a);
     }
     const phones = Array.isArray(p.phones) ? p.phones : p.phones ? [p.phones] : [];
@@ -328,7 +335,7 @@
 
     const badgeEl = document.createElement("div");
     badgeEl.className = "partner-store-badge";
-    badgeEl.textContent = "Участник программы RemCard";
+    badgeEl.textContent = t("Участник программы RemCard", "RemCard program participant");
 
     article.appendChild(top);
     article.appendChild(categoryEl);
@@ -344,6 +351,7 @@
       article.appendChild(extraEl);
     }
 
+    applyI18n(article);
     return article;
   };
 
@@ -377,6 +385,7 @@
       }
 
       renderPartnersInto(partnersCardsEl, list);
+      applyI18n(partnersCardsEl);
       if (partnersEmptyEl) partnersEmptyEl.hidden = list.length > 0;
     };
 
