@@ -37,7 +37,7 @@
             <a class="nav-link" href="../index.html#business">Бизнесу</a>
             <a class="nav-link" href="../index.html#how">Как это работает</a>
             <a class="nav-link" href="./" aria-current="page">Навигатор</a>
-            <a class="nav-link" href="../knowledge/">База знаний</a>
+            <a class="nav-link" href="#navigator-knowledge">База знаний</a>
             <a class="nav-link" href="../index.html#contacts">Контакты</a>
           </div>
         </nav>
@@ -88,7 +88,7 @@
               <div class="form-actions">
                 <button class="btn btn-ghost" id="stage-next-btn" type="button">Следующий этап</button>
                 <a class="btn btn-primary" id="stage-apply-btn" href="#navigator-form-card">Оставить заявку в RemCard по этому этапу</a>
-                <a class="section-link" id="stage-knowledge-link" href="../knowledge/?stage=planning">Подробнее про этот этап</a>
+                <a class="section-link" id="stage-knowledge-link" href="#navigator-knowledge">Подробнее про этот этап</a>
               </div>
             </article>
           </div>
@@ -202,9 +202,23 @@
                 <li>Готовая кнопка «Отправить заявку в RemCard по этому маршруту».</li>
               </ul>
               <p class="muted" style="margin-top: 12px">Стартовая версия для Краснодара. Дальше добавим адаптацию под другие города.</p>
-              <a class="section-link" style="margin-top: 12px" href="../knowledge/">Смотреть базу знаний по этапам</a>
+              <a class="section-link" style="margin-top: 12px" href="#navigator-knowledge">Смотреть базу знаний по этапам</a>
             </article>
           </div>
+        </div>
+      </section>
+
+      <section class="section" id="navigator-knowledge">
+        <div class="container">
+          <header class="section-header">
+            <h2 id="navigator-knowledge-title">База знаний внутри навигатора</h2>
+            <p class="section-subtitle" id="navigator-knowledge-subtitle">
+              Здесь собраны короткие чек-листы и красные флаги по этапам. Эти правила используются в маршрутах RemCard.
+            </p>
+          </header>
+
+          <div class="grid cards-3" id="navigator-knowledge-top-cards"></div>
+          <div class="grid two-col" id="navigator-knowledge-checklists"></div>
         </div>
       </section>
 
@@ -254,6 +268,7 @@
 
     <script src="../script.js" defer></script>
     <script src="./stages.js" defer></script>
+    <script src="./navigator-knowledge.js" defer></script>
     <script src="./navigator.js" defer></script>
   </body>
 </html>

@@ -362,7 +362,7 @@
     if (stageDiagramEl) stageDiagramEl.innerHTML = getDiagramHTML(stage.id);
 
     if (stageKnowledgeLink) {
-      stageKnowledgeLink.setAttribute("href", `../knowledge/?stage=${encodeURIComponent(stage.id)}`);
+      stageKnowledgeLink.setAttribute("href", "#navigator-knowledge");
     }
     if (stageApplyBtn) {
       stageApplyBtn.setAttribute("href", "#navigator-form-card");
