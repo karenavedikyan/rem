@@ -25,7 +25,7 @@
   const SUBMIT_API_URL = window.REMCARD_NAVIGATOR_SUBMIT_API_URL || "https://rem-navy.vercel.app/api/navigator-submit";
   const KNOWLEDGE_BASE_URL = window.REMCARD_KNOWLEDGE_BASE_URL || "../knowledge/knowledge-base.json";
 
-  const STEP_TEMPLATES = {
+  const STEP_TEMPLATES_RU = {
     planning: {
       id: "planning",
       title: "Планирование и замеры",
@@ -80,6 +80,60 @@
       resources: [{ type: "article", title: "Финальный чек-лист перед въездом", url: "https://example.com/move-in-checklist" }]
     }
   };
+  const STEP_TEMPLATES_EN = {
+    planning: {
+      id: "planning",
+      title: "Planning and measurements",
+      description: "Define renovation goals, take base measurements, and lock a realistic work route.",
+      stage_type: "planning",
+      recommended_professionals: ["site manager", "general contractor", "designer (optional)"],
+      recommended_categories: ["measurement and layout", "base budgeting", "preparation checklist"],
+      tips: ["Take photos and videos of all rooms before start.", "Agree on priorities: what must be done first."],
+      resources: [{ type: "article", title: "Renovation preparation checklist", url: "https://example.com/remont-checklist" }]
+    },
+    rough: {
+      id: "rough",
+      title: "Rough works",
+      description: "Prepare the foundation: demolition, leveling, and base prep before engineering and finishing.",
+      stage_type: "rough",
+      recommended_professionals: ["general contractor", "finishing specialist", "site manager"],
+      recommended_categories: ["demolition", "rough mixes", "wall/floor leveling"],
+      tips: ["Do not save on base surface prep — it affects everything after.", "Photo-document hidden works."],
+      resources: [{ type: "video", title: "What matters on rough works stage", url: "https://example.com/rough-works-video" }]
+    },
+    engineering: {
+      id: "engineering",
+      title: "Engineering works",
+      description: "Plan and install electrical, plumbing, and key utilities before final finishing.",
+      stage_type: "engineering",
+      recommended_professionals: ["electrician", "plumber", "MEP engineer (if needed)"],
+      recommended_categories: ["electrical installation", "plumbing", "engineering components"],
+      tips: ["Add reserve for outlets and utility points.", "Ensure service access to key nodes after finishing."],
+      resources: [{ type: "article", title: "Basic engineering decision list", url: "https://example.com/engineering-basics" }]
+    },
+    finishing: {
+      id: "finishing",
+      title: "Finishing",
+      description: "Move to final materials and visible look: walls, floors, ceiling, doors, and finish details.",
+      stage_type: "finishing",
+      recommended_professionals: ["finishing specialist", "tiler", "painter"],
+      recommended_categories: ["final materials", "doors", "wall and floor coverings"],
+      tips: ["Check material samples under your real lighting.", "Plan deliveries to avoid team downtime."],
+      resources: [{ type: "video", title: "How to choose finishing materials", url: "https://example.com/finishing-materials" }]
+    },
+    furniture: {
+      id: "furniture",
+      title: "Furniture, lighting and decor",
+      description: "Finalize renovation with furniture, lighting, decor, and move-in readiness checks.",
+      stage_type: "furniture",
+      recommended_professionals: ["furniture installer", "lighting specialist", "interior designer (optional)"],
+      recommended_categories: ["kitchens and wardrobes", "lighting", "decor and textiles"],
+      tips: ["Keep walkways and functional zones clear.", "Check furniture compatibility with outlets and utilities."],
+      resources: [{ type: "article", title: "Final pre move-in checklist", url: "https://example.com/move-in-checklist" }]
+    }
+  };
+
+  const STEP_TEMPLATES = I18N.isEn ? STEP_TEMPLATES_EN : STEP_TEMPLATES_RU;
   let dynamicStepTemplates = { ...STEP_TEMPLATES };
   let dynamicKbCore = {};
   const STAGE_ORDER = ["planning", "rough", "engineering", "finishing", "furniture"];
@@ -151,11 +205,17 @@
   let navigatorStages = Array.isArray(window.REMCARD_NAVIGATOR_STAGES) && window.REMCARD_NAVIGATOR_STAGES.length ? window.REMCARD_NAVIGATOR_STAGES : DEFAULT_NAVIGATOR_STAGES;
   let activeStageId = "planning";
 
-  const objectLabels = {
-    apartment: "квартиры",
-    house: "дома",
-    commercial: "коммерческого помещения"
-  };
+  const objectLabels = I18N.isEn
+    ? {
+        apartment: "apartment",
+        house: "house",
+        commercial: "commercial space"
+      }
+    : {
+        apartment: "квартиры",
+        house: "дома",
+        commercial: "коммерческого помещения"
+      };
 
   const stagePriority = {
     planning: ["planning"],
@@ -483,13 +543,13 @@
         categories.push("фасадные и наружные решения");
       }
       if (answers.budget === "unknown" && idx === 0) {
-        tips.push("Сформируйте верхний лимит бюджета и резерв 10–15% на непредвиденные расходы.");
+        tips.push(t("Сформируйте верхний лимит бюджета и резерв 10–15% на непредвиденные расходы.", "Set an upper budget limit and keep a 10–15% reserve for unexpected costs."));
       }
       if (answers.timeline === "now" && idx === 0) {
-        tips.push("Если старт нужен срочно, заранее согласуйте график работ и поставок материалов.");
+        tips.push(t("Если старт нужен срочно, заранее согласуйте график работ и поставок материалов.", "If start is urgent, align work schedule and material deliveries in advance."));
       }
       if (answers.features && idx === 0) {
-        tips.push(`Учитывайте особенности объекта: ${answers.features}`);
+        tips.push(t(`Учитывайте особенности объекта: ${answers.features}`, `Account for project specifics: ${answers.features}`));
       }
       if (stageCoreTips.length) {
         tips.push(stageCoreTips[0]);
@@ -707,15 +767,17 @@
       let steps = localRoute.steps;
       let source = "template";
 
-      try {
-        const data = await postJSON(ROUTE_API_URL, { answers });
-        if (Array.isArray(data.steps) && data.steps.length) {
-          steps = sanitizeSteps(data.steps, localRoute.steps);
-          source = data.source === "ai" ? "ai" : "template";
+      if (!I18N.isEn) {
+        try {
+          const data = await postJSON(ROUTE_API_URL, { answers });
+          if (Array.isArray(data.steps) && data.steps.length) {
+            steps = sanitizeSteps(data.steps, localRoute.steps);
+            source = data.source === "ai" ? "ai" : "template";
+          }
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.warn("Navigator AI route fallback:", err);
         }
-      } catch (err) {
-        // eslint-disable-next-line no-console
-        console.warn("Navigator AI route fallback:", err);
       }
 
       currentPayload = {
