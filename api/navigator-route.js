@@ -1,3 +1,5 @@
+import fs from "node:fs";
+
 const ALLOWED_ORIGINS = [
   "https://karenavedikyan.github.io",
   "https://rem-navy.vercel.app",
@@ -111,6 +113,77 @@ const REMCARD_KB_CORE = {
   ]
 };
 
+const KNOWLEDGE_BASE_URL = new URL("../knowledge/knowledge-base.json", import.meta.url);
+
+const loadKnowledgeBase = () => {
+  try {
+    const raw = fs.readFileSync(KNOWLEDGE_BASE_URL, "utf8");
+    const data = JSON.parse(raw);
+    return data && typeof data === "object" ? data : null;
+  } catch (err) {
+    console.warn("navigator-route knowledge fallback:", err && err.message ? err.message : err);
+    return null;
+  }
+};
+
+const uniqStrings = (values, max = 8) =>
+  Array.from(
+    new Set(
+      (Array.isArray(values) ? values : [])
+        .map((v) => (typeof v === "string" ? v.trim() : ""))
+        .filter(Boolean)
+    )
+  ).slice(0, max);
+
+const mergeStageTemplates = (fallback, knowledge) => {
+  const source = knowledge && typeof knowledge === "object" && knowledge.stage_templates && typeof knowledge.stage_templates === "object"
+    ? knowledge.stage_templates
+    : null;
+  if (!source) return fallback;
+
+  const out = { ...fallback };
+  for (const stage of Object.keys(fallback)) {
+    const raw = source[stage];
+    if (!raw || typeof raw !== "object" || Array.isArray(raw)) continue;
+    out[stage] = {
+      ...fallback[stage],
+      title: typeof raw.title === "string" && raw.title.trim() ? raw.title.trim() : fallback[stage].title,
+      description: typeof raw.description === "string" && raw.description.trim() ? raw.description.trim() : fallback[stage].description,
+      stage_type:
+        typeof raw.stage_type === "string" && raw.stage_type.trim() ? raw.stage_type.trim() : fallback[stage].stage_type,
+      recommended_professionals: uniqStrings(
+        [...fallback[stage].recommended_professionals, ...(Array.isArray(raw.recommended_professionals) ? raw.recommended_professionals : [])],
+        8
+      ),
+      recommended_categories: uniqStrings(
+        [...fallback[stage].recommended_categories, ...(Array.isArray(raw.recommended_categories) ? raw.recommended_categories : [])],
+        8
+      ),
+      tips: uniqStrings([...fallback[stage].tips, ...(Array.isArray(raw.tips) ? raw.tips : [])], 8),
+      resources: Array.isArray(raw.resources) && raw.resources.length ? raw.resources.slice(0, 4) : fallback[stage].resources.slice(0, 4),
+    };
+  }
+  return out;
+};
+
+const mergeKbCore = (fallback, knowledge) => {
+  const source = knowledge && typeof knowledge === "object" && knowledge.kb_core && typeof knowledge.kb_core === "object"
+    ? knowledge.kb_core
+    : null;
+  if (!source) return fallback;
+
+  const out = { ...fallback };
+  for (const stage of Object.keys(source)) {
+    const merged = uniqStrings([...(fallback[stage] || []), ...(Array.isArray(source[stage]) ? source[stage] : [])], 8);
+    if (merged.length) out[stage] = merged;
+  }
+  return out;
+};
+
+const KNOWLEDGE_BASE = loadKnowledgeBase();
+const EFFECTIVE_STEP_TEMPLATES = mergeStageTemplates(STEP_TEMPLATES, KNOWLEDGE_BASE);
+const EFFECTIVE_KB_CORE = mergeKbCore(REMCARD_KB_CORE, KNOWLEDGE_BASE);
+
 const allowedObjectType = new Set(["apartment", "house", "commercial"]);
 const allowedObjectStatus = new Set(["new_without_finish", "new_basic_finish", "secondary_partial", "secondary_full"]);
 const allowedStage = new Set(["planning", "measurements", "rough", "finishing", "furniture"]);
@@ -212,7 +285,7 @@ function buildTemplateRoute(answers) {
 
   const objectLabel = objectLabels[answers.objectType] || "объекта";
   const steps = selectedFlow.map((key, idx) => {
-    const tpl = STEP_TEMPLATES[key];
+    const tpl = EFFECTIVE_STEP_TEMPLATES[key] || STEP_TEMPLATES[key];
     const tips = tpl.tips.slice();
     const professionals = tpl.recommended_professionals.slice();
     const categories = tpl.recommended_categories.slice();
@@ -408,7 +481,7 @@ async function generateRouteWithAI(answers) {
   const stageKnowledge = referenceRoute.map((step, idx) => ({
     step: idx + 1,
     stage_type: step.stage_type,
-    knowledge: REMCARD_KB_CORE[step.stage_type] || [],
+    knowledge: EFFECTIVE_KB_CORE[step.stage_type] || [],
   }));
 
   const schema = {
@@ -616,6 +689,7 @@ export default async function handler(req, res) {
     res.status(200).json({
       configured,
       model: getPreferredModel(),
+      knowledge_loaded: !!KNOWLEDGE_BASE,
       hint: configured
         ? "AI generation is enabled."
         : "Set valid REMCARD_OPENAI_API_KEY in Vercel for AI generation. Template fallback remains active.",

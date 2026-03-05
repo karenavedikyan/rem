@@ -10,6 +10,7 @@
   const buildBtn = form.querySelector("button[type='submit']");
   const ROUTE_API_URL = window.REMCARD_NAVIGATOR_ROUTE_API_URL || "https://rem-navy.vercel.app/api/navigator-route";
   const SUBMIT_API_URL = window.REMCARD_NAVIGATOR_SUBMIT_API_URL || "https://rem-navy.vercel.app/api/navigator-submit";
+  const KNOWLEDGE_BASE_URL = window.REMCARD_KNOWLEDGE_BASE_URL || "../knowledge/knowledge-base.json";
 
   const STEP_TEMPLATES = {
     planning: {
@@ -66,6 +67,8 @@
       resources: [{ type: "article", title: "Финальный чек-лист перед въездом", url: "https://example.com/move-in-checklist" }]
     }
   };
+  let dynamicStepTemplates = { ...STEP_TEMPLATES };
+  let dynamicKbCore = {};
 
   const objectLabels = {
     apartment: "квартиры",
@@ -101,6 +104,40 @@
   };
 
   const uniq = (arr) => Array.from(new Set((arr || []).filter(Boolean)));
+  const isObject = (value) => value && typeof value === "object" && !Array.isArray(value);
+
+  const normalizeTemplate = (raw, fallback) => ({
+    id: String((raw && raw.id) || (fallback && fallback.id) || ""),
+    title: String((raw && raw.title) || (fallback && fallback.title) || ""),
+    description: String((raw && raw.description) || (fallback && fallback.description) || ""),
+    stage_type: String((raw && raw.stage_type) || (fallback && fallback.stage_type) || ""),
+    recommended_professionals: uniq([...(fallback && fallback.recommended_professionals ? fallback.recommended_professionals : []), ...(Array.isArray(raw && raw.recommended_professionals) ? raw.recommended_professionals : [])]).slice(0, 8),
+    recommended_categories: uniq([...(fallback && fallback.recommended_categories ? fallback.recommended_categories : []), ...(Array.isArray(raw && raw.recommended_categories) ? raw.recommended_categories : [])]).slice(0, 8),
+    tips: uniq([...(fallback && fallback.tips ? fallback.tips : []), ...(Array.isArray(raw && raw.tips) ? raw.tips : [])]).slice(0, 8),
+    resources: Array.isArray(raw && raw.resources) ? raw.resources.slice(0, 4) : fallback.resources.slice(0, 4)
+  });
+
+  const applyKnowledgeBase = (knowledge) => {
+    if (!isObject(knowledge)) return;
+    const stageTemplates = isObject(knowledge.stage_templates) ? knowledge.stage_templates : null;
+    if (stageTemplates) {
+      dynamicStepTemplates = { ...STEP_TEMPLATES };
+      Object.keys(STEP_TEMPLATES).forEach((key) => {
+        if (isObject(stageTemplates[key])) {
+          dynamicStepTemplates[key] = normalizeTemplate(stageTemplates[key], STEP_TEMPLATES[key]);
+        }
+      });
+    }
+
+    const kbCore = isObject(knowledge.kb_core) ? knowledge.kb_core : null;
+    if (kbCore) {
+      dynamicKbCore = {};
+      Object.keys(kbCore).forEach((key) => {
+        const list = Array.isArray(kbCore[key]) ? kbCore[key].map((item) => String(item || "").trim()).filter(Boolean) : [];
+        if (list.length) dynamicKbCore[key] = uniq(list).slice(0, 6);
+      });
+    }
+  };
 
   const getSelectedText = (selectEl) => {
     if (!selectEl) return "";
@@ -121,6 +158,21 @@
       throw new Error(message);
     }
     return data || {};
+  };
+
+  const loadKnowledgeBase = async () => {
+    try {
+      const target = String(KNOWLEDGE_BASE_URL || "").startsWith("http")
+        ? KNOWLEDGE_BASE_URL
+        : new URL(KNOWLEDGE_BASE_URL, window.location.origin).href;
+      const res = await fetch(target, { cache: "no-store" });
+      if (!res.ok) return;
+      const data = await res.json().catch(() => null);
+      applyKnowledgeBase(data);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.warn("Navigator knowledge fallback:", err);
+    }
   };
 
   const setFormLoading = (loading) => {
@@ -172,10 +224,11 @@
 
     const objectLabel = objectLabels[answers.objectType] || "объекта";
     const steps = selectedFlow.map((key, idx) => {
-      const tpl = STEP_TEMPLATES[key];
+      const tpl = dynamicStepTemplates[key] || STEP_TEMPLATES[key];
       const tips = tpl.tips.slice();
       const professionals = tpl.recommended_professionals.slice();
       const categories = tpl.recommended_categories.slice();
+      const stageCoreTips = Array.isArray(dynamicKbCore[key]) ? dynamicKbCore[key] : [];
 
       if (answers.objectType === "commercial" && key === "engineering") {
         professionals.push("инженер ОВиК");
@@ -192,6 +245,9 @@
       }
       if (answers.features && idx === 0) {
         tips.push(`Учитывайте особенности объекта: ${answers.features}`);
+      }
+      if (stageCoreTips.length) {
+        tips.push(stageCoreTips[0]);
       }
 
       return {
@@ -345,6 +401,8 @@
       timelineLabel: getSelectedText(timelineEl)
     };
   };
+
+  loadKnowledgeBase();
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
