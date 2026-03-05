@@ -23,6 +23,8 @@
   const normalizeHref = (href, fallbackHref = "#navigator-map") => {
     const value = toText(href, fallbackHref);
     if (!value) return fallbackHref;
+    if (value.startsWith("#kb-")) return "#navigator-knowledge";
+    if (value.startsWith("/knowledge") || value.startsWith("../knowledge")) return "#navigator-knowledge";
     if (value.startsWith("#") || value.startsWith("/") || /^https?:\/\//i.test(value)) return value;
     return fallbackHref;
   };

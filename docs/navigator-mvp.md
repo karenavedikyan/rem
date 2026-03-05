@@ -108,7 +108,7 @@
 
 - `api/navigator-route` (AI-промпт и fallback-маршрут),
 - `navigator/navigator.js` (fallback на фронте),
-- `knowledge/index.html` (рендер карточек и чек-листов).
+- `navigator/navigator-knowledge.js` (встроенный блок базы знаний внутри `/navigator`).
 
 Локальная проверка структуры knowledge base:
 

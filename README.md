@@ -9,9 +9,9 @@
 - `script.js` — бургер‑меню + плавный скролл + авто‑год в футере
 - `navigator/index.html` — MVP страницы «Навигатор ремонта»
 - `navigator/navigator.js` — логика опроса, сборка маршрута и отправка заявки по маршруту
-- `knowledge/index.html` — база знаний RemCard по этапам и чек‑листам
+- `navigator/navigator-knowledge.js` — рендер блока базы знаний внутри `/navigator`
+- `knowledge/index.html` — редирект на `/navigator/#navigator-knowledge` (для старых ссылок)
 - `knowledge/knowledge-base.json` — единый источник знаний (для фронта и AI API)
-- `knowledge/knowledge.js` — рендер страницы базы знаний из JSON
 - `validate-knowledge-base.mjs` — локальная проверка структуры knowledge base
 - `docs/navigator-mvp.md` — ТЗ и структура первого MVP навигатора
 
