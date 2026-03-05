@@ -110,6 +110,12 @@
 - `navigator/navigator.js` (fallback на фронте),
 - `knowledge/index.html` (рендер карточек и чек-листов).
 
+Локальная проверка структуры knowledge base:
+
+```bash
+node validate-knowledge-base.mjs
+```
+
 Типовые шаги:
 
 1. Планирование и замеры

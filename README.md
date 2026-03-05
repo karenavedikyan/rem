@@ -12,6 +12,7 @@
 - `knowledge/index.html` — база знаний RemCard по этапам и чек‑листам
 - `knowledge/knowledge-base.json` — единый источник знаний (для фронта и AI API)
 - `knowledge/knowledge.js` — рендер страницы базы знаний из JSON
+- `validate-knowledge-base.mjs` — локальная проверка структуры knowledge base
 - `docs/navigator-mvp.md` — ТЗ и структура первого MVP навигатора
 
 ## Локальный запуск
@@ -87,3 +88,13 @@ Telegram:
 
 - `REMCARD_TELEGRAM_BOT_TOKEN` (или `TELEGRAM_BOT_TOKEN`)
 - `REMCARD_TELEGRAM_CHAT_ID` (или `TELEGRAM_CHAT_ID`)
+
+## Валидация единой базы знаний
+
+Перед деплоем можно проверить `knowledge/knowledge-base.json`:
+
+```bash
+node validate-knowledge-base.mjs
+```
+
+Проверяются обязательные секции, поля этапов, массивы, URL ресурсов и согласованность ключей стадий.
