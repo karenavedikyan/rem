@@ -18,6 +18,7 @@ const warnings = [];
 const isObject = (value) => value && typeof value === "object" && !Array.isArray(value);
 const isNonEmptyString = (value) => typeof value === "string" && value.trim().length > 0;
 const unique = (arr) => Array.from(new Set(arr));
+const isValidHref = (value) => value.startsWith("/") || value.startsWith("#") || HTTP_URL_RE.test(value);
 
 const addError = (fieldPath, message) => {
   errors.push(`${fieldPath}: ${message}`);
@@ -142,7 +143,7 @@ const validateKbCore = (json) => {
   });
 };
 
-const validateCardArray = (value, fieldPath) => {
+const validateCardArray = (value, fieldPath, { enforceRemcardCardShape = false } = {}) => {
   if (!Array.isArray(value)) {
     addError(fieldPath, "must be an array");
     return;
@@ -156,6 +157,15 @@ const validateCardArray = (value, fieldPath) => {
 
     ensureString(obj.title, `${cp}.title`);
     ensureStringArray(obj.items, `${cp}.items`, { min: 1, max: 10 });
+
+    if (enforceRemcardCardShape) {
+      ensureString(obj.stage_badge, `${cp}.stage_badge`);
+      ensureString(obj.insight, `${cp}.insight`);
+      ensureString(obj.details_label, `${cp}.details_label`);
+      if (ensureString(obj.details_href, `${cp}.details_href`) && !isValidHref(obj.details_href.trim())) {
+        addError(`${cp}.details_href`, 'must start with "#", "/" or be a valid http(s) URL');
+      }
+    }
   });
 };
 
@@ -167,6 +177,7 @@ const validateInfographics = (value, fieldPath) => {
   ensureString(infographics.subtitle, `${fieldPath}.subtitle`);
   ensureString(infographics.risk_title, `${fieldPath}.risk_title`);
   ensureString(infographics.flow_title, `${fieldPath}.flow_title`);
+  ensureString(infographics.flow_kicker, `${fieldPath}.flow_kicker`);
 
   if (!Array.isArray(infographics.kpis)) {
     addError(`${fieldPath}.kpis`, "must be an array");
@@ -219,7 +230,11 @@ const validateInfographics = (value, fieldPath) => {
       } else if (valueNum < 0 || valueNum > 100) {
         addError(`${ip}.weight`, "must be between 0 and 100");
       }
-      if (obj.note !== undefined && !isNonEmptyString(obj.note)) addError(`${ip}.note`, "must be a non-empty string when provided");
+      ensureString(obj.detail_label, `${ip}.detail_label`);
+      ensureString(obj.note, `${ip}.note`);
+      if (ensureString(obj.detail_href, `${ip}.detail_href`) && !isValidHref(obj.detail_href.trim())) {
+        addError(`${ip}.detail_href`, 'must start with "#", "/" or be a valid http(s) URL');
+      }
     });
   }
 };
@@ -230,8 +245,8 @@ const validateKnowledgePage = (json) => {
 
   ensureString(knowledgePage.hero_title, "knowledge_page.hero_title");
   ensureString(knowledgePage.hero_subtitle, "knowledge_page.hero_subtitle");
-  validateCardArray(knowledgePage.top_cards, "knowledge_page.top_cards");
-  validateCardArray(knowledgePage.checklists, "knowledge_page.checklists");
+  validateCardArray(knowledgePage.top_cards, "knowledge_page.top_cards", { enforceRemcardCardShape: true });
+  validateCardArray(knowledgePage.checklists, "knowledge_page.checklists", { enforceRemcardCardShape: true });
   validateInfographics(knowledgePage.infographics, "knowledge_page.infographics");
 
   const cta = ensureObject(knowledgePage.cta, "knowledge_page.cta");
@@ -240,12 +255,11 @@ const validateKnowledgePage = (json) => {
   ensureString(cta.title, "knowledge_page.cta.title");
   ensureString(cta.text, "knowledge_page.cta.text");
   ensureString(cta.button_text, "knowledge_page.cta.button_text");
+  ensureStringArray(cta.steps, "knowledge_page.cta.steps", { min: 3, max: 5 });
   if (ensureString(cta.button_href, "knowledge_page.cta.button_href")) {
     const href = cta.button_href.trim();
-    const isRelative = href.startsWith("/");
-    const isAbsolute = HTTP_URL_RE.test(href);
-    if (!isRelative && !isAbsolute) {
-      addError("knowledge_page.cta.button_href", 'must start with "/" or be a valid http(s) URL');
+    if (!isValidHref(href)) {
+      addError("knowledge_page.cta.button_href", 'must start with "#", "/" or be a valid http(s) URL');
     }
   }
 };

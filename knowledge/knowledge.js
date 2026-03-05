@@ -4,10 +4,12 @@
 
   const heroTitleEl = document.getElementById("kb-hero-title");
   const heroSubtitleEl = document.getElementById("kb-hero-subtitle");
+  const topCtaLinkEl = document.getElementById("kb-top-cta-link");
   const topCardsEl = document.getElementById("kb-top-cards");
   const checklistsEl = document.getElementById("kb-checklists");
   const ctaTitleEl = document.getElementById("kb-cta-title");
   const ctaTextEl = document.getElementById("kb-cta-text");
+  const ctaStepsEl = document.getElementById("kb-cta-steps");
   const ctaLinkEl = document.getElementById("kb-cta-link");
   const infographicsTitleEl = document.getElementById("kb-infographics-title");
   const infographicsSubtitleEl = document.getElementById("kb-infographics-subtitle");
@@ -15,6 +17,7 @@
   const risksTitleEl = document.getElementById("kb-risks-title");
   const riskBarsEl = document.getElementById("kb-risk-bars");
   const flowTitleEl = document.getElementById("kb-flow-title");
+  const flowKickerEl = document.getElementById("kb-flow-kicker");
   const stageFlowEl = document.getElementById("kb-stage-flow");
 
   if (!heroTitleEl || !heroSubtitleEl || !topCardsEl || !checklistsEl || !ctaTitleEl || !ctaTextEl || !ctaLinkEl) return;
@@ -36,23 +39,26 @@
     },
     knowledge_page: {
       hero_title: "База знаний RemCard по ремонту",
-      hero_subtitle: "Практические этапы, критичные узлы и типовые ошибки на основе внутренней методички RemCard.",
+      hero_subtitle:
+        "Практические этапы, критичные узлы и типовые ошибки на основе внутренней методички RemCard. Эти принципы и чек-листы лежат в основе навигатора ремонта RemCard.",
       top_cards: [
         {
+          stage_badge: "Этап: Подготовка",
           title: "Подготовка до старта",
-          items: [
-            "Сначала фиксируйте план задач и замеры, затем закупки и график работ.",
-            "Смету делите по этапам, чтобы проще контролировать бюджет."
-          ]
+          insight:
+            "Главный инсайт: сначала фиксируйте этапность и замеры, потом закупки — иначе бюджет и сроки «поплывут».",
+          items: ["Смету разбивайте по этапам, а не одним блоком.", "Сразу определите критичные узлы и последовательность работ."],
+          details_href: "#kb-checklists"
         }
       ],
       checklists: [
         {
+          stage_badge: "Этап: Черновые работы",
           title: "Черновые работы: базовый чек-лист",
-          items: [
-            "Соблюдайте технологические паузы на высыхание штукатурки и стяжки.",
-            "Не спешите с чистовой отделкой до проверки основания."
-          ]
+          insight:
+            "Не спешите с финишем: дайте стяжке и штукатурке набрать прочность — иначе финишные материалы быстро пойдут трещинами.",
+          items: ["Закладывайте технологические паузы на высыхание.", "Проверяйте основание до перехода к чистовой отделке."],
+          details_href: "#kb-checklists"
         }
       ],
       infographics: {
@@ -60,6 +66,7 @@
         subtitle: "Сводные метрики и зоны риска по этапам ремонта.",
         risk_title: "Критичные зоны внимания",
         flow_title: "Рекомендуемая последовательность этапов",
+        flow_kicker: "5 ключевых этапов маршрута RemCard",
         kpis: [
           { value: "5", label: "ключевых этапов маршрута", note: "От планирования до мебели и въезда." },
           { value: "14+", label: "практических правил", note: "База покрывает типичные ошибки и контрольные точки." },
@@ -75,8 +82,13 @@
       },
       cta: {
         title: "Как использовать базу в RemCard",
-        text: "Навигатор ремонта использует эти принципы для построения практичного маршрута действий.",
-        button_text: "Запустить навигатор с базой знаний",
+        text: "Переходите от методички к действию по короткому сценарию:",
+        steps: [
+          "Определите, на каком вы этапе (см. 5 шагов маршрута).",
+          "Прочитайте соответствующие чек-листы и красные флаги.",
+          "Запустите навигатор ремонта — он соберёт маршрут и подготовит заявку."
+        ],
+        button_text: "Запустить навигатор ремонта",
         button_href: "/navigator/"
       }
     }
@@ -87,7 +99,6 @@
     const text = typeof value === "string" ? value.trim() : "";
     return text || fallbackValue;
   };
-
   const toArray = (value) => (Array.isArray(value) ? value : []);
   const toNumber = (value, fallbackValue = 0) => {
     const n = Number(value);
@@ -97,29 +108,72 @@
   const sumLengths = (source) =>
     Object.values(isObject(source) ? source : {}).reduce((acc, list) => acc + (Array.isArray(list) ? list.length : 0), 0);
 
-  const createCard = ({ title, items }) => {
+  const normalizeHref = (href, fallbackHref = "/navigator/") => {
+    const value = toText(href, fallbackHref);
+    if (!value) return fallbackHref;
+    if (value.startsWith("#") || value.startsWith("/") || /^https?:\/\//i.test(value)) return value;
+    try {
+      const url = new URL(value, window.location.origin);
+      return `${url.pathname}${url.search || ""}${url.hash || ""}`;
+    } catch {
+      return fallbackHref;
+    }
+  };
+
+  const createCard = ({ stage_badge: badge, title, insight, items, details_href: detailsHref, details_label: detailsLabel }) => {
     const article = document.createElement("article");
-    article.className = "card";
+    article.className = "card kb-content-card";
+
+    const badgeText = toText(badge);
+    if (badgeText) {
+      const badgeEl = document.createElement("span");
+      badgeEl.className = "kb-card-badge";
+      badgeEl.textContent = badgeText;
+      article.appendChild(badgeEl);
+    }
 
     const h3 = document.createElement("h3");
     h3.textContent = toText(title, "Раздел");
     article.appendChild(h3);
 
+    const insightText = toText(insight);
+    if (insightText) {
+      const insightEl = document.createElement("p");
+      insightEl.className = "kb-card-insight";
+      insightEl.textContent = insightText;
+      article.appendChild(insightEl);
+    }
+
     const list = document.createElement("ul");
     list.className = "list";
-    toArray(items).slice(0, 8).forEach((item) => {
-      const li = document.createElement("li");
-      li.textContent = toText(item);
-      if (li.textContent) list.appendChild(li);
-    });
+    toArray(items)
+      .slice(0, 6)
+      .forEach((item) => {
+        const li = document.createElement("li");
+        li.textContent = toText(item);
+        if (li.textContent) list.appendChild(li);
+      });
     article.appendChild(list);
+
+    const moreLink = document.createElement("a");
+    moreLink.className = "kb-card-more";
+    moreLink.setAttribute("href", normalizeHref(detailsHref, "#kb-checklists"));
+    moreLink.textContent = toText(detailsLabel, "Читать подробнее про этот этап");
+    article.appendChild(moreLink);
+
     return article;
+  };
+
+  const setCards = (container, cards) => {
+    container.innerHTML = "";
+    toArray(cards).forEach((card) => {
+      container.appendChild(createCard(card || {}));
+    });
   };
 
   const renderKpiCards = (items) => {
     if (!kpiGridEl) return;
     kpiGridEl.innerHTML = "";
-
     toArray(items)
       .slice(0, 6)
       .forEach((item) => {
@@ -148,7 +202,6 @@
   const renderRiskBars = (items) => {
     if (!riskBarsEl) return;
     riskBarsEl.innerHTML = "";
-
     toArray(items)
       .slice(0, 8)
       .forEach((item) => {
@@ -184,7 +237,6 @@
   const renderStageFlow = (items) => {
     if (!stageFlowEl) return;
     stageFlowEl.innerHTML = "";
-
     toArray(items)
       .slice(0, 8)
       .forEach((item, index) => {
@@ -204,7 +256,6 @@
         const stage = document.createElement("span");
         stage.className = "kb-flow-stage";
         stage.textContent = toText(item && item.stage, `Этап ${index + 1}`);
-
         left.appendChild(idx);
         left.appendChild(stage);
 
@@ -221,13 +272,16 @@
         fill.style.width = `${clampPercent(item && item.weight)}%`;
         track.appendChild(fill);
 
-        const note = document.createElement("p");
-        note.className = "kb-flow-note";
-        note.textContent = toText(item && item.note);
+        const detail = document.createElement("a");
+        detail.className = "kb-flow-detail";
+        const detailPrefix = toText(item && item.detail_label, "Что ломает результат");
+        const detailText = toText(item && item.note, "Смотрите типовые ошибки и контрольные точки по этапу.");
+        detail.textContent = `${detailPrefix}: ${detailText}`;
+        detail.setAttribute("href", normalizeHref(item && item.detail_href, "#kb-checklists"));
 
         step.appendChild(top);
         step.appendChild(track);
-        if (note.textContent) step.appendChild(note);
+        step.appendChild(detail);
         stageFlowEl.appendChild(step);
       });
   };
@@ -242,7 +296,9 @@
     const stageFlow = STAGES.map((stageKey, idx) => ({
       stage: toText(templates[stageKey] && templates[stageKey].title, stageKey),
       weight: Math.max(35, 100 - idx * 12),
-      note: toText((kbCore[stageKey] && kbCore[stageKey][0]) || "")
+      note: toText((kbCore[stageKey] && kbCore[stageKey][0]) || ""),
+      detail_label: "Что ломает результат",
+      detail_href: "#kb-checklists"
     }));
 
     return {
@@ -250,6 +306,7 @@
       subtitle: "Сводные метрики и приоритеты по этапам ремонта.",
       risk_title: "Критичные зоны внимания",
       flow_title: "Рекомендуемая последовательность этапов",
+      flow_kicker: "5 ключевых этапов маршрута RemCard",
       kpis: [
         { value: String(Object.keys(templates).length || STAGES.length), label: "ключевых этапов маршрута", note: "База покрывает весь путь от старта до въезда." },
         { value: String(totalRules || 0), label: "правил и подсказок", note: "Критичные проверки по этапам и узлам." },
@@ -275,6 +332,7 @@
       subtitle: toText(raw.subtitle, derived.subtitle),
       risk_title: toText(raw.risk_title, derived.risk_title),
       flow_title: toText(raw.flow_title, derived.flow_title),
+      flow_kicker: toText(raw.flow_kicker, derived.flow_kicker),
       kpis: toArray(raw.kpis).length ? toArray(raw.kpis) : derived.kpis,
       risk_bars: toArray(raw.risk_bars).length ? toArray(raw.risk_bars) : derived.risk_bars,
       stage_flow: toArray(raw.stage_flow).length ? toArray(raw.stage_flow) : derived.stage_flow
@@ -284,26 +342,32 @@
     infographicsSubtitleEl.textContent = data.subtitle;
     risksTitleEl.textContent = data.risk_title;
     flowTitleEl.textContent = data.flow_title;
+    if (flowKickerEl) flowKickerEl.textContent = data.flow_kicker;
 
     renderKpiCards(data.kpis);
     renderRiskBars(data.risk_bars);
     renderStageFlow(data.stage_flow);
   };
 
-  const setCards = (container, cards) => {
-    container.innerHTML = "";
-    toArray(cards).forEach((card) => {
-      container.appendChild(createCard(card || {}));
-    });
-  };
+  const renderCta = (cta) => {
+    ctaTitleEl.textContent = toText(cta.title, fallback.knowledge_page.cta.title);
+    ctaTextEl.textContent = toText(cta.text, fallback.knowledge_page.cta.text);
 
-  const normalizeHref = (href) => {
-    const value = toText(href, "/navigator/");
-    try {
-      const url = new URL(value, window.location.origin);
-      return url.pathname + (url.search || "") + (url.hash || "");
-    } catch {
-      return "/navigator/";
+    const ctaHref = normalizeHref(cta.button_href, "/navigator/");
+    ctaLinkEl.textContent = toText(cta.button_text, fallback.knowledge_page.cta.button_text);
+    ctaLinkEl.setAttribute("href", ctaHref);
+    if (topCtaLinkEl) {
+      topCtaLinkEl.textContent = ctaLinkEl.textContent;
+      topCtaLinkEl.setAttribute("href", ctaHref);
+    }
+
+    if (ctaStepsEl) {
+      ctaStepsEl.innerHTML = "";
+      toArray(cta.steps).forEach((stepText) => {
+        const li = document.createElement("li");
+        li.textContent = toText(stepText);
+        if (li.textContent) ctaStepsEl.appendChild(li);
+      });
     }
   };
 
@@ -317,11 +381,7 @@
     setCards(topCardsEl, pageData.top_cards);
     renderInfographics(data, pageData);
     setCards(checklistsEl, pageData.checklists);
-
-    ctaTitleEl.textContent = toText(cta.title, fallback.knowledge_page.cta.title);
-    ctaTextEl.textContent = toText(cta.text, fallback.knowledge_page.cta.text);
-    ctaLinkEl.textContent = toText(cta.button_text, fallback.knowledge_page.cta.button_text);
-    ctaLinkEl.setAttribute("href", normalizeHref(cta.button_href));
+    renderCta(cta);
   };
 
   const loadKnowledge = async () => {
