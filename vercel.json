@@ -1,5 +1,17 @@
 {
   "version": 2,
+  "redirects": [
+    {
+      "source": "/partner/cabinet",
+      "destination": "/partner/cabinet/",
+      "permanent": false
+    },
+    {
+      "source": "/catalog/service",
+      "destination": "/catalog/service/",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
       "source": "/api/catalog/services/:id/reviews",
