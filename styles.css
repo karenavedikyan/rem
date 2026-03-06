@@ -1616,6 +1616,82 @@ img {
   font-size: 14px;
 }
 
+.partner-cabinet-stack {
+  display: grid;
+  gap: 14px;
+}
+
+.partner-cabinet-card-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.partner-cabinet-profile-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.partner-cabinet-kv {
+  border-radius: 12px;
+  border: 1px solid rgba(245, 245, 245, 0.08);
+  background: rgba(18, 18, 18, 0.35);
+  padding: 10px 12px;
+}
+
+.partner-cabinet-k {
+  color: rgba(176, 190, 197, 0.9);
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.partner-cabinet-v {
+  color: rgba(245, 245, 245, 0.95);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.partner-services-list {
+  display: grid;
+  gap: 12px;
+}
+
+.partner-service-card {
+  background: rgba(18, 18, 18, 0.35);
+}
+
+.partner-service-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.partner-service-head h3 {
+  margin: 0;
+}
+
+.partner-service-info {
+  margin: 0;
+  color: rgba(245, 245, 245, 0.86);
+  font-size: 14px;
+}
+
+.partner-service-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.partner-service-edit-form {
+  margin-top: 10px;
+  border-top: 1px dashed rgba(245, 245, 245, 0.12);
+  padding-top: 12px;
+}
+
 /* Responsive */
 @media (max-width: 980px) {
   .hero-inner {
@@ -1679,6 +1755,10 @@ img {
 
   .catalog-filters-card {
     position: static;
+  }
+
+  .partner-cabinet-profile-grid {
+    grid-template-columns: 1fr;
   }
 
   .section-header-row {
@@ -1772,6 +1852,11 @@ img {
 
   .catalog-pagination {
     flex-wrap: wrap;
+  }
+
+  .partner-cabinet-card-title-row {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
 

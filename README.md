@@ -14,6 +14,8 @@
 - `knowledge/knowledge-base.json` — единый источник знаний (для фронта и AI API)
 - `catalog/index.html` + `catalog/catalog.js` — клиентский каталог услуг с фильтрами
 - `api/catalog/services.js` — публичный API каталога услуг (фильтры + пагинация)
+- `partner/cabinet/index.html` + `partner/cabinet/cabinet.js` — личный кабинет партнёра (MVP)
+- `api/partner/me`, `api/partner/services`, `api/partner/services/:id` — API профиля и услуг партнёра
 - `validate-knowledge-base.mjs` — локальная проверка структуры knowledge base
 - `docs/navigator-mvp.md` — ТЗ и структура первого MVP навигатора
 - `backend/prisma/schema.prisma` — Prisma-схема каталога партнёров и услуг
@@ -67,6 +69,29 @@ API:
 
 - `/catalog/` — фильтры + список карточек услуг.
 - Кнопка «Оставить заявку на эту услугу» ведёт на `index.html#request` и передаёт `serviceId/serviceTitle` через query.
+
+## Личный кабинет партнёра (MVP)
+
+Страница:
+
+- `/partner/cabinet/`
+
+Возможности:
+
+- просмотр и редактирование профиля партнёра;
+- просмотр списка своих услуг;
+- добавление новой услуги;
+- редактирование услуги и переключение `isActive`.
+
+API:
+
+- `GET /api/partner/me`
+- `PATCH /api/partner/me`
+- `GET /api/partner/services`
+- `POST /api/partner/services`
+- `PATCH /api/partner/services/:id`
+
+В MVP текущий партнёр определяется по `partnerId` (query/header), с fallback demo-id.
 
 ## Публикация на GitHub Pages
 
