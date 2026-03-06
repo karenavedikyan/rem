@@ -1,4 +1,4 @@
-import { SEED_SERVICES } from "./seed-services.js";
+import { SEED_SERVICES } from "../../server/catalog-seed-services.js";
 
 const ALLOWED_ORIGINS = [
   "https://karenavedikyan.github.io",
