@@ -12,6 +12,8 @@
 - `navigator/navigator-knowledge.js` — рендер блока базы знаний внутри `/navigator`
 - `knowledge/index.html` — редирект на `/navigator/#navigator-knowledge` (для старых ссылок)
 - `knowledge/knowledge-base.json` — единый источник знаний (для фронта и AI API)
+- `catalog/index.html` + `catalog/catalog.js` — клиентский каталог услуг с фильтрами
+- `api/catalog/services.js` — публичный API каталога услуг (фильтры + пагинация)
 - `validate-knowledge-base.mjs` — локальная проверка структуры knowledge base
 - `docs/navigator-mvp.md` — ТЗ и структура первого MVP навигатора
 - `backend/prisma/schema.prisma` — Prisma-схема каталога партнёров и услуг
@@ -40,6 +42,31 @@ npm run check
 ```
 
 Миграция находится в `backend/prisma/migrations/20260304120000_init_partner_service_catalog`.
+
+## Каталог услуг (API + страница)
+
+API:
+
+- `GET /api/catalog/services`
+
+Опциональные query-параметры:
+
+- `stage`, `city`, `area`, `taskType`, `minPrice`, `maxPrice`
+- пагинация: `page/pageSize` или `limit/offset`
+
+Ответ:
+
+```json
+{
+  "items": [],
+  "total": 0
+}
+```
+
+Страница:
+
+- `/catalog/` — фильтры + список карточек услуг.
+- Кнопка «Оставить заявку на эту услугу» ведёт на `index.html#request` и передаёт `serviceId/serviceTitle` через query.
 
 ## Публикация на GitHub Pages
 

@@ -3,8 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Демо‑каталог RemCard: товары и услуги для ремонта и обустройства (Краснодар)." />
-    <title>RemCard — Каталог (демо)</title>
+    <meta
+      name="description"
+      content="Каталог услуг RemCard: фильтруйте услуги мастеров и компаний по этапу ремонта, задаче, району и бюджету."
+    />
+    <title>RemCard — Каталог услуг</title>
 
     <link rel="stylesheet" href="../styles.css" />
   </head>
@@ -43,54 +46,93 @@
     </header>
 
     <main id="main">
-      <section class="section">
+      <section class="section catalog-section">
         <div class="container">
           <header class="section-header">
-            <h2>Каталог (демо)</h2>
-            <p class="section-subtitle">
-              Это демо‑страница: здесь будет каталог товаров и услуг партнёров RemCard по Краснодару. Сейчас — примеры карточек.
-            </p>
+            <h1>Каталог услуг RemCard</h1>
+            <p class="section-subtitle">Найдите услуги мастеров и компаний по этапу ремонта, задаче и району.</p>
           </header>
 
-          <div class="grid cards-3">
-            <article class="card">
-              <h3>Ремонт ванной/санузла</h3>
-              <p>Работы: демонтаж, плитка, сантехника, электрика. Краснодар.</p>
-              <div class="partner-meta">
-                <span class="tag">Услуга</span>
-                <span class="tag">Санузел</span>
-                <span class="tag">Под ключ</span>
-              </div>
-              <div class="promo-more">
-                <a class="btn btn-primary" href="../index.html#request">Оставить заявку</a>
-              </div>
-            </article>
+          <div class="catalog-layout">
+            <aside class="card catalog-filters-card">
+              <h2>Фильтры каталога</h2>
+              <form class="form" id="catalog-filter-form" novalidate>
+                <div class="form-grid">
+                  <div class="field">
+                    <label for="catalog-stage">Этап ремонта</label>
+                    <select class="input" id="catalog-stage" name="stage">
+                      <option value="">Все этапы</option>
+                      <option value="PLANNING">Планирование</option>
+                      <option value="ROUGH">Черновые работы</option>
+                      <option value="ENGINEERING">Инженерные работы</option>
+                      <option value="FINISHING">Чистовая отделка</option>
+                      <option value="FURNITURE">Мебель и комплектация</option>
+                    </select>
+                  </div>
 
-            <article class="card">
-              <h3>Дизайн‑проект квартиры</h3>
-              <p>Планировка, визуализация, подбор материалов и авторский надзор.</p>
-              <div class="partner-meta">
-                <span class="tag">Услуга</span>
-                <span class="tag">Дизайн</span>
-                <span class="tag">Консультация</span>
-              </div>
-              <div class="promo-more">
-                <a class="btn btn-ghost" href="../index.html#request">Уточнить стоимость</a>
-              </div>
-            </article>
+                  <div class="field">
+                    <label for="catalog-task-type">Тип задачи</label>
+                    <select class="input" id="catalog-task-type" name="taskType">
+                      <option value="">Все задачи</option>
+                      <option value="SANUZEL">Санузел</option>
+                      <option value="KITCHEN">Кухня</option>
+                      <option value="ELECTRICAL">Электрика</option>
+                      <option value="PLUMBING">Сантехника</option>
+                      <option value="TILING">Плитка</option>
+                      <option value="PAINTING">Покраска / обои</option>
+                      <option value="FLOORING">Полы</option>
+                      <option value="WINDOWS">Окна</option>
+                      <option value="DESIGN">Дизайн / проект</option>
+                      <option value="GENERAL">Другое</option>
+                    </select>
+                  </div>
 
-            <article class="card">
-              <h3>Сантехника и комплектация</h3>
-              <p>Подбор и поставка: смесители, инсталляции, ванны, душевые.</p>
-              <div class="partner-meta">
-                <span class="tag">Товар</span>
-                <span class="tag">Сантехника</span>
-                <span class="tag">Доставка</span>
+                  <div class="field">
+                    <label for="catalog-city">Город</label>
+                    <input class="input" id="catalog-city" name="city" value="Краснодар" />
+                  </div>
+
+                  <div class="field">
+                    <label for="catalog-area">Район</label>
+                    <input class="input" id="catalog-area" name="area" placeholder="Например: ФМР, ЮМР, Гидрострой" />
+                  </div>
+
+                  <div class="field">
+                    <label for="catalog-min-price">Цена от (₽)</label>
+                    <input class="input" id="catalog-min-price" name="minPrice" type="number" min="0" step="1000" />
+                  </div>
+
+                  <div class="field">
+                    <label for="catalog-max-price">Цена до (₽)</label>
+                    <input class="input" id="catalog-max-price" name="maxPrice" type="number" min="0" step="1000" />
+                  </div>
+                </div>
+
+                <div class="form-actions">
+                  <button class="btn btn-primary" type="submit">Применить фильтры</button>
+                  <button class="btn btn-ghost" type="button" id="catalog-reset-filters">Сбросить фильтры</button>
+                </div>
+              </form>
+            </aside>
+
+            <section class="catalog-results">
+              <div class="catalog-results-head">
+                <p class="muted" id="catalog-results-count">Загружаем услуги...</p>
               </div>
-              <div class="promo-more">
-                <a class="btn btn-ghost" href="../offers/">Посмотреть акции</a>
+
+              <div class="catalog-list" id="catalog-list" aria-live="polite"></div>
+
+              <div class="card catalog-empty" id="catalog-empty" hidden>
+                <h3>По выбранным фильтрам пока нет услуг</h3>
+                <p class="muted">Попробуйте расширить фильтры по этапу, району или диапазону цены.</p>
               </div>
-            </article>
+
+              <div class="catalog-pagination" id="catalog-pagination" hidden>
+                <button class="btn btn-ghost" id="catalog-prev-page" type="button">Назад</button>
+                <span class="catalog-page-label" id="catalog-page-label">Страница 1</span>
+                <button class="btn btn-ghost" id="catalog-next-page" type="button">Вперёд</button>
+              </div>
+            </section>
           </div>
         </div>
       </section>
@@ -116,5 +158,6 @@
 
     <script src="../i18n.js" defer></script>
     <script src="../script.js" defer></script>
+    <script src="./catalog.js" defer></script>
   </body>
 </html>

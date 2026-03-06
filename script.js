@@ -418,6 +418,53 @@
     }
   });
 
+  const ensureHiddenField = (form, name) => {
+    let input = form.querySelector(`input[type="hidden"][name="${CSS.escape(name)}"]`);
+    if (!input) {
+      input = document.createElement("input");
+      input.type = "hidden";
+      input.name = name;
+      form.appendChild(input);
+    }
+    return input;
+  };
+
+  const prefillClientRequestFromQuery = () => {
+    const requestForm = document.getElementById("request-form");
+    if (!requestForm) return;
+
+    const params = new URLSearchParams(window.location.search || "");
+    const serviceId = String(params.get("serviceId") || "").trim();
+    const serviceTitle = String(params.get("serviceTitle") || "").trim();
+    const serviceStage = String(params.get("serviceStage") || "").trim();
+    const serviceTaskType = String(params.get("serviceTaskType") || "").trim();
+
+    if (!serviceId && !serviceTitle) return;
+
+    ensureHiddenField(requestForm, "serviceId").value = serviceId;
+    ensureHiddenField(requestForm, "serviceTitle").value = serviceTitle;
+    ensureHiddenField(requestForm, "serviceStage").value = serviceStage;
+    ensureHiddenField(requestForm, "serviceTaskType").value = serviceTaskType;
+
+    let note = requestForm.querySelector(".form-selected-service");
+    if (!note) {
+      note = document.createElement("div");
+      note.className = "form-selected-service";
+      const actions = requestForm.querySelector(".form-actions");
+      if (actions && actions.parentNode) {
+        actions.parentNode.insertBefore(note, actions);
+      } else {
+        requestForm.appendChild(note);
+      }
+    }
+    note.textContent = t(
+      `Вы выбрали услугу: ${serviceTitle || "услуга из каталога"}${serviceId ? ` (ID: ${serviceId})` : ""}`,
+      `Selected service: ${serviceTitle || "service from catalog"}${serviceId ? ` (ID: ${serviceId})` : ""}`
+    );
+  };
+
+  prefillClientRequestFromQuery();
+
   const sendTelegram = async (text) => {
     if (!BOT_TOKEN || BOT_TOKEN.includes("ТУТ_Я_ПОДСТАВЛЮ_САМ")) throw new Error("BOT_TOKEN is not set");
     if (!CHAT_ID || CHAT_ID.includes("ТУТ_Я_ПОДСТАВЛЮ_САМ")) throw new Error("CHAT_ID is not set");
@@ -515,6 +562,10 @@
     ),
     buildMessage: (get) =>
       "Новая заявка RemCard (клиент):\n" +
+      `Услуга (ID): ${get("serviceId") || "-"}\n` +
+      `Услуга (название): ${get("serviceTitle") || "-"}\n` +
+      `Этап услуги: ${get("serviceStage") || "-"}\n` +
+      `Тип задачи услуги: ${get("serviceTaskType") || "-"}\n` +
       `Тип задачи: ${get("taskType") || get("jobType") || "-"}\n` +
       `Район: ${get("district") || get("city") || "Краснодар"}\n` +
       `Бюджет: ${get("budget") || "-"}\n` +

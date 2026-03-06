@@ -16,6 +16,7 @@
   const stageDiagramEl = document.getElementById("stage-diagram");
   const stageNextBtn = document.getElementById("stage-next-btn");
   const stageApplyBtn = document.getElementById("stage-apply-btn");
+  const stageServicesLink = document.getElementById("stage-services-link");
   const stageKnowledgeLink = document.getElementById("stage-knowledge-link");
   const stageIdInput = document.getElementById("nv-stage-id");
   if (!form || !resultSection || !stepsEl || !summaryEl || !sendBtn || !sendResult) return;
@@ -143,6 +144,13 @@
     engineering: "engineering",
     finishing: "finishing",
     furniture: "furniture"
+  };
+  const STAGE_TO_CATALOG_VALUE = {
+    planning: "PLANNING",
+    rough: "ROUGH",
+    engineering: "ENGINEERING",
+    finishing: "FINISHING",
+    furniture: "FURNITURE"
   };
 
   const DEFAULT_NAVIGATOR_STAGES = [
@@ -431,6 +439,10 @@
     }
     if (stageApplyBtn) {
       stageApplyBtn.setAttribute("href", "#navigator-form-card");
+    }
+    if (stageServicesLink) {
+      const catalogStage = STAGE_TO_CATALOG_VALUE[stage.id] || "PLANNING";
+      stageServicesLink.setAttribute("href", `../catalog/?stage=${encodeURIComponent(catalogStage)}`);
     }
     if (stageNextBtn) {
       const isLast = STAGE_ORDER.indexOf(stage.id) === STAGE_ORDER.length - 1;

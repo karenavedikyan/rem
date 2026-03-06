@@ -9,6 +9,38 @@ export interface ServiceFilter {
   maxPrice?: number;
 }
 
+export interface PaginationInput {
+  limit?: number;
+  offset?: number;
+  page?: number;
+  pageSize?: number;
+}
+
+export interface PublicCatalogItem {
+  id: string;
+  title: string;
+  description: string | null;
+  stage: ServiceStage;
+  taskType: ServiceTaskType;
+  minPrice: number | null;
+  maxPrice: number | null;
+  city: string;
+  areas: string[];
+  rating: number | null;
+  ratingCount: number;
+  partner: {
+    id: string;
+    name: string;
+    type: PartnerType;
+    city: string;
+  };
+}
+
+export interface PublicCatalogResult {
+  items: PublicCatalogItem[];
+  total: number;
+}
+
 export interface CreatePartnerInput {
   type: PartnerType;
   name: string;
