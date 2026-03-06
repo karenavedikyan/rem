@@ -14,10 +14,32 @@
 - `knowledge/knowledge-base.json` — единый источник знаний (для фронта и AI API)
 - `validate-knowledge-base.mjs` — локальная проверка структуры knowledge base
 - `docs/navigator-mvp.md` — ТЗ и структура первого MVP навигатора
+- `backend/prisma/schema.prisma` — Prisma-схема каталога партнёров и услуг
+- `backend/src/modules/catalog/repository.ts` — базовые функции создания и фильтрации услуг
 
 ## Локальный запуск
 
 Откройте `index.html` в браузере (все пути относительные).
+
+## Backend (Prisma + TypeScript)
+
+Подготовлен отдельный backend-модуль для будущего каталога партнёров и услуг:
+
+- `Partner` (тип партнёра, специализации, районы, модерация)
+- `Service` (этап ремонта, тип задачи, диапазон цены, город/районы, рейтинг)
+
+Быстрый старт:
+
+```bash
+cd backend
+cp .env.example .env
+npm install
+npm run prisma:generate
+npm run prisma:validate
+npm run check
+```
+
+Миграция находится в `backend/prisma/migrations/20260304120000_init_partner_service_catalog`.
 
 ## Публикация на GitHub Pages
 

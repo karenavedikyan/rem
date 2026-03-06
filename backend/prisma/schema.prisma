@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum PartnerType {
+  MASTER
+  COMPANY
+  STORE
+}
+
+enum ServiceStage {
+  PLANNING
+  ROUGH
+  ENGINEERING
+  FINISHING
+  FURNITURE
+}
+
+enum ServiceTaskType {
+  SANUZEL
+  KITCHEN
+  ELECTRICAL
+  PLUMBING
+  TILING
+  PAINTING
+  FLOORING
+  WINDOWS
+  DESIGN
+  GENERAL
+}
+
+model Partner {
+  id              String      @id @default(uuid()) @db.Uuid
+  type            PartnerType
+  name            String
+  description     String?
+  city            String      @default("Краснодар")
+  areas           String[]    @default([])
+  specializations String[]    @default([])
+  isApproved      Boolean     @default(false)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  services        Service[]
+
+  @@index([isApproved, city])
+  @@index([type])
+}
+
+model Service {
+  id          String          @id @default(uuid()) @db.Uuid
+  partnerId   String          @db.Uuid
+  partner     Partner         @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  stage       ServiceStage
+  taskType    ServiceTaskType
+  minPrice    Int?
+  maxPrice    Int?
+  currency    String          @default("RUB")
+  city        String          @default("Краснодар")
+  areas       String[]        @default([])
+  isActive    Boolean         @default(true)
+  rating      Float?
+  ratingCount Int             @default(0)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([partnerId])
+  @@index([isActive, stage, city, taskType])
+}
