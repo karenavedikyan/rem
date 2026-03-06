@@ -9,9 +9,11 @@
   const PRIMARY_ORIGIN = "https://rem-navy.vercel.app";
   const LEGACY_HOST = "karenavedikyan.github.io";
   const LEGACY_BASE_PATH = "/rem";
+  const query = new URLSearchParams(window.location.search || "");
+  const disableLegacyRedirect = query.get("preview") === "1" || query.get("no_redirect") === "1";
 
   // Use Vercel as the single public domain.
-  if (window.location.hostname === LEGACY_HOST) {
+  if (window.location.hostname === LEGACY_HOST && !disableLegacyRedirect) {
     let targetPath = window.location.pathname || "/";
     if (targetPath === LEGACY_BASE_PATH) {
       targetPath = "/";
