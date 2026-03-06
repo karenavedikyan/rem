@@ -16,6 +16,12 @@
   const nextBtn = document.getElementById("catalog-next-page");
   const pageLabelEl = document.getElementById("catalog-page-label");
   const resetBtn = document.getElementById("catalog-reset-filters");
+  const currentStageEl = document.getElementById("catalog-current-stage");
+  const stageSelectEl = getStageSelect();
+
+  function getStageSelect() {
+    return form.querySelector('select[name="stage"]');
+  }
 
   const stageLabel = (value) => {
     const map = {
@@ -144,15 +150,31 @@
     return `../index.html?${params.toString()}#request`;
   };
 
+  const buildServiceDetailsHref = (item) => `./service/?id=${encodeURIComponent(String(item.id || ""))}`;
+
+  const getRatingText = (item) => {
+    const hasRating = typeof item.rating === "number" && item.ratingCount > 0;
+    if (!hasRating) return t("Новый партнёр", "New partner");
+    return `${item.rating.toFixed(1)} · ${item.ratingCount} ${t("отзывов", "reviews")}`;
+  };
+
+  const updateStageUi = (stageCode) => {
+    const hasStage = Boolean(stageCode);
+    if (currentStageEl) {
+      currentStageEl.hidden = !hasStage;
+      if (hasStage) currentStageEl.textContent = `${t("Выбран этап", "Selected stage")}: ${stageLabel(stageCode)}`;
+    }
+    if (stageSelectEl) {
+      stageSelectEl.classList.toggle("input-stage-active", hasStage);
+    }
+  };
+
   const createServiceCard = (item) => {
     const article = document.createElement("article");
     article.className = "card catalog-service-card";
     article.dataset.serviceId = String(item.id || "");
 
-    const hasRating = typeof item.rating === "number" && item.ratingCount > 0;
-    const ratingText = hasRating
-      ? `${item.rating.toFixed(1)} (${item.ratingCount})`
-      : t("новый партнёр", "new partner");
+    const ratingText = getRatingText(item);
 
     article.innerHTML = `
       <div class="catalog-service-top">
@@ -175,6 +197,7 @@
           "Оставить заявку на эту услугу",
           "Submit request for this service"
         )}</a>
+        <a class="btn btn-ghost" href="${buildServiceDetailsHref(item)}">${t("Отзывы и рейтинг", "Reviews and rating")}</a>
       </div>
     `;
     return article;
@@ -195,6 +218,7 @@
 
   const loadCatalog = async ({ page = 1 } = {}) => {
     const query = buildParamsFromForm({ page });
+    updateStageUi(query.get("stage"));
     updateUrl(query);
     setLoading(true);
     if (emptyEl) emptyEl.hidden = true;

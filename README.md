@@ -13,7 +13,10 @@
 - `knowledge/index.html` — редирект на `/navigator/#navigator-knowledge` (для старых ссылок)
 - `knowledge/knowledge-base.json` — единый источник знаний (для фронта и AI API)
 - `catalog/index.html` + `catalog/catalog.js` — клиентский каталог услуг с фильтрами
+- `catalog/service/index.html` + `catalog/service/service.js` — страница услуги с отзывами
 - `api/catalog/services.js` — публичный API каталога услуг (фильтры + пагинация)
+- `api/catalog/service-by-id.js` — API карточки услуги
+- `api/catalog/service-reviews.js` — API отзывов услуги
 - `partner/cabinet/index.html` + `partner/cabinet/cabinet.js` — личный кабинет партнёра (MVP)
 - `api/partner/me`, `api/partner/services`, `api/partner/services/:id` — API профиля и услуг партнёра
 - `validate-knowledge-base.mjs` — локальная проверка структуры knowledge base
@@ -50,6 +53,9 @@ npm run check
 API:
 
 - `GET /api/catalog/services`
+- `GET /api/catalog/services/:id`
+- `GET /api/catalog/services/:id/reviews`
+- `POST /api/catalog/services/:id/reviews`
 
 Опциональные query-параметры:
 
@@ -69,6 +75,14 @@ API:
 
 - `/catalog/` — фильтры + список карточек услуг.
 - Кнопка «Оставить заявку на эту услугу» ведёт на `index.html#request` и передаёт `serviceId/serviceTitle` через query.
+- Из навигатора доступны ссылки на каталог с предустановленным `stage`.
+- На `/catalog/` текущий stage из query отображается в заголовке и визуально подсвечивается в фильтре.
+
+Отзывы (MVP):
+
+- Добавлена модель `ServiceReview` в Prisma-схему и миграция.
+- Отзыв создаётся через `POST /api/catalog/services/:id/reviews`.
+- После публикации пересчитываются `Service.rating` и `Service.ratingCount`.
 
 ## Личный кабинет партнёра (MVP)
 

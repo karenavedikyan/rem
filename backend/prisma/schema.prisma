@@ -55,6 +55,7 @@ model Service {
   id          String          @id @default(uuid()) @db.Uuid
   partnerId   String          @db.Uuid
   partner     Partner         @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  reviews     ServiceReview[]
   title       String
   description String?
   stage       ServiceStage
@@ -72,4 +73,16 @@ model Service {
 
   @@index([partnerId])
   @@index([isActive, stage, city, taskType])
+}
+
+model ServiceReview {
+  id         String   @id @default(uuid()) @db.Uuid
+  serviceId  String   @db.Uuid
+  service    Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  rating     Int
+  comment    String?
+  authorName String?
+  createdAt  DateTime @default(now())
+
+  @@index([serviceId, createdAt])
 }

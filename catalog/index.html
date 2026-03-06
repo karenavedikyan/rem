@@ -50,7 +50,10 @@
         <div class="container">
           <header class="section-header">
             <h1>Каталог услуг RemCard</h1>
-            <p class="section-subtitle">Найдите услуги мастеров и компаний по этапу ремонта, задаче и району.</p>
+            <p class="section-subtitle">
+              Найдите услуги мастеров и компаний по этапу ремонта, задаче и району.
+              <span class="catalog-current-stage" id="catalog-current-stage" hidden></span>
+            </p>
           </header>
 
           <div class="catalog-layout">
@@ -60,7 +63,7 @@
                 <div class="form-grid">
                   <div class="field">
                     <label for="catalog-stage">Этап ремонта</label>
-                    <select class="input" id="catalog-stage" name="stage">
+                    <select class="input" id="catalog-stage" name="stage" data-stage-filter="true">
                       <option value="">Все этапы</option>
                       <option value="PLANNING">Планирование</option>
                       <option value="ROUGH">Черновые работы</option>

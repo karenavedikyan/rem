@@ -1561,6 +1561,19 @@ img {
   margin-bottom: 10px;
 }
 
+.catalog-current-stage {
+  display: inline-flex;
+  margin-left: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(229, 57, 53, 0.35);
+  background: rgba(229, 57, 53, 0.14);
+  color: rgba(245, 245, 245, 0.95);
+  font-size: 12px;
+  font-weight: 700;
+  vertical-align: middle;
+}
+
 .catalog-list {
   display: grid;
   grid-template-columns: 1fr;
@@ -1598,6 +1611,8 @@ img {
 .catalog-service-actions {
   display: flex;
   justify-content: flex-start;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .catalog-empty h3 {
@@ -1614,6 +1629,21 @@ img {
 .catalog-page-label {
   color: rgba(245, 245, 245, 0.9);
   font-size: 14px;
+}
+
+.input-stage-active {
+  border-color: rgba(229, 57, 53, 0.55) !important;
+  box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.18);
+}
+
+.catalog-reviews-list {
+  display: grid;
+  gap: 10px;
+}
+
+.catalog-review-card p {
+  margin: 0;
+  color: rgba(245, 245, 245, 0.9);
 }
 
 .partner-cabinet-stack {

@@ -1,3 +1,13 @@
 {
-  "version": 2
+  "version": 2,
+  "rewrites": [
+    {
+      "source": "/api/catalog/services/:id/reviews",
+      "destination": "/api/catalog/service-reviews?serviceId=:id"
+    },
+    {
+      "source": "/api/catalog/services/:id",
+      "destination": "/api/catalog/service-by-id?serviceId=:id"
+    }
+  ]
 }
