@@ -1646,6 +1646,17 @@ img {
   color: rgba(245, 245, 245, 0.9);
 }
 
+.catalog-hub-stage-links {
+  margin-top: 14px;
+}
+
+.catalog-hub-links {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .partner-cabinet-stack {
   display: grid;
   gap: 14px;

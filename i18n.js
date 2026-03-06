@@ -497,6 +497,22 @@
     "Не удалось обновить статус услуги.": "Could not update service status.",
     "Не удалось сохранить услугу.": "Could not save service.",
     "услуг": "services",
+    "Каталог RemCard — отдельный раздел": "RemCard catalog — dedicated section",
+    "Здесь собраны услуги мастеров и компаний по этапам ремонта, рейтинги и отзывы. Выбирайте нужный формат входа: каталог, этапы или кабинет партнёра.":
+      "This section contains contractor and company services by renovation stage, with ratings and reviews. Choose your entry point: catalog, stages, or partner cabinet.",
+    "Каталог услуг для клиентов": "Service catalog for clients",
+    "Фильтруйте предложения по этапу ремонта, типу задачи, району и бюджету. Оставляйте заявку прямо из карточки нужной услуги.":
+      "Filter offers by renovation stage, task type, district, and budget. Submit a request directly from the selected service card.",
+    "Открыть каталог услуг": "Open service catalog",
+    "Рейтинг и отзывы": "Rating and reviews",
+    "У каждой услуги отображается рейтинг и количество отзывов. Можно перейти на страницу услуги и оставить свой отзыв.":
+      "Each service shows rating and review count. Open the service page to leave your review.",
+    "Смотреть отзывы и рейтинг": "View reviews and rating",
+    "Кабинет партнёра": "Partner cabinet",
+    "Партнёры могут обновлять профиль, добавлять услуги, редактировать карточки и включать/отключать показы в каталоге.":
+      "Partners can update their profile, add services, edit cards, and toggle service visibility in catalog.",
+    "Перейти в кабинет партнёра": "Open partner cabinet",
+    "Быстрый вход в каталог по этапам": "Quick catalog access by stage",
     "RemCard — Бонусная карта": "RemCard — Bonus Card",
     "Бонусная карта RemCard: как начисляются и тратятся бонусы (Краснодар).":
       "RemCard bonus card: how bonuses are earned and spent (Krasnodar).",
