@@ -1856,6 +1856,33 @@ img {
   overflow-wrap: anywhere;
 }
 
+.promo-checklist {
+  display: grid;
+  gap: 8px;
+  max-height: 260px;
+  overflow: auto;
+  border: 1px solid rgba(245, 245, 245, 0.12);
+  border-radius: 12px;
+  padding: 10px;
+  background: rgba(18, 18, 18, 0.35);
+}
+
+.promo-check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  color: rgba(245, 245, 245, 0.92);
+}
+
+.promo-check-item input[type="checkbox"] {
+  margin-top: 2px;
+}
+
+.promo-check-item-text {
+  line-height: 1.35;
+}
+
 .partner-services-list {
   display: grid;
   gap: 12px;

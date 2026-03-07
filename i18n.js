@@ -486,6 +486,10 @@
     "https://... (изображение баннера)": "https://... (banner image)",
     "Ссылка на изображение для баннерной части ваших акций (http/https).":
       "Image link for the banner section of your promotions (http/https).",
+    "Выбор акций для баннера": "Promotions selection for banner",
+    "Список акций загружается...": "Promotion list is loading...",
+    "Отметьте акции, где нужно применить этот баннер.": "Select promotions where this banner should be applied.",
+    "Список акций пока недоступен.": "Promotion list is not available yet.",
     "ID акций для этого баннера": "Promotion IDs for this banner",
     "Через запятую: 1, 4": "Comma-separated: 1, 4",
     "Можно указать ID акций, где нужно применить баннер (из списка акций).":

@@ -12,6 +12,7 @@
   const emptyEl = document.getElementById("partner-services-empty");
   const resultEl = document.getElementById("partner-cabinet-result");
   const partnerIdBadge = document.getElementById("cabinet-partner-id-badge");
+  const promoChecklistEl = document.getElementById("partner-profile-promo-checklist");
 
   if (!profileForm || !addServiceForm || !listEl || !resultEl) return;
 
@@ -45,7 +46,8 @@
   const state = {
     partnerId: DEFAULT_PARTNER_ID,
     partner: null,
-    services: []
+    services: [],
+    promotions: []
   };
 
   const escapeHtml = (value) =>
@@ -77,6 +79,79 @@
           .filter(Boolean)
       )
     );
+
+  const sortPromotions = (a, b) => {
+    const an = Number(a.id);
+    const bn = Number(b.id);
+    if (Number.isFinite(an) && Number.isFinite(bn)) return an - bn;
+    return String(a.id || "").localeCompare(String(b.id || ""), "ru");
+  };
+
+  const getPromotionMeta = (promo) => {
+    const title = String(promo.title || t("Акция", "Promotion")).trim();
+    const partner = String(promo.partnerName || t("Партнёр", "Partner")).trim();
+    const city = String(promo.city || "").trim();
+    const benefit = String(promo.benefitLabel || "").trim();
+    const pieces = [title, partner];
+    if (city) pieces.push(city);
+    if (benefit) pieces.push(benefit);
+    return pieces.filter(Boolean).join(" • ");
+  };
+
+  const loadPromotionsForChecklist = () => {
+    const list = Array.isArray(window.REMCARD_PROMOTIONS) ? window.REMCARD_PROMOTIONS : [];
+    state.promotions = list
+      .map((item) => ({
+        id: String(item && item.id != null ? item.id : "").trim(),
+        meta: getPromotionMeta(item || {})
+      }))
+      .filter((item) => item.id && item.meta)
+      .sort(sortPromotions);
+  };
+
+  const getSelectedPromotionIds = () => {
+    if (!promoChecklistEl) return [];
+    return Array.from(promoChecklistEl.querySelectorAll('input[type="checkbox"][name="promotionIds"]:checked'))
+      .map((el) => String(el.value || "").trim())
+      .filter(Boolean);
+  };
+
+  const renderPromotionChecklist = (selectedIds = []) => {
+    if (!promoChecklistEl) return;
+    const selected = new Set((Array.isArray(selectedIds) ? selectedIds : []).map((id) => String(id || "").trim()).filter(Boolean));
+    promoChecklistEl.innerHTML = "";
+
+    if (!Array.isArray(state.promotions) || state.promotions.length === 0) {
+      const empty = document.createElement("div");
+      empty.className = "muted";
+      empty.textContent = t("Список акций пока недоступен.", "Promotion list is not available yet.");
+      promoChecklistEl.appendChild(empty);
+      return;
+    }
+
+    state.promotions.forEach((promo) => {
+      const label = document.createElement("label");
+      label.className = "promo-check-item";
+
+      const input = document.createElement("input");
+      input.type = "checkbox";
+      input.name = "promotionIds";
+      input.value = promo.id;
+      input.checked = selected.has(promo.id);
+
+      const text = document.createElement("span");
+      text.className = "promo-check-item-text";
+      text.textContent = `#${promo.id} — ${promo.meta}`;
+
+      label.appendChild(input);
+      label.appendChild(text);
+      promoChecklistEl.appendChild(label);
+    });
+
+    if (I18N && I18N.isEn && typeof I18N.applyTo === "function") {
+      I18N.applyTo(promoChecklistEl);
+    }
+  };
 
   const getPartnerId = () => {
     // TODO(auth): switch to server-driven current partner after auth rollout.
@@ -150,7 +225,7 @@
     profileForm.specializations.value = Array.isArray(p.specializations) ? p.specializations.join(", ") : "";
     profileForm.areas.value = Array.isArray(p.areas) ? p.areas.join(", ") : "";
     profileForm.promotionBannerUrl.value = p.promotionBannerUrl || "";
-    profileForm.promotionIds.value = Array.isArray(p.promotionIds) ? p.promotionIds.join(", ") : "";
+    renderPromotionChecklist(Array.isArray(p.promotionIds) ? p.promotionIds : []);
   };
 
   const createServiceCard = (service) => {
@@ -272,7 +347,7 @@
       specializations: parseList(profileForm.specializations.value),
       areas: parseList(profileForm.areas.value),
       promotionBannerUrl: String(profileForm.promotionBannerUrl.value || "").trim(),
-      promotionIds: parseList(profileForm.promotionIds.value)
+      promotionIds: getSelectedPromotionIds()
     };
 
     setLoading(profileForm, true);
@@ -439,6 +514,8 @@
   const bootstrap = async () => {
     state.partnerId = getPartnerId();
     if (partnerIdBadge) partnerIdBadge.textContent = `partnerId: ${state.partnerId}`;
+    loadPromotionsForChecklist();
+    renderPromotionChecklist([]);
     try {
       await loadPartner();
       await loadServices();

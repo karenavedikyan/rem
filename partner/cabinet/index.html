@@ -139,14 +139,11 @@
                     <small class="muted">Ссылка на изображение для баннерной части ваших акций (http/https).</small>
                   </div>
                   <div class="field field-wide">
-                    <label for="partner-profile-promo-ids">ID акций для этого баннера</label>
-                    <input
-                      class="input"
-                      id="partner-profile-promo-ids"
-                      name="promotionIds"
-                      placeholder="Через запятую: 1, 4"
-                    />
-                    <small class="muted">Можно указать ID акций, где нужно применить баннер (из списка акций).</small>
+                    <label>Выбор акций для баннера</label>
+                    <div class="promo-checklist" id="partner-profile-promo-checklist" role="group" aria-label="ID акций для этого баннера">
+                      <div class="muted">Список акций загружается...</div>
+                    </div>
+                    <small class="muted">Отметьте акции, где нужно применить этот баннер.</small>
                   </div>
                 </div>
                 <div class="form-actions">
@@ -263,6 +260,7 @@
 
     <script src="../../i18n.js" defer></script>
     <script src="../../script.js" defer></script>
+    <script src="../../promotions.js" defer></script>
     <script src="./cabinet.js" defer></script>
   </body>
 </html>
