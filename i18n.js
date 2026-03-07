@@ -593,6 +593,8 @@
     "Выгодно": "Hot deal",
     "Партнёр": "Partner",
     "Перейти к предложению": "Go to offer",
+    "Подробнее": "More details",
+    "Скрыть детали": "Hide details",
     "Участник программы RemCard": "RemCard program participant",
     "Акция:": "Promotion:",
     "Новая заявка RemCard (клиент):": "New RemCard request (client):",

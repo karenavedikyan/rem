@@ -301,18 +301,56 @@
     banner.className = "promo-banner";
     banner.style.backgroundImage = getPromoBannerStyle(promo);
     const urgency = getPromoUrgency(promo);
-    banner.innerHTML = `
-      <div class="promo-banner-content">
-        <div class="promo-banner-copy">
-          ${urgency && urgency.isHot ? `<span class="promo-hot-chip">${escapeHtml(urgency.label)}</span>` : ""}
-          <span>${escapeHtml(promo.bannerText || promo.title || t("Акция", "Promotion"))}</span>
-        </div>
-        <div class="promo-banner-badge">${escapeHtml(getPromoBenefitLabel(promo))}</div>
-      </div>
-    `;
+    const bannerOverlay = document.createElement("div");
+    bannerOverlay.className = "promo-banner-overlay";
+    if (urgency && urgency.isHot) {
+      const hotChip = document.createElement("span");
+      hotChip.className = "promo-hot-chip";
+      hotChip.textContent = urgency.label;
+      bannerOverlay.appendChild(hotChip);
+    } else {
+      bannerOverlay.appendChild(document.createElement("span"));
+    }
+    const bannerCaption = document.createElement("span");
+    bannerCaption.className = "promo-banner-caption";
+    bannerCaption.textContent = promo.bannerText || promo.title || t("Акция", "Promotion");
+    bannerOverlay.appendChild(bannerCaption);
+    banner.appendChild(bannerOverlay);
 
     const content = document.createElement("div");
     content.className = "promo-content";
+
+    const summary = document.createElement("div");
+    summary.className = "promo-summary";
+
+    const title = document.createElement("h3");
+    title.className = "promo-summary-title";
+    title.textContent = promo.title || t("Акция", "Promotion");
+
+    const summaryRight = document.createElement("div");
+    summaryRight.className = "promo-summary-right";
+
+    const summaryBadge = document.createElement("span");
+    summaryBadge.className = "promo-summary-badge";
+    summaryBadge.textContent = getPromoBenefitLabel(promo);
+
+    const detailsId = `promo-details-${String(promo.id || Math.random().toString(36).slice(2))}`.replace(/[^a-zA-Z0-9_-]/g, "-");
+    const toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "btn btn-ghost promo-details-toggle";
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.setAttribute("aria-controls", detailsId);
+    toggle.textContent = t("Подробнее", "More details");
+
+    summaryRight.appendChild(summaryBadge);
+    summaryRight.appendChild(toggle);
+    summary.appendChild(title);
+    summary.appendChild(summaryRight);
+
+    const details = document.createElement("div");
+    details.className = "promo-details";
+    details.id = detailsId;
+    details.hidden = true;
 
     const meta = document.createElement("div");
     meta.className = "promo-meta";
@@ -328,9 +366,6 @@
       priorityBadge.textContent = priority.priorityLabel || t("Долгосрочная", "Long-term");
       metaRow.appendChild(priorityBadge);
     }
-
-    const title = document.createElement("h3");
-    title.textContent = promo.title || t("Акция", "Promotion");
 
     const desc = document.createElement("p");
     desc.className = "promo-desc";
@@ -397,13 +432,22 @@
     link.dataset.promoDiscount = getPromoBenefitLabel(promo);
 
     actions.appendChild(link);
+    details.appendChild(metaRow);
+    details.appendChild(desc);
+    if (valid) details.appendChild(valid);
+    details.appendChild(tagsWrap);
+    details.appendChild(actions);
 
-    content.appendChild(title);
-    content.appendChild(metaRow);
-    content.appendChild(desc);
-    if (valid) content.appendChild(valid);
-    content.appendChild(tagsWrap);
-    content.appendChild(actions);
+    toggle.addEventListener("click", () => {
+      const open = details.hidden;
+      details.hidden = !open;
+      card.classList.toggle("is-expanded", open);
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      toggle.textContent = open ? t("Скрыть детали", "Hide details") : t("Подробнее", "More details");
+    });
+
+    content.appendChild(summary);
+    content.appendChild(details);
 
     card.appendChild(banner);
     card.appendChild(content);
