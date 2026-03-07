@@ -762,11 +762,13 @@ img {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  min-height: 460px;
 }
 
 .promo-banner {
   position: relative;
-  min-height: 280px;
+  flex: 0 0 80%;
+  min-height: 0;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -783,7 +785,8 @@ img {
 .promo-banner-overlay {
   position: relative;
   z-index: 1;
-  min-height: 280px;
+  min-height: 0;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -814,6 +817,12 @@ img {
 
 .promo-content {
   padding: 14px 16px 16px;
+  flex: 0 0 20%;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .promo-summary {
@@ -878,6 +887,20 @@ img {
   margin-top: 12px;
   opacity: 1;
   pointer-events: auto;
+}
+
+.promo-card-banner.is-expanded {
+  min-height: 620px;
+}
+
+.promo-card-banner.is-expanded .promo-banner {
+  flex-basis: 64%;
+}
+
+.promo-card-banner.is-expanded .promo-content {
+  flex: 1 1 auto;
+  justify-content: flex-start;
+  overflow: visible;
 }
 
 .promo-card-banner.is-expanded .promo-details-inner {
@@ -2161,9 +2184,8 @@ img {
     align-items: flex-start;
   }
 
-  .promo-banner,
-  .promo-banner-overlay {
-    min-height: 220px;
+  .promo-card-banner {
+    min-height: 380px;
   }
 
   .promo-banner-caption {
@@ -2183,6 +2205,14 @@ img {
   .promo-summary-badge {
     font-size: 13px;
     padding: 7px 10px;
+  }
+
+  .promo-card-banner.is-expanded {
+    min-height: 520px;
+  }
+
+  .promo-card-banner.is-expanded .promo-banner {
+    flex-basis: 60%;
   }
 }
 
