@@ -95,56 +95,117 @@
   // Promotions / Offers rendering (static data)
   const promotions = Array.isArray(window.REMCARD_PROMOTIONS) ? window.REMCARD_PROMOTIONS : [];
 
-  const formatDateRu = (iso) => {
+  const formatDateLocal = (iso) => {
     if (!iso) return "";
     const d = new Date(iso);
     if (Number.isNaN(d.getTime())) return "";
-    return new Intl.DateTimeFormat("ru-RU", { year: "numeric", month: "long", day: "2-digit" }).format(d);
+    const locale = I18N && I18N.isEn ? "en-US" : "ru-RU";
+    return new Intl.DateTimeFormat(locale, { year: "numeric", month: "long", day: "2-digit" }).format(d);
+  };
+
+  const parseDateTs = (value, fallback = 0) => {
+    if (!value) return fallback;
+    const ts = new Date(value).getTime();
+    return Number.isFinite(ts) ? ts : fallback;
   };
 
   const promoSortSoon = (a, b) => {
-    const da = a.validUntil ? new Date(a.validUntil).getTime() : Number.POSITIVE_INFINITY;
-    const db = b.validUntil ? new Date(b.validUntil).getTime() : Number.POSITIVE_INFINITY;
+    const da = parseDateTs(a.validUntil, Number.POSITIVE_INFINITY);
+    const db = parseDateTs(b.validUntil, Number.POSITIVE_INFINITY);
     return da - db;
   };
 
+  const promoSortNewest = (a, b) => parseDateTs(b.createdAt, 0) - parseDateTs(a.createdAt, 0) || Number(b.id || 0) - Number(a.id || 0);
+
+  const parseBenefitType = (value) => String(value || "").toUpperCase();
+
+  const parseLabelNumber = (label) => {
+    const raw = String(label || "").replace(/[^\d.,-]/g, "").replace(",", ".");
+    const num = Number(raw);
+    return Number.isFinite(num) ? Math.abs(num) : 0;
+  };
+
+  const getBenefitScore = (promo) => {
+    const type = parseBenefitType(promo.benefitType);
+    const value = Number(promo.benefitValue);
+    const safeValue = Number.isFinite(value) ? Math.abs(value) : 0;
+    if (type === "FREE") return 10000;
+    if (type === "PERCENT") return safeValue || parseLabelNumber(promo.benefitLabel || promo.discount);
+    if (type === "AMOUNT") {
+      const amount = safeValue || parseLabelNumber(promo.benefitLabel || promo.discount);
+      return amount / 1000;
+    }
+    return safeValue || parseLabelNumber(promo.benefitLabel || promo.discount);
+  };
+
+  const promoSortBenefit = (a, b) => getBenefitScore(b) - getBenefitScore(a) || promoSortSoon(a, b);
+
+  const getPromoBenefitLabel = (promo) => promo.benefitLabel || promo.discount || t("Выгодно", "Hot deal");
+
+  const getPromoTags = (promo) => {
+    const tags = Array.isArray(promo.categoryTags) && promo.categoryTags.length ? promo.categoryTags : promo.tags || [];
+    const base = Array.isArray(tags) ? tags.slice() : [];
+    if (promo.category) base.unshift(promo.category);
+    return unique(base.map((v) => String(v || "").trim()).filter(Boolean));
+  };
+
+  const getPromoBannerStyle = (promo) => {
+    const image = String(promo.bannerImageUrl || "").trim();
+    if (image) {
+      return `linear-gradient(120deg, rgba(10,10,10,0.55), rgba(10,10,10,0.75)), url("${image}")`;
+    }
+    return "linear-gradient(130deg, rgba(229,57,53,0.9), rgba(183,28,28,0.85) 45%, rgba(26,26,26,0.92))";
+  };
+
   const unique = (arr) => Array.from(new Set(arr.filter(Boolean)));
+  const escapeHtml = (value) =>
+    String(value || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
 
   const createPromoCard = (promo) => {
     const card = document.createElement("article");
-    card.className = "card";
+    card.className = "card promo-card-banner";
     card.dataset.promoId = String(promo.id);
 
-    const top = document.createElement("div");
-    top.className = "promo-top";
+    const banner = document.createElement("div");
+    banner.className = "promo-banner";
+    banner.style.backgroundImage = getPromoBannerStyle(promo);
+    banner.innerHTML = `
+      <div class="promo-banner-content">
+        <div class="promo-banner-copy">${escapeHtml(promo.bannerText || promo.title || t("Акция", "Promotion"))}</div>
+        <div class="promo-banner-badge">${escapeHtml(getPromoBenefitLabel(promo))}</div>
+      </div>
+    `;
 
-    const title = document.createElement("h3");
-    title.textContent = promo.title || t("Акция", "Promotion");
-
-    const badge = document.createElement("div");
-    badge.className = "promo-badge";
-    badge.textContent = promo.discount || t("Выгодно", "Hot deal");
-
-    top.appendChild(title);
-    top.appendChild(badge);
+    const content = document.createElement("div");
+    content.className = "promo-content";
 
     const meta = document.createElement("div");
     meta.className = "promo-meta";
     meta.textContent = `${promo.partnerName || t("Партнёр", "Partner")} • ${promo.city || ""}`.trim();
 
+    const title = document.createElement("h3");
+    title.textContent = promo.title || t("Акция", "Promotion");
+
     const desc = document.createElement("p");
+    desc.className = "promo-desc";
     desc.textContent = promo.description || "";
 
     const tagsWrap = document.createElement("div");
     tagsWrap.className = "partner-meta";
-    (promo.tags || []).slice(0, 6).forEach((t) => {
+    getPromoTags(promo)
+      .slice(0, 8)
+      .forEach((t) => {
       const chip = document.createElement("span");
       chip.className = "tag";
       chip.textContent = t;
       tagsWrap.appendChild(chip);
-    });
+      });
 
-    const validStr = formatDateRu(promo.validUntil);
+    const validStr = formatDateLocal(promo.validUntil);
     let valid = null;
     if (validStr) {
       valid = document.createElement("div");
@@ -164,7 +225,7 @@
     };
 
     const link = document.createElement("a");
-    link.className = "btn btn-ghost";
+    link.className = "btn btn-primary";
     let href = promo.link || "#request";
     if (href.startsWith("#")) {
       const id = href.slice(1);
@@ -174,16 +235,19 @@
     link.textContent = t("Перейти к предложению", "Go to offer");
     link.dataset.promoTitle = promo.title || "";
     link.dataset.promoPartner = promo.partnerName || "";
-    link.dataset.promoDiscount = promo.discount || "";
+    link.dataset.promoDiscount = getPromoBenefitLabel(promo);
 
     actions.appendChild(link);
 
-    card.appendChild(top);
-    card.appendChild(meta);
-    card.appendChild(desc);
-    if (valid) card.appendChild(valid);
-    card.appendChild(tagsWrap);
-    card.appendChild(actions);
+    content.appendChild(title);
+    content.appendChild(meta);
+    content.appendChild(desc);
+    if (valid) content.appendChild(valid);
+    content.appendChild(tagsWrap);
+    content.appendChild(actions);
+
+    card.appendChild(banner);
+    card.appendChild(content);
     applyI18n(card);
     return card;
   };
@@ -210,7 +274,7 @@
 
     if (allEl) {
       const cities = unique(promotions.map((p) => p.city));
-      const categories = unique(promotions.map((p) => p.category));
+      const categories = unique(promotions.flatMap((p) => getPromoTags(p)));
 
       const fillSelect = (select, values) => {
         if (!select) return;
@@ -232,12 +296,12 @@
         const sort = sortSel ? sortSel.value : "soon";
 
         if (city) list = list.filter((p) => p.city === city);
-        if (cat) list = list.filter((p) => p.category === cat);
+        if (cat) list = list.filter((p) => getPromoTags(p).includes(cat));
 
-        if (sort === "featured") {
-          list.sort((a, b) => Number(Boolean(b.isFeatured)) - Number(Boolean(a.isFeatured)) || promoSortSoon(a, b));
-        } else if (sort === "title") {
-          list.sort((a, b) => String(a.title || "").localeCompare(String(b.title || ""), "ru"));
+        if (sort === "benefit") {
+          list.sort(promoSortBenefit);
+        } else if (sort === "new") {
+          list.sort(promoSortNewest);
         } else {
           list.sort(promoSortSoon);
         }
