@@ -358,6 +358,12 @@
   const sortSel = document.getElementById("offers-sort");
   const resetOffersBtn = document.getElementById("offers-reset-filters");
   const priorityChipsWrap = document.getElementById("offers-priority-chips");
+  const OFFERS_QUERY_KEYS = {
+    city: "offersCity",
+    category: "offersCategory",
+    priority: "offersPriority",
+    sort: "offersSort"
+  };
 
   if (promotions.length) {
     if (featuredEl) {
@@ -382,6 +388,20 @@
       fillSelect(citySel, cities);
       fillSelect(catSel, categories);
 
+      const setSelectValueIfAvailable = (select, value, fallback = "all") => {
+        if (!select) return;
+        const has = Array.from(select.options || []).some((opt) => opt.value === value);
+        select.value = has ? value : fallback;
+      };
+
+      const applyFiltersFromURL = () => {
+        const params = new URLSearchParams(window.location.search || "");
+        setSelectValueIfAvailable(citySel, params.get(OFFERS_QUERY_KEYS.city) || "all");
+        setSelectValueIfAvailable(catSel, params.get(OFFERS_QUERY_KEYS.category) || "all");
+        setSelectValueIfAvailable(prioritySel, params.get(OFFERS_QUERY_KEYS.priority) || "all");
+        setSelectValueIfAvailable(sortSel, params.get(OFFERS_QUERY_KEYS.sort) || "soon", "soon");
+      };
+
       const syncPriorityChips = (value) => {
         if (!priorityChipsWrap) return;
         const target = value || "all";
@@ -397,6 +417,18 @@
         const priority = prioritySel && prioritySel.value !== "all" ? prioritySel.value : null;
         const sort = sortSel ? sortSel.value : "soon";
         syncPriorityChips(prioritySel ? prioritySel.value : "all");
+
+        const url = new URL(window.location.href);
+        const params = url.searchParams;
+        if (city) params.set(OFFERS_QUERY_KEYS.city, city);
+        else params.delete(OFFERS_QUERY_KEYS.city);
+        if (cat) params.set(OFFERS_QUERY_KEYS.category, cat);
+        else params.delete(OFFERS_QUERY_KEYS.category);
+        if (priority) params.set(OFFERS_QUERY_KEYS.priority, priority);
+        else params.delete(OFFERS_QUERY_KEYS.priority);
+        if (sort && sort !== "soon") params.set(OFFERS_QUERY_KEYS.sort, sort);
+        else params.delete(OFFERS_QUERY_KEYS.sort);
+        history.replaceState(null, "", `${url.pathname}${params.toString() ? `?${params.toString()}` : ""}${url.hash || ""}`);
 
         if (city) list = list.filter((p) => p.city === city);
         if (cat) list = list.filter((p) => getPromoTags(p).includes(cat));
@@ -421,6 +453,7 @@
         if (emptyEl) emptyEl.hidden = list.length > 0;
       };
 
+      applyFiltersFromURL();
       applyFiltersAndRender();
 
       [citySel, catSel, prioritySel, sortSel].forEach((s) => {
