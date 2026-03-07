@@ -351,6 +351,7 @@
     "Выберите акцию и перейдите к заявке через RemCard.": "Choose a promotion and proceed to request via RemCard.",
     "На главную": "Back to home",
     "Фильтры акций": "Promotion filters",
+    "Быстрый фильтр по приоритету": "Quick priority filter",
     "Приоритет": "Priority",
     "Все приоритеты": "All priorities",
     "Горит": "Hot",

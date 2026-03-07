@@ -909,6 +909,40 @@ img {
   padding: 14px;
 }
 
+.offers-priority-chips {
+  margin-top: 10px;
+  margin-bottom: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.offers-priority-chip {
+  border-radius: 999px;
+  border: 1px solid rgba(245, 245, 245, 0.16);
+  background: rgba(18, 18, 18, 0.45);
+  color: rgba(245, 245, 245, 0.92);
+  padding: 7px 11px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 160ms var(--ease), background 160ms var(--ease), transform 160ms var(--ease);
+}
+
+.offers-priority-chip:hover {
+  border-color: rgba(229, 57, 53, 0.35);
+}
+
+.offers-priority-chip:active {
+  transform: translateY(1px);
+}
+
+.offers-priority-chip.is-active {
+  border-color: rgba(229, 57, 53, 0.45);
+  background: rgba(229, 57, 53, 0.14);
+  color: rgba(255, 235, 235, 0.98);
+}
+
 .offers-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));

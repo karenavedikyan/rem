@@ -356,6 +356,7 @@
   const catSel = document.getElementById("offers-category");
   const prioritySel = document.getElementById("offers-priority");
   const sortSel = document.getElementById("offers-sort");
+  const priorityChipsWrap = document.getElementById("offers-priority-chips");
 
   if (promotions.length) {
     if (featuredEl) {
@@ -380,12 +381,21 @@
       fillSelect(citySel, cities);
       fillSelect(catSel, categories);
 
+      const syncPriorityChips = (value) => {
+        if (!priorityChipsWrap) return;
+        const target = value || "all";
+        priorityChipsWrap.querySelectorAll("button[data-priority-chip]").forEach((btn) => {
+          btn.classList.toggle("is-active", btn.getAttribute("data-priority-chip") === target);
+        });
+      };
+
       const applyFiltersAndRender = () => {
         let list = promotions.slice();
         const city = citySel && citySel.value !== "all" ? citySel.value : null;
         const cat = catSel && catSel.value !== "all" ? catSel.value : null;
         const priority = prioritySel && prioritySel.value !== "all" ? prioritySel.value : null;
         const sort = sortSel ? sortSel.value : "soon";
+        syncPriorityChips(prioritySel ? prioritySel.value : "all");
 
         if (city) list = list.filter((p) => p.city === city);
         if (cat) list = list.filter((p) => getPromoTags(p).includes(cat));
@@ -416,6 +426,16 @@
         if (!s) return;
         s.addEventListener("change", applyFiltersAndRender);
       });
+
+      if (priorityChipsWrap && prioritySel) {
+        priorityChipsWrap.addEventListener("click", (e) => {
+          const btn = e.target && e.target.closest ? e.target.closest("button[data-priority-chip]") : null;
+          if (!btn) return;
+          const value = btn.getAttribute("data-priority-chip") || "all";
+          prioritySel.value = value;
+          applyFiltersAndRender();
+        });
+      }
     }
   } else {
     renderPromotionsInto(featuredEl, []);
