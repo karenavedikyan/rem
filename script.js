@@ -108,6 +108,8 @@
     const ts = new Date(value).getTime();
     return Number.isFinite(ts) ? ts : fallback;
   };
+  const DAY_MS = 24 * 60 * 60 * 1000;
+  const HOT_PROMO_DAYS = 5;
 
   const promoSortSoon = (a, b) => {
     const da = parseDateTs(a.validUntil, Number.POSITIVE_INFINITY);
@@ -157,6 +159,25 @@
     return "linear-gradient(130deg, rgba(229,57,53,0.9), rgba(183,28,28,0.85) 45%, rgba(26,26,26,0.92))";
   };
 
+  const getPromoUrgency = (promo) => {
+    const ts = parseDateTs(promo.validUntil, NaN);
+    if (!Number.isFinite(ts)) return null;
+    const daysLeft = Math.ceil((ts - Date.now()) / DAY_MS);
+    if (daysLeft < 0) return { daysLeft, isHot: false, isExpired: true, label: t("Акция завершилась", "Offer expired") };
+    if (daysLeft <= HOT_PROMO_DAYS) {
+      return {
+        daysLeft,
+        isHot: true,
+        isExpired: false,
+        label:
+          daysLeft <= 1
+            ? t("Горит: до конца 1 день", "Hot: 1 day left")
+            : t(`Горит: до конца ${daysLeft} дн.`, `Hot: ${daysLeft} days left`)
+      };
+    }
+    return { daysLeft, isHot: false, isExpired: false, label: t(`До конца ${daysLeft} дн.`, `${daysLeft} days left`) };
+  };
+
   const unique = (arr) => Array.from(new Set(arr.filter(Boolean)));
   const escapeHtml = (value) =>
     String(value || "")
@@ -173,9 +194,13 @@
     const banner = document.createElement("div");
     banner.className = "promo-banner";
     banner.style.backgroundImage = getPromoBannerStyle(promo);
+    const urgency = getPromoUrgency(promo);
     banner.innerHTML = `
       <div class="promo-banner-content">
-        <div class="promo-banner-copy">${escapeHtml(promo.bannerText || promo.title || t("Акция", "Promotion"))}</div>
+        <div class="promo-banner-copy">
+          ${urgency && urgency.isHot ? `<span class="promo-hot-chip">${escapeHtml(urgency.label)}</span>` : ""}
+          <span>${escapeHtml(promo.bannerText || promo.title || t("Акция", "Promotion"))}</span>
+        </div>
         <div class="promo-banner-badge">${escapeHtml(getPromoBenefitLabel(promo))}</div>
       </div>
     `;
@@ -210,7 +235,8 @@
     if (validStr) {
       valid = document.createElement("div");
       valid.className = "promo-valid";
-      valid.textContent = `${t("Действует до", "Valid until")} ${validStr}`;
+      const urgencyText = urgency && !urgency.isExpired ? ` • ${urgency.label}` : "";
+      valid.textContent = `${t("Действует до", "Valid until")} ${validStr}${urgencyText}`;
     }
 
     const actions = document.createElement("div");
@@ -231,8 +257,24 @@
       const id = href.slice(1);
       if (id && !document.getElementById(id)) href = `${getHomeBase()}${href}`;
     }
-    link.href = href;
+    const appendPromoQueryToRequestHref = (targetHref, currentPromo) => {
+      if (targetHref.startsWith("#request")) return targetHref;
+      const hashIndex = targetHref.indexOf("#");
+      if (hashIndex < 0) return targetHref;
+      const hash = targetHref.slice(hashIndex);
+      if (!hash.startsWith("#request")) return targetHref;
+      const base = targetHref.slice(0, hashIndex);
+      const params = new URLSearchParams();
+      params.set("promoId", String(currentPromo.id || ""));
+      params.set("promoTitle", currentPromo.title || "");
+      params.set("promoPartner", currentPromo.partnerName || "");
+      params.set("promoBenefit", getPromoBenefitLabel(currentPromo));
+      const sep = base.includes("?") ? "&" : "?";
+      return `${base}${sep}${params.toString()}${hash}`;
+    };
+    link.href = appendPromoQueryToRequestHref(href, promo);
     link.textContent = t("Перейти к предложению", "Go to offer");
+    link.dataset.promoId = String(promo.id || "");
     link.dataset.promoTitle = promo.title || "";
     link.dataset.promoPartner = promo.partnerName || "";
     link.dataset.promoDiscount = getPromoBenefitLabel(promo);
@@ -475,11 +517,29 @@
     const href = a.getAttribute("href") || "";
     if (!href.startsWith("#request")) return;
 
+    const requestForm = document.getElementById("request-form");
     const commentEl = document.querySelector("textarea[name='comment']");
+    const promoId = a.dataset.promoId || "";
+    const promoTitle = a.dataset.promoTitle || "";
+    const promoPartner = a.dataset.promoPartner || "";
+    const promoDiscount = a.dataset.promoDiscount || "";
+
+    if (requestForm) {
+      ensureHiddenField(requestForm, "promoId").value = promoId;
+      ensureHiddenField(requestForm, "promoTitle").value = promoTitle;
+      ensureHiddenField(requestForm, "promoPartner").value = promoPartner;
+      ensureHiddenField(requestForm, "promoBenefit").value = promoDiscount;
+      upsertFormNote(
+        requestForm,
+        "form-selected-promo",
+        t(
+          `Акция выбрана: ${promoTitle || "предложение партнёра"}${promoDiscount ? ` (${promoDiscount})` : ""}`,
+          `Promotion selected: ${promoTitle || "partner offer"}${promoDiscount ? ` (${promoDiscount})` : ""}`
+        )
+      );
+    }
+
     if (commentEl && !String(commentEl.value || "").trim()) {
-      const promoTitle = a.dataset.promoTitle || "";
-      const promoPartner = a.dataset.promoPartner || "";
-      const promoDiscount = a.dataset.promoDiscount || "";
       commentEl.value = `Акция: ${promoTitle}${promoPartner ? " — " + promoPartner : ""}${promoDiscount ? " (" + promoDiscount + ")" : ""}\n`;
     }
   });
@@ -495,6 +555,25 @@
     return input;
   };
 
+  const upsertFormNote = (form, className, text) => {
+    let note = form.querySelector(`.${className}`);
+    if (!text) {
+      if (note) note.remove();
+      return;
+    }
+    if (!note) {
+      note = document.createElement("div");
+      note.className = className;
+      const actions = form.querySelector(".form-actions");
+      if (actions && actions.parentNode) {
+        actions.parentNode.insertBefore(note, actions);
+      } else {
+        form.appendChild(note);
+      }
+    }
+    note.textContent = text;
+  };
+
   const prefillClientRequestFromQuery = () => {
     const requestForm = document.getElementById("request-form");
     if (!requestForm) return;
@@ -504,29 +583,49 @@
     const serviceTitle = String(params.get("serviceTitle") || "").trim();
     const serviceStage = String(params.get("serviceStage") || "").trim();
     const serviceTaskType = String(params.get("serviceTaskType") || "").trim();
+    const promoId = String(params.get("promoId") || "").trim();
+    const promoTitle = String(params.get("promoTitle") || "").trim();
+    const promoPartner = String(params.get("promoPartner") || "").trim();
+    const promoBenefit = String(params.get("promoBenefit") || "").trim();
 
-    if (!serviceId && !serviceTitle) return;
+    const hasService = Boolean(serviceId || serviceTitle);
+    const hasPromo = Boolean(promoId || promoTitle);
+    if (!hasService && !hasPromo) return;
 
     ensureHiddenField(requestForm, "serviceId").value = serviceId;
     ensureHiddenField(requestForm, "serviceTitle").value = serviceTitle;
     ensureHiddenField(requestForm, "serviceStage").value = serviceStage;
     ensureHiddenField(requestForm, "serviceTaskType").value = serviceTaskType;
+    ensureHiddenField(requestForm, "promoId").value = promoId;
+    ensureHiddenField(requestForm, "promoTitle").value = promoTitle;
+    ensureHiddenField(requestForm, "promoPartner").value = promoPartner;
+    ensureHiddenField(requestForm, "promoBenefit").value = promoBenefit;
 
-    let note = requestForm.querySelector(".form-selected-service");
-    if (!note) {
-      note = document.createElement("div");
-      note.className = "form-selected-service";
-      const actions = requestForm.querySelector(".form-actions");
-      if (actions && actions.parentNode) {
-        actions.parentNode.insertBefore(note, actions);
-      } else {
-        requestForm.appendChild(note);
-      }
-    }
-    note.textContent = t(
-      `Вы выбрали услугу: ${serviceTitle || "услуга из каталога"}${serviceId ? ` (ID: ${serviceId})` : ""}`,
-      `Selected service: ${serviceTitle || "service from catalog"}${serviceId ? ` (ID: ${serviceId})` : ""}`
+    upsertFormNote(
+      requestForm,
+      "form-selected-service",
+      hasService
+        ? t(
+            `Вы выбрали услугу: ${serviceTitle || "услуга из каталога"}${serviceId ? ` (ID: ${serviceId})` : ""}`,
+            `Selected service: ${serviceTitle || "service from catalog"}${serviceId ? ` (ID: ${serviceId})` : ""}`
+          )
+        : ""
     );
+    upsertFormNote(
+      requestForm,
+      "form-selected-promo",
+      hasPromo
+        ? t(
+            `Акция выбрана: ${promoTitle || "предложение партнёра"}${promoBenefit ? ` (${promoBenefit})` : ""}`,
+            `Promotion selected: ${promoTitle || "partner offer"}${promoBenefit ? ` (${promoBenefit})` : ""}`
+          )
+        : ""
+    );
+
+    const commentEl = requestForm.querySelector("textarea[name='comment']");
+    if (hasPromo && commentEl && !String(commentEl.value || "").trim()) {
+      commentEl.value = `Акция: ${promoTitle}${promoPartner ? " — " + promoPartner : ""}${promoBenefit ? " (" + promoBenefit + ")" : ""}\n`;
+    }
   };
 
   prefillClientRequestFromQuery();
@@ -632,6 +731,10 @@
       `Услуга (название): ${get("serviceTitle") || "-"}\n` +
       `Этап услуги: ${get("serviceStage") || "-"}\n` +
       `Тип задачи услуги: ${get("serviceTaskType") || "-"}\n` +
+      `Акция (ID): ${get("promoId") || "-"}\n` +
+      `Акция (название): ${get("promoTitle") || "-"}\n` +
+      `Акция (партнёр): ${get("promoPartner") || "-"}\n` +
+      `Акция (выгода): ${get("promoBenefit") || "-"}\n` +
       `Тип задачи: ${get("taskType") || get("jobType") || "-"}\n` +
       `Район: ${get("district") || get("city") || "Краснодар"}\n` +
       `Бюджет: ${get("budget") || "-"}\n` +
