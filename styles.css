@@ -835,9 +835,46 @@ img {
 }
 
 .promo-meta {
-  margin-top: 8px;
   font-size: 13px;
   color: rgba(176, 190, 197, 0.95);
+}
+
+.promo-meta-row {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.promo-priority-badge {
+  flex: 0 0 auto;
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1px;
+  border: 1px solid rgba(245, 245, 245, 0.18);
+  background: rgba(245, 245, 245, 0.08);
+  color: rgba(245, 245, 245, 0.96);
+}
+
+.promo-priority-badge.is-hot {
+  border-color: rgba(255, 193, 7, 0.38);
+  background: rgba(255, 193, 7, 0.12);
+  color: rgba(255, 238, 190, 0.98);
+}
+
+.promo-priority-badge.is-week {
+  border-color: rgba(76, 175, 80, 0.34);
+  background: rgba(76, 175, 80, 0.12);
+  color: rgba(212, 255, 214, 0.98);
+}
+
+.promo-priority-badge.is-long {
+  border-color: rgba(144, 202, 249, 0.34);
+  background: rgba(144, 202, 249, 0.12);
+  color: rgba(225, 245, 255, 0.98);
 }
 
 .promo-desc {
@@ -874,7 +911,7 @@ img {
 
 .offers-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
 }
 

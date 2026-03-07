@@ -161,21 +161,58 @@
 
   const getPromoUrgency = (promo) => {
     const ts = parseDateTs(promo.validUntil, NaN);
-    if (!Number.isFinite(ts)) return null;
+    if (!Number.isFinite(ts)) {
+      return {
+        daysLeft: Number.POSITIVE_INFINITY,
+        isHot: false,
+        isExpired: false,
+        priority: "long",
+        priorityLabel: t("Долгосрочная", "Long-term"),
+        label: t("Бессрочная", "No end date")
+      };
+    }
     const daysLeft = Math.ceil((ts - Date.now()) / DAY_MS);
-    if (daysLeft < 0) return { daysLeft, isHot: false, isExpired: true, label: t("Акция завершилась", "Offer expired") };
+    if (daysLeft < 0) {
+      return {
+        daysLeft,
+        isHot: false,
+        isExpired: true,
+        priority: "expired",
+        priorityLabel: t("Завершена", "Expired"),
+        label: t("Акция завершилась", "Offer expired")
+      };
+    }
     if (daysLeft <= HOT_PROMO_DAYS) {
       return {
         daysLeft,
         isHot: true,
         isExpired: false,
+        priority: "hot",
+        priorityLabel: t("Горит", "Hot"),
         label:
           daysLeft <= 1
             ? t("Горит: до конца 1 день", "Hot: 1 day left")
             : t(`Горит: до конца ${daysLeft} дн.`, `Hot: ${daysLeft} days left`)
       };
     }
-    return { daysLeft, isHot: false, isExpired: false, label: t(`До конца ${daysLeft} дн.`, `${daysLeft} days left`) };
+    if (daysLeft <= 7) {
+      return {
+        daysLeft,
+        isHot: false,
+        isExpired: false,
+        priority: "week",
+        priorityLabel: t("До 7 дней", "Up to 7 days"),
+        label: t(`До конца ${daysLeft} дн.`, `${daysLeft} days left`)
+      };
+    }
+    return {
+      daysLeft,
+      isHot: false,
+      isExpired: false,
+      priority: "long",
+      priorityLabel: t("Долгосрочная", "Long-term"),
+      label: t(`До конца ${daysLeft} дн.`, `${daysLeft} days left`)
+    };
   };
 
   const unique = (arr) => Array.from(new Set(arr.filter(Boolean)));
@@ -211,6 +248,17 @@
     const meta = document.createElement("div");
     meta.className = "promo-meta";
     meta.textContent = `${promo.partnerName || t("Партнёр", "Partner")} • ${promo.city || ""}`.trim();
+    const priority = urgency && !urgency.isExpired ? urgency : null;
+
+    const metaRow = document.createElement("div");
+    metaRow.className = "promo-meta-row";
+    metaRow.appendChild(meta);
+    if (priority) {
+      const priorityBadge = document.createElement("span");
+      priorityBadge.className = `promo-priority-badge is-${priority.priority || "long"}`;
+      priorityBadge.textContent = priority.priorityLabel || t("Долгосрочная", "Long-term");
+      metaRow.appendChild(priorityBadge);
+    }
 
     const title = document.createElement("h3");
     title.textContent = promo.title || t("Акция", "Promotion");
@@ -282,7 +330,7 @@
     actions.appendChild(link);
 
     content.appendChild(title);
-    content.appendChild(meta);
+    content.appendChild(metaRow);
     content.appendChild(desc);
     if (valid) content.appendChild(valid);
     content.appendChild(tagsWrap);
@@ -306,6 +354,7 @@
 
   const citySel = document.getElementById("offers-city");
   const catSel = document.getElementById("offers-category");
+  const prioritySel = document.getElementById("offers-priority");
   const sortSel = document.getElementById("offers-sort");
 
   if (promotions.length) {
@@ -335,10 +384,18 @@
         let list = promotions.slice();
         const city = citySel && citySel.value !== "all" ? citySel.value : null;
         const cat = catSel && catSel.value !== "all" ? catSel.value : null;
+        const priority = prioritySel && prioritySel.value !== "all" ? prioritySel.value : null;
         const sort = sortSel ? sortSel.value : "soon";
 
         if (city) list = list.filter((p) => p.city === city);
         if (cat) list = list.filter((p) => getPromoTags(p).includes(cat));
+        if (priority) {
+          list = list.filter((p) => {
+            const urgency = getPromoUrgency(p);
+            if (!urgency || urgency.isExpired) return false;
+            return urgency.priority === priority;
+          });
+        }
 
         if (sort === "benefit") {
           list.sort(promoSortBenefit);
@@ -355,7 +412,7 @@
 
       applyFiltersAndRender();
 
-      [citySel, catSel, sortSel].forEach((s) => {
+      [citySel, catSel, prioritySel, sortSel].forEach((s) => {
         if (!s) return;
         s.addEventListener("change", applyFiltersAndRender);
       });
