@@ -762,7 +762,7 @@ img {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  min-height: 460px;
+  min-height: 560px;
 }
 
 .promo-banner {
@@ -816,7 +816,7 @@ img {
 }
 
 .promo-content {
-  padding: 14px 16px 16px;
+  padding: 12px 14px 14px;
   flex: 0 0 20%;
   min-height: 0;
   overflow: hidden;
@@ -834,25 +834,32 @@ img {
 
 .promo-summary-title {
   margin: 0;
-  font-size: 19px;
+  font-size: 17px;
   line-height: 1.3;
+  color: rgba(245, 245, 245, 0.98);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .promo-summary-right {
   flex: 0 0 auto;
-  display: grid;
-  justify-items: end;
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
   gap: 8px;
 }
 
 .promo-summary-badge {
   display: inline-flex;
   align-items: center;
-  padding: 8px 12px;
+  padding: 6px 10px;
   border-radius: 12px;
   font-weight: 900;
   letter-spacing: -0.2px;
-  font-size: 14px;
+  font-size: 12px;
+  white-space: nowrap;
   color: rgba(245, 245, 245, 0.98);
   background: linear-gradient(145deg, rgba(229, 57, 53, 0.98), rgba(183, 28, 28, 0.98));
   border: 1px solid rgba(229, 57, 53, 0.28);
@@ -860,10 +867,11 @@ img {
 }
 
 .promo-details-toggle {
-  min-height: 34px;
-  padding: 7px 12px;
+  min-height: 30px;
+  padding: 6px 10px;
   font-size: 12px;
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .promo-details {
@@ -890,7 +898,7 @@ img {
 }
 
 .promo-card-banner.is-expanded {
-  min-height: 620px;
+  min-height: 700px;
 }
 
 .promo-card-banner.is-expanded .promo-banner {
@@ -2185,7 +2193,7 @@ img {
   }
 
   .promo-card-banner {
-    min-height: 380px;
+    min-height: 500px;
   }
 
   .promo-banner-caption {
@@ -2194,25 +2202,30 @@ img {
   }
 
   .promo-summary {
-    flex-direction: column;
-    align-items: stretch;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
   }
 
   .promo-summary-right {
-    justify-items: start;
+    margin-left: auto;
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 6px;
   }
 
   .promo-summary-badge {
-    font-size: 13px;
-    padding: 7px 10px;
+    font-size: 11px;
+    padding: 5px 8px;
   }
 
   .promo-card-banner.is-expanded {
-    min-height: 520px;
+    min-height: 640px;
   }
 
   .promo-card-banner.is-expanded .promo-banner {
-    flex-basis: 60%;
+    flex-basis: 64%;
   }
 }
 
