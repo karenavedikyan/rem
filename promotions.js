@@ -1,12 +1,13 @@
 // Promotions (static data) for GitHub Pages.
 // Type shape (for future API parity):
-// id, title, partnerName, city, description,
+// id, partnerId, title, partnerName, city, description,
 // benefitType: PERCENT | AMOUNT | FREE | OTHER,
 // benefitValue, benefitLabel, categoryTags, validUntil, bannerImageUrl, createdAt
 // TODO(partner-cabinet): allow each partner to replace bannerImageUrl in partner cabinet.
 window.REMCARD_PROMOTIONS = [
   {
     id: 1,
+    partnerId: "00000000-0000-0000-0000-000000000101",
     title: "Бесплатный выезд и замер по Краснодару",
     partnerName: "ООО “КрасСтройРемонт”",
     city: "Краснодар",
@@ -25,6 +26,7 @@ window.REMCARD_PROMOTIONS = [
   },
   {
     id: 2,
+    partnerId: "00000000-0000-0000-0000-000000000102",
     title: "Скидка −15% на ремонт ванной/санузла",
     partnerName: "Иван Петров",
     city: "Краснодар",
@@ -43,6 +45,7 @@ window.REMCARD_PROMOTIONS = [
   },
   {
     id: 3,
+    partnerId: "00000000-0000-0000-0000-000000000103",
     title: "Дизайн‑консультация 60 минут бесплатно",
     partnerName: "Мария Смирнова",
     city: "Краснодар",
@@ -61,6 +64,7 @@ window.REMCARD_PROMOTIONS = [
   },
   {
     id: 4,
+    partnerId: "00000000-0000-0000-0000-000000000101",
     title: "Скидка 10 000 ₽ на ремонт под ключ",
     partnerName: "ООО “КрасСтройРемонт”",
     city: "Краснодар",
@@ -79,6 +83,7 @@ window.REMCARD_PROMOTIONS = [
   },
   {
     id: 5,
+    partnerId: "00000000-0000-0000-0000-000000000104",
     title: "Доставка сантехники по Краснодару — бесплатно",
     partnerName: "“СантехМаркет Юг”",
     city: "Краснодар",
@@ -97,6 +102,7 @@ window.REMCARD_PROMOTIONS = [
   },
   {
     id: 6,
+    partnerId: "00000000-0000-0000-0000-000000000105",
     title: "Смета за 24 часа (проверка и рекомендации)",
     partnerName: "RemCard",
     city: "Краснодар",

@@ -95,6 +95,8 @@
   // Promotions / Offers rendering (static data)
   const promotions = Array.isArray(window.REMCARD_PROMOTIONS) ? window.REMCARD_PROMOTIONS : [];
   const normalizePartnerKey = (value) => String(value || "").trim().toLowerCase();
+  const normalizePartnerId = (value) => String(value || "").trim().toLowerCase();
+  const normalizePromoId = (value) => String(value || "").trim();
 
   const loadPromotionBannerOverrides = async () => {
     try {
@@ -105,25 +107,58 @@
         headers: { Accept: "application/json" }
       });
       const data = await res.json().catch(() => null);
-      if (!res.ok || !data || !Array.isArray(data.items)) return new Map();
+      if (!res.ok || !data || !Array.isArray(data.items)) {
+        return {
+          byPromotionId: new Map(),
+          byPartnerId: new Map(),
+          byPartnerName: new Map()
+        };
+      }
 
-      const map = new Map();
+      const byPromotionId = new Map();
+      const byPartnerId = new Map();
+      const byPartnerName = new Map();
       data.items.forEach((item) => {
         const partnerName = normalizePartnerKey(item.partnerName || item.name);
+        const partnerId = normalizePartnerId(item.partnerId);
         const bannerImageUrl = String(item.bannerImageUrl || item.promotionBannerUrl || "").trim();
-        if (partnerName && bannerImageUrl) map.set(partnerName, bannerImageUrl);
+        const promotionIds = Array.isArray(item.promotionIds)
+          ? item.promotionIds.map((id) => normalizePromoId(id)).filter(Boolean)
+          : [];
+        if (!bannerImageUrl) return;
+        // Priority 1: direct promotion IDs.
+        promotionIds.forEach((id) => {
+          if (!byPromotionId.has(id)) byPromotionId.set(id, bannerImageUrl);
+        });
+        // Priority 2: partnerId.
+        if (partnerId && !byPartnerId.has(partnerId)) {
+          byPartnerId.set(partnerId, bannerImageUrl);
+        }
+        // Compatibility fallback: partner name.
+        if (partnerName && !byPartnerName.has(partnerName)) {
+          byPartnerName.set(partnerName, bannerImageUrl);
+        }
       });
-      return map;
+      return { byPromotionId, byPartnerId, byPartnerName };
     } catch {
-      return new Map();
+      return {
+        byPromotionId: new Map(),
+        byPartnerId: new Map(),
+        byPartnerName: new Map()
+      };
     }
   };
 
-  const applyPromotionBannerOverrides = (list, overrideMap) => {
-    if (!(overrideMap instanceof Map) || overrideMap.size === 0) return list.slice();
+  const applyPromotionBannerOverrides = (list, overrideMaps) => {
+    const byPromotionId = overrideMaps && overrideMaps.byPromotionId instanceof Map ? overrideMaps.byPromotionId : new Map();
+    const byPartnerId = overrideMaps && overrideMaps.byPartnerId instanceof Map ? overrideMaps.byPartnerId : new Map();
+    const byPartnerName = overrideMaps && overrideMaps.byPartnerName instanceof Map ? overrideMaps.byPartnerName : new Map();
+    if (byPromotionId.size === 0 && byPartnerId.size === 0 && byPartnerName.size === 0) return list.slice();
     return list.map((promo) => {
+      const promoId = normalizePromoId(promo.id);
+      const partnerId = normalizePartnerId(promo.partnerId);
       const partnerKey = normalizePartnerKey(promo.partnerName);
-      const overrideImage = overrideMap.get(partnerKey);
+      const overrideImage = byPromotionId.get(promoId) || byPartnerId.get(partnerId) || byPartnerName.get(partnerKey);
       if (!overrideImage) return promo;
       return { ...promo, bannerImageUrl: overrideImage };
     });

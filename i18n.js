@@ -473,6 +473,7 @@
     "Специализации": "Specializations",
     "Районы работы": "Service areas",
     "Баннер акции": "Promotion banner",
+    "ID акций": "Promotion IDs",
     "Редактирование профиля": "Profile editing",
     "Тип партнёра": "Partner type",
     "Мастер": "Contractor",
@@ -485,6 +486,10 @@
     "https://... (изображение баннера)": "https://... (banner image)",
     "Ссылка на изображение для баннерной части ваших акций (http/https).":
       "Image link for the banner section of your promotions (http/https).",
+    "ID акций для этого баннера": "Promotion IDs for this banner",
+    "Через запятую: 1, 4": "Comma-separated: 1, 4",
+    "Можно указать ID акций, где нужно применить баннер (из списка акций).":
+      "You can set promotion IDs where this banner should be applied (from offers list).",
     "Сохранить профиль": "Save profile",
     "Мои услуги": "My services",
     "Список пока пустой": "The list is empty for now",
@@ -512,6 +517,7 @@
     "Ошибка загрузки": "Loading error",
     "Не удалось загрузить кабинет.": "Could not load cabinet.",
     "Некорректный URL баннера": "Invalid banner URL",
+    "Некорректные ID акций": "Invalid promotion IDs",
     "Не удалось сохранить профиль.": "Could not save profile.",
     "Не удалось добавить услугу.": "Could not add service.",
     "Не удалось обновить статус услуги.": "Could not update service status.",

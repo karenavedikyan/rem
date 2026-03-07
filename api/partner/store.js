@@ -57,6 +57,15 @@ const normalizeOptionalBannerUrl = (value) => {
   }
 };
 
+const normalizePromotionIds = (value) => {
+  const ids = parseList(value).map((item) => asString(item));
+  if (!ids.length) return [];
+  if (ids.length > 100) throw new Error("INVALID_PROMOTION_IDS");
+  const invalid = ids.some((id) => !/^[A-Za-z0-9_-]{1,64}$/.test(id));
+  if (invalid) throw new Error("INVALID_PROMOTION_IDS");
+  return ids;
+};
+
 const uniqStrings = (arr) => Array.from(new Set((arr || []).filter(Boolean).map((v) => String(v).trim()).filter(Boolean)));
 
 const parseList = (value) => {
@@ -154,6 +163,7 @@ function createFallbackState() {
         name: "Demo Partner RemCard",
         description: "Партнёр по ремонту квартир и комплектации в Краснодаре.",
         promotionBannerUrl: null,
+        promotionIds: ["1", "4"],
         city: FALLBACK_CITY,
         areas: ["ФМР", "ЮМР", "ЦМР"],
         specializations: ["Санузлы", "Электрика", "Кухни"],
@@ -237,6 +247,8 @@ async function ensureDemoPartner(prisma, partnerId) {
       type: "COMPANY",
       name: "Demo Partner RemCard",
       description: "Партнёр по ремонту квартир и комплектации в Краснодаре.",
+      promotionBannerUrl: null,
+      promotionIds: ["1", "4"],
       city: FALLBACK_CITY,
       areas: ["ФМР", "ЮМР", "ЦМР"],
       specializations: ["Санузлы", "Электрика", "Кухни"],
@@ -251,6 +263,7 @@ const mapPartner = (partner) => ({
   name: partner.name,
   description: partner.description || "",
   promotionBannerUrl: partner.promotionBannerUrl || null,
+  promotionIds: Array.isArray(partner.promotionIds) ? partner.promotionIds.map((id) => asString(id)).filter(Boolean) : [],
   city: partner.city || FALLBACK_CITY,
   areas: Array.isArray(partner.areas) ? partner.areas : [],
   specializations: Array.isArray(partner.specializations) ? partner.specializations : [],
@@ -306,6 +319,7 @@ export async function listPromotionBannerOverrides() {
         id: true,
         name: true,
         promotionBannerUrl: true,
+        promotionIds: true,
         updatedAt: true
       },
       orderBy: [{ updatedAt: "desc" }]
@@ -315,9 +329,10 @@ export async function listPromotionBannerOverrides() {
         partnerId: item.id,
         partnerName: asString(item.name),
         bannerImageUrl: asString(item.promotionBannerUrl),
+        promotionIds: Array.isArray(item.promotionIds) ? item.promotionIds.map((id) => asString(id)).filter(Boolean) : [],
         updatedAt: item.updatedAt
       }))
-      .filter((item) => item.partnerName && item.bannerImageUrl);
+      .filter((item) => item.bannerImageUrl);
   });
   if (fromPrisma) return fromPrisma;
 
@@ -328,9 +343,10 @@ export async function listPromotionBannerOverrides() {
       partnerId: item.id,
       partnerName: asString(item.name),
       bannerImageUrl: asString(item.promotionBannerUrl),
+      promotionIds: Array.isArray(item.promotionIds) ? item.promotionIds.map((id) => asString(id)).filter(Boolean) : [],
       updatedAt: item.updatedAt
     }))
-    .filter((item) => item.partnerName && item.bannerImageUrl);
+    .filter((item) => item.bannerImageUrl);
 }
 
 export async function updatePartnerById(partnerId, payload) {
@@ -340,6 +356,7 @@ export async function updatePartnerById(partnerId, payload) {
   if (raw.name != null) data.name = asString(raw.name);
   if (raw.description != null) data.description = asString(raw.description);
   if (raw.promotionBannerUrl != null) data.promotionBannerUrl = normalizeOptionalBannerUrl(raw.promotionBannerUrl);
+  if (raw.promotionIds != null) data.promotionIds = normalizePromotionIds(raw.promotionIds);
   if (raw.city != null) data.city = asString(raw.city);
   if (raw.areas != null) data.areas = parseList(raw.areas);
   if (raw.specializations != null) data.specializations = parseList(raw.specializations);

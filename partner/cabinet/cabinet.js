@@ -141,6 +141,7 @@
     setText("#cabinet-partner-specializations", Array.isArray(p.specializations) && p.specializations.length ? p.specializations.join(", ") : "—");
     setText("#cabinet-partner-areas", Array.isArray(p.areas) && p.areas.length ? p.areas.join(", ") : "—");
     setText("#cabinet-partner-promo-banner", p.promotionBannerUrl || "—");
+    setText("#cabinet-partner-promo-ids", Array.isArray(p.promotionIds) && p.promotionIds.length ? p.promotionIds.join(", ") : "—");
 
     profileForm.name.value = p.name || "";
     profileForm.type.value = p.type || "COMPANY";
@@ -149,6 +150,7 @@
     profileForm.specializations.value = Array.isArray(p.specializations) ? p.specializations.join(", ") : "";
     profileForm.areas.value = Array.isArray(p.areas) ? p.areas.join(", ") : "";
     profileForm.promotionBannerUrl.value = p.promotionBannerUrl || "";
+    profileForm.promotionIds.value = Array.isArray(p.promotionIds) ? p.promotionIds.join(", ") : "";
   };
 
   const createServiceCard = (service) => {
@@ -269,7 +271,8 @@
       description: String(profileForm.description.value || "").trim(),
       specializations: parseList(profileForm.specializations.value),
       areas: parseList(profileForm.areas.value),
-      promotionBannerUrl: String(profileForm.promotionBannerUrl.value || "").trim()
+      promotionBannerUrl: String(profileForm.promotionBannerUrl.value || "").trim(),
+      promotionIds: parseList(profileForm.promotionIds.value)
     };
 
     setLoading(profileForm, true);
