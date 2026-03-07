@@ -858,15 +858,31 @@ img {
 }
 
 .promo-details {
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px dashed rgba(245, 245, 245, 0.14);
+  display: grid;
+  grid-template-rows: 0fr;
+  margin-top: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: grid-template-rows 260ms var(--ease), margin-top 220ms var(--ease), opacity 180ms var(--ease);
+}
+
+.promo-details-inner {
+  min-height: 0;
+  overflow: hidden;
   display: grid;
   gap: 10px;
 }
 
-.promo-details[hidden] {
-  display: none;
+.promo-card-banner.is-expanded .promo-details {
+  grid-template-rows: 1fr;
+  margin-top: 12px;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.promo-card-banner.is-expanded .promo-details-inner {
+  padding-top: 12px;
+  border-top: 1px dashed rgba(245, 245, 245, 0.14);
 }
 
 .promo-meta {

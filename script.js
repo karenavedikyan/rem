@@ -350,7 +350,10 @@
     const details = document.createElement("div");
     details.className = "promo-details";
     details.id = detailsId;
-    details.hidden = true;
+    details.setAttribute("aria-hidden", "true");
+
+    const detailsInner = document.createElement("div");
+    detailsInner.className = "promo-details-inner";
 
     const meta = document.createElement("div");
     meta.className = "promo-meta";
@@ -432,17 +435,18 @@
     link.dataset.promoDiscount = getPromoBenefitLabel(promo);
 
     actions.appendChild(link);
-    details.appendChild(metaRow);
-    details.appendChild(desc);
-    if (valid) details.appendChild(valid);
-    details.appendChild(tagsWrap);
-    details.appendChild(actions);
+    detailsInner.appendChild(metaRow);
+    detailsInner.appendChild(desc);
+    if (valid) detailsInner.appendChild(valid);
+    detailsInner.appendChild(tagsWrap);
+    detailsInner.appendChild(actions);
+    details.appendChild(detailsInner);
 
     toggle.addEventListener("click", () => {
-      const open = details.hidden;
-      details.hidden = !open;
+      const open = !card.classList.contains("is-expanded");
       card.classList.toggle("is-expanded", open);
       toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      details.setAttribute("aria-hidden", open ? "false" : "true");
       toggle.textContent = open ? t("Скрыть детали", "Hide details") : t("Подробнее", "More details");
     });
 
