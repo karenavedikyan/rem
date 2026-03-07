@@ -356,6 +356,7 @@
   const catSel = document.getElementById("offers-category");
   const prioritySel = document.getElementById("offers-priority");
   const sortSel = document.getElementById("offers-sort");
+  const resetOffersBtn = document.getElementById("offers-reset-filters");
   const priorityChipsWrap = document.getElementById("offers-priority-chips");
 
   if (promotions.length) {
@@ -426,6 +427,16 @@
         if (!s) return;
         s.addEventListener("change", applyFiltersAndRender);
       });
+
+      if (resetOffersBtn) {
+        resetOffersBtn.addEventListener("click", () => {
+          if (citySel) citySel.value = "all";
+          if (catSel) catSel.value = "all";
+          if (prioritySel) prioritySel.value = "all";
+          if (sortSel) sortSel.value = "soon";
+          applyFiltersAndRender();
+        });
+      }
 
       if (priorityChipsWrap && prioritySel) {
         priorityChipsWrap.addEventListener("click", (e) => {

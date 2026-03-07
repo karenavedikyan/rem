@@ -949,6 +949,12 @@ img {
   gap: 12px;
 }
 
+.offers-actions {
+  margin-top: 12px;
+  display: flex;
+  justify-content: flex-end;
+}
+
 .offers-empty {
   margin-top: 12px;
 }

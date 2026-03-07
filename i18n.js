@@ -371,6 +371,7 @@
     "Пока нет акций по выбранным фильтрам.": "No promotions for selected filters yet.",
     "Бесплатная доставка": "Free delivery",
     "Проверка сметы": "Estimate review",
+    "Сбросить фильтры": "Reset filters",
     "Перейти к заявке": "Go to request",
     "RemCard — Каталог (демо)": "RemCard — Catalog (demo)",
     "Демо‑каталог RemCard: товары и услуги для ремонта и обустройства (Краснодар).":
