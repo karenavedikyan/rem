@@ -3,6 +3,7 @@
 // id, title, partnerName, city, description,
 // benefitType: PERCENT | AMOUNT | FREE | OTHER,
 // benefitValue, benefitLabel, categoryTags, validUntil, bannerImageUrl, createdAt
+// TODO(partner-cabinet): allow each partner to replace bannerImageUrl in partner cabinet.
 window.REMCARD_PROMOTIONS = [
   {
     id: 1,
@@ -15,7 +16,9 @@ window.REMCARD_PROMOTIONS = [
     benefitLabel: "Бесплатно",
     categoryTags: ["Ремонт под ключ", "Замер", "Для квартиры"],
     validUntil: "2026-03-15",
-    bannerImageUrl: null,
+    bannerImageUrl:
+      "https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=1400&q=80",
+    bannerText: "Быстрый старт ремонта без переплат",
     createdAt: "2026-02-14",
     link: "#request",
     isFeatured: true
@@ -31,7 +34,9 @@ window.REMCARD_PROMOTIONS = [
     benefitLabel: "−15%",
     categoryTags: ["Санузел", "Плитка", "Сантехника"],
     validUntil: "2026-03-28",
-    bannerImageUrl: null,
+    bannerImageUrl:
+      "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?auto=format&fit=crop&w=1400&q=80",
+    bannerText: "Санузел с понятной сметой и сроками",
     createdAt: "2026-02-20",
     link: "#request",
     isFeatured: true
@@ -47,7 +52,9 @@ window.REMCARD_PROMOTIONS = [
     benefitLabel: "Бесплатно",
     categoryTags: ["Дизайн", "Планировка", "Консультация"],
     validUntil: "2026-04-05",
-    bannerImageUrl: null,
+    bannerImageUrl:
+      "https://images.unsplash.com/photo-1616486029423-aaa4789e8c9a?auto=format&fit=crop&w=1400&q=80",
+    bannerText: "Дизайн перед началом работ",
     createdAt: "2026-03-01",
     link: "#request",
     isFeatured: false
@@ -63,7 +70,9 @@ window.REMCARD_PROMOTIONS = [
     benefitLabel: "−10 000 ₽",
     categoryTags: ["Ремонт под ключ", "Новостройка", "Смета"],
     validUntil: "2026-04-01",
-    bannerImageUrl: null,
+    bannerImageUrl:
+      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1400&q=80",
+    bannerText: "Ремонт под ключ с фиксированной выгодой",
     createdAt: "2026-03-03",
     link: "#request",
     isFeatured: true
@@ -79,7 +88,9 @@ window.REMCARD_PROMOTIONS = [
     benefitLabel: "Бесплатная доставка",
     categoryTags: ["Сантехника", "Доставка", "Для дома"],
     validUntil: null,
-    bannerImageUrl: null,
+    bannerImageUrl:
+      "https://images.unsplash.com/photo-1584622781564-1d987f7333c1?auto=format&fit=crop&w=1400&q=80",
+    bannerText: "Сантехника и доставка по Краснодару",
     createdAt: "2026-03-04",
     link: "#request",
     isFeatured: true
@@ -95,7 +106,9 @@ window.REMCARD_PROMOTIONS = [
     benefitLabel: "Проверка сметы",
     categoryTags: ["Смета", "Экономия", "Консультация"],
     validUntil: "2026-03-31",
-    bannerImageUrl: null,
+    bannerImageUrl:
+      "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1400&q=80",
+    bannerText: "Проверка сметы за 24 часа",
     createdAt: "2026-03-05",
     link: "#request",
     isFeatured: false
