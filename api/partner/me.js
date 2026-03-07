@@ -5,6 +5,7 @@ function mapErrorMessage(code) {
     EMPTY_UPDATE: "Нет полей для обновления",
     INVALID_PARTNER_NAME: "Некорректное имя партнёра",
     INVALID_PARTNER_TYPE: "Некорректный тип партнёра",
+    INVALID_BANNER_URL: "Некорректный URL баннера",
     INVALID_JSON: "Неверный JSON"
   };
   return map[code] || "Ошибка обновления профиля";

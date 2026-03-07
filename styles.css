@@ -1853,6 +1853,7 @@ img {
   color: rgba(245, 245, 245, 0.95);
   font-weight: 600;
   font-size: 14px;
+  overflow-wrap: anywhere;
 }
 
 .partner-services-list {

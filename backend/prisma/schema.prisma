@@ -39,6 +39,7 @@ model Partner {
   type            PartnerType
   name            String
   description     String?
+  promotionBannerUrl String?
   city            String      @default("Краснодар")
   areas           String[]    @default([])
   specializations String[]    @default([])

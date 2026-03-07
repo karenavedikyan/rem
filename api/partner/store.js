@@ -42,6 +42,21 @@ const asMaybeBoolean = (value) => {
   return null;
 };
 
+const normalizeOptionalBannerUrl = (value) => {
+  const raw = asString(value);
+  if (!raw) return null;
+  if (raw.length > 2048) throw new Error("INVALID_BANNER_URL");
+  try {
+    const parsed = new URL(raw);
+    if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+      throw new Error("INVALID_BANNER_URL");
+    }
+    return parsed.toString();
+  } catch {
+    throw new Error("INVALID_BANNER_URL");
+  }
+};
+
 const uniqStrings = (arr) => Array.from(new Set((arr || []).filter(Boolean).map((v) => String(v).trim()).filter(Boolean)));
 
 const parseList = (value) => {
@@ -138,6 +153,7 @@ function createFallbackState() {
         type: "COMPANY",
         name: "Demo Partner RemCard",
         description: "Партнёр по ремонту квартир и комплектации в Краснодаре.",
+        promotionBannerUrl: null,
         city: FALLBACK_CITY,
         areas: ["ФМР", "ЮМР", "ЦМР"],
         specializations: ["Санузлы", "Электрика", "Кухни"],
@@ -234,6 +250,7 @@ const mapPartner = (partner) => ({
   type: partner.type,
   name: partner.name,
   description: partner.description || "",
+  promotionBannerUrl: partner.promotionBannerUrl || null,
   city: partner.city || FALLBACK_CITY,
   areas: Array.isArray(partner.areas) ? partner.areas : [],
   specializations: Array.isArray(partner.specializations) ? partner.specializations : [],
@@ -278,12 +295,51 @@ export async function getPartnerById(partnerId) {
   return partner ? mapPartner(partner) : null;
 }
 
+export async function listPromotionBannerOverrides() {
+  const fromPrisma = await runWithPrisma(async (prisma) => {
+    const items = await prisma.partner.findMany({
+      where: {
+        isApproved: true,
+        promotionBannerUrl: { not: null }
+      },
+      select: {
+        id: true,
+        name: true,
+        promotionBannerUrl: true,
+        updatedAt: true
+      },
+      orderBy: [{ updatedAt: "desc" }]
+    });
+    return items
+      .map((item) => ({
+        partnerId: item.id,
+        partnerName: asString(item.name),
+        bannerImageUrl: asString(item.promotionBannerUrl),
+        updatedAt: item.updatedAt
+      }))
+      .filter((item) => item.partnerName && item.bannerImageUrl);
+  });
+  if (fromPrisma) return fromPrisma;
+
+  const state = getFallbackState();
+  return state.partners
+    .filter((item) => Boolean(item.isApproved))
+    .map((item) => ({
+      partnerId: item.id,
+      partnerName: asString(item.name),
+      bannerImageUrl: asString(item.promotionBannerUrl),
+      updatedAt: item.updatedAt
+    }))
+    .filter((item) => item.partnerName && item.bannerImageUrl);
+}
+
 export async function updatePartnerById(partnerId, payload) {
   const raw = isObject(payload) ? payload : {};
   const data = {};
 
   if (raw.name != null) data.name = asString(raw.name);
   if (raw.description != null) data.description = asString(raw.description);
+  if (raw.promotionBannerUrl != null) data.promotionBannerUrl = normalizeOptionalBannerUrl(raw.promotionBannerUrl);
   if (raw.city != null) data.city = asString(raw.city);
   if (raw.areas != null) data.areas = parseList(raw.areas);
   if (raw.specializations != null) data.specializations = parseList(raw.specializations);

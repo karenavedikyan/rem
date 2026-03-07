@@ -140,6 +140,7 @@
     setText("#cabinet-partner-city", p.city || "—");
     setText("#cabinet-partner-specializations", Array.isArray(p.specializations) && p.specializations.length ? p.specializations.join(", ") : "—");
     setText("#cabinet-partner-areas", Array.isArray(p.areas) && p.areas.length ? p.areas.join(", ") : "—");
+    setText("#cabinet-partner-promo-banner", p.promotionBannerUrl || "—");
 
     profileForm.name.value = p.name || "";
     profileForm.type.value = p.type || "COMPANY";
@@ -147,6 +148,7 @@
     profileForm.description.value = p.description || "";
     profileForm.specializations.value = Array.isArray(p.specializations) ? p.specializations.join(", ") : "";
     profileForm.areas.value = Array.isArray(p.areas) ? p.areas.join(", ") : "";
+    profileForm.promotionBannerUrl.value = p.promotionBannerUrl || "";
   };
 
   const createServiceCard = (service) => {
@@ -266,7 +268,8 @@
       city: String(profileForm.city.value || "").trim(),
       description: String(profileForm.description.value || "").trim(),
       specializations: parseList(profileForm.specializations.value),
-      areas: parseList(profileForm.areas.value)
+      areas: parseList(profileForm.areas.value),
+      promotionBannerUrl: String(profileForm.promotionBannerUrl.value || "").trim()
     };
 
     setLoading(profileForm, true);

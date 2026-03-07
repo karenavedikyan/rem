@@ -2,6 +2,7 @@ import {
   createPartnerService,
   getPartnerById,
   handleOptions,
+  listPromotionBannerOverrides,
   listPartnerServices,
   parseJsonBody,
   readCurrentPartnerId,
@@ -25,6 +26,14 @@ function mapErrorMessage(code) {
 export default async function handler(req, res) {
   if (handleOptions(req, res, "OPTIONS, GET, POST")) return;
   setCors(req, res, "OPTIONS, GET, POST");
+
+  const scopeRaw = req.query && req.query.scope;
+  const scope = String(Array.isArray(scopeRaw) ? scopeRaw[0] : scopeRaw || "").trim();
+  if (req.method === "GET" && scope === "banner_overrides") {
+    const items = await listPromotionBannerOverrides();
+    res.status(200).json({ items, total: items.length });
+    return;
+  }
 
   const partnerId = readCurrentPartnerId(req);
   if (!partnerId) {

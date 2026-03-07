@@ -94,6 +94,40 @@
 
   // Promotions / Offers rendering (static data)
   const promotions = Array.isArray(window.REMCARD_PROMOTIONS) ? window.REMCARD_PROMOTIONS : [];
+  const normalizePartnerKey = (value) => String(value || "").trim().toLowerCase();
+
+  const loadPromotionBannerOverrides = async () => {
+    try {
+      const url = new URL("/api/partner/services", window.location.origin);
+      url.searchParams.set("scope", "banner_overrides");
+      const res = await fetch(url.href, {
+        method: "GET",
+        headers: { Accept: "application/json" }
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok || !data || !Array.isArray(data.items)) return new Map();
+
+      const map = new Map();
+      data.items.forEach((item) => {
+        const partnerName = normalizePartnerKey(item.partnerName || item.name);
+        const bannerImageUrl = String(item.bannerImageUrl || item.promotionBannerUrl || "").trim();
+        if (partnerName && bannerImageUrl) map.set(partnerName, bannerImageUrl);
+      });
+      return map;
+    } catch {
+      return new Map();
+    }
+  };
+
+  const applyPromotionBannerOverrides = (list, overrideMap) => {
+    if (!(overrideMap instanceof Map) || overrideMap.size === 0) return list.slice();
+    return list.map((promo) => {
+      const partnerKey = normalizePartnerKey(promo.partnerName);
+      const overrideImage = overrideMap.get(partnerKey);
+      if (!overrideImage) return promo;
+      return { ...promo, bannerImageUrl: overrideImage };
+    });
+  };
 
   const formatDateLocal = (iso) => {
     if (!iso) return "";
@@ -365,127 +399,135 @@
     sort: "offersSort"
   };
 
-  if (promotions.length) {
+  const initPromotions = async () => {
+    if (!promotions.length) {
+      renderPromotionsInto(featuredEl, []);
+      renderPromotionsInto(allEl, []);
+      if (emptyEl) emptyEl.hidden = false;
+      return;
+    }
+
+    const bannerOverrides = await loadPromotionBannerOverrides();
+    const sourcePromotions = applyPromotionBannerOverrides(promotions, bannerOverrides);
+
     if (featuredEl) {
-      const featured = promotions.filter((p) => p && p.isFeatured).slice(0, 6);
+      const featured = sourcePromotions.filter((p) => p && p.isFeatured).slice(0, 6);
       renderPromotionsInto(featuredEl, featured);
     }
 
-    if (allEl) {
-      const cities = unique(promotions.map((p) => p.city));
-      const categories = unique(promotions.flatMap((p) => getPromoTags(p)));
+    if (!allEl) return;
 
-      const fillSelect = (select, values) => {
-        if (!select) return;
-        values.forEach((v) => {
-          const opt = document.createElement("option");
-          opt.value = v;
-          opt.textContent = v;
-          select.appendChild(opt);
+    const cities = unique(sourcePromotions.map((p) => p.city));
+    const categories = unique(sourcePromotions.flatMap((p) => getPromoTags(p)));
+
+    const fillSelect = (select, values) => {
+      if (!select) return;
+      values.forEach((v) => {
+        const opt = document.createElement("option");
+        opt.value = v;
+        opt.textContent = v;
+        select.appendChild(opt);
+      });
+    };
+
+    fillSelect(citySel, cities);
+    fillSelect(catSel, categories);
+
+    const setSelectValueIfAvailable = (select, value, fallback = "all") => {
+      if (!select) return;
+      const has = Array.from(select.options || []).some((opt) => opt.value === value);
+      select.value = has ? value : fallback;
+    };
+
+    const applyFiltersFromURL = () => {
+      const params = new URLSearchParams(window.location.search || "");
+      setSelectValueIfAvailable(citySel, params.get(OFFERS_QUERY_KEYS.city) || "all");
+      setSelectValueIfAvailable(catSel, params.get(OFFERS_QUERY_KEYS.category) || "all");
+      setSelectValueIfAvailable(prioritySel, params.get(OFFERS_QUERY_KEYS.priority) || "all");
+      setSelectValueIfAvailable(sortSel, params.get(OFFERS_QUERY_KEYS.sort) || "soon", "soon");
+    };
+
+    const syncPriorityChips = (value) => {
+      if (!priorityChipsWrap) return;
+      const target = value || "all";
+      priorityChipsWrap.querySelectorAll("button[data-priority-chip]").forEach((btn) => {
+        btn.classList.toggle("is-active", btn.getAttribute("data-priority-chip") === target);
+      });
+    };
+
+    const applyFiltersAndRender = () => {
+      let list = sourcePromotions.slice();
+      const city = citySel && citySel.value !== "all" ? citySel.value : null;
+      const cat = catSel && catSel.value !== "all" ? catSel.value : null;
+      const priority = prioritySel && prioritySel.value !== "all" ? prioritySel.value : null;
+      const sort = sortSel ? sortSel.value : "soon";
+      syncPriorityChips(prioritySel ? prioritySel.value : "all");
+
+      const url = new URL(window.location.href);
+      const params = url.searchParams;
+      if (city) params.set(OFFERS_QUERY_KEYS.city, city);
+      else params.delete(OFFERS_QUERY_KEYS.city);
+      if (cat) params.set(OFFERS_QUERY_KEYS.category, cat);
+      else params.delete(OFFERS_QUERY_KEYS.category);
+      if (priority) params.set(OFFERS_QUERY_KEYS.priority, priority);
+      else params.delete(OFFERS_QUERY_KEYS.priority);
+      if (sort && sort !== "soon") params.set(OFFERS_QUERY_KEYS.sort, sort);
+      else params.delete(OFFERS_QUERY_KEYS.sort);
+      history.replaceState(null, "", `${url.pathname}${params.toString() ? `?${params.toString()}` : ""}${url.hash || ""}`);
+
+      if (city) list = list.filter((p) => p.city === city);
+      if (cat) list = list.filter((p) => getPromoTags(p).includes(cat));
+      if (priority) {
+        list = list.filter((p) => {
+          const urgency = getPromoUrgency(p);
+          if (!urgency || urgency.isExpired) return false;
+          return urgency.priority === priority;
         });
-      };
+      }
 
-      fillSelect(citySel, cities);
-      fillSelect(catSel, categories);
-
-      const setSelectValueIfAvailable = (select, value, fallback = "all") => {
-        if (!select) return;
-        const has = Array.from(select.options || []).some((opt) => opt.value === value);
-        select.value = has ? value : fallback;
-      };
-
-      const applyFiltersFromURL = () => {
-        const params = new URLSearchParams(window.location.search || "");
-        setSelectValueIfAvailable(citySel, params.get(OFFERS_QUERY_KEYS.city) || "all");
-        setSelectValueIfAvailable(catSel, params.get(OFFERS_QUERY_KEYS.category) || "all");
-        setSelectValueIfAvailable(prioritySel, params.get(OFFERS_QUERY_KEYS.priority) || "all");
-        setSelectValueIfAvailable(sortSel, params.get(OFFERS_QUERY_KEYS.sort) || "soon", "soon");
-      };
-
-      const syncPriorityChips = (value) => {
-        if (!priorityChipsWrap) return;
-        const target = value || "all";
-        priorityChipsWrap.querySelectorAll("button[data-priority-chip]").forEach((btn) => {
-          btn.classList.toggle("is-active", btn.getAttribute("data-priority-chip") === target);
-        });
-      };
-
-      const applyFiltersAndRender = () => {
-        let list = promotions.slice();
-        const city = citySel && citySel.value !== "all" ? citySel.value : null;
-        const cat = catSel && catSel.value !== "all" ? catSel.value : null;
-        const priority = prioritySel && prioritySel.value !== "all" ? prioritySel.value : null;
-        const sort = sortSel ? sortSel.value : "soon";
-        syncPriorityChips(prioritySel ? prioritySel.value : "all");
-
-        const url = new URL(window.location.href);
-        const params = url.searchParams;
-        if (city) params.set(OFFERS_QUERY_KEYS.city, city);
-        else params.delete(OFFERS_QUERY_KEYS.city);
-        if (cat) params.set(OFFERS_QUERY_KEYS.category, cat);
-        else params.delete(OFFERS_QUERY_KEYS.category);
-        if (priority) params.set(OFFERS_QUERY_KEYS.priority, priority);
-        else params.delete(OFFERS_QUERY_KEYS.priority);
-        if (sort && sort !== "soon") params.set(OFFERS_QUERY_KEYS.sort, sort);
-        else params.delete(OFFERS_QUERY_KEYS.sort);
-        history.replaceState(null, "", `${url.pathname}${params.toString() ? `?${params.toString()}` : ""}${url.hash || ""}`);
-
-        if (city) list = list.filter((p) => p.city === city);
-        if (cat) list = list.filter((p) => getPromoTags(p).includes(cat));
-        if (priority) {
-          list = list.filter((p) => {
-            const urgency = getPromoUrgency(p);
-            if (!urgency || urgency.isExpired) return false;
-            return urgency.priority === priority;
-          });
-        }
-
-        if (sort === "benefit") {
-          list.sort(promoSortBenefit);
-        } else if (sort === "new") {
-          list.sort(promoSortNewest);
-        } else {
-          list.sort(promoSortSoon);
-        }
+      if (sort === "benefit") {
+        list.sort(promoSortBenefit);
+      } else if (sort === "new") {
+        list.sort(promoSortNewest);
+      } else {
+        list.sort(promoSortSoon);
+      }
 
       renderPromotionsInto(allEl, list);
       applyI18n(allEl);
-        if (emptyEl) emptyEl.hidden = list.length > 0;
-      };
+      if (emptyEl) emptyEl.hidden = list.length > 0;
+    };
 
-      applyFiltersFromURL();
-      applyFiltersAndRender();
+    applyFiltersFromURL();
+    applyFiltersAndRender();
 
-      [citySel, catSel, prioritySel, sortSel].forEach((s) => {
-        if (!s) return;
-        s.addEventListener("change", applyFiltersAndRender);
+    [citySel, catSel, prioritySel, sortSel].forEach((s) => {
+      if (!s) return;
+      s.addEventListener("change", applyFiltersAndRender);
+    });
+
+    if (resetOffersBtn) {
+      resetOffersBtn.addEventListener("click", () => {
+        if (citySel) citySel.value = "all";
+        if (catSel) catSel.value = "all";
+        if (prioritySel) prioritySel.value = "all";
+        if (sortSel) sortSel.value = "soon";
+        applyFiltersAndRender();
       });
-
-      if (resetOffersBtn) {
-        resetOffersBtn.addEventListener("click", () => {
-          if (citySel) citySel.value = "all";
-          if (catSel) catSel.value = "all";
-          if (prioritySel) prioritySel.value = "all";
-          if (sortSel) sortSel.value = "soon";
-          applyFiltersAndRender();
-        });
-      }
-
-      if (priorityChipsWrap && prioritySel) {
-        priorityChipsWrap.addEventListener("click", (e) => {
-          const btn = e.target && e.target.closest ? e.target.closest("button[data-priority-chip]") : null;
-          if (!btn) return;
-          const value = btn.getAttribute("data-priority-chip") || "all";
-          prioritySel.value = value;
-          applyFiltersAndRender();
-        });
-      }
     }
-  } else {
-    renderPromotionsInto(featuredEl, []);
-    renderPromotionsInto(allEl, []);
-    if (emptyEl) emptyEl.hidden = false;
-  }
+
+    if (priorityChipsWrap && prioritySel) {
+      priorityChipsWrap.addEventListener("click", (e) => {
+        const btn = e.target && e.target.closest ? e.target.closest("button[data-priority-chip]") : null;
+        if (!btn) return;
+        const value = btn.getAttribute("data-priority-chip") || "all";
+        prioritySel.value = value;
+        applyFiltersAndRender();
+      });
+    }
+  };
+
+  initPromotions();
 
   // Partners stores (Магазины‑партнёры) rendering
   const partners = Array.isArray(window.REMCARD_PARTNERS) ? window.REMCARD_PARTNERS : [];

@@ -45,6 +45,7 @@ export interface CreatePartnerInput {
   type: PartnerType;
   name: string;
   description?: string;
+  promotionBannerUrl?: string;
   city?: string;
   areas?: string[];
   specializations?: string[];

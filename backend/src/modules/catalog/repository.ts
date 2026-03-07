@@ -14,6 +14,7 @@ export async function createPartner(input: CreatePartnerInput) {
       type: input.type,
       name: input.name,
       description: input.description,
+      promotionBannerUrl: input.promotionBannerUrl,
       city: input.city ?? "Краснодар",
       areas: input.areas ?? [],
       specializations: input.specializations ?? [],
