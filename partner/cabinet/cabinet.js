@@ -13,6 +13,9 @@
   const resultEl = document.getElementById("partner-cabinet-result");
   const partnerIdBadge = document.getElementById("cabinet-partner-id-badge");
   const promoChecklistEl = document.getElementById("partner-profile-promo-checklist");
+  const promoOnlyMineEl = document.getElementById("partner-profile-promo-only-mine");
+  const promoSelectAllBtn = document.getElementById("partner-profile-promo-select-all");
+  const promoClearAllBtn = document.getElementById("partner-profile-promo-clear-all");
 
   if (!profileForm || !addServiceForm || !listEl || !resultEl) return;
 
@@ -47,8 +50,12 @@
     partnerId: DEFAULT_PARTNER_ID,
     partner: null,
     services: [],
-    promotions: []
+    promotions: [],
+    promoSelectedIds: new Set(),
+    promoShowOnlyMine: true
   };
+
+  const normalizeId = (value) => String(value || "").trim().toLowerCase();
 
   const escapeHtml = (value) =>
     String(value || "")
@@ -103,22 +110,32 @@
     state.promotions = list
       .map((item) => ({
         id: String(item && item.id != null ? item.id : "").trim(),
+        partnerId: String(item && item.partnerId != null ? item.partnerId : "").trim(),
         meta: getPromotionMeta(item || {})
       }))
       .filter((item) => item.id && item.meta)
       .sort(sortPromotions);
   };
 
-  const getSelectedPromotionIds = () => {
-    if (!promoChecklistEl) return [];
-    return Array.from(promoChecklistEl.querySelectorAll('input[type="checkbox"][name="promotionIds"]:checked'))
-      .map((el) => String(el.value || "").trim())
-      .filter(Boolean);
+  const getVisiblePromotions = () => {
+    const items = Array.isArray(state.promotions) ? state.promotions : [];
+    if (!state.promoShowOnlyMine) return items;
+    const partnerKey = normalizeId(state.partnerId);
+    return items.filter((promo) => normalizeId(promo.partnerId) === partnerKey);
   };
+
+  const getSelectedPromotionIds = () =>
+    Array.from(state.promoSelectedIds).sort((a, b) => {
+      const an = Number(a);
+      const bn = Number(b);
+      if (Number.isFinite(an) && Number.isFinite(bn)) return an - bn;
+      return String(a || "").localeCompare(String(b || ""), "ru");
+    });
 
   const renderPromotionChecklist = (selectedIds = []) => {
     if (!promoChecklistEl) return;
     const selected = new Set((Array.isArray(selectedIds) ? selectedIds : []).map((id) => String(id || "").trim()).filter(Boolean));
+    state.promoSelectedIds = selected;
     promoChecklistEl.innerHTML = "";
 
     if (!Array.isArray(state.promotions) || state.promotions.length === 0) {
@@ -129,7 +146,18 @@
       return;
     }
 
-    state.promotions.forEach((promo) => {
+    const visiblePromotions = getVisiblePromotions();
+    if (visiblePromotions.length === 0) {
+      const empty = document.createElement("div");
+      empty.className = "muted";
+      empty.textContent = state.promoShowOnlyMine
+        ? t("Для вашего partnerId пока нет акций. Снимите фильтр, чтобы выбрать из всех.", "No promotions found for your partnerId yet. Disable the filter to choose from all.")
+        : t("Список акций пока недоступен.", "Promotion list is not available yet.");
+      promoChecklistEl.appendChild(empty);
+      return;
+    }
+
+    visiblePromotions.forEach((promo) => {
       const label = document.createElement("label");
       label.className = "promo-check-item";
 
@@ -151,6 +179,17 @@
     if (I18N && I18N.isEn && typeof I18N.applyTo === "function") {
       I18N.applyTo(promoChecklistEl);
     }
+  };
+
+  const selectVisiblePromotions = (mode) => {
+    const visible = getVisiblePromotions();
+    if (!visible.length) return;
+    if (!(state.promoSelectedIds instanceof Set)) state.promoSelectedIds = new Set();
+    visible.forEach((promo) => {
+      if (mode === "select") state.promoSelectedIds.add(promo.id);
+      if (mode === "clear") state.promoSelectedIds.delete(promo.id);
+    });
+    renderPromotionChecklist(getSelectedPromotionIds());
   };
 
   const getPartnerId = () => {
@@ -225,6 +264,7 @@
     profileForm.specializations.value = Array.isArray(p.specializations) ? p.specializations.join(", ") : "";
     profileForm.areas.value = Array.isArray(p.areas) ? p.areas.join(", ") : "";
     profileForm.promotionBannerUrl.value = p.promotionBannerUrl || "";
+    if (promoOnlyMineEl) promoOnlyMineEl.checked = state.promoShowOnlyMine;
     renderPromotionChecklist(Array.isArray(p.promotionIds) ? p.promotionIds : []);
   };
 
@@ -419,6 +459,33 @@
     }
   });
 
+  if (promoChecklistEl) {
+    promoChecklistEl.addEventListener("change", (e) => {
+      const input = e.target && e.target.closest ? e.target.closest('input[type="checkbox"][name="promotionIds"]') : null;
+      if (!input) return;
+      const id = String(input.value || "").trim();
+      if (!id) return;
+      if (!(state.promoSelectedIds instanceof Set)) state.promoSelectedIds = new Set();
+      if (input.checked) state.promoSelectedIds.add(id);
+      else state.promoSelectedIds.delete(id);
+    });
+  }
+
+  if (promoOnlyMineEl) {
+    promoOnlyMineEl.addEventListener("change", () => {
+      state.promoShowOnlyMine = Boolean(promoOnlyMineEl.checked);
+      renderPromotionChecklist(getSelectedPromotionIds());
+    });
+  }
+
+  if (promoSelectAllBtn) {
+    promoSelectAllBtn.addEventListener("click", () => selectVisiblePromotions("select"));
+  }
+
+  if (promoClearAllBtn) {
+    promoClearAllBtn.addEventListener("click", () => selectVisiblePromotions("clear"));
+  }
+
   listEl.addEventListener("click", async (e) => {
     const btn = e.target && e.target.closest ? e.target.closest("button[data-action]") : null;
     if (!btn) return;
@@ -514,6 +581,7 @@
   const bootstrap = async () => {
     state.partnerId = getPartnerId();
     if (partnerIdBadge) partnerIdBadge.textContent = `partnerId: ${state.partnerId}`;
+    if (promoOnlyMineEl) promoOnlyMineEl.checked = state.promoShowOnlyMine;
     loadPromotionsForChecklist();
     renderPromotionChecklist([]);
     try {
