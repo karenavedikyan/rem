@@ -92,7 +92,7 @@
 
                   <div class="field">
                     <label for="catalog-city">Город</label>
-                    <input class="input" id="catalog-city" name="city" value="Краснодар" />
+                    <input class="input" id="catalog-city" name="city" placeholder="Например: Краснодар (можно оставить пустым)" />
                   </div>
 
                   <div class="field">
@@ -128,6 +128,11 @@
               <div class="card catalog-empty" id="catalog-empty" hidden>
                 <h3>По выбранным фильтрам пока нет услуг</h3>
                 <p class="muted">Попробуйте расширить фильтры по этапу, району или диапазону цены.</p>
+              </div>
+
+              <div class="card catalog-empty is-error" id="catalog-error" hidden>
+                <h3>Не удалось загрузить каталог услуг</h3>
+                <p class="muted" id="catalog-error-message">Попробуйте обновить страницу чуть позже.</p>
               </div>
 
               <div class="catalog-pagination" id="catalog-pagination" hidden>

@@ -3,13 +3,16 @@
   const t = (ru, en) => (I18N && typeof I18N.t === "function" ? I18N.t(ru, en) : ru);
 
   const API_URL = "/api/catalog/services";
-  const PAGE_SIZE = 6;
+  const PAGE_SIZE = 20;
+  const DEFAULT_PLACEHOLDER_IMAGE = "../assets/img/catalog-placeholder.svg";
 
   const form = document.getElementById("catalog-filter-form");
   if (!form) return;
 
   const listEl = document.getElementById("catalog-list");
   const emptyEl = document.getElementById("catalog-empty");
+  const errorEl = document.getElementById("catalog-error");
+  const errorMessageEl = document.getElementById("catalog-error-message");
   const countEl = document.getElementById("catalog-results-count");
   const paginationEl = document.getElementById("catalog-pagination");
   const prevBtn = document.getElementById("catalog-prev-page");
@@ -18,6 +21,7 @@
   const resetBtn = document.getElementById("catalog-reset-filters");
   const currentStageEl = document.getElementById("catalog-current-stage");
   const stageSelectEl = getStageSelect();
+  const state = { page: 1, totalPages: 1 };
 
   function getStageSelect() {
     return form.querySelector('select[name="stage"]');
@@ -50,15 +54,6 @@
     return map[value] || value || "-";
   };
 
-  const partnerTypeLabel = (value) => {
-    const map = {
-      MASTER: t("Мастер", "Contractor"),
-      COMPANY: t("Компания", "Company"),
-      STORE: t("Магазин", "Store")
-    };
-    return map[value] || value || "-";
-  };
-
   const escapeHtml = (value) =>
     String(value || "")
       .replace(/&/g, "&amp;")
@@ -80,6 +75,28 @@
     return t("Цена по запросу", "Price on request");
   };
 
+  const formatRating = (item) => {
+    const hasRating = typeof item.rating === "number" && item.ratingCount > 0;
+    if (!hasRating) return t("Новый", "New");
+    return `★ ${item.rating.toFixed(1)} · ${item.ratingCount}`;
+  };
+
+  const toSubtitle = (item) => {
+    if (item.taskType) return taskTypeLabel(item.taskType);
+    const desc = String(item.description || "").trim();
+    if (!desc) return t("Без описания", "No description");
+    return desc.length > 68 ? `${desc.slice(0, 68).trim()}…` : desc;
+  };
+
+  const normalizeImageUrl = (value) => {
+    const src = String(value || "").trim();
+    if (!src) return DEFAULT_PLACEHOLDER_IMAGE;
+    if (src.startsWith("http://") || src.startsWith("https://") || src.startsWith("/") || src.startsWith("./") || src.startsWith("../")) {
+      return src;
+    }
+    return DEFAULT_PLACEHOLDER_IMAGE;
+  };
+
   const getField = (name) => form.querySelector(`[name="${CSS.escape(name)}"]`);
   const setFieldValue = (name, value) => {
     const el = getField(name);
@@ -98,7 +115,7 @@
     return {
       stage: params.get("stage") || "",
       taskType: params.get("taskType") || "",
-      city: params.get("city") || "Краснодар",
+      city: params.get("city") || "",
       area: params.get("area") || "",
       minPrice: params.get("minPrice") || "",
       maxPrice: params.get("maxPrice") || "",
@@ -109,7 +126,7 @@
   const applyParamsToForm = (params) => {
     setFieldValue("stage", params.stage);
     setFieldValue("taskType", params.taskType);
-    setFieldValue("city", params.city || "Краснодар");
+    setFieldValue("city", params.city || "");
     setFieldValue("area", params.area);
     setFieldValue("minPrice", params.minPrice);
     setFieldValue("maxPrice", params.maxPrice);
@@ -119,7 +136,7 @@
     const out = new URLSearchParams();
     const stage = getFieldValue("stage").toUpperCase();
     const taskType = getFieldValue("taskType").toUpperCase();
-    const city = getFieldValue("city") || "Краснодар";
+    const city = getFieldValue("city");
     const area = getFieldValue("area");
     const minPrice = getFieldValue("minPrice");
     const maxPrice = getFieldValue("maxPrice");
@@ -137,26 +154,15 @@
   };
 
   const updateUrl = (params) => {
-    const nextUrl = `${window.location.pathname}?${params.toString()}`;
+    const next = new URLSearchParams(params.toString());
+    if (next.get("page") === "1") next.delete("page");
+    if (next.get("pageSize") === String(PAGE_SIZE)) next.delete("pageSize");
+    const qs = next.toString();
+    const nextUrl = `${window.location.pathname}${qs ? `?${qs}` : ""}`;
     window.history.replaceState(null, "", nextUrl);
   };
 
-  const buildRequestHref = (item) => {
-    const params = new URLSearchParams();
-    params.set("serviceId", String(item.id));
-    params.set("serviceTitle", item.title || "");
-    if (item.stage) params.set("serviceStage", item.stage);
-    if (item.taskType) params.set("serviceTaskType", item.taskType);
-    return `../index.html?${params.toString()}#request`;
-  };
-
   const buildServiceDetailsHref = (item) => `./service/?id=${encodeURIComponent(String(item.id || ""))}`;
-
-  const getRatingText = (item) => {
-    const hasRating = typeof item.rating === "number" && item.ratingCount > 0;
-    if (!hasRating) return t("Новый партнёр", "New partner");
-    return `${item.rating.toFixed(1)} · ${item.ratingCount} ${t("отзывов", "reviews")}`;
-  };
 
   const updateStageUi = (stageCode) => {
     const hasStage = Boolean(stageCode);
@@ -171,33 +177,32 @@
 
   const createServiceCard = (item) => {
     const article = document.createElement("article");
-    article.className = "card catalog-service-card";
+    article.className = "card catalog-item-card";
     article.dataset.serviceId = String(item.id || "");
-
-    const ratingText = getRatingText(item);
-
+    const detailsHref = buildServiceDetailsHref(item);
+    const offerChip = item.isOffer && item.promotionLabel ? `<span class="tag tag-promo">${escapeHtml(item.promotionLabel)}</span>` : "";
     article.innerHTML = `
-      <div class="catalog-service-top">
-        <h3>${escapeHtml(item.title || t("Услуга", "Service"))}</h3>
-        <span class="tag">${escapeHtml(`${t("Этап", "Stage")}: ${stageLabel(item.stage)}`)}</span>
-      </div>
-      <p class="catalog-service-desc">${escapeHtml(item.description || t("Описание появится скоро.", "Description will be available soon."))}</p>
-      <div class="partner-meta">
-        <span class="tag">${escapeHtml(taskTypeLabel(item.taskType))}</span>
-        <span class="tag">${escapeHtml(formatPriceRange(item.minPrice, item.maxPrice))}</span>
-      </div>
-      <div class="catalog-service-meta">
-        <span>${escapeHtml(`${t("Город", "City")}: ${item.city || "-"}`)}</span>
-        <span>${escapeHtml(`${t("Районы", "Areas")}: ${(item.areas || []).join(", ") || "-"}`)}</span>
-        <span>${escapeHtml(`${t("Партнёр", "Partner")}: ${item.partner?.name || "-"} • ${partnerTypeLabel(item.partner?.type)}`)}</span>
-        <span>${escapeHtml(`${t("Рейтинг", "Rating")}: ${ratingText}`)}</span>
-      </div>
-      <div class="catalog-service-actions">
-        <a class="btn btn-primary" href="${buildRequestHref(item)}">${t(
-          "Оставить заявку на эту услугу",
-          "Submit request for this service"
-        )}</a>
-        <a class="btn btn-ghost" href="${buildServiceDetailsHref(item)}">${t("Отзывы и рейтинг", "Reviews and rating")}</a>
+      <a class="catalog-item-media" href="${detailsHref}" aria-label="${escapeHtml(item.title || t("Услуга", "Service"))}">
+        <img class="catalog-item-image" src="${escapeHtml(normalizeImageUrl(item.imageUrl))}" alt="${escapeHtml(item.title || t("Услуга", "Service"))}" loading="lazy" />
+      </a>
+      <div class="catalog-item-body">
+        <h3 class="catalog-item-title"><a class="catalog-item-title-link" href="${detailsHref}">${escapeHtml(
+      item.title || t("Услуга", "Service")
+    )}</a></h3>
+        <p class="catalog-item-subtitle">${escapeHtml(toSubtitle(item))}</p>
+        <div class="catalog-item-price">${escapeHtml(formatPriceRange(item.minPrice, item.maxPrice))}</div>
+        <div class="catalog-item-meta-row">
+          <span class="catalog-item-partner">${escapeHtml(`${item.partner?.name || "-"} · ${item.city || "-"}`)}</span>
+          <span class="catalog-item-rating">${escapeHtml(formatRating(item))}</span>
+        </div>
+        <div class="partner-meta catalog-item-tags">
+          <span class="tag">${escapeHtml(stageLabel(item.stage))}</span>
+          <span class="tag">${escapeHtml(taskTypeLabel(item.taskType))}</span>
+          ${offerChip}
+        </div>
+        <div class="catalog-service-actions">
+          <a class="btn btn-primary" href="${detailsHref}">${t("Подробнее", "Details")}</a>
+        </div>
       </div>
     `;
     return article;
@@ -205,14 +210,17 @@
 
   const setLoading = (loading) => {
     if (loading && countEl) countEl.textContent = t("Загружаем услуги...", "Loading services...");
+    if (loading && errorEl) errorEl.hidden = true;
     const submitBtn = form.querySelector("button[type='submit']");
     if (submitBtn) submitBtn.disabled = loading;
   };
 
   const setError = (message) => {
     if (listEl) listEl.innerHTML = "";
-    if (emptyEl) emptyEl.hidden = false;
-    if (countEl) countEl.textContent = message;
+    if (emptyEl) emptyEl.hidden = true;
+    if (errorEl) errorEl.hidden = false;
+    if (errorMessageEl) errorMessageEl.textContent = message;
+    if (countEl) countEl.textContent = t("Ошибка загрузки каталога", "Catalog loading error");
     if (paginationEl) paginationEl.hidden = true;
   };
 
@@ -222,6 +230,7 @@
     updateUrl(query);
     setLoading(true);
     if (emptyEl) emptyEl.hidden = true;
+    if (errorEl) errorEl.hidden = true;
 
     try {
       const res = await fetch(`${API_URL}?${query.toString()}`, { headers: { Accept: "application/json" } });
@@ -239,21 +248,27 @@
       if (countEl) {
         countEl.textContent = total
           ? `${t("Найдено услуг", "Services found")}: ${total}`
-          : t("По вашему фильтру услуги не найдены.", "No services match your filter.");
+          : t("Услуги не найдены по выбранным фильтрам.", "No services match selected filters.");
       }
       if (emptyEl) emptyEl.hidden = items.length > 0;
 
-      const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
-      if (paginationEl) paginationEl.hidden = totalPages <= 1;
-      if (pageLabelEl) pageLabelEl.textContent = `${t("Страница", "Page")} ${page} ${t("из", "of")} ${totalPages}`;
-      if (prevBtn) prevBtn.disabled = page <= 1;
-      if (nextBtn) nextBtn.disabled = page >= totalPages;
+      state.page = Math.max(1, page);
+      state.totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+
+      if (paginationEl) paginationEl.hidden = state.totalPages <= 1;
+      if (pageLabelEl) pageLabelEl.textContent = `${t("Страница", "Page")} ${state.page} ${t("из", "of")} ${state.totalPages}`;
+      if (prevBtn) prevBtn.disabled = state.page <= 1;
+      if (nextBtn) nextBtn.disabled = state.page >= state.totalPages;
 
       if (I18N && I18N.isEn && typeof I18N.applyTo === "function") {
         I18N.applyTo(document);
       }
     } catch (err) {
-      setError(t("Не удалось загрузить каталог услуг.", "Could not load services catalog."));
+      setError(
+        err instanceof Error && err.message
+          ? err.message
+          : t("Не удалось загрузить каталог услуг.", "Could not load services catalog.")
+      );
       // eslint-disable-next-line no-console
       console.error("Catalog load error:", err);
     } finally {
@@ -270,7 +285,7 @@
     resetBtn.addEventListener("click", () => {
       setFieldValue("stage", "");
       setFieldValue("taskType", "");
-      setFieldValue("city", "Краснодар");
+      setFieldValue("city", "");
       setFieldValue("area", "");
       setFieldValue("minPrice", "");
       setFieldValue("maxPrice", "");
@@ -280,14 +295,12 @@
 
   if (prevBtn) {
     prevBtn.addEventListener("click", () => {
-      const current = readCurrentParams();
-      loadCatalog({ page: Math.max(1, current.page - 1) });
+      loadCatalog({ page: Math.max(1, state.page - 1) });
     });
   }
   if (nextBtn) {
     nextBtn.addEventListener("click", () => {
-      const current = readCurrentParams();
-      loadCatalog({ page: current.page + 1 });
+      loadCatalog({ page: Math.min(state.totalPages, state.page + 1) });
     });
   }
 

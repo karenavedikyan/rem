@@ -9,6 +9,7 @@
   const form = document.getElementById("service-review-form");
   const resultEl = document.getElementById("service-review-result");
   const backLink = document.getElementById("back-to-catalog-link");
+  const requestLink = document.getElementById("service-request-link");
 
   if (!titleEl || !metaEl || !listEl || !emptyEl || !form || !resultEl) return;
 
@@ -26,6 +27,15 @@
   }
 
   if (backLink) backLink.href = `../?serviceId=${encodeURIComponent(serviceId)}`;
+
+  const buildRequestHref = (service) => {
+    const params = new URLSearchParams();
+    params.set("serviceId", String(service.id || serviceId));
+    params.set("serviceTitle", service.title || "");
+    if (service.stage) params.set("serviceStage", service.stage);
+    if (service.taskType) params.set("serviceTaskType", service.taskType);
+    return `../../index.html?${params.toString()}#request`;
+  };
 
   const escapeHtml = (value) =>
     String(value || "")
@@ -104,6 +114,7 @@
 
     titleEl.textContent = service.title || t("Услуга", "Service");
     metaEl.textContent = `${t("Этап", "Stage")}: ${stageLabel(service.stage)} • ${getRatingText(service.rating, service.ratingCount)}`;
+    if (requestLink) requestLink.href = buildRequestHref(service);
     renderReviews(reviews);
 
     if (I18N && I18N.isEn && typeof I18N.applyTo === "function") {

@@ -60,6 +60,7 @@ model Service {
   reviews     ServiceReview[]
   title       String
   description String?
+  imageUrl    String?
   stage       ServiceStage
   taskType    ServiceTaskType
   minPrice    Int?

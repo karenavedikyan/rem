@@ -1,0 +1,20 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="120" y1="80" x2="1080" y2="820" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2A2A2A" />
+      <stop offset="1" stop-color="#121212" />
+    </linearGradient>
+    <linearGradient id="accent" x1="280" y1="220" x2="920" y2="700" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E53935" stop-opacity="0.88" />
+      <stop offset="1" stop-color="#B71C1C" stop-opacity="0.72" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#bg)" />
+  <rect x="140" y="120" width="920" height="660" rx="36" fill="#1C1C1C" stroke="#2E2E2E" stroke-width="4" />
+  <rect x="220" y="220" width="760" height="420" rx="28" fill="url(#accent)" />
+  <path d="M260 580L430 410L570 520L700 380L940 620H260V580Z" fill="rgba(255,255,255,0.15)" />
+  <circle cx="835" cy="310" r="58" fill="rgba(255,255,255,0.22)" />
+  <text x="600" y="722" text-anchor="middle" fill="#F5F5F5" font-family="Arial, sans-serif" font-size="44" font-weight="700">
+    RemCard Catalog
+  </text>
+</svg>

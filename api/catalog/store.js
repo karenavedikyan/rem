@@ -13,7 +13,6 @@ const ALLOWED_ORIGINS = [
 const STAGES = new Set(["PLANNING", "ROUGH", "ENGINEERING", "FINISHING", "FURNITURE"]);
 const TASK_TYPES = new Set(["SANUZEL", "KITCHEN", "ELECTRICAL", "PLUMBING", "TILING", "PAINTING", "FLOORING", "WINDOWS", "DESIGN", "GENERAL"]);
 
-const DEFAULT_CITY = "Краснодар";
 const MAX_REVIEW_COMMENT = 1000;
 
 const SEEDED_REVIEWS = [];
@@ -41,6 +40,9 @@ const mapService = (item) => ({
   id: item.id,
   title: item.title,
   description: item.description ?? null,
+  imageUrl: item.imageUrl ?? item.partner?.promotionBannerUrl ?? null,
+  isOffer: Boolean(item.isOffer),
+  promotionLabel: item.promotionLabel ?? null,
   stage: item.stage,
   taskType: item.taskType,
   minPrice: item.minPrice ?? null,
@@ -99,7 +101,7 @@ export function normalizeCatalogFilter(query = {}) {
   const taskType = asString(query.taskType).toUpperCase();
   return {
     stage: STAGES.has(stage) ? stage : undefined,
-    city: asString(query.city) || DEFAULT_CITY,
+    city: asString(query.city) || undefined,
     area: asString(query.area) || undefined,
     taskType: TASK_TYPES.has(taskType) ? taskType : undefined,
     minPrice: asOptionalNumber(query.minPrice),
@@ -210,7 +212,7 @@ export async function listCatalogServices(filter, pagination) {
         take: pagination.limit,
         include: {
           partner: {
-            select: { id: true, name: true, type: true, city: true }
+            select: { id: true, name: true, type: true, city: true, promotionBannerUrl: true }
           }
         },
         orderBy: [{ rating: "desc" }, { ratingCount: "desc" }, { createdAt: "desc" }]
@@ -256,7 +258,7 @@ export async function getCatalogServiceById(serviceId) {
       },
       include: {
         partner: {
-          select: { id: true, name: true, type: true, city: true }
+          select: { id: true, name: true, type: true, city: true, promotionBannerUrl: true }
         }
       }
     });

@@ -30,6 +30,7 @@ export async function addServiceToPartner(partnerId: string, input: CreateServic
       partnerId,
       title: input.title,
       description: input.description,
+      imageUrl: input.imageUrl,
       stage: input.stage,
       taskType: input.taskType,
       minPrice: input.minPrice,

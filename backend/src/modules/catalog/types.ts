@@ -20,6 +20,9 @@ export interface PublicCatalogItem {
   id: string;
   title: string;
   description: string | null;
+  imageUrl: string | null;
+  isOffer?: boolean;
+  promotionLabel?: string | null;
   stage: ServiceStage;
   taskType: ServiceTaskType;
   minPrice: number | null;
@@ -56,6 +59,7 @@ export interface CreatePartnerInput {
 export interface CreateServiceInput {
   title: string;
   description?: string;
+  imageUrl?: string;
   stage: ServiceStage;
   taskType: ServiceTaskType;
   minPrice?: number;
