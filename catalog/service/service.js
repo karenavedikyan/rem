@@ -38,6 +38,8 @@
   }
 
   if (backLink) backLink.href = `../?serviceId=${encodeURIComponent(serviceId)}`;
+  const FALLBACK_ITEMS = Array.isArray(window.REMCARD_CATALOG_SEED) ? window.REMCARD_CATALOG_SEED : [];
+  const LOCAL_REVIEWS_KEY = "remcard_catalog_local_reviews";
 
   const buildRequestHref = (service) => {
     const params = new URLSearchParams();
@@ -114,20 +116,75 @@
 
   const api = (path) => new URL(path, window.location.origin).href;
 
+  const readLocalReviews = () => {
+    try {
+      const raw = localStorage.getItem(LOCAL_REVIEWS_KEY);
+      if (!raw) return [];
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  };
+
+  const writeLocalReviews = (reviews) => {
+    try {
+      localStorage.setItem(LOCAL_REVIEWS_KEY, JSON.stringify(reviews));
+    } catch {
+      // ignore storage errors
+    }
+  };
+
+  const mapFallbackService = (item) => ({
+    id: item.id,
+    title: item.title,
+    description: item.description || "",
+    imageUrl: item.imageUrl || null,
+    isOffer: Boolean(item.isOffer),
+    promotionLabel: item.promotionLabel || null,
+    stage: item.stage,
+    taskType: item.taskType,
+    minPrice: item.minPrice ?? null,
+    maxPrice: item.maxPrice ?? null,
+    city: item.city || "",
+    areas: Array.isArray(item.areas) ? item.areas : [],
+    rating: typeof item.rating === "number" ? item.rating : null,
+    ratingCount: Number.isFinite(item.ratingCount) ? item.ratingCount : 0,
+    partner: {
+      id: item.partner?.id || "",
+      name: item.partner?.name || "",
+      type: item.partner?.type || "",
+      city: item.partner?.city || "",
+      promotionBannerUrl: item.partner?.promotionBannerUrl || null
+    }
+  });
+
   const loadService = async () => {
-    const res = await fetch(api(`/api/catalog/services/${encodeURIComponent(serviceId)}`), { headers: { Accept: "application/json" } });
-    const data = await res.json().catch(() => null);
-    if (!res.ok || !data || !data.item) throw new Error((data && (data.error || data.message)) || `HTTP ${res.status}`);
-    return data.item;
+    try {
+      const res = await fetch(api(`/api/catalog/services/${encodeURIComponent(serviceId)}`), { headers: { Accept: "application/json" } });
+      const data = await res.json().catch(() => null);
+      if (!res.ok || !data || !data.item) throw new Error((data && (data.error || data.message)) || `HTTP ${res.status}`);
+      return data.item;
+    } catch (err) {
+      const local = FALLBACK_ITEMS.find((item) => String(item.id) === serviceId && item.isActive && item.partner?.isApproved);
+      if (local) return mapFallbackService(local);
+      throw err;
+    }
   };
 
   const loadReviews = async () => {
-    const res = await fetch(api(`/api/catalog/services/${encodeURIComponent(serviceId)}/reviews?limit=10`), {
-      headers: { Accept: "application/json" }
-    });
-    const data = await res.json().catch(() => null);
-    if (!res.ok || !data) throw new Error((data && (data.error || data.message)) || `HTTP ${res.status}`);
-    return Array.isArray(data.items) ? data.items : [];
+    try {
+      const res = await fetch(api(`/api/catalog/services/${encodeURIComponent(serviceId)}/reviews?limit=10`), {
+        headers: { Accept: "application/json" }
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok || !data) throw new Error((data && (data.error || data.message)) || `HTTP ${res.status}`);
+      return Array.isArray(data.items) ? data.items : [];
+    } catch {
+      return readLocalReviews()
+        .filter((item) => String(item.serviceId || "") === serviceId)
+        .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+    }
   };
 
   const renderReviews = (items) => {
@@ -280,10 +337,22 @@
         text: t("Отзыв сохранён.", "Review submitted.")
       });
     } catch (err) {
+      const reviews = readLocalReviews();
+      reviews.push({
+        id: `local-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+        serviceId,
+        rating: payload.rating,
+        comment: payload.comment || "",
+        authorName: payload.authorName || "",
+        createdAt: new Date().toISOString()
+      });
+      writeLocalReviews(reviews);
+      form.reset();
+      await syncPage();
       setResult({
-        type: "error",
-        title: t("Ошибка", "Error"),
-        text: err instanceof Error ? err.message : t("Не удалось отправить отзыв.", "Could not submit review.")
+        type: "success",
+        title: t("Спасибо!", "Thank you!"),
+        text: t("Отзыв сохранён локально. Появится в карточке сразу.", "Review saved locally and shown in the card.")
       });
     } finally {
       if (submitBtn) submitBtn.disabled = false;

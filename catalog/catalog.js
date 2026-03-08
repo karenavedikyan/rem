@@ -22,6 +22,7 @@
   const currentStageEl = document.getElementById("catalog-current-stage");
   const stageSelectEl = getStageSelect();
   const state = { page: 1, totalPages: 1 };
+  const FALLBACK_ITEMS = Array.isArray(window.REMCARD_CATALOG_SEED) ? window.REMCARD_CATALOG_SEED : [];
 
   function getStageSelect() {
     return form.querySelector('select[name="stage"]');
@@ -95,6 +96,53 @@
       return src;
     }
     return DEFAULT_PLACEHOLDER_IMAGE;
+  };
+
+  const intersectsPriceRange = (item, minPrice, maxPrice) => {
+    if (typeof minPrice !== "number" && typeof maxPrice !== "number") return true;
+    if (typeof minPrice === "number" && typeof maxPrice === "number") {
+      return (item.minPrice == null || item.minPrice <= maxPrice) && (item.maxPrice == null || item.maxPrice >= minPrice);
+    }
+    if (typeof minPrice === "number") return item.maxPrice == null || item.maxPrice >= minPrice;
+    return item.minPrice == null || item.minPrice <= maxPrice;
+  };
+
+  const listFallbackServices = (query, page) => {
+    const stage = String(query.get("stage") || "").toUpperCase();
+    const taskType = String(query.get("taskType") || "").toUpperCase();
+    const city = String(query.get("city") || "").trim().toLowerCase();
+    const area = String(query.get("area") || "").trim().toLowerCase();
+    const minPriceRaw = String(query.get("minPrice") || "").trim();
+    const maxPriceRaw = String(query.get("maxPrice") || "").trim();
+    const minPrice = minPriceRaw ? Number(minPriceRaw) : undefined;
+    const maxPrice = maxPriceRaw ? Number(maxPriceRaw) : undefined;
+
+    const filtered = FALLBACK_ITEMS.filter((item) => {
+      if (!item || !item.isActive) return false;
+      if (!item.partner || !item.partner.isApproved) return false;
+      if (stage && item.stage !== stage) return false;
+      if (taskType && item.taskType !== taskType) return false;
+      if (city && String(item.city || "").trim().toLowerCase() !== city) return false;
+      if (area) {
+        const areas = Array.isArray(item.areas) ? item.areas.map((v) => String(v || "").trim().toLowerCase()) : [];
+        if (!areas.includes(area)) return false;
+      }
+      if (!intersectsPriceRange(item, minPrice, maxPrice)) return false;
+      return true;
+    });
+
+    const ordered = filtered.slice().sort((a, b) => {
+      const ar = typeof a.rating === "number" ? a.rating : -1;
+      const br = typeof b.rating === "number" ? b.rating : -1;
+      if (ar !== br) return br - ar;
+      return (b.ratingCount || 0) - (a.ratingCount || 0);
+    });
+
+    const offset = (Math.max(1, page) - 1) * PAGE_SIZE;
+    return {
+      total: ordered.length,
+      items: ordered.slice(offset, offset + PAGE_SIZE)
+    };
   };
 
   const getField = (name) => form.querySelector(`[name="${CSS.escape(name)}"]`);
@@ -225,6 +273,31 @@
     if (paginationEl) paginationEl.hidden = true;
   };
 
+  const renderCatalogPayload = (payload, page, { fromFallback = false } = {}) => {
+    const items = Array.isArray(payload.items) ? payload.items : [];
+    const total = Number(payload.total) || 0;
+
+    if (listEl) {
+      listEl.innerHTML = "";
+      items.forEach((item) => listEl.appendChild(createServiceCard(item)));
+    }
+
+    if (countEl) {
+      const base = total ? `${t("Найдено услуг", "Services found")}: ${total}` : t("Услуги не найдены по выбранным фильтрам.", "No services match selected filters.");
+      countEl.textContent = fromFallback ? `${base} (${t("резервный режим", "fallback mode")})` : base;
+    }
+    if (emptyEl) emptyEl.hidden = items.length > 0;
+    if (errorEl) errorEl.hidden = true;
+
+    state.page = Math.max(1, page);
+    state.totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+
+    if (paginationEl) paginationEl.hidden = state.totalPages <= 1;
+    if (pageLabelEl) pageLabelEl.textContent = `${t("Страница", "Page")} ${state.page} ${t("из", "of")} ${state.totalPages}`;
+    if (prevBtn) prevBtn.disabled = state.page <= 1;
+    if (nextBtn) nextBtn.disabled = state.page >= state.totalPages;
+  };
+
   const loadCatalog = async ({ page = 1 } = {}) => {
     const query = buildParamsFromForm({ page });
     updateStageUi(query.get("stage"));
@@ -237,34 +310,20 @@
       const res = await fetch(`${API_URL}?${query.toString()}`, { headers: { Accept: "application/json" } });
       const data = await res.json().catch(() => null);
       if (!res.ok || !data) throw new Error((data && (data.error || data.message)) || `HTTP ${res.status}`);
-
-      const items = Array.isArray(data.items) ? data.items : [];
-      const total = Number(data.total) || 0;
-
-      if (listEl) {
-        listEl.innerHTML = "";
-        items.forEach((item) => listEl.appendChild(createServiceCard(item)));
-      }
-
-      if (countEl) {
-        countEl.textContent = total
-          ? `${t("Найдено услуг", "Services found")}: ${total}`
-          : t("Услуги не найдены по выбранным фильтрам.", "No services match selected filters.");
-      }
-      if (emptyEl) emptyEl.hidden = items.length > 0;
-
-      state.page = Math.max(1, page);
-      state.totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
-
-      if (paginationEl) paginationEl.hidden = state.totalPages <= 1;
-      if (pageLabelEl) pageLabelEl.textContent = `${t("Страница", "Page")} ${state.page} ${t("из", "of")} ${state.totalPages}`;
-      if (prevBtn) prevBtn.disabled = state.page <= 1;
-      if (nextBtn) nextBtn.disabled = state.page >= state.totalPages;
+      renderCatalogPayload(data, page);
 
       if (I18N && I18N.isEn && typeof I18N.applyTo === "function") {
         I18N.applyTo(document);
       }
     } catch (err) {
+      if (FALLBACK_ITEMS.length) {
+        const fallbackPayload = listFallbackServices(query, page);
+        renderCatalogPayload(fallbackPayload, page, { fromFallback: true });
+        if (I18N && I18N.isEn && typeof I18N.applyTo === "function") {
+          I18N.applyTo(document);
+        }
+        return;
+      }
       const raw = err instanceof Error ? err.message : "";
       const msg = raw && raw !== "[object Object]" ? raw : t("Не удалось загрузить каталог услуг.", "Could not load services catalog.");
       setError(msg);
