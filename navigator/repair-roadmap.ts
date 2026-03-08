@@ -469,32 +469,66 @@ const roadmapBlueprint: StageInput[] = [
     description: "Организуем команду, логистику и площадку до начала работ.",
     subStages: [
       {
-        key: "team_and_contracts",
-        title: "Команда и договоры",
-        description: "Выбираем исполнителей и фиксируем ответственность.",
+        key: "budget_design_measurements",
+        title: "Оценка бюджета, дизайн-проект и замеры",
+        description: "Перед стартом уточняем финансовый контур и проверяем проектную базу.",
         tasks: [
           {
-            key: "shortlist_contractors",
-            title: "Сформировать шорт-лист подрядчиков",
-            description: "Проверьте опыт, кейсы, отзывы и специализацию по задачам проекта.",
+            key: "budget_assessment_before_start",
+            title: "Оценка бюджета",
+            description: "Перепроверьте бюджет перед стартом с учетом текущих цен и резерва на непредвиденные расходы.",
             zoneIds: ["whole_flat"],
             roleIds: ["client", "foreman"],
             workTypeIds: ["preparation"],
             estimatedDuration: 2
           },
           {
-            key: "collect_commercials",
-            title: "Собрать коммерческие предложения",
-            description: "Сравните предложения по объему, срокам, ответственности и гарантиям.",
+            key: "confirm_design_and_measurements",
+            title: "Дизайн-проект и замеры",
+            description: "Сверьте проект с объектом, выполните контрольные замеры и зафиксируйте возможные корректировки.",
+            zoneIds: ["whole_flat"],
+            roleIds: ["client", "designer", "foreman"],
+            workTypeIds: ["preparation", "design"],
+            estimatedDuration: 2
+          },
+          {
+            key: "temporary_sanitary_setup",
+            title: "Временная сантехника",
+            description: "Организуйте временные точки воды и санитарные условия для бригады на период черновых работ.",
+            zoneIds: ["bathroom", "wc", "kitchen"],
+            roleIds: ["foreman", "worker", "client"],
+            workTypeIds: ["preparation", "engineering"],
+            estimatedDuration: 1
+          }
+        ]
+      },
+      {
+        key: "crew_and_materials_selection",
+        title: "Выбор бригады и материалов",
+        description: "Фиксируем исполнителей и ключевые материальные решения до старта.",
+        tasks: [
+          {
+            key: "select_construction_crew",
+            title: "Выбрать бригаду",
+            description: "Проверьте специализацию, кейсы и договорные условия по срокам и ответственности.",
             zoneIds: ["whole_flat"],
             roleIds: ["client", "foreman"],
             workTypeIds: ["preparation"],
             estimatedDuration: 2
           },
           {
-            key: "sign_contracts",
+            key: "select_core_materials",
+            title: "Выбор материалов",
+            description: "Утвердите основные материалы по стенам, полу, инженерии и чистовой отделке.",
+            zoneIds: ["whole_flat", "kitchen", "bathroom", "wc", "living_room", "corridor"],
+            roleIds: ["foreman", "client"],
+            workTypeIds: ["preparation", "rough", "finishing"],
+            estimatedDuration: 1
+          },
+          {
+            key: "approve_contracts_and_payments",
             title: "Подписать договоры и график оплат",
-            description: "Закрепите этапность оплат по факту приемки промежуточных результатов.",
+            description: "Закрепите этапность оплат по факту приемки промежуточных результатов и чек-поинтов качества.",
             zoneIds: ["whole_flat"],
             roleIds: ["client", "foreman"],
             workTypeIds: ["preparation", "final"],
@@ -503,9 +537,9 @@ const roadmapBlueprint: StageInput[] = [
         ]
       },
       {
-        key: "procurement_logistics",
-        title: "Закупки и логистика",
-        description: "Готовим схему поставок и хранения материалов.",
+        key: "start_logistics_and_site_readiness",
+        title: "Логистика старта и готовность площадки",
+        description: "Запускаем объект в работу без сбоев по доступу, хранению и коммуникациям.",
         tasks: [
           {
             key: "procurement_matrix",
@@ -533,14 +567,7 @@ const roadmapBlueprint: StageInput[] = [
             roleIds: ["foreman", "worker"],
             workTypeIds: ["preparation"],
             estimatedDuration: 1
-          }
-        ]
-      },
-      {
-        key: "site_readiness",
-        title: "Готовность площадки",
-        description: "Обеспечиваем безопасный и управляемый старт работ.",
-        tasks: [
+          },
           {
             key: "notify_neighbors",
             title: "Уведомить соседей и УК о старте",
@@ -685,167 +712,139 @@ const roadmapBlueprint: StageInput[] = [
   {
     key: "rough_construction",
     title: "Черновые строительные работы",
-    description: "Формируем базу: перегородки, геометрия, основания, базовые инженерные трассы.",
+    description: "Формируем черновую базу по стенам и полу перед инженерией и чистовой отделкой.",
     subStages: [
       {
-        key: "partitions",
-        title: "Возведение перегородок",
-        description: "Строим и контролируем геометрию новых перегородок.",
+        key: "walls_rough",
+        title: "Стены",
+        description: "Подготовка стен: демонтаж, штробление, грунтование, штукатурка и перегородки.",
         tasks: [
           {
-            key: "partition_marking",
-            title: "Разметка перегородок по проекту",
-            description: "Перенесите оси и толщины перегородок с учетом дверных проемов.",
+            key: "walls_demolition_and_chasing",
+            title: "Демонтаж и штробление",
+            description: "Выполните локальный демонтаж и штробление стен под запланированные трассы и узлы.",
             zoneIds: ["whole_flat", "corridor", "living_room"],
             roleIds: ["foreman", "worker", "designer"],
-            workTypeIds: ["rough"],
-            estimatedDuration: 1
+            workTypeIds: ["demolition", "rough"],
+            estimatedDuration: 2
           },
           {
-            key: "partition_materials",
-            title: "Закупка материалов для перегородок",
-            description: "Подготовьте блоки/профили, крепеж, шумоизоляцию и расходники.",
-            zoneIds: ["whole_flat"],
-            roleIds: ["foreman", "client"],
-            workTypeIds: ["rough", "preparation"],
-            estimatedDuration: 1
-          },
-          {
-            key: "partition_installation",
-            title: "Кладка/монтаж перегородок",
-            description: "Соблюдайте перевязку, вертикали и технологию примыканий.",
-            zoneIds: ["whole_flat", "corridor", "living_room"],
-            roleIds: ["worker", "foreman"],
-            workTypeIds: ["rough"],
-            estimatedDuration: 3
-          },
-          {
-            key: "partition_quality_check",
-            title: "Проверка геометрии и звукоизоляции",
-            description: "Проверьте вертикаль, плоскость и качество примыканий перед следующими работами.",
-            zoneIds: ["whole_flat"],
-            roleIds: ["foreman", "designer"],
-            workTypeIds: ["rough", "final"],
-            estimatedDuration: 1
-          }
-        ]
-      },
-      {
-        key: "base_leveling",
-        title: "Выравнивание оснований",
-        description: "Готовим пол, стены и потолок к инженерии и чистовой.",
-        tasks: [
-          {
-            key: "floor_base_prep",
-            title: "Подготовка основания пола",
-            description: "Очистите, прогрунтуйте и сделайте локальный ремонт основания.",
+            key: "walls_priming",
+            title: "Грунтование стен",
+            description: "Подготовьте основания стен под штукатурку и последующие слои.",
             zoneIds: ["whole_flat"],
             roleIds: ["worker", "foreman"],
             workTypeIds: ["rough"],
-            estimatedDuration: 1
+            estimatedDuration: 1,
+            notes:
+              "Подсказка: используйте грунт по типу основания — глубокого проникновения для впитывающих поверхностей, адгезионный (бетон-контакт) для плотных/гладких оснований."
           },
           {
-            key: "screed_pour",
-            title: "Заливка стяжки",
-            description: "Соблюдайте маяки, толщину слоя и технологические паузы набора прочности.",
-            zoneIds: ["whole_flat", "kitchen", "bathroom", "wc", "corridor"],
-            roleIds: ["worker", "foreman"],
-            workTypeIds: ["rough"],
-            estimatedDuration: 3
-          },
-          {
-            key: "wall_plaster",
-            title: "Выравнивание стен штукатуркой",
-            description: "Выведите плоскости и углы под требования финишных материалов.",
-            zoneIds: ["whole_flat"],
+            key: "wall_plaster_by_beacons",
+            title: "Штукатурка по маякам",
+            description: "Выведите плоскости и углы стен по маякам под допуски финишной отделки.",
+            zoneIds: ["whole_flat", "kitchen", "bathroom", "wc", "corridor", "living_room"],
             roleIds: ["worker", "foreman"],
             workTypeIds: ["rough"],
             estimatedDuration: 4
           },
           {
-            key: "ceiling_leveling",
-            title: "Подшивка/выравнивание потолка",
-            description: "Подготовьте потолок под покраску или натяжные системы.",
-            zoneIds: ["whole_flat", "living_room", "corridor"],
+            key: "partition_solution_selection",
+            title: "Перегородки (ПГП, кирпич, ГКЛ)",
+            description: "Выберите тип перегородок по требованиям прочности, веса и звукоизоляции.",
+            zoneIds: ["whole_flat", "corridor", "living_room"],
+            roleIds: ["designer", "foreman", "client"],
+            workTypeIds: ["rough", "design"],
+            estimatedDuration: 1
+          },
+          {
+            key: "partition_installation",
+            title: "Монтаж перегородок",
+            description: "Смонтируйте перегородки выбранного типа, контролируя примыкания и геометрию.",
+            zoneIds: ["whole_flat", "corridor", "living_room"],
             roleIds: ["worker", "foreman"],
-            workTypeIds: ["rough", "finishing"],
-            estimatedDuration: 2
+            workTypeIds: ["rough"],
+            estimatedDuration: 3
           }
         ]
       },
       {
-        key: "rough_plumbing",
-        title: "Черновая сантехника",
-        description: "Прокладываем водоснабжение и канализацию до закрытия отделкой.",
+        key: "floor_rough",
+        title: "Пол",
+        description: "Черновой цикл по полу: грунтование, гидроизоляция, стяжка и теплый пол.",
         tasks: [
           {
-            key: "water_and_sewer_routes",
-            title: "Разводка труб воды и канализации",
-            description: "Соберите трассы с учетом уклонов и доступа к ревизиям.",
-            zoneIds: ["kitchen", "bathroom", "wc"],
+            key: "floor_base_priming",
+            title: "Грунтование основания пола",
+            description: "Очистите и загрунтуйте основание пола перед гидроизоляцией и стяжкой.",
+            zoneIds: ["whole_flat", "kitchen", "bathroom", "wc", "corridor", "balcony"],
             roleIds: ["worker", "foreman"],
-            workTypeIds: ["engineering", "rough"],
-            estimatedDuration: 2
+            workTypeIds: ["rough"],
+            estimatedDuration: 1,
+            notes: "Подсказка: для слабых оснований используйте укрепляющие составы, для плотных — адгезионные."
           },
           {
-            key: "collectors_and_installations",
-            title: "Монтаж коллекторов и инсталляций",
-            description: "Установите коллекторные узлы, фильтры, редукторы, инсталляции.",
-            zoneIds: ["bathroom", "wc", "corridor"],
+            key: "floor_waterproofing",
+            title: "Гидроизоляция пола",
+            description: "Выполните гидроизоляцию в мокрых и риск-зонах до устройства стяжки.",
+            zoneIds: ["bathroom", "wc", "kitchen", "corridor", "balcony"],
             roleIds: ["worker", "foreman"],
-            workTypeIds: ["engineering", "rough"],
-            estimatedDuration: 2
+            workTypeIds: ["rough"],
+            estimatedDuration: 1,
+            notes: "Подсказка: применяйте обмазочную и/или рулонную (плитную) гидроизоляцию по условиям проекта."
           },
           {
-            key: "plumbing_pressure_test",
-            title: "Прессовка и проверка на протечки",
-            description: "Проведите испытания до закрытия труб и составьте акт проверки.",
-            zoneIds: ["kitchen", "bathroom", "wc"],
-            roleIds: ["worker", "foreman", "client"],
-            workTypeIds: ["engineering", "final"],
-            estimatedDuration: 1
-          }
-        ]
-      },
-      {
-        key: "rough_electrics",
-        title: "Черновая электрика и слаботочка",
-        description: "Формируем электрические и коммуникационные сети объекта.",
-        tasks: [
-          {
-            key: "group_scheme_detailing",
-            title: "Уточнение схем групп по проекту",
-            description: "Проверьте мощности, кабельные сечения и размещение электрощита.",
-            zoneIds: ["whole_flat", "kitchen", "bathroom", "wc"],
-            roleIds: ["foreman", "designer"],
-            workTypeIds: ["engineering", "design"],
-            estimatedDuration: 1
-          },
-          {
-            key: "wall_chasing",
-            title: "Штробление стен и потолка",
-            description: "Подготовьте каналы под кабель согласно правилам трассировки.",
-            zoneIds: ["whole_flat", "corridor", "living_room", "kitchen"],
+            key: "floor_screed",
+            title: "Стяжка пола",
+            description: "Устройте стяжку с контролем маяков, толщины и технологических пауз.",
+            zoneIds: ["whole_flat", "kitchen", "bathroom", "wc", "corridor", "balcony"],
             roleIds: ["worker", "foreman"],
-            workTypeIds: ["engineering", "rough"],
-            estimatedDuration: 2
-          },
-          {
-            key: "cable_laying",
-            title: "Прокладка кабелей и монтаж коробок",
-            description: "Промаркируйте линии, подготовьте подрозетники и распределительные коробки.",
-            zoneIds: ["whole_flat"],
-            roleIds: ["worker", "foreman"],
-            workTypeIds: ["engineering"],
+            workTypeIds: ["rough"],
             estimatedDuration: 3
           },
           {
-            key: "switchboard_assembly",
-            title: "Сборка щита и первичная проверка",
-            description: "Соберите щит и проверьте целостность линий до отделки.",
-            zoneIds: ["corridor", "whole_flat"],
+            key: "underfloor_heating",
+            title: "Теплый пол (водяной/электрический)",
+            description: "Смонтируйте систему теплого пола в предусмотренных проектом зонах.",
+            zoneIds: ["kitchen", "bathroom", "wc", "corridor", "balcony"],
             roleIds: ["worker", "foreman"],
-            workTypeIds: ["engineering", "final"],
+            workTypeIds: ["rough", "engineering"],
+            estimatedDuration: 2,
+            isOptional: true,
+            notes: "Подсказка: тип системы выбирается проектом — водяной контур или электрический кабель/мат."
+          },
+          {
+            key: "floor_ready_for_finish",
+            title: "Подготовка пола под чистовое покрытие",
+            description: "Проверьте влажность и плоскость основания перед передачей в чистовую отделку.",
+            zoneIds: ["whole_flat", "kitchen", "bathroom", "wc", "corridor", "balcony"],
+            roleIds: ["worker", "foreman"],
+            workTypeIds: ["rough", "finishing"],
+            estimatedDuration: 1
+          }
+        ]
+      },
+      {
+        key: "rough_quality_control",
+        title: "Контроль черновой базы",
+        description: "Проверяем готовность стен и пола к переходу на инженерный этап.",
+        tasks: [
+          {
+            key: "walls_geometry_check",
+            title: "Проверка геометрии стен и перегородок",
+            description: "Проверьте вертикали, углы и плоскости по контрольным точкам проекта.",
+            zoneIds: ["whole_flat", "corridor", "living_room", "kitchen"],
+            roleIds: ["worker", "foreman"],
+            workTypeIds: ["rough", "final"],
+            estimatedDuration: 1
+          },
+          {
+            key: "floor_base_check",
+            title: "Проверка основания пола",
+            description: "Подтвердите прочность, влажность и ровность основания перед чистовыми слоями.",
+            zoneIds: ["whole_flat", "kitchen", "bathroom", "wc", "corridor", "balcony"],
+            roleIds: ["worker", "foreman", "client"],
+            workTypeIds: ["rough", "final"],
             estimatedDuration: 1
           }
         ]
@@ -855,35 +854,53 @@ const roadmapBlueprint: StageInput[] = [
   {
     key: "engineering_and_special",
     title: "Инженерные системы и спецработы",
-    description: "Закрываем инженерные риски до чистовой отделки и мебели.",
+    description: "Выполняем инженерный контур: электрика, слаботочка, отопление и кондиционирование.",
     subStages: [
       {
-        key: "hvac",
-        title: "Вентиляция и климат",
-        description: "Организуем воздухообмен и климат-контроль.",
+        key: "electrics",
+        title: "Электрика",
+        description: "Реализуем электрические сети: от плана до сборки щита.",
         tasks: [
           {
-            key: "ventilation_routes",
-            title: "Монтаж вентиляционных трасс",
-            description: "Смонтируйте воздуховоды и закладные под вентиляционное оборудование.",
-            zoneIds: ["kitchen", "bathroom", "wc", "corridor"],
+            key: "electrical_plan",
+            title: "План электрики",
+            description: "Уточните группы нагрузки, точки питания и привязки к мебели и технике.",
+            zoneIds: ["whole_flat", "kitchen", "bathroom", "wc", "living_room", "corridor"],
+            roleIds: ["designer", "foreman"],
+            workTypeIds: ["engineering", "design"],
+            estimatedDuration: 1
+          },
+          {
+            key: "electrical_switchboard",
+            title: "Электрощит",
+            description: "Определите состав автоматики, УЗО, дифзащиты и резервы по группам.",
+            zoneIds: ["corridor", "whole_flat"],
+            roleIds: ["foreman", "worker"],
+            workTypeIds: ["engineering"],
+            estimatedDuration: 1
+          },
+          {
+            key: "electrical_chasing",
+            title: "Штробы под электрику",
+            description: "Подготовьте штробы и каналы под кабельные линии согласно схеме.",
+            zoneIds: ["whole_flat", "kitchen", "bathroom", "wc", "corridor", "living_room"],
             roleIds: ["worker", "foreman"],
             workTypeIds: ["engineering"],
             estimatedDuration: 2
           },
           {
-            key: "ac_preparation",
-            title: "Подготовка трасс под кондиционирование",
-            description: "Проложите фреоновые и дренажные линии, питание и кабели управления.",
-            zoneIds: ["living_room", "kitchen", "balcony"],
+            key: "electrical_cable_laying",
+            title: "Прокладка кабеля",
+            description: "Проложите силовые и осветительные кабели, промаркируйте линии и узлы подключения.",
+            zoneIds: ["whole_flat", "kitchen", "bathroom", "wc", "corridor", "living_room"],
             roleIds: ["worker", "foreman"],
             workTypeIds: ["engineering"],
-            estimatedDuration: 1
+            estimatedDuration: 3
           },
           {
-            key: "hvac_test",
-            title: "Тестирование вентиляции и климата",
-            description: "Проверьте герметичность, уклоны, шум и доступ к сервису.",
+            key: "electrical_commissioning",
+            title: "Сборка щита и первичная проверка",
+            description: "Соберите щит и выполните первичную проверку линий перед чистовой отделкой.",
             zoneIds: ["whole_flat"],
             roleIds: ["foreman", "worker", "client"],
             workTypeIds: ["engineering", "final"],
@@ -892,32 +909,32 @@ const roadmapBlueprint: StageInput[] = [
         ]
       },
       {
-        key: "low_current_security",
-        title: "Слаботочка и безопасность",
-        description: "Реализуем цифровую и охранную инфраструктуру.",
+        key: "low_current_networks",
+        title: "Слаботочные сети",
+        description: "Подключаем ТВ, интернет и сетевую инфраструктуру квартиры/дома.",
         tasks: [
           {
-            key: "internet_tv_intercom",
-            title: "Прокладка интернет/ТВ/домофон линий",
-            description: "Соберите магистрали и точки подключения до финишной отделки.",
+            key: "tv_internet_routes",
+            title: "Прокладка ТВ и интернет-линий",
+            description: "Проложите кабели и точки подключения с учетом расположения рабочих и медиа-зон.",
             zoneIds: ["whole_flat", "living_room", "corridor"],
             roleIds: ["worker", "foreman"],
             workTypeIds: ["engineering"],
             estimatedDuration: 1
           },
           {
-            key: "security_devices",
-            title: "Подготовка и монтаж датчиков безопасности",
-            description: "Разместите датчики протечки, дыма и движения в критичных зонах.",
-            zoneIds: ["bathroom", "wc", "kitchen", "corridor"],
+            key: "router_and_network_point",
+            title: "Установка роутера и сетевого узла",
+            description: "Организуйте место под роутер/свитч и резерв по питанию/доступу.",
+            zoneIds: ["corridor", "living_room", "whole_flat"],
             roleIds: ["worker", "foreman", "client"],
-            workTypeIds: ["engineering", "final"],
+            workTypeIds: ["engineering"],
             estimatedDuration: 1
           },
           {
             key: "low_current_labeling",
-            title: "Маркировка и тест линий слаботочки",
-            description: "Подпишите кабели, проверьте целостность и составьте таблицу подключений.",
+            title: "Маркировка и тест слаботочных линий",
+            description: "Подпишите кабели, проверьте целостность и составьте схему подключений.",
             zoneIds: ["whole_flat"],
             roleIds: ["worker", "foreman"],
             workTypeIds: ["engineering", "final"],
@@ -926,35 +943,87 @@ const roadmapBlueprint: StageInput[] = [
         ]
       },
       {
-        key: "isolation_and_hidden_works",
-        title: "Изоляция и скрытые работы",
-        description: "Защищаем объект от протечек, шума и фиксируем скрытые узлы.",
+        key: "heating_distribution",
+        title: "Разводка отопления",
+        description: "Реализуем контур отопления с учетом гидравлики и сервиса.",
         tasks: [
           {
-            key: "waterproofing",
-            title: "Гидроизоляция мокрых зон",
-            description: "Выполните изоляцию пола и примыканий стен в ванной, санузле и кухне.",
-            zoneIds: ["bathroom", "wc", "kitchen"],
+            key: "heating_plan",
+            title: "План разводки отопления",
+            description: "Определите схему, точки подключения, коллекторы и тепловую нагрузку по зонам.",
+            zoneIds: ["whole_flat", "living_room", "kitchen", "corridor"],
+            roleIds: ["designer", "foreman"],
+            workTypeIds: ["engineering", "design"],
+            estimatedDuration: 1
+          },
+          {
+            key: "heating_routes_install",
+            title: "Монтаж трасс отопления",
+            description: "Проложите трубы и подключите радиаторы/контуры согласно проекту.",
+            zoneIds: ["whole_flat", "living_room", "kitchen", "corridor"],
             roleIds: ["worker", "foreman"],
-            workTypeIds: ["rough", "engineering"],
+            workTypeIds: ["engineering"],
             estimatedDuration: 2
           },
           {
-            key: "soundproofing",
-            title: "Шумоизоляция критичных участков",
-            description: "Обработайте перегородки и инженерные узлы, где нужен дополнительный акустический комфорт.",
-            zoneIds: ["living_room", "corridor"],
+            key: "heating_pressure_test",
+            title: "Проверка и опрессовка отопления",
+            description: "Выполните опрессовку и контроль герметичности перед закрытием конструкций.",
+            zoneIds: ["whole_flat"],
+            roleIds: ["worker", "foreman", "client"],
+            workTypeIds: ["engineering", "final"],
+            estimatedDuration: 1
+          },
+          {
+            key: "heating_hidden_docs",
+            title: "Фотофиксация и акт скрытых работ отопления",
+            description: "Зафиксируйте контуры отопления и подпишите акт до чистовой отделки.",
+            zoneIds: ["whole_flat"],
+            roleIds: ["foreman", "client"],
+            workTypeIds: ["engineering", "final"],
+            estimatedDuration: 1
+          }
+        ]
+      },
+      {
+        key: "air_conditioning",
+        title: "Кондиционирование",
+        description: "Подготавливаем и монтируем трассы и блоки кондиционирования.",
+        tasks: [
+          {
+            key: "ac_routes",
+            title: "Трассы кондиционирования",
+            description: "Проложите фреоновые, дренажные и кабельные трассы по проекту.",
+            zoneIds: ["living_room", "kitchen", "corridor", "balcony"],
             roleIds: ["worker", "foreman"],
-            workTypeIds: ["rough"],
-            estimatedDuration: 2,
+            workTypeIds: ["engineering"],
+            estimatedDuration: 1
+          },
+          {
+            key: "ac_indoor_units",
+            title: "Монтаж внутренних блоков",
+            description: "Установите внутренние блоки, соблюдая высоты, отступы и доступ к сервису.",
+            zoneIds: ["living_room", "kitchen"],
+            roleIds: ["worker", "foreman"],
+            workTypeIds: ["engineering", "furniture"],
+            estimatedDuration: 1
+          },
+          {
+            key: "ac_outdoor_units",
+            title: "Монтаж наружных блоков",
+            description: "Установите наружные блоки с учетом требований безопасности и обслуживания.",
+            zoneIds: ["balcony", "whole_flat"],
+            roleIds: ["worker", "foreman"],
+            workTypeIds: ["engineering"],
+            estimatedDuration: 1,
             isOptional: true
           },
           {
-            key: "hidden_works_acceptance",
-            title: "Приемка скрытых работ и фотоархив",
-            description: "Сделайте фото всех скрытых трасс и подпишите контрольные акты.",
+            key: "ac_commissioning",
+            title: "Пусконаладка кондиционирования",
+            description: "Проверьте герметичность, дренаж, режимы работы и уровень шума.",
             zoneIds: ["whole_flat"],
-            roleIds: ["foreman", "client"],
+            roleIds: ["worker", "foreman", "client"],
             workTypeIds: ["engineering", "final"],
             estimatedDuration: 1
           }
@@ -968,36 +1037,72 @@ const roadmapBlueprint: StageInput[] = [
     description: "Формируем финальный внешний вид и эксплуатационные качества поверхностей.",
     subStages: [
       {
-        key: "wall_and_ceiling_finish",
-        title: "Стены и потолки",
-        description: "Готовим плоскости и наносим финишные покрытия.",
+        key: "ceiling_finishing",
+        title: "Потолки",
+        description: "Выбираем и монтируем потолочные решения: натяжные и ГКЛ-конструкции.",
         tasks: [
           {
-            key: "putty_and_sanding",
-            title: "Шпаклевка и шлифовка под финиш",
-            description: "Подготовьте стеновые и потолочные поверхности под выбранные покрытия.",
-            zoneIds: ["whole_flat"],
+            key: "ceiling_type_selection",
+            title: "Выбрать тип потолка",
+            description: "Утвердите потолочные решения по зонам: натяжной, ПВХ/тканевый, ГКЛ-конструкции.",
+            zoneIds: ["whole_flat", "living_room", "kitchen", "corridor", "bathroom", "wc"],
+            roleIds: ["designer", "client", "foreman"],
+            workTypeIds: ["finishing", "design"],
+            estimatedDuration: 1,
+            notes: "Подсказка: для влажных зон учитывайте влагостойкость и доступ к обслуживаемым узлам."
+          },
+          {
+            key: "ceiling_mounting",
+            title: "Монтаж потолков",
+            description: "Смонтируйте выбранные потолочные системы с учетом световых точек и примыканий.",
+            zoneIds: ["whole_flat", "living_room", "kitchen", "corridor", "bathroom", "wc"],
             roleIds: ["worker", "foreman"],
             workTypeIds: ["finishing"],
             estimatedDuration: 3
           },
           {
-            key: "paint_or_wallpaper",
-            title: "Покраска или оклейка стен",
-            description: "Нанесите финишные материалы с учетом технологии слоев и сушки.",
-            zoneIds: ["whole_flat", "living_room", "corridor"],
-            roleIds: ["worker"],
-            workTypeIds: ["finishing"],
-            estimatedDuration: 3
-          },
+            key: "ceiling_quality_control",
+            title: "Проверить геометрию и примыкания потолков",
+            description: "Проверьте качество стыков, линий света и чистоту кромок.",
+            zoneIds: ["whole_flat", "living_room", "kitchen", "corridor", "bathroom", "wc"],
+            roleIds: ["worker", "foreman", "client"],
+            workTypeIds: ["finishing", "final"],
+            estimatedDuration: 1
+          }
+        ]
+      },
+      {
+        key: "wall_finishing",
+        title: "Стены",
+        description: "Чистовые покрытия стен: обои, покраска и декоративные составы.",
+        tasks: [
           {
-            key: "ceiling_final_finish",
-            title: "Финиш потолка",
-            description: "Выполните окраску или монтаж натяжного потолка с учетом световых точек.",
-            zoneIds: ["whole_flat", "living_room", "corridor", "kitchen"],
+            key: "wall_finish_preparation",
+            title: "Подготовка стен под чистовые покрытия",
+            description: "Выполните финальную шпаклевку, шлифовку и обеспыливание перед финишем.",
+            zoneIds: ["whole_flat", "living_room", "kitchen", "corridor", "balcony"],
             roleIds: ["worker", "foreman"],
             workTypeIds: ["finishing"],
             estimatedDuration: 2
+          },
+          {
+            key: "wallpaper_installation",
+            title: "Обои",
+            description: "Нанесите обои по выбранным зонам с учетом подгонки рисунка.",
+            zoneIds: ["living_room", "corridor"],
+            roleIds: ["worker", "designer"],
+            workTypeIds: ["finishing"],
+            estimatedDuration: 2,
+            isOptional: true
+          },
+          {
+            key: "paint_and_decorative_finish",
+            title: "Покраска и декоративные покрытия",
+            description: "Выполните покраску и/или декоративные покрытия по утвержденной концепции.",
+            zoneIds: ["whole_flat", "living_room", "corridor", "kitchen", "balcony"],
+            roleIds: ["worker", "designer", "foreman"],
+            workTypeIds: ["finishing"],
+            estimatedDuration: 3
           }
         ]
       },
@@ -1009,7 +1114,7 @@ const roadmapBlueprint: StageInput[] = [
           {
             key: "tile_layout",
             title: "Сделать раскладку плитки",
-            description: "Утвердите схему раскладки, подрезки и декоративные вставки.",
+            description: "Утвердите раскладку плитки в санузлах, фартуке кухни и акцентных зонах.",
             zoneIds: ["bathroom", "wc", "kitchen"],
             roleIds: ["designer", "worker", "client"],
             workTypeIds: ["finishing", "design"],
@@ -1036,9 +1141,9 @@ const roadmapBlueprint: StageInput[] = [
         ]
       },
       {
-        key: "floors_doors_details",
-        title: "Полы, двери и детали",
-        description: "Закрываем напольные покрытия, двери и финишные примыкания.",
+        key: "floor_finishing",
+        title: "Полы",
+        description: "Чистовые покрытия пола: ламинат, линолеум, инженерная доска, 3D-покрытия.",
         tasks: [
           {
             key: "floor_underlay",
@@ -1052,19 +1157,45 @@ const roadmapBlueprint: StageInput[] = [
           {
             key: "install_flooring",
             title: "Уложить финишные напольные покрытия",
-            description: "Смонтируйте ламинат/паркет/кварцвинил/плитку в соответствии с технологией.",
+            description: "Смонтируйте ламинат, линолеум, инженерную доску или 3D-покрытия по проекту зон.",
             zoneIds: ["whole_flat", "living_room", "corridor", "kitchen", "balcony"],
             roleIds: ["worker"],
             workTypeIds: ["finishing"],
-            estimatedDuration: 3
+            estimatedDuration: 3,
+            notes: "Подсказка: тип покрытия выбирается по нагрузке, влагостойкости и сценарию эксплуатации."
           },
           {
-            key: "doors_and_plinths",
-            title: "Монтаж дверей, плинтусов и примыканий",
-            description: "Установите двери и финишные элементы, выверив зазоры и открывания.",
+            key: "floor_finish_quality_check",
+            title: "Контроль качества напольных покрытий",
+            description: "Проверьте стыки, перепады, примыкания и акустический комфорт пола.",
+            zoneIds: ["whole_flat", "living_room", "corridor", "kitchen", "balcony"],
+            roleIds: ["worker", "foreman", "client"],
+            workTypeIds: ["finishing", "final"],
+            estimatedDuration: 1
+          }
+        ]
+      },
+      {
+        key: "plinths_finish",
+        title: "Плинтусы",
+        description: "Подбираем и монтируем плинтусы с корректными примыканиями.",
+        tasks: [
+          {
+            key: "plinth_type_selection",
+            title: "Выбор типа плинтусов",
+            description: "Определите тип плинтусов: ПВХ, дерево или МДФ по зонам и дизайну.",
             zoneIds: ["whole_flat", "corridor"],
+            roleIds: ["designer", "client", "foreman"],
+            workTypeIds: ["finishing", "design"],
+            estimatedDuration: 1
+          },
+          {
+            key: "plinth_installation",
+            title: "Монтаж плинтусов",
+            description: "Установите плинтусы с аккуратными углами и примыканиями к дверям и мебели.",
+            zoneIds: ["whole_flat", "corridor", "living_room", "kitchen"],
             roleIds: ["worker", "foreman"],
-            workTypeIds: ["finishing", "furniture"],
+            workTypeIds: ["finishing"],
             estimatedDuration: 2
           }
         ]
@@ -1077,104 +1208,151 @@ const roadmapBlueprint: StageInput[] = [
     description: "Устанавливаем оснащение и доводим интерьер до рабочего состояния.",
     subStages: [
       {
-        key: "lighting_installation",
-        title: "Свет и электрооснащение",
-        description: "Устанавливаем светильники, фурнитуру и сценарии освещения.",
+        key: "doors_and_windows",
+        title: "Двери, окна и подоконники",
+        description: "Монтаж входных/межкомнатных дверей и, при необходимости, оконных узлов.",
         tasks: [
           {
-            key: "install_switches_and_sockets",
-            title: "Установить розетки, выключатели, рамки",
-            description: "Выполните чистовой монтаж электроустановочных изделий по проекту.",
-            zoneIds: ["whole_flat"],
-            roleIds: ["worker"],
-            workTypeIds: ["engineering", "finishing"],
-            estimatedDuration: 1
-          },
-          {
-            key: "install_light_fixtures",
-            title: "Смонтировать светильники и подсветки",
-            description: "Установите основные, акцентные и декоративные световые группы.",
-            zoneIds: ["whole_flat", "living_room", "kitchen", "corridor"],
+            key: "install_entrance_door",
+            title: "Монтаж входной двери",
+            description: "Установите входную дверь с контролем тепло- и звукоизоляции примыканий.",
+            zoneIds: ["corridor"],
             roleIds: ["worker", "foreman"],
-            workTypeIds: ["engineering", "furniture"],
+            workTypeIds: ["furniture", "final"],
             estimatedDuration: 2
           },
           {
-            key: "lighting_scenarios",
-            title: "Настроить сценарии освещения",
-            description: "Проверьте сценарии по зонам и времени суток, устраните конфликты выключателей.",
-            zoneIds: ["whole_flat", "living_room", "kitchen"],
-            roleIds: ["worker", "client"],
-            workTypeIds: ["final", "furniture"],
+            key: "install_interior_doors",
+            title: "Монтаж межкомнатных дверей",
+            description: "Установите межкомнатные двери с настройкой фурнитуры и зазоров.",
+            zoneIds: ["whole_flat", "corridor", "living_room", "kitchen"],
+            roleIds: ["worker", "foreman"],
+            workTypeIds: ["furniture", "final"],
+            estimatedDuration: 2
+          },
+          {
+            key: "windows_and_sills_if_needed",
+            title: "Окна и подоконники (если требуется)",
+            description: "Замените или доработайте окна и подоконники при наличии такой задачи в проекте.",
+            zoneIds: ["living_room", "kitchen", "balcony"],
+            roleIds: ["worker", "foreman", "client"],
+            workTypeIds: ["furniture", "final"],
+            estimatedDuration: 2,
+            isOptional: true
+          }
+        ]
+      },
+      {
+        key: "sanitary_installation",
+        title: "Сантехника",
+        description: "Финальный монтаж сантехнического оборудования и арматуры.",
+        tasks: [
+          {
+            key: "install_bath_or_shower",
+            title: "Установить ванну/душ",
+            description: "Смонтируйте душевую зону или ванну с герметизацией и контрольным проливом.",
+            zoneIds: ["bathroom"],
+            roleIds: ["worker", "foreman"],
+            workTypeIds: ["furniture", "final"],
+            estimatedDuration: 1
+          },
+          {
+            key: "install_toilet_and_installation",
+            title: "Установить унитаз и инсталляции",
+            description: "Смонтируйте унитаз/инсталляции и проверьте корректную работу арматуры.",
+            zoneIds: ["wc", "bathroom"],
+            roleIds: ["worker", "foreman"],
+            workTypeIds: ["furniture", "final"],
+            estimatedDuration: 1
+          },
+          {
+            key: "install_sinks_and_mixers",
+            title: "Установить раковины и смесители",
+            description: "Выполните монтаж раковин и смесителей с проверкой герметичности узлов.",
+            zoneIds: ["bathroom", "wc", "kitchen"],
+            roleIds: ["worker", "foreman"],
+            workTypeIds: ["furniture", "final"],
+            estimatedDuration: 1
+          },
+          {
+            key: "sanitary_system_final_check",
+            title: "Финальная проверка сантехники",
+            description: "Проверьте протечки, слив, давление и корректность работы всех приборов.",
+            zoneIds: ["bathroom", "wc", "kitchen"],
+            roleIds: ["worker", "foreman", "client"],
+            workTypeIds: ["final", "engineering"],
             estimatedDuration: 1
           }
         ]
       },
       {
-        key: "furniture_and_kitchen",
-        title: "Мебель и кухня",
-        description: "Устанавливаем корпусную мебель, кухню и встроенную технику.",
+        key: "kitchen_and_furniture_installation",
+        title: "Монтаж кухни и мебели",
+        description: "Устанавливаем кухню, мебель и встроенное оборудование.",
         tasks: [
           {
-            key: "final_measurements",
-            title: "Финальные замеры перед производством/монтажом",
-            description: "Снимите контрольные размеры после чистовой отделки.",
-            zoneIds: ["kitchen", "living_room", "corridor", "balcony"],
-            roleIds: ["worker", "foreman", "designer"],
-            workTypeIds: ["furniture", "preparation"],
-            estimatedDuration: 1
-          },
-          {
-            key: "install_kitchen_storage",
-            title: "Монтаж кухни и систем хранения",
-            description: "Смонтируйте корпуса, фасады, направляющие и встроенные системы хранения.",
-            zoneIds: ["kitchen", "corridor", "living_room"],
+            key: "kitchen_installation",
+            title: "Монтаж кухни",
+            description: "Установите кухонные корпуса, фасады, столешницы и примыкания.",
+            zoneIds: ["kitchen"],
             roleIds: ["worker", "foreman"],
             workTypeIds: ["furniture"],
             estimatedDuration: 3
           },
           {
-            key: "integrate_appliances",
-            title: "Подключить встроенную технику",
-            description: "Подключите технику и выполните первичную проверку работоспособности.",
-            zoneIds: ["kitchen"],
+            key: "furniture_installation",
+            title: "Монтаж корпусной и встроенной мебели",
+            description: "Смонтируйте мебельные блоки по проекту с проверкой эргономики.",
+            zoneIds: ["whole_flat", "living_room", "corridor", "balcony"],
             roleIds: ["worker", "foreman"],
+            workTypeIds: ["furniture"],
+            estimatedDuration: 2
+          },
+          {
+            key: "integrated_appliances_connection",
+            title: "Подключение встроенной техники",
+            description: "Подключите технику и проверьте рабочие режимы в присутствии заказчика.",
+            zoneIds: ["kitchen"],
+            roleIds: ["worker", "foreman", "client"],
             workTypeIds: ["furniture", "engineering", "final"],
             estimatedDuration: 1
           }
         ]
       },
       {
-        key: "sanitary_and_accessories",
-        title: "Сантехника и аксессуары",
-        description: "Финализируем мокрые зоны и пользовательские элементы.",
+        key: "nonstandard_engineering_solutions",
+        title: "Инженерные/нестандартные решения",
+        description: "Дополнительные опции: скрытая мебель, слайдеры и другие нестандартные механики.",
         tasks: [
           {
-            key: "install_sanitary_devices",
-            title: "Установить сантехнические приборы",
-            description: "Смонтируйте унитаз, раковину, ванну/душ, смесители и аксессуары.",
-            zoneIds: ["bathroom", "wc", "kitchen"],
+            key: "hidden_furniture_solutions",
+            title: "Скрытая мебель и трансформируемые узлы",
+            description: "Реализуйте скрытые системы хранения и трансформируемые элементы интерьера.",
+            zoneIds: ["living_room", "corridor", "kitchen"],
+            roleIds: ["designer", "worker", "foreman"],
+            workTypeIds: ["furniture", "final"],
+            estimatedDuration: 2,
+            isOptional: true
+          },
+          {
+            key: "slider_and_custom_mechanisms",
+            title: "Слайдеры и нестандартные механизмы",
+            description: "Установите и отрегулируйте специальные механизмы по проекту.",
+            zoneIds: ["whole_flat", "living_room", "corridor"],
             roleIds: ["worker", "foreman"],
-            workTypeIds: ["engineering", "furniture", "final"],
-            estimatedDuration: 2
+            workTypeIds: ["furniture", "final"],
+            estimatedDuration: 1,
+            isOptional: true
           },
           {
-            key: "seal_and_finish_nodes",
-            title: "Герметизация примыканий и узлов",
-            description: "Обработайте швы и примыкания в мокрых зонах влагостойкими материалами.",
-            zoneIds: ["bathroom", "wc", "kitchen"],
-            roleIds: ["worker"],
-            workTypeIds: ["finishing", "final"],
-            estimatedDuration: 1
-          },
-          {
-            key: "sanitary_function_test",
-            title: "Проверить сантехнику в эксплуатации",
-            description: "Проверьте давление, температуру, слив, отсутствие протечек и запахов.",
-            zoneIds: ["bathroom", "wc", "kitchen"],
+            key: "custom_solution_final_tuning",
+            title: "Финальная настройка нестандартных решений",
+            description: "Проверьте безопасность, плавность работы и соответствие сценарию эксплуатации.",
+            zoneIds: ["whole_flat"],
             roleIds: ["worker", "foreman", "client"],
-            workTypeIds: ["engineering", "final"],
-            estimatedDuration: 1
+            workTypeIds: ["final"],
+            estimatedDuration: 1,
+            isOptional: true
           }
         ]
       }
@@ -1192,8 +1370,8 @@ const roadmapBlueprint: StageInput[] = [
         tasks: [
           {
             key: "deep_clean_surfaces",
-            title: "Глубокая очистка поверхностей",
-            description: "Очистите стены, полы, плитку, стекла и фурнитуру от строительных загрязнений.",
+            title: "Генеральная уборка после ремонта",
+            description: "Очистите стены, полы, плитку, стекла и фурнитуру от строительных загрязнений и пыли.",
             zoneIds: ["whole_flat"],
             roleIds: ["worker", "client"],
             workTypeIds: ["final"],
