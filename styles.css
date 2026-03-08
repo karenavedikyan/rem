@@ -1491,6 +1491,25 @@ img {
   margin-top: 14px;
 }
 
+.navigator-hero-actions #navigator-start-btn {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: linear-gradient(145deg, rgba(171, 29, 29, 0.88), rgba(108, 19, 19, 0.96));
+  color: rgba(255, 245, 245, 0.98);
+  -webkit-text-fill-color: rgba(255, 245, 245, 0.98);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.28);
+  box-shadow: 0 8px 18px rgba(165, 32, 32, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  font-weight: 760;
+  letter-spacing: 0.15px;
+}
+
+.navigator-hero-actions #navigator-start-btn:hover,
+.navigator-hero-actions #navigator-start-btn:focus-visible {
+  background: linear-gradient(145deg, rgba(182, 38, 38, 0.9), rgba(118, 23, 23, 0.97));
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 20px rgba(181, 41, 41, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  outline: none;
+}
+
 .navigator-workspace {
   margin-bottom: 14px;
 }
