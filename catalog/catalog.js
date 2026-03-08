@@ -216,10 +216,11 @@
   };
 
   const setError = (message) => {
+    const safeMessage = typeof message === "string" ? message : t("Не удалось загрузить каталог услуг.", "Could not load services catalog.");
     if (listEl) listEl.innerHTML = "";
     if (emptyEl) emptyEl.hidden = true;
     if (errorEl) errorEl.hidden = false;
-    if (errorMessageEl) errorMessageEl.textContent = message;
+    if (errorMessageEl) errorMessageEl.textContent = safeMessage;
     if (countEl) countEl.textContent = t("Ошибка загрузки каталога", "Catalog loading error");
     if (paginationEl) paginationEl.hidden = true;
   };
@@ -264,11 +265,9 @@
         I18N.applyTo(document);
       }
     } catch (err) {
-      setError(
-        err instanceof Error && err.message
-          ? err.message
-          : t("Не удалось загрузить каталог услуг.", "Could not load services catalog.")
-      );
+      const raw = err instanceof Error ? err.message : "";
+      const msg = raw && raw !== "[object Object]" ? raw : t("Не удалось загрузить каталог услуг.", "Could not load services catalog.");
+      setError(msg);
       // eslint-disable-next-line no-console
       console.error("Catalog load error:", err);
     } finally {
