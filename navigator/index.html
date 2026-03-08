@@ -53,35 +53,44 @@
               Помогаем пройти ремонт по шагам — от планирования до мебели. Простые правила, ошибки и подсказки.
             </p>
             <div class="navigator-hero-actions">
-              <a class="btn btn-primary" href="#navigator-map">Начать с моего этапа</a>
+              <button class="btn btn-primary" id="navigator-start-btn" type="button">Начать с моего этапа</button>
             </div>
           </header>
 
           <div class="grid two-col navigator-workspace">
             <article class="card navigator-timeline-card" id="navigator-map">
               <h2>Карта этапов ремонта</h2>
-              <p class="muted">Выберите ваш текущий этап. Карточка справа покажет, что делать дальше и какие ошибки не допускать.</p>
+              <p class="muted">Тапните по нужному этапу: дорожка покажет где вы сейчас и что делать дальше.</p>
               <div class="navigator-timeline" id="navigator-timeline" role="tablist" aria-label="Этапы ремонта"></div>
             </article>
 
             <article class="card navigator-stage-card" id="navigator-stage-card">
+              <p class="navigator-stage-kicker" id="navigator-stage-kicker">Маршрут для вас</p>
               <h2 id="navigator-stage-title">Планирование и замеры: решаем, что и как делать</h2>
               <p class="muted" id="navigator-stage-description"></p>
 
               <div class="stage-diagram" id="stage-diagram" aria-label="Схема этапа"></div>
 
               <div class="navigator-stage-grid">
-                <div class="navigator-step-group">
-                  <div class="navigator-step-label">Что здесь делаем</div>
-                  <ul class="list navigator-step-list" id="stage-what-list"></ul>
+                <div class="navigator-step-group navigator-step-group-hero">
+                  <div class="navigator-step-label">Что делаем на этом этапе</div>
+                  <p class="navigator-stage-one-line" id="stage-what-line"></p>
                 </div>
-                <div class="navigator-step-group">
-                  <div class="navigator-step-label">Что главное не напутать</div>
-                  <ul class="list navigator-step-list" id="stage-pitfalls-list"></ul>
+                <div class="navigator-step-group navigator-step-group-tile">
+                  <div class="navigator-step-label">Срок</div>
+                  <p class="navigator-stage-tile-text" id="stage-duration-text"></p>
                 </div>
-                <div class="navigator-step-group">
-                  <div class="navigator-step-label">Кто нужен на этом этапе</div>
-                  <ul class="list navigator-step-list" id="stage-who-list"></ul>
+                <div class="navigator-step-group navigator-step-group-tile">
+                  <div class="navigator-step-label">Бюджет</div>
+                  <p class="navigator-stage-tile-text" id="stage-budget-text"></p>
+                </div>
+                <div class="navigator-step-group navigator-step-group-tile">
+                  <div class="navigator-step-label">Кто нужен</div>
+                  <p class="navigator-stage-tile-text" id="stage-who-text"></p>
+                </div>
+                <div class="navigator-step-group navigator-step-group-hero">
+                  <div class="navigator-step-label">Главный инсайт</div>
+                  <p class="navigator-stage-one-line" id="stage-insight-text"></p>
                 </div>
               </div>
 
@@ -105,15 +114,39 @@
               <div class="form-actions">
                 <button class="btn btn-ghost" id="stage-next-btn" type="button">Следующий этап</button>
                 <a class="btn btn-primary" id="stage-apply-btn" href="#navigator-form-card">Оставить заявку в RemCard по этому этапу</a>
+                <a class="btn btn-ghost" id="stage-knowledge-link" href="#stage-details">Подробнее про этот этап</a>
                 <a class="btn btn-ghost" id="stage-services-link" href="../catalog/?stage=PLANNING">Посмотреть услуги по этому этапу</a>
-                <a class="section-link" id="stage-knowledge-link" href="#navigator-knowledge">Подробнее про этот этап</a>
               </div>
+
+              <div class="navigator-next-stages" id="navigator-next-stages">
+                <div class="navigator-step-label">Что будет дальше</div>
+                <div class="navigator-next-grid" id="navigator-next-grid"></div>
+              </div>
+
+              <details class="navigator-stage-details" id="stage-details">
+                <summary>Подробно: чек-лист и риски этапа</summary>
+                <div class="navigator-stage-details-grid">
+                  <div class="navigator-step-group">
+                    <div class="navigator-step-label">Что здесь делаем</div>
+                    <ul class="list navigator-step-list" id="stage-what-list"></ul>
+                  </div>
+                  <div class="navigator-step-group">
+                    <div class="navigator-step-label">Что главное не напутать</div>
+                    <ul class="list navigator-step-list" id="stage-pitfalls-list"></ul>
+                  </div>
+                  <div class="navigator-step-group">
+                    <div class="navigator-step-label">Кто нужен на этом этапе</div>
+                    <ul class="list navigator-step-list" id="stage-who-list"></ul>
+                  </div>
+                </div>
+              </details>
             </article>
           </div>
 
           <div class="grid two-col" id="navigator-form-card">
             <article class="card navigator-form-card">
               <h2>Уточните вашу задачу</h2>
+              <p class="muted" id="navigator-form-stage-note">Запрос по этапу: Планирование</p>
               <form class="form" id="navigator-form" novalidate>
                 <div class="form-grid">
                   <div class="field">
@@ -225,6 +258,20 @@
           </div>
         </div>
       </section>
+
+      <div class="navigator-stage-modal" id="navigator-stage-modal" hidden>
+        <div class="navigator-stage-modal-backdrop" id="navigator-stage-modal-backdrop"></div>
+        <div class="navigator-stage-modal-card" role="dialog" aria-modal="true" aria-labelledby="navigator-stage-modal-title">
+          <div class="navigator-stage-modal-head">
+            <h2 id="navigator-stage-modal-title">Выберите ваш текущий этап</h2>
+            <button class="navigator-stage-modal-close" id="navigator-stage-modal-close" type="button" aria-label="Закрыть выбор этапа">
+              ×
+            </button>
+          </div>
+          <p class="muted">Это поможет сразу показать сроки, бюджет и нужных специалистов.</p>
+          <div class="navigator-stage-modal-list" id="navigator-stage-modal-list"></div>
+        </div>
+      </div>
 
       <section class="section" id="navigator-knowledge">
         <div class="container">

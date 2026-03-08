@@ -8,16 +8,30 @@
   const sendBtn = document.getElementById("send-route-btn");
   const sendResult = document.getElementById("navigator-send-result");
   const timelineEl = document.getElementById("navigator-timeline");
+  const startStageBtn = document.getElementById("navigator-start-btn");
+  const stageModalEl = document.getElementById("navigator-stage-modal");
+  const stageModalListEl = document.getElementById("navigator-stage-modal-list");
+  const stageModalCloseBtn = document.getElementById("navigator-stage-modal-close");
+  const stageModalBackdrop = document.getElementById("navigator-stage-modal-backdrop");
   const stageTitleEl = document.getElementById("navigator-stage-title");
+  const stageKickerEl = document.getElementById("navigator-stage-kicker");
   const stageDescriptionEl = document.getElementById("navigator-stage-description");
+  const stageWhatLineEl = document.getElementById("stage-what-line");
+  const stageDurationTextEl = document.getElementById("stage-duration-text");
+  const stageBudgetTextEl = document.getElementById("stage-budget-text");
+  const stageWhoTextEl = document.getElementById("stage-who-text");
+  const stageInsightTextEl = document.getElementById("stage-insight-text");
   const stageWhatListEl = document.getElementById("stage-what-list");
   const stagePitfallsListEl = document.getElementById("stage-pitfalls-list");
   const stageWhoListEl = document.getElementById("stage-who-list");
   const stageDiagramEl = document.getElementById("stage-diagram");
+  const stageDetailsEl = document.getElementById("stage-details");
+  const nextStagesGridEl = document.getElementById("navigator-next-grid");
   const stageNextBtn = document.getElementById("stage-next-btn");
   const stageApplyBtn = document.getElementById("stage-apply-btn");
   const stageServicesLink = document.getElementById("stage-services-link");
   const stageKnowledgeLink = document.getElementById("stage-knowledge-link");
+  const formStageNoteEl = document.getElementById("navigator-form-stage-note");
   const stageIdInput = document.getElementById("nv-stage-id");
   const stageEstimateGroup = document.getElementById("stage-estimate-group");
   const stageEstimateTransitionEl = document.getElementById("stage-estimate-transition");
@@ -144,8 +158,24 @@
   let dynamicStepTemplates = { ...STEP_TEMPLATES };
   let dynamicKbCore = {};
   const STAGE_ORDER = ["planning", "rough", "engineering", "finishing", "furniture"];
+  const STAGE_ICON = {
+    planning: "📏",
+    rough: "🧱",
+    engineering: "⚡",
+    finishing: "🎨",
+    furniture: "🛋️"
+  };
+  const STAGE_STATE_KEY = "remcard_navigator_active_stage";
   const STAGE_TO_FORM_VALUE = {
     planning: "planning",
+    rough: "rough",
+    engineering: "engineering",
+    finishing: "finishing",
+    furniture: "furniture"
+  };
+  const FORM_VALUE_TO_STAGE = {
+    planning: "planning",
+    measurements: "planning",
     rough: "rough",
     engineering: "engineering",
     finishing: "finishing",
@@ -319,6 +349,12 @@
     return stage ? stage.shortLabel || stage.title : stageId;
   };
 
+  const getCurrentEstimate = (stageId) => {
+    const estimateByComplexity = TRANSITION_ESTIMATES[stageId];
+    if (!estimateByComplexity) return null;
+    return estimateByComplexity[activeComplexityId] || estimateByComplexity.standard || estimateByComplexity.basic || null;
+  };
+
   const renderComplexityTabs = () => {
     if (!stageComplexityTabsEl) return;
     stageComplexityTabsEl.innerHTML = "";
@@ -336,8 +372,8 @@
 
   const renderTransitionEstimate = (stageId) => {
     if (!stageEstimateGroup) return;
-    const estimateByComplexity = TRANSITION_ESTIMATES[stageId];
-    if (!estimateByComplexity) {
+    const currentEstimate = getCurrentEstimate(stageId);
+    if (!currentEstimate) {
       stageEstimateGroup.hidden = true;
       return;
     }
@@ -349,7 +385,6 @@
       stageEstimateTransitionEl.textContent = `${getStageLabelById(stageId)} → ${toLabel}`;
     }
 
-    const currentEstimate = estimateByComplexity[activeComplexityId] || estimateByComplexity.standard || estimateByComplexity.basic;
     if (stageEstimateTimeValueEl) stageEstimateTimeValueEl.textContent = formatDaysRange(currentEstimate.days);
     if (stageEstimateBudgetValueEl) {
       stageEstimateBudgetValueEl.textContent = `${formatMoney(currentEstimate.budget[0])}–${formatMoney(currentEstimate.budget[1])} ₽`;
@@ -512,20 +547,70 @@
     }
   };
 
+  const updateFormStageNote = (stage) => {
+    if (!formStageNoteEl || !stage) return;
+    const stageSelect = form.querySelector("#nv-stage");
+    const stageStatus = stageSelect ? getSelectedText(stageSelect) : "";
+    formStageNoteEl.textContent = I18N.isEn
+      ? `Request for stage: ${stage.shortLabel || stage.title}${stageStatus ? `. Current status: ${stageStatus}` : ""}.`
+      : `Запрос по этапу: ${stage.shortLabel || stage.title}${stageStatus ? `. Текущий статус: ${stageStatus}` : ""}.`;
+  };
+
+  const renderNextStages = (stageId) => {
+    if (!nextStagesGridEl) return;
+    const idx = STAGE_ORDER.indexOf(stageId);
+    const nextIds = idx >= 0 ? STAGE_ORDER.slice(idx + 1, idx + 3) : [];
+    nextStagesGridEl.innerHTML = "";
+
+    if (!nextIds.length) {
+      const doneCard = document.createElement("div");
+      doneCard.className = "navigator-next-item is-complete";
+      doneCard.textContent = t("Финальный шаг: приёмка, декор и комфортный въезд.", "Final step: handover, decor, and move-in readiness.");
+      nextStagesGridEl.appendChild(doneCard);
+      return;
+    }
+
+    nextIds.forEach((id, order) => {
+      const stage = getStageById(id);
+      if (!stage) return;
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "navigator-next-item";
+      btn.dataset.stageId = id;
+      btn.innerHTML = `
+        <span class="navigator-next-icon" aria-hidden="true">${escapeHtml(STAGE_ICON[id] || "•")}</span>
+        <span class="navigator-next-content">
+          <span class="navigator-next-title">${escapeHtml(stage.shortLabel || stage.title)}</span>
+          <span class="navigator-next-sub">${escapeHtml((stage.whatWeDo && stage.whatWeDo[0]) || stage.description || "")}</span>
+          <span class="navigator-next-mark">${escapeHtml(order === 0 ? t("Следующий шаг", "Next step") : t("После этого", "Then"))}</span>
+        </span>
+      `;
+      nextStagesGridEl.appendChild(btn);
+    });
+  };
+
   const renderTimeline = () => {
     if (!timelineEl) return;
     timelineEl.innerHTML = "";
+    const activeIdx = STAGE_ORDER.indexOf(activeStageId);
     navigatorStages.forEach((stage, idx) => {
-      const isActive = stage.id === activeStageId;
+      const isDone = idx < activeIdx;
+      const isActive = idx === activeIdx;
+      const stateClass = isActive ? "is-active" : isDone ? "is-done" : "is-future";
+      const stateLabel = isActive ? t("Текущий этап", "Current stage") : isDone ? t("Пройден", "Completed") : t("Впереди", "Upcoming");
       const button = document.createElement("button");
       button.type = "button";
-      button.className = `navigator-timeline-step${isActive ? " is-active" : ""}`;
+      button.className = `navigator-timeline-step ${stateClass}`;
       button.setAttribute("aria-selected", isActive ? "true" : "false");
       button.setAttribute("role", "tab");
       button.dataset.stageId = stage.id;
       button.innerHTML = `
         <span class="navigator-timeline-index">${idx + 1}</span>
-        <span class="navigator-timeline-label">${escapeHtml(stage.shortLabel || stage.title)}</span>
+        <span class="navigator-timeline-icon" aria-hidden="true">${escapeHtml(STAGE_ICON[stage.id] || "•")}</span>
+        <span class="navigator-timeline-meta">
+          <span class="navigator-timeline-label">${escapeHtml(stage.shortLabel || stage.title)}</span>
+          <span class="navigator-timeline-status">${escapeHtml(stateLabel)}</span>
+        </span>
       `;
       timelineEl.appendChild(button);
     });
@@ -534,16 +619,34 @@
   const renderActiveStageCard = () => {
     const stage = getStageById(activeStageId);
     if (!stage) return;
+    if (stageKickerEl) stageKickerEl.textContent = t("Маршрут для вас", "Route for you");
     if (stageTitleEl) stageTitleEl.textContent = stage.title;
     if (stageDescriptionEl) stageDescriptionEl.textContent = stage.description;
+    if (stageWhatLineEl) stageWhatLineEl.textContent = (stage.whatWeDo && stage.whatWeDo[0]) || stage.description;
+    if (stageWhoTextEl) stageWhoTextEl.textContent = (stage.whoYouNeed || []).slice(0, 4).join(", ");
+    if (stageInsightTextEl) {
+      stageInsightTextEl.textContent = (stage.pitfalls && stage.pitfalls[0]) || t("Проверяйте чек-лист до старта работ.", "Check the stage checklist before work starts.");
+    }
     if (stageWhatListEl) stageWhatListEl.innerHTML = stageListToHTML(stage.whatWeDo, t("Проверьте базовый план этапа.", "Review the basic stage plan."));
     if (stagePitfallsListEl)
       stagePitfallsListEl.innerHTML = stageListToHTML(stage.pitfalls, t("Проверяйте типовые риски перед стартом.", "Check common risks before starting."));
     if (stageWhoListEl) stageWhoListEl.innerHTML = stageListToHTML(stage.whoYouNeed, t("Нужен профильный специалист.", "A specialist is required."));
     if (stageDiagramEl) stageDiagramEl.innerHTML = getDiagramHTML(stage.id);
 
+    const currentEstimate = getCurrentEstimate(stage.id);
+    if (stageDurationTextEl) {
+      stageDurationTextEl.textContent = currentEstimate
+        ? formatDaysRange(currentEstimate.days)
+        : t("Зависит от объёма работ", "Depends on scope");
+    }
+    if (stageBudgetTextEl) {
+      stageBudgetTextEl.textContent = currentEstimate
+        ? `${formatMoney(currentEstimate.budget[0])}–${formatMoney(currentEstimate.budget[1])} ₽`
+        : t("По замеру и задаче", "By scope and estimate");
+    }
+
     if (stageKnowledgeLink) {
-      stageKnowledgeLink.setAttribute("href", "#navigator-knowledge");
+      stageKnowledgeLink.setAttribute("href", "#stage-details");
     }
     if (stageApplyBtn) {
       stageApplyBtn.setAttribute("href", "#navigator-form-card");
@@ -559,11 +662,19 @@
 
     renderTransitionEstimate(stage.id);
     syncStageToForm(stage.id);
+    updateFormStageNote(stage);
+    renderNextStages(stage.id);
     renderTimeline();
+    if (stageModalEl && !stageModalEl.hidden) renderStageModalList();
   };
 
   const setActiveStage = (stageId) => {
     activeStageId = normalizeStageId(stageId);
+    try {
+      localStorage.setItem(STAGE_STATE_KEY, activeStageId);
+    } catch {
+      // ignore storage write errors
+    }
     renderActiveStageCard();
   };
 
@@ -839,7 +950,13 @@
   const getInitialStageFromURL = () => {
     try {
       const url = new URL(window.location.href);
-      return normalizeStageId(url.searchParams.get("stage"));
+      const byQuery = normalizeStageId(url.searchParams.get("stage"));
+      if (url.searchParams.get("stage")) return byQuery;
+    } catch {
+      // noop
+    }
+    try {
+      return normalizeStageId(localStorage.getItem(STAGE_STATE_KEY));
     } catch {
       return "planning";
     }
@@ -850,6 +967,69 @@
       const btn = e.target && e.target.closest ? e.target.closest("button[data-stage-id]") : null;
       if (!btn) return;
       setActiveStage(btn.getAttribute("data-stage-id"));
+    });
+  }
+
+  const renderStageModalList = () => {
+    if (!stageModalListEl) return;
+    stageModalListEl.innerHTML = "";
+    navigatorStages.forEach((stage) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = `navigator-stage-pick${stage.id === activeStageId ? " is-active" : ""}`;
+      btn.dataset.stageId = stage.id;
+      btn.innerHTML = `
+        <span class="navigator-stage-pick-icon" aria-hidden="true">${escapeHtml(STAGE_ICON[stage.id] || "•")}</span>
+        <span class="navigator-stage-pick-text">
+          <strong>${escapeHtml(stage.shortLabel || stage.title)}</strong>
+          <span>${escapeHtml(stage.description)}</span>
+        </span>
+      `;
+      stageModalListEl.appendChild(btn);
+    });
+  };
+
+  const closeStageModal = () => {
+    if (!stageModalEl) return;
+    stageModalEl.hidden = true;
+    document.body.classList.remove("navigator-stage-modal-open");
+  };
+
+  const openStageModal = () => {
+    if (!stageModalEl) return;
+    renderStageModalList();
+    stageModalEl.hidden = false;
+    document.body.classList.add("navigator-stage-modal-open");
+  };
+
+  if (startStageBtn) {
+    startStageBtn.addEventListener("click", openStageModal);
+  }
+
+  if (stageModalCloseBtn) {
+    stageModalCloseBtn.addEventListener("click", closeStageModal);
+  }
+  if (stageModalBackdrop) {
+    stageModalBackdrop.addEventListener("click", closeStageModal);
+  }
+  if (stageModalListEl) {
+    stageModalListEl.addEventListener("click", (e) => {
+      const btn = e.target && e.target.closest ? e.target.closest("button[data-stage-id]") : null;
+      if (!btn) return;
+      setActiveStage(btn.getAttribute("data-stage-id"));
+      closeStageModal();
+      const mapCard = document.getElementById("navigator-map");
+      if (mapCard) mapCard.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+
+  if (nextStagesGridEl) {
+    nextStagesGridEl.addEventListener("click", (e) => {
+      const btn = e.target && e.target.closest ? e.target.closest("button[data-stage-id]") : null;
+      if (!btn) return;
+      setActiveStage(btn.getAttribute("data-stage-id"));
+      const stageCard = document.getElementById("navigator-stage-card");
+      if (stageCard) stageCard.scrollIntoView({ behavior: "smooth", block: "nearest" });
     });
   }
 
@@ -877,8 +1057,30 @@
   if (stageApplyBtn) {
     stageApplyBtn.addEventListener("click", () => {
       syncStageToForm(activeStageId);
+      const stage = getStageById(activeStageId);
+      if (stage) updateFormStageNote(stage);
     });
   }
+
+  if (stageKnowledgeLink) {
+    stageKnowledgeLink.addEventListener("click", () => {
+      if (stageDetailsEl) stageDetailsEl.open = true;
+    });
+  }
+
+  const formStageSelect = form.querySelector("#nv-stage");
+  if (formStageSelect) {
+    formStageSelect.addEventListener("change", () => {
+      const nextStage = FORM_VALUE_TO_STAGE[formStageSelect.value];
+      if (nextStage) setActiveStage(nextStage);
+    });
+  }
+
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && stageModalEl && !stageModalEl.hidden) {
+      closeStageModal();
+    }
+  });
 
   activeStageId = getInitialStageFromURL();
   renderActiveStageCard();

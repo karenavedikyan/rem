@@ -1513,10 +1513,10 @@ img {
   color: rgba(245, 245, 245, 0.95);
   text-align: left;
   cursor: pointer;
-  padding: 10px 12px;
+  padding: 10px 11px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   transition: border-color 160ms var(--ease), transform 160ms var(--ease), background 160ms var(--ease);
 }
 
@@ -1533,16 +1533,41 @@ img {
   background: linear-gradient(180deg, rgba(229, 57, 53, 0.16), rgba(18, 18, 18, 0.4));
 }
 
+.navigator-timeline-step.is-done {
+  border-color: rgba(245, 245, 245, 0.2);
+  background: rgba(40, 40, 40, 0.4);
+}
+
+.navigator-timeline-step.is-future {
+  opacity: 0.9;
+}
+
 .navigator-timeline-index {
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
   border-radius: 8px;
   display: grid;
   place-items: center;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 850;
   background: rgba(229, 57, 53, 0.14);
   border: 1px solid rgba(229, 57, 53, 0.28);
+}
+
+.navigator-timeline-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-size: 16px;
+  border: 1px solid rgba(245, 245, 245, 0.16);
+  background: rgba(245, 245, 245, 0.05);
+}
+
+.navigator-timeline-meta {
+  display: grid;
+  gap: 2px;
 }
 
 .navigator-timeline-label {
@@ -1550,15 +1575,226 @@ img {
   font-weight: 700;
 }
 
+.navigator-timeline-status {
+  font-size: 11px;
+  color: rgba(176, 190, 197, 0.95);
+}
+
 .navigator-stage-card .muted {
   margin-top: 6px;
+}
+
+.navigator-stage-kicker {
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 800;
+  color: rgba(229, 57, 53, 0.95);
+  letter-spacing: 0.2px;
+  text-transform: uppercase;
 }
 
 .navigator-stage-grid {
   margin-top: 12px;
   display: grid;
   gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.navigator-step-group-hero {
+  grid-column: 1 / -1;
+}
+
+.navigator-stage-one-line,
+.navigator-stage-tile-text {
+  margin: 8px 0 0;
+  color: rgba(245, 245, 245, 0.96);
+  font-size: 13.5px;
+  line-height: 1.4;
+}
+
+.navigator-step-group-tile {
+  position: relative;
+  overflow: hidden;
+}
+
+.navigator-step-group-tile::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(229, 57, 53, 0.9), rgba(229, 57, 53, 0.15));
+}
+
+.navigator-next-stages {
+  margin-top: 12px;
+}
+
+.navigator-next-grid {
+  margin-top: 8px;
+  display: grid;
+  gap: 8px;
+}
+
+.navigator-next-item {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(245, 245, 245, 0.12);
+  background: rgba(18, 18, 18, 0.34);
+  color: rgba(245, 245, 245, 0.95);
+  text-align: left;
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.navigator-next-item.is-complete {
+  cursor: default;
+  font-size: 13px;
+}
+
+.navigator-next-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(245, 245, 245, 0.14);
+  background: rgba(245, 245, 245, 0.06);
+  font-size: 16px;
+}
+
+.navigator-next-content {
+  display: grid;
+  gap: 2px;
+}
+
+.navigator-next-title {
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.navigator-next-sub {
+  font-size: 12px;
+  color: rgba(176, 190, 197, 0.95);
+}
+
+.navigator-next-mark {
+  font-size: 11px;
+  color: rgba(229, 57, 53, 0.95);
+  font-weight: 700;
+}
+
+.navigator-stage-details {
+  margin-top: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(245, 245, 245, 0.1);
+  background: rgba(18, 18, 18, 0.26);
+  padding: 10px 12px;
+}
+
+.navigator-stage-details > summary {
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(245, 245, 245, 0.97);
+}
+
+.navigator-stage-details-grid {
+  margin-top: 10px;
+  display: grid;
+  gap: 10px;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.navigator-stage-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+}
+
+.navigator-stage-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 8, 8, 0.72);
+  backdrop-filter: blur(2px);
+}
+
+.navigator-stage-modal-card {
+  position: relative;
+  z-index: 1;
+  width: min(620px, calc(100vw - 24px));
+  max-height: min(80vh, 700px);
+  overflow-y: auto;
+  margin: clamp(18px, 6vh, 60px) auto 0;
+  border-radius: 16px;
+  border: 1px solid rgba(245, 245, 245, 0.14);
+  background: rgba(20, 20, 20, 0.98);
+  padding: 16px;
+}
+
+.navigator-stage-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.navigator-stage-modal-close {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid rgba(245, 245, 245, 0.2);
+  background: rgba(245, 245, 245, 0.04);
+  color: rgba(245, 245, 245, 0.95);
+}
+
+.navigator-stage-modal-list {
+  margin-top: 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.navigator-stage-pick {
+  width: 100%;
+  text-align: left;
+  border-radius: 12px;
+  border: 1px solid rgba(245, 245, 245, 0.14);
+  background: rgba(18, 18, 18, 0.32);
+  color: rgba(245, 245, 245, 0.96);
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+}
+
+.navigator-stage-pick.is-active {
+  border-color: rgba(229, 57, 53, 0.52);
+  background: linear-gradient(180deg, rgba(229, 57, 53, 0.15), rgba(24, 24, 24, 0.85));
+}
+
+.navigator-stage-pick-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: rgba(245, 245, 245, 0.08);
+}
+
+.navigator-stage-pick-text {
+  display: grid;
+  gap: 3px;
+}
+
+.navigator-stage-pick-text span {
+  font-size: 12px;
+  color: rgba(176, 190, 197, 0.95);
+}
+
+body.navigator-stage-modal-open {
+  overflow: hidden;
 }
 
 .stage-diagram {
@@ -2265,6 +2501,36 @@ img {
 }
 
 @media (max-width: 760px) {
+  .navigator-timeline {
+    display: flex;
+    overflow-x: auto;
+    gap: 8px;
+    padding-bottom: 4px;
+  }
+
+  .navigator-timeline-step {
+    min-width: 208px;
+    flex: 0 0 auto;
+  }
+
+  .navigator-stage-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .navigator-stage-details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .navigator-estimate-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .navigator-stage-modal-card {
+    width: calc(100vw - 16px);
+    margin-top: 10px;
+    max-height: calc(100vh - 20px);
+  }
+
   .catalog-quick-kind {
     flex-wrap: nowrap;
     overflow-x: auto;
@@ -2813,6 +3079,10 @@ img {
   }
 
   .navigator-stage-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .navigator-stage-details-grid {
     grid-template-columns: 1fr;
   }
 
