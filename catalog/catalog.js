@@ -37,6 +37,7 @@
   let sheetDragState = null;
   let sheetMode = "mid";
   let suppressGrabberClick = false;
+  let sheetSpringAnimation = null;
 
   function getStageSelect() {
     return form.querySelector('select[name="stage"]');
@@ -223,8 +224,34 @@
     filtersCardEl.classList.remove("is-dragging");
   };
 
+  const playSheetSpring = (fromTransform, overshootPx = 0) => {
+    if (!filtersCardEl || typeof filtersCardEl.animate !== "function") return;
+    if (sheetSpringAnimation && typeof sheetSpringAnimation.cancel === "function") {
+      sheetSpringAnimation.cancel();
+    }
+    const from = fromTransform && fromTransform !== "none" ? fromTransform : "translateY(0px)";
+    const keyframes = [{ transform: from }];
+    if (overshootPx) {
+      keyframes.push({ transform: `translateY(${Math.round(overshootPx)}px)` });
+    }
+    keyframes.push({ transform: "translateY(0px)" });
+    try {
+      sheetSpringAnimation = filtersCardEl.animate(keyframes, {
+        duration: 360,
+        easing: "cubic-bezier(0.22, 1.2, 0.3, 1)",
+        fill: "none"
+      });
+    } catch {
+      sheetSpringAnimation = null;
+    }
+  };
+
   const closeMobileFilters = () => {
     if (!filtersCardEl || !filtersBackdropEl) return;
+    if (sheetSpringAnimation && typeof sheetSpringAnimation.cancel === "function") {
+      sheetSpringAnimation.cancel();
+      sheetSpringAnimation = null;
+    }
     sheetDragState = null;
     suppressGrabberClick = false;
     clearSheetDragStyle();
@@ -266,6 +293,7 @@
 
   const finishSheetDrag = () => {
     if (!sheetDragState) return;
+    const fromTransform = filtersCardEl ? filtersCardEl.style.transform : "";
     const delta = sheetDragState.currentY - sheetDragState.startY;
     const modeAtStart = sheetDragState.modeAtStart;
     sheetDragState = null;
@@ -277,15 +305,18 @@
       if (delta >= SHEET_SNAP_THRESHOLD) {
         clearSheetDragStyle();
         setSheetMode("mid");
+        playSheetSpring(fromTransform, 14);
         return;
       }
       clearSheetDragStyle();
       setSheetMode("expanded");
+      playSheetSpring(fromTransform, 10);
       return;
     }
     if (delta <= -SHEET_SNAP_THRESHOLD) {
       clearSheetDragStyle();
       setSheetMode("expanded");
+      playSheetSpring(fromTransform, -12);
       return;
     }
     if (delta >= SHEET_CLOSE_THRESHOLD) {
@@ -294,12 +325,15 @@
     }
     clearSheetDragStyle();
     setSheetMode("mid");
+    playSheetSpring(fromTransform, delta > 8 ? 12 : 0);
   };
 
   const toggleSheetMode = () => {
     if (!filtersCardEl || !filtersCardEl.classList.contains("is-open")) return;
-    setSheetMode(sheetMode === "expanded" ? "mid" : "expanded");
+    const nextMode = sheetMode === "expanded" ? "mid" : "expanded";
+    setSheetMode(nextMode);
     clearSheetDragStyle();
+    playSheetSpring("translateY(0px)", nextMode === "expanded" ? -8 : 10);
   };
   const setFieldValue = (name, value) => {
     const el = getField(name);
