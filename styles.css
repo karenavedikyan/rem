@@ -763,6 +763,8 @@ img {
   display: flex;
   flex-direction: column;
   min-height: 560px;
+  border-color: rgba(245, 245, 245, 0.16);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.34);
 }
 
 .promo-banner {
@@ -772,13 +774,14 @@ img {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  filter: saturate(1.12) contrast(1.06) brightness(1.08);
 }
 
 .promo-banner::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(10, 10, 10, 0.01), rgba(10, 10, 10, 0.32));
+  background: linear-gradient(180deg, rgba(10, 10, 10, 0), rgba(10, 10, 10, 0.2));
   pointer-events: none;
 }
 
@@ -800,8 +803,8 @@ img {
   font-size: 15px;
   font-weight: 700;
   line-height: 1.35;
-  color: rgba(245, 245, 245, 0.97);
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.55);
+  color: rgba(255, 255, 255, 0.99);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
 }
 
 .promo-hot-chip {
@@ -824,7 +827,7 @@ img {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: linear-gradient(180deg, rgba(34, 34, 34, 0.82), rgba(22, 22, 22, 0.88));
+  background: linear-gradient(180deg, rgba(40, 40, 40, 0.76), rgba(26, 26, 26, 0.86));
   border-top: 1px solid rgba(245, 245, 245, 0.12);
 }
 
@@ -864,9 +867,9 @@ img {
   font-size: 12px;
   white-space: nowrap;
   color: rgba(245, 245, 245, 0.98);
-  background: linear-gradient(145deg, rgba(229, 57, 53, 0.98), rgba(183, 28, 28, 0.98));
-  border: 1px solid rgba(229, 57, 53, 0.28);
-  box-shadow: 0 10px 22px rgba(229, 57, 53, 0.2);
+  background: linear-gradient(145deg, rgba(229, 57, 53, 0.96), rgba(183, 28, 28, 0.92));
+  border: 1px solid rgba(229, 57, 53, 0.46);
+  box-shadow: 0 10px 20px rgba(229, 57, 53, 0.24);
 }
 
 .promo-details-toggle {
@@ -875,6 +878,15 @@ img {
   font-size: 12px;
   font-weight: 700;
   white-space: nowrap;
+  color: rgba(245, 245, 245, 0.98);
+  border-color: rgba(245, 245, 245, 0.22);
+  background: rgba(24, 24, 24, 0.74);
+}
+
+.promo-details-toggle:hover,
+.promo-details-toggle:focus-visible {
+  border-color: rgba(229, 57, 53, 0.4);
+  background: rgba(30, 30, 30, 0.86);
 }
 
 .promo-details {
@@ -976,6 +988,10 @@ img {
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 2px;
+}
+
+.promo-actions .btn {
+  color: rgba(245, 245, 245, 0.98);
 }
 
 .offers-list {
