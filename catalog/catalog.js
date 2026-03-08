@@ -210,6 +210,11 @@
 
   const getField = (name) => form.querySelector(`[name="${CSS.escape(name)}"]`);
   const isMobileView = () => window.matchMedia("(max-width: 760px)").matches;
+  const setOpenFiltersBtnVisible = (visible) => {
+    if (!openFiltersBtn) return;
+    openFiltersBtn.classList.toggle("is-hidden", !visible);
+    openFiltersBtn.setAttribute("aria-hidden", visible ? "false" : "true");
+  };
   const setSheetMode = (mode) => {
     sheetMode = mode === "expanded" ? "expanded" : "mid";
     if (filtersCardEl) filtersCardEl.classList.toggle("is-expanded", sheetMode === "expanded");
@@ -259,6 +264,7 @@
     filtersCardEl.classList.remove("is-open");
     document.body.classList.remove("catalog-filters-open");
     filtersBackdropEl.hidden = true;
+    setOpenFiltersBtnVisible(true);
     if (openFiltersBtn) openFiltersBtn.setAttribute("aria-expanded", "false");
   };
 
@@ -271,6 +277,7 @@
     filtersCardEl.classList.add("is-open");
     document.body.classList.add("catalog-filters-open");
     filtersBackdropEl.hidden = false;
+    setOpenFiltersBtnVisible(false);
     if (openFiltersBtn) openFiltersBtn.setAttribute("aria-expanded", "true");
   };
 
@@ -668,6 +675,7 @@
 
   if (openFiltersBtn) {
     openFiltersBtn.setAttribute("aria-expanded", "false");
+    setOpenFiltersBtnVisible(true);
     openFiltersBtn.addEventListener("click", () => {
       openMobileFilters();
     });
