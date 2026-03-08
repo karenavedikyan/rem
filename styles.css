@@ -990,6 +990,36 @@ img {
   background: linear-gradient(180deg, rgba(36, 36, 36, 0.9), rgba(24, 24, 24, 0.8));
 }
 
+.offers-filters-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.offers-filters-close {
+  display: none;
+}
+
+.offers-open-filters-btn {
+  display: none;
+}
+
+.offers-open-filters-btn.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+}
+
+.offers-filters-backdrop {
+  display: none;
+}
+
+.offers-filters-backdrop[hidden] {
+  display: none !important;
+}
+
 .offers-priority-chips {
   margin-top: 10px;
   margin-bottom: 10px;
@@ -2226,6 +2256,71 @@ img {
     padding-bottom: 2px;
   }
 
+  .offers-filters-card {
+    position: fixed;
+    left: 10px;
+    right: 10px;
+    bottom: 0;
+    top: auto;
+    z-index: 30;
+    max-height: 88vh;
+    overflow-y: auto;
+    border-radius: 14px 14px 0 0;
+    transform: translateY(112%);
+    transition: transform 220ms var(--ease);
+  }
+
+  .offers-filters-card.is-open {
+    transform: translateY(0);
+  }
+
+  .offers-filters-head {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    margin: -14px -14px 10px;
+    padding: 14px;
+    background: rgba(18, 18, 18, 0.96);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px 14px 0 0;
+  }
+
+  .offers-filters-close {
+    display: inline-flex;
+  }
+
+  .offers-open-filters-btn {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: 14px;
+    z-index: 20;
+    display: inline-flex;
+    justify-content: center;
+    background: rgba(20, 20, 20, 0.9);
+    border-color: rgba(229, 57, 53, 0.34);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
+    transition: opacity 160ms var(--ease), transform 160ms var(--ease);
+  }
+
+  .offers-open-filters-btn:hover,
+  .offers-open-filters-btn:focus-visible {
+    background: rgba(26, 26, 26, 0.94);
+    border-color: rgba(229, 57, 53, 0.5);
+  }
+
+  .offers-filters-backdrop:not([hidden]) {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 25;
+    background: rgba(0, 0, 0, 0.68);
+  }
+
+  body.offers-filters-open {
+    overflow: hidden;
+  }
+
   .catalog-layout {
     display: block;
   }
@@ -2364,6 +2459,11 @@ img {
   }
 
   .catalog-pagination {
+    margin-bottom: 76px;
+  }
+
+  .offers-list,
+  .promo-more {
     margin-bottom: 76px;
   }
 }

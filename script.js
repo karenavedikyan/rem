@@ -476,6 +476,10 @@
   const resetOffersBtn = document.getElementById("offers-reset-filters");
   const priorityChipsWrap = document.getElementById("offers-priority-chips");
   const activeOffersFiltersWrap = document.getElementById("offers-active-filters");
+  const offersFiltersCard = document.getElementById("offers-filters-card");
+  const offersOpenFiltersBtn = document.getElementById("offers-open-filters");
+  const offersCloseFiltersBtn = document.getElementById("offers-filters-close");
+  const offersFiltersBackdrop = document.getElementById("offers-filters-backdrop");
   const OFFERS_QUERY_KEYS = {
     city: "offersCity",
     category: "offersCategory",
@@ -500,6 +504,29 @@
     }
 
     if (!allEl) return;
+
+    const isOffersMobileView = () => window.matchMedia("(max-width: 760px)").matches;
+    const setOffersOpenBtnVisible = (visible) => {
+      if (!offersOpenFiltersBtn) return;
+      offersOpenFiltersBtn.classList.toggle("is-hidden", !visible);
+      offersOpenFiltersBtn.setAttribute("aria-hidden", visible ? "false" : "true");
+    };
+    const closeOffersFilters = () => {
+      if (!offersFiltersCard || !offersFiltersBackdrop) return;
+      offersFiltersCard.classList.remove("is-open");
+      document.body.classList.remove("offers-filters-open");
+      offersFiltersBackdrop.hidden = true;
+      setOffersOpenBtnVisible(true);
+      if (offersOpenFiltersBtn) offersOpenFiltersBtn.setAttribute("aria-expanded", "false");
+    };
+    const openOffersFilters = () => {
+      if (!offersFiltersCard || !offersFiltersBackdrop || !isOffersMobileView()) return;
+      offersFiltersCard.classList.add("is-open");
+      document.body.classList.add("offers-filters-open");
+      offersFiltersBackdrop.hidden = false;
+      setOffersOpenBtnVisible(false);
+      if (offersOpenFiltersBtn) offersOpenFiltersBtn.setAttribute("aria-expanded", "true");
+    };
 
     const cities = unique(sourcePromotions.map((p) => p.city));
     const categories = unique(sourcePromotions.flatMap((p) => getPromoTags(p)));
@@ -645,6 +672,7 @@
         if (prioritySel) prioritySel.value = "all";
         if (sortSel) sortSel.value = "soon";
         applyFiltersAndRender();
+        if (isOffersMobileView()) closeOffersFilters();
       });
     }
 
@@ -658,6 +686,34 @@
       });
     }
 
+    if (offersOpenFiltersBtn) {
+      offersOpenFiltersBtn.setAttribute("aria-expanded", "false");
+      setOffersOpenBtnVisible(true);
+      offersOpenFiltersBtn.addEventListener("click", () => {
+        openOffersFilters();
+      });
+    }
+
+    if (offersCloseFiltersBtn) {
+      offersCloseFiltersBtn.addEventListener("click", () => {
+        closeOffersFilters();
+      });
+    }
+
+    if (offersFiltersBackdrop) {
+      offersFiltersBackdrop.addEventListener("click", () => {
+        closeOffersFilters();
+      });
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeOffersFilters();
+    });
+
+    window.addEventListener("resize", () => {
+      if (!isOffersMobileView()) closeOffersFilters();
+    });
+
     if (activeOffersFiltersWrap) {
       activeOffersFiltersWrap.addEventListener("click", (e) => {
         const btn = e.target && e.target.closest ? e.target.closest("button[data-offers-filter-key]") : null;
@@ -669,6 +725,7 @@
           if (prioritySel) prioritySel.value = "all";
           if (sortSel) sortSel.value = "soon";
           applyFiltersAndRender();
+          if (isOffersMobileView()) closeOffersFilters();
           return;
         }
         if (key === "city" && citySel) citySel.value = "all";

@@ -60,7 +60,13 @@
             <a class="section-link" href="../index.html">На главную</a>
           </header>
 
-          <div class="card offers-controls" aria-label="Фильтры акций">
+          <button class="btn btn-primary offers-open-filters-btn" id="offers-open-filters" type="button">Открыть фильтры</button>
+
+          <div class="card offers-controls offers-filters-card" id="offers-filters-card" aria-label="Фильтры акций">
+            <div class="offers-filters-head">
+              <strong>Фильтры акций</strong>
+              <button class="btn btn-ghost offers-filters-close" id="offers-filters-close" type="button">Закрыть фильтры</button>
+            </div>
             <div class="offers-grid">
               <div class="field">
                 <label for="offers-city">Город</label>
@@ -106,6 +112,7 @@
         </div>
       </section>
     </main>
+    <div class="offers-filters-backdrop" id="offers-filters-backdrop" hidden></div>
 
     <footer class="site-footer">
       <div class="container footer-inner">
