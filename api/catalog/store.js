@@ -12,6 +12,7 @@ const ALLOWED_ORIGINS = [
 
 const STAGES = new Set(["PLANNING", "ROUGH", "ENGINEERING", "FINISHING", "FURNITURE"]);
 const TASK_TYPES = new Set(["SANUZEL", "KITCHEN", "ELECTRICAL", "PLUMBING", "TILING", "PAINTING", "FLOORING", "WINDOWS", "DESIGN", "GENERAL"]);
+const SORTS = new Set(["rating", "price_asc", "price_desc", "newest"]);
 
 const MAX_REVIEW_COMMENT = 1000;
 
@@ -99,13 +100,15 @@ export function handleOptions(req, res, methods) {
 export function normalizeCatalogFilter(query = {}) {
   const stage = asString(query.stage).toUpperCase();
   const taskType = asString(query.taskType).toUpperCase();
+  const sortRaw = asString(query.sort);
   return {
     stage: STAGES.has(stage) ? stage : undefined,
     city: asString(query.city) || undefined,
     area: asString(query.area) || undefined,
     taskType: TASK_TYPES.has(taskType) ? taskType : undefined,
     minPrice: asOptionalNumber(query.minPrice),
-    maxPrice: asOptionalNumber(query.maxPrice)
+    maxPrice: asOptionalNumber(query.maxPrice),
+    sort: SORTS.has(sortRaw) ? sortRaw : "rating"
   };
 }
 
@@ -201,6 +204,48 @@ function buildPrismaWhere(filter) {
   return where;
 }
 
+function buildPrismaOrderBy(sort) {
+  if (sort === "price_asc") {
+    return [{ minPrice: "asc" }, { maxPrice: "asc" }, { rating: "desc" }, { ratingCount: "desc" }, { createdAt: "desc" }];
+  }
+  if (sort === "price_desc") {
+    return [{ maxPrice: "desc" }, { minPrice: "desc" }, { rating: "desc" }, { ratingCount: "desc" }, { createdAt: "desc" }];
+  }
+  if (sort === "newest") {
+    return [{ createdAt: "desc" }];
+  }
+  return [{ rating: "desc" }, { ratingCount: "desc" }, { createdAt: "desc" }];
+}
+
+function sortServicesInMemory(items, sort) {
+  const list = items.slice();
+  if (sort === "price_asc") {
+    return list.sort((a, b) => {
+      const av = typeof a.minPrice === "number" ? a.minPrice : typeof a.maxPrice === "number" ? a.maxPrice : Number.POSITIVE_INFINITY;
+      const bv = typeof b.minPrice === "number" ? b.minPrice : typeof b.maxPrice === "number" ? b.maxPrice : Number.POSITIVE_INFINITY;
+      if (av !== bv) return av - bv;
+      return (b.ratingCount || 0) - (a.ratingCount || 0);
+    });
+  }
+  if (sort === "price_desc") {
+    return list.sort((a, b) => {
+      const av = typeof a.maxPrice === "number" ? a.maxPrice : typeof a.minPrice === "number" ? a.minPrice : -1;
+      const bv = typeof b.maxPrice === "number" ? b.maxPrice : typeof b.minPrice === "number" ? b.minPrice : -1;
+      if (av !== bv) return bv - av;
+      return (b.ratingCount || 0) - (a.ratingCount || 0);
+    });
+  }
+  if (sort === "newest") {
+    return list.sort((a, b) => String(b.id || "").localeCompare(String(a.id || ""), "ru"));
+  }
+  return list.sort((a, b) => {
+    const ratingA = typeof a.rating === "number" ? a.rating : -1;
+    const ratingB = typeof b.rating === "number" ? b.rating : -1;
+    if (ratingA !== ratingB) return ratingB - ratingA;
+    return (b.ratingCount || 0) - (a.ratingCount || 0);
+  });
+}
+
 export async function listCatalogServices(filter, pagination) {
   const fromDb = await runWithPrisma(async (prisma) => {
     const where = buildPrismaWhere(filter);
@@ -215,7 +260,7 @@ export async function listCatalogServices(filter, pagination) {
             select: { id: true, name: true, type: true, city: true, promotionBannerUrl: true }
           }
         },
-        orderBy: [{ rating: "desc" }, { ratingCount: "desc" }, { createdAt: "desc" }]
+        orderBy: buildPrismaOrderBy(filter.sort)
       })
     ]);
     return { total, items: items.map(mapService) };
@@ -233,12 +278,7 @@ export async function listCatalogServices(filter, pagination) {
     if (!intersectsPriceRange(item, filter.minPrice, filter.maxPrice)) return false;
     return true;
   });
-  const ordered = filtered.slice().sort((a, b) => {
-    const ratingA = typeof a.rating === "number" ? a.rating : -1;
-    const ratingB = typeof b.rating === "number" ? b.rating : -1;
-    if (ratingA !== ratingB) return ratingB - ratingA;
-    return (b.ratingCount || 0) - (a.ratingCount || 0);
-  });
+  const ordered = sortServicesInMemory(filtered, filter.sort);
   return {
     total: ordered.length,
     items: ordered.slice(pagination.offset, pagination.offset + pagination.limit).map(mapService)

@@ -5,6 +5,7 @@
   const API_URL = "/api/catalog/services";
   const PAGE_SIZE = 20;
   const DEFAULT_PLACEHOLDER_IMAGE = "../assets/img/catalog-placeholder.svg";
+  const SORT_VALUES = new Set(["rating", "price_asc", "price_desc", "newest"]);
 
   const form = document.getElementById("catalog-filter-form");
   if (!form) return;
@@ -14,6 +15,7 @@
   const errorEl = document.getElementById("catalog-error");
   const errorMessageEl = document.getElementById("catalog-error-message");
   const countEl = document.getElementById("catalog-results-count");
+  const activeFiltersEl = document.getElementById("catalog-active-filters");
   const paginationEl = document.getElementById("catalog-pagination");
   const prevBtn = document.getElementById("catalog-prev-page");
   const nextBtn = document.getElementById("catalog-next-page");
@@ -21,7 +23,7 @@
   const resetBtn = document.getElementById("catalog-reset-filters");
   const currentStageEl = document.getElementById("catalog-current-stage");
   const stageSelectEl = getStageSelect();
-  const state = { page: 1, totalPages: 1 };
+  const state = { page: 1, totalPages: 1, isLoading: false };
   const FALLBACK_ITEMS = Array.isArray(window.REMCARD_CATALOG_SEED) ? window.REMCARD_CATALOG_SEED : [];
 
   function getStageSelect() {
@@ -53,6 +55,16 @@
       GENERAL: t("Другое", "General")
     };
     return map[value] || value || "-";
+  };
+
+  const sortLabel = (value) => {
+    const map = {
+      rating: t("По рейтингу", "By rating"),
+      price_asc: t("По цене: сначала дешевле", "Price: low to high"),
+      price_desc: t("По цене: сначала дороже", "Price: high to low"),
+      newest: t("Сначала новые", "Newest first")
+    };
+    return map[value] || map.rating;
   };
 
   const escapeHtml = (value) =>
@@ -98,6 +110,11 @@
     return DEFAULT_PLACEHOLDER_IMAGE;
   };
 
+  const toNum = (value) => {
+    const n = Number(value);
+    return Number.isFinite(n) ? n : undefined;
+  };
+
   const intersectsPriceRange = (item, minPrice, maxPrice) => {
     if (typeof minPrice !== "number" && typeof maxPrice !== "number") return true;
     if (typeof minPrice === "number" && typeof maxPrice === "number") {
@@ -107,15 +124,43 @@
     return item.minPrice == null || item.minPrice <= maxPrice;
   };
 
+  const sortFallbackItems = (items, sort) => {
+    const list = items.slice();
+    if (sort === "price_asc") {
+      return list.sort((a, b) => {
+        const av = typeof a.minPrice === "number" ? a.minPrice : typeof a.maxPrice === "number" ? a.maxPrice : Number.POSITIVE_INFINITY;
+        const bv = typeof b.minPrice === "number" ? b.minPrice : typeof b.maxPrice === "number" ? b.maxPrice : Number.POSITIVE_INFINITY;
+        if (av !== bv) return av - bv;
+        return (b.ratingCount || 0) - (a.ratingCount || 0);
+      });
+    }
+    if (sort === "price_desc") {
+      return list.sort((a, b) => {
+        const av = typeof a.maxPrice === "number" ? a.maxPrice : typeof a.minPrice === "number" ? a.minPrice : -1;
+        const bv = typeof b.maxPrice === "number" ? b.maxPrice : typeof b.minPrice === "number" ? b.minPrice : -1;
+        if (av !== bv) return bv - av;
+        return (b.ratingCount || 0) - (a.ratingCount || 0);
+      });
+    }
+    if (sort === "newest") {
+      return list.sort((a, b) => String(b.id || "").localeCompare(String(a.id || ""), "ru"));
+    }
+    return list.sort((a, b) => {
+      const ar = typeof a.rating === "number" ? a.rating : -1;
+      const br = typeof b.rating === "number" ? b.rating : -1;
+      if (ar !== br) return br - ar;
+      return (b.ratingCount || 0) - (a.ratingCount || 0);
+    });
+  };
+
   const listFallbackServices = (query, page) => {
     const stage = String(query.get("stage") || "").toUpperCase();
     const taskType = String(query.get("taskType") || "").toUpperCase();
     const city = String(query.get("city") || "").trim().toLowerCase();
     const area = String(query.get("area") || "").trim().toLowerCase();
-    const minPriceRaw = String(query.get("minPrice") || "").trim();
-    const maxPriceRaw = String(query.get("maxPrice") || "").trim();
-    const minPrice = minPriceRaw ? Number(minPriceRaw) : undefined;
-    const maxPrice = maxPriceRaw ? Number(maxPriceRaw) : undefined;
+    const minPrice = toNum(query.get("minPrice"));
+    const maxPrice = toNum(query.get("maxPrice"));
+    const sort = SORT_VALUES.has(String(query.get("sort") || "")) ? String(query.get("sort")) : "rating";
 
     const filtered = FALLBACK_ITEMS.filter((item) => {
       if (!item || !item.isActive) return false;
@@ -131,12 +176,7 @@
       return true;
     });
 
-    const ordered = filtered.slice().sort((a, b) => {
-      const ar = typeof a.rating === "number" ? a.rating : -1;
-      const br = typeof b.rating === "number" ? b.rating : -1;
-      if (ar !== br) return br - ar;
-      return (b.ratingCount || 0) - (a.ratingCount || 0);
-    });
+    const ordered = sortFallbackItems(filtered, sort);
 
     const offset = (Math.max(1, page) - 1) * PAGE_SIZE;
     return {
@@ -160,9 +200,11 @@
   const readCurrentParams = () => {
     const params = new URLSearchParams(window.location.search || "");
     const page = Math.max(1, Number(params.get("page")) || 1);
+    const sortRaw = String(params.get("sort") || "");
     return {
       stage: params.get("stage") || "",
       taskType: params.get("taskType") || "",
+      sort: SORT_VALUES.has(sortRaw) ? sortRaw : "rating",
       city: params.get("city") || "",
       area: params.get("area") || "",
       minPrice: params.get("minPrice") || "",
@@ -174,6 +216,7 @@
   const applyParamsToForm = (params) => {
     setFieldValue("stage", params.stage);
     setFieldValue("taskType", params.taskType);
+    setFieldValue("sort", params.sort || "rating");
     setFieldValue("city", params.city || "");
     setFieldValue("area", params.area);
     setFieldValue("minPrice", params.minPrice);
@@ -184,6 +227,7 @@
     const out = new URLSearchParams();
     const stage = getFieldValue("stage").toUpperCase();
     const taskType = getFieldValue("taskType").toUpperCase();
+    const sort = SORT_VALUES.has(getFieldValue("sort")) ? getFieldValue("sort") : "rating";
     const city = getFieldValue("city");
     const area = getFieldValue("area");
     const minPrice = getFieldValue("minPrice");
@@ -191,6 +235,7 @@
 
     if (stage) out.set("stage", stage);
     if (taskType) out.set("taskType", taskType);
+    if (sort) out.set("sort", sort);
     if (city) out.set("city", city);
     if (area) out.set("area", area);
     if (minPrice) out.set("minPrice", minPrice);
@@ -205,6 +250,7 @@
     const next = new URLSearchParams(params.toString());
     if (next.get("page") === "1") next.delete("page");
     if (next.get("pageSize") === String(PAGE_SIZE)) next.delete("pageSize");
+    if (next.get("sort") === "rating") next.delete("sort");
     const qs = next.toString();
     const nextUrl = `${window.location.pathname}${qs ? `?${qs}` : ""}`;
     window.history.replaceState(null, "", nextUrl);
@@ -256,11 +302,87 @@
     return article;
   };
 
+  const createSkeletonCard = () => {
+    const article = document.createElement("article");
+    article.className = "card catalog-item-card is-skeleton";
+    article.innerHTML = `
+      <div class="catalog-item-media"><div class="skeleton skeleton-media"></div></div>
+      <div class="catalog-item-body">
+        <div class="skeleton skeleton-line skeleton-title"></div>
+        <div class="skeleton skeleton-line skeleton-subtitle"></div>
+        <div class="skeleton skeleton-line skeleton-price"></div>
+        <div class="skeleton skeleton-line skeleton-meta"></div>
+        <div class="partner-meta catalog-item-tags">
+          <span class="skeleton skeleton-chip"></span>
+          <span class="skeleton skeleton-chip"></span>
+        </div>
+      </div>
+    `;
+    return article;
+  };
+
+  const renderSkeleton = (count = 8) => {
+    if (!listEl) return;
+    listEl.innerHTML = "";
+    for (let i = 0; i < count; i += 1) listEl.appendChild(createSkeletonCard());
+  };
+
+  const renderActiveFilterChips = () => {
+    if (!activeFiltersEl) return;
+    const entries = [];
+    const stage = getFieldValue("stage").toUpperCase();
+    const taskType = getFieldValue("taskType").toUpperCase();
+    const city = getFieldValue("city");
+    const area = getFieldValue("area");
+    const minPrice = getFieldValue("minPrice");
+    const maxPrice = getFieldValue("maxPrice");
+    const sort = SORT_VALUES.has(getFieldValue("sort")) ? getFieldValue("sort") : "rating";
+
+    if (stage) entries.push({ key: "stage", label: `${t("Этап", "Stage")}: ${stageLabel(stage)}` });
+    if (taskType) entries.push({ key: "taskType", label: `${t("Тип задачи", "Task type")}: ${taskTypeLabel(taskType)}` });
+    if (city) entries.push({ key: "city", label: `${t("Город", "City")}: ${city}` });
+    if (area) entries.push({ key: "area", label: `${t("Район", "District")}: ${area}` });
+    if (minPrice) entries.push({ key: "minPrice", label: `${t("Цена от (₽)", "Price from (₽)")}: ${minPrice}` });
+    if (maxPrice) entries.push({ key: "maxPrice", label: `${t("Цена до (₽)", "Price to (₽)")}: ${maxPrice}` });
+    if (sort !== "rating") entries.push({ key: "sort", label: `${t("Сортировка", "Sorting")}: ${sortLabel(sort)}` });
+
+    if (!entries.length) {
+      activeFiltersEl.hidden = true;
+      activeFiltersEl.innerHTML = "";
+      return;
+    }
+
+    activeFiltersEl.hidden = false;
+    activeFiltersEl.innerHTML = "";
+    entries.forEach((entry) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "catalog-filter-chip";
+      btn.dataset.filterKey = entry.key;
+      btn.textContent = `${entry.label} ×`;
+      activeFiltersEl.appendChild(btn);
+    });
+
+    const reset = document.createElement("button");
+    reset.type = "button";
+    reset.className = "catalog-filter-chip is-reset";
+    reset.dataset.filterKey = "__reset";
+    reset.textContent = t("Сбросить всё", "Reset all");
+    activeFiltersEl.appendChild(reset);
+  };
+
   const setLoading = (loading) => {
+    state.isLoading = loading;
     if (loading && countEl) countEl.textContent = t("Загружаем услуги...", "Loading services...");
     if (loading && errorEl) errorEl.hidden = true;
+    if (loading) {
+      if (emptyEl) emptyEl.hidden = true;
+      renderSkeleton(8);
+    }
     const submitBtn = form.querySelector("button[type='submit']");
     if (submitBtn) submitBtn.disabled = loading;
+    if (prevBtn) prevBtn.disabled = loading || state.page <= 1;
+    if (nextBtn) nextBtn.disabled = loading || state.page >= state.totalPages;
   };
 
   const setError = (message) => {
@@ -271,6 +393,7 @@
     if (errorMessageEl) errorMessageEl.textContent = safeMessage;
     if (countEl) countEl.textContent = t("Ошибка загрузки каталога", "Catalog loading error");
     if (paginationEl) paginationEl.hidden = true;
+    renderActiveFilterChips();
   };
 
   const renderCatalogPayload = (payload, page, { fromFallback = false } = {}) => {
@@ -296,6 +419,7 @@
     if (pageLabelEl) pageLabelEl.textContent = `${t("Страница", "Page")} ${state.page} ${t("из", "of")} ${state.totalPages}`;
     if (prevBtn) prevBtn.disabled = state.page <= 1;
     if (nextBtn) nextBtn.disabled = state.page >= state.totalPages;
+    renderActiveFilterChips();
   };
 
   const loadCatalog = async ({ page = 1 } = {}) => {
@@ -343,6 +467,7 @@
     resetBtn.addEventListener("click", () => {
       setFieldValue("stage", "");
       setFieldValue("taskType", "");
+      setFieldValue("sort", "rating");
       setFieldValue("city", "");
       setFieldValue("area", "");
       setFieldValue("minPrice", "");
@@ -359,6 +484,21 @@
   if (nextBtn) {
     nextBtn.addEventListener("click", () => {
       loadCatalog({ page: Math.min(state.totalPages, state.page + 1) });
+    });
+  }
+
+  if (activeFiltersEl) {
+    activeFiltersEl.addEventListener("click", (e) => {
+      const btn = e.target && e.target.closest ? e.target.closest("button[data-filter-key]") : null;
+      if (!btn) return;
+      const key = String(btn.dataset.filterKey || "");
+      if (key === "__reset") {
+        if (resetBtn) resetBtn.click();
+        return;
+      }
+      if (key === "sort") setFieldValue("sort", "rating");
+      else setFieldValue(key, "");
+      loadCatalog({ page: 1 });
     });
   }
 

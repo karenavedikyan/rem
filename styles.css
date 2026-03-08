@@ -1873,6 +1873,33 @@ img {
   margin-bottom: 10px;
 }
 
+.catalog-active-filters {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.catalog-filter-chip {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(245, 245, 245, 0.95);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 12px;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.catalog-filter-chip:hover {
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.catalog-filter-chip.is-reset {
+  border-color: rgba(229, 57, 53, 0.35);
+  background: rgba(229, 57, 53, 0.12);
+}
+
 .catalog-current-stage {
   display: inline-flex;
   margin-left: 8px;
@@ -1896,6 +1923,65 @@ img {
   display: grid;
   gap: 0;
   overflow: hidden;
+}
+
+.catalog-item-card.is-skeleton .catalog-item-image {
+  display: none;
+}
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent);
+  animation: skeleton-shimmer 1.35s infinite;
+}
+
+.skeleton-media {
+  width: 100%;
+  height: 100%;
+}
+
+.skeleton-line {
+  height: 12px;
+  border-radius: 6px;
+}
+
+.skeleton-title {
+  height: 16px;
+  width: 88%;
+}
+
+.skeleton-subtitle {
+  width: 62%;
+}
+
+.skeleton-price {
+  width: 48%;
+}
+
+.skeleton-meta {
+  width: 76%;
+}
+
+.skeleton-chip {
+  display: inline-block;
+  width: 86px;
+  height: 24px;
+  border-radius: 999px;
+}
+
+@keyframes skeleton-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 .catalog-item-media {
