@@ -1869,6 +1869,17 @@ img {
   margin-bottom: 10px;
 }
 
+.catalog-filters-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.catalog-filters-close {
+  display: none;
+}
+
 .catalog-results-head {
   margin-bottom: 10px;
 }
@@ -1926,6 +1937,14 @@ img {
 .catalog-sort-chip.is-active {
   border-color: rgba(229, 57, 53, 0.5);
   background: rgba(229, 57, 53, 0.18);
+}
+
+.catalog-open-filters-btn {
+  display: none;
+}
+
+.catalog-filters-backdrop {
+  display: none;
 }
 
 .catalog-current-stage {
@@ -2118,6 +2137,75 @@ img {
 }
 
 @media (max-width: 760px) {
+  .catalog-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .catalog-filters-card {
+    position: fixed;
+    left: 10px;
+    right: 10px;
+    bottom: 0;
+    top: auto;
+    z-index: 30;
+    max-height: 88vh;
+    overflow-y: auto;
+    border-radius: 14px 14px 0 0;
+    transform: translateY(112%);
+    transition: transform 220ms var(--ease);
+  }
+
+  .catalog-filters-card.is-open {
+    transform: translateY(0);
+  }
+
+  .catalog-filters-head {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    margin: -14px -14px 10px;
+    padding: 14px;
+    background: rgba(18, 18, 18, 0.96);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px 14px 0 0;
+  }
+
+  .catalog-filters-card h2 {
+    margin: 0;
+  }
+
+  .catalog-filters-close {
+    display: inline-flex;
+  }
+
+  .catalog-open-filters-btn {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: 14px;
+    z-index: 20;
+    display: inline-flex;
+    justify-content: center;
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.36);
+  }
+
+  .catalog-filters-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 25;
+    background: rgba(0, 0, 0, 0.55);
+  }
+
+  body.catalog-filters-open {
+    overflow: hidden;
+  }
+
+  body.catalog-filters-open .catalog-open-filters-btn {
+    opacity: 0;
+    pointer-events: none;
+  }
+
   .catalog-list {
     grid-template-columns: 1fr;
   }
@@ -2139,6 +2227,10 @@ img {
     overflow-x: auto;
     overflow-y: hidden;
     padding-bottom: 2px;
+  }
+
+  .catalog-pagination {
+    margin-bottom: 76px;
   }
 }
 

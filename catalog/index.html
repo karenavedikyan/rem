@@ -57,8 +57,11 @@
           </header>
 
           <div class="catalog-layout">
-            <aside class="card catalog-filters-card">
-              <h2>Фильтры каталога</h2>
+            <aside class="card catalog-filters-card" id="catalog-filters-card">
+              <div class="catalog-filters-head">
+                <h2>Фильтры каталога</h2>
+                <button class="btn btn-ghost catalog-filters-close" id="catalog-filters-close" type="button">Закрыть фильтры</button>
+              </div>
               <form class="form" id="catalog-filter-form" novalidate>
                 <div class="form-grid">
                   <div class="field">
@@ -139,6 +142,7 @@
                   <button class="catalog-sort-chip" type="button" data-sort="newest">Новые</button>
                 </div>
               </div>
+              <button class="btn btn-primary catalog-open-filters-btn" id="catalog-open-filters" type="button">Открыть фильтры</button>
 
               <div class="catalog-list" id="catalog-list" aria-live="polite"></div>
 
@@ -162,6 +166,8 @@
         </div>
       </section>
     </main>
+
+    <div class="catalog-filters-backdrop" id="catalog-filters-backdrop" hidden></div>
 
     <footer class="site-footer">
       <div class="container footer-inner">

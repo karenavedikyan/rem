@@ -17,6 +17,10 @@
   const countEl = document.getElementById("catalog-results-count");
   const activeFiltersEl = document.getElementById("catalog-active-filters");
   const quickSortEl = document.getElementById("catalog-quick-sort");
+  const filtersCardEl = document.getElementById("catalog-filters-card");
+  const openFiltersBtn = document.getElementById("catalog-open-filters");
+  const closeFiltersBtn = document.getElementById("catalog-filters-close");
+  const filtersBackdropEl = document.getElementById("catalog-filters-backdrop");
   const paginationEl = document.getElementById("catalog-pagination");
   const prevBtn = document.getElementById("catalog-prev-page");
   const nextBtn = document.getElementById("catalog-next-page");
@@ -197,6 +201,23 @@
   };
 
   const getField = (name) => form.querySelector(`[name="${CSS.escape(name)}"]`);
+  const isMobileView = () => window.matchMedia("(max-width: 760px)").matches;
+
+  const closeMobileFilters = () => {
+    if (!filtersCardEl || !filtersBackdropEl) return;
+    filtersCardEl.classList.remove("is-open");
+    document.body.classList.remove("catalog-filters-open");
+    filtersBackdropEl.hidden = true;
+    if (openFiltersBtn) openFiltersBtn.setAttribute("aria-expanded", "false");
+  };
+
+  const openMobileFilters = () => {
+    if (!filtersCardEl || !filtersBackdropEl || !isMobileView()) return;
+    filtersCardEl.classList.add("is-open");
+    document.body.classList.add("catalog-filters-open");
+    filtersBackdropEl.hidden = false;
+    if (openFiltersBtn) openFiltersBtn.setAttribute("aria-expanded", "true");
+  };
   const setFieldValue = (name, value) => {
     const el = getField(name);
     if (!el || !("value" in el)) return;
@@ -488,6 +509,7 @@
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     loadCatalog({ page: 1 });
+    if (isMobileView()) closeMobileFilters();
   });
 
   if (resetBtn) {
@@ -500,6 +522,7 @@
       setFieldValue("minPrice", "");
       setFieldValue("maxPrice", "");
       loadCatalog({ page: 1 });
+      if (isMobileView()) closeMobileFilters();
     });
   }
 
@@ -525,6 +548,33 @@
       loadCatalog({ page: 1 });
     });
   }
+
+  if (openFiltersBtn) {
+    openFiltersBtn.setAttribute("aria-expanded", "false");
+    openFiltersBtn.addEventListener("click", () => {
+      openMobileFilters();
+    });
+  }
+
+  if (closeFiltersBtn) {
+    closeFiltersBtn.addEventListener("click", () => {
+      closeMobileFilters();
+    });
+  }
+
+  if (filtersBackdropEl) {
+    filtersBackdropEl.addEventListener("click", () => {
+      closeMobileFilters();
+    });
+  }
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeMobileFilters();
+  });
+
+  window.addEventListener("resize", () => {
+    if (!isMobileView()) closeMobileFilters();
+  });
 
   if (activeFiltersEl) {
     activeFiltersEl.addEventListener("click", (e) => {
