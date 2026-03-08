@@ -2626,14 +2626,6 @@ img {
     grid-template-columns: 1fr;
   }
 
-  .catalog-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .catalog-filters-card {
-    position: static;
-  }
-
   .catalog-service-layout {
     grid-template-columns: 1fr;
   }
@@ -2682,6 +2674,16 @@ img {
 
   .nav-link {
     padding: 12px 12px;
+  }
+}
+
+@media (min-width: 761px) and (max-width: 980px) {
+  .catalog-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .catalog-filters-card {
+    position: static;
   }
 }
 
