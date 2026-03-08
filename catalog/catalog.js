@@ -162,7 +162,7 @@
     window.history.replaceState(null, "", nextUrl);
   };
 
-  const buildServiceDetailsHref = (item) => `./service/?id=${encodeURIComponent(String(item.id || ""))}`;
+  const buildServiceDetailsHref = (item) => `/catalog/services/${encodeURIComponent(String(item.id || ""))}`;
 
   const updateStageUi = (stageCode) => {
     const hasStage = Boolean(stageCode);

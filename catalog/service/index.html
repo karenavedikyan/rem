@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Отзывы и рейтинг услуги RemCard." />
-    <title>RemCard — Отзывы по услуге</title>
+    <meta name="description" content="Карточка услуги RemCard: описание, характеристики, цена и отзывы." />
+    <title>RemCard — Карточка услуги</title>
     <link rel="stylesheet" href="../../styles.css" />
   </head>
   <body>
@@ -37,19 +37,60 @@
     <main id="main">
       <section class="section">
         <div class="container">
-          <header class="section-header">
-            <h1 id="service-title">Услуга</h1>
-            <p class="section-subtitle" id="service-meta">Загрузка данных...</p>
-          </header>
+          <div class="catalog-service-layout">
+            <article class="card catalog-service-main-card">
+              <div class="catalog-service-media-box">
+                <img class="catalog-service-main-image" id="service-main-image" src="../../assets/img/catalog-placeholder.svg" alt="" loading="lazy" />
+              </div>
+              <div class="catalog-service-thumbs" id="service-image-thumbs" hidden></div>
 
-          <div class="partner-cabinet-stack">
+              <header class="catalog-service-main-head">
+                <h1 id="service-title">Услуга</h1>
+                <p class="section-subtitle" id="service-meta">Загрузка данных...</p>
+              </header>
+
+              <div class="partner-meta" id="service-badges"></div>
+              <p class="catalog-service-full-description" id="service-description">Описание загружается...</p>
+
+              <div class="catalog-service-specs">
+                <div class="catalog-service-spec-row">
+                  <span class="muted">Партнёр</span>
+                  <strong id="service-partner">—</strong>
+                </div>
+                <div class="catalog-service-spec-row">
+                  <span class="muted">Этап</span>
+                  <strong id="service-stage">—</strong>
+                </div>
+                <div class="catalog-service-spec-row">
+                  <span class="muted">Тип задачи</span>
+                  <strong id="service-task-type">—</strong>
+                </div>
+                <div class="catalog-service-spec-row">
+                  <span class="muted">Город</span>
+                  <strong id="service-city">—</strong>
+                </div>
+                <div class="catalog-service-spec-row">
+                  <span class="muted">Районы</span>
+                  <strong id="service-areas">—</strong>
+                </div>
+              </div>
+            </article>
+
+            <aside class="card catalog-service-sticky-card">
+              <h2 class="catalog-service-sticky-title">Заказать услугу</h2>
+              <div class="catalog-service-price" id="service-price">Цена по запросу</div>
+              <div class="catalog-service-rating" id="service-rating">Новый</div>
+              <div class="catalog-service-sticky-actions">
+                <a class="btn btn-primary" id="service-request-link" href="../../index.html#request">Оставить заявку на эту услугу</a>
+                <a class="btn btn-ghost" id="back-to-catalog-link" href="../">Вернуться в каталог</a>
+              </div>
+            </aside>
+          </div>
+
+          <div class="partner-cabinet-stack catalog-service-bottom">
             <article class="card">
               <div class="partner-cabinet-card-title-row">
                 <h2>Последние отзывы</h2>
-                <div class="catalog-service-actions">
-                  <a class="btn btn-primary" id="service-request-link" href="../../index.html#request">Оставить заявку на эту услугу</a>
-                  <a class="btn btn-ghost" id="back-to-catalog-link" href="../">Вернуться в каталог</a>
-                </div>
               </div>
               <div class="catalog-reviews-list" id="service-reviews-list"></div>
               <div class="form-result" id="service-reviews-empty" hidden>

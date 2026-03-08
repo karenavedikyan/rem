@@ -442,6 +442,13 @@
     "отзывов": "reviews",
     "RemCard — Отзывы по услуге": "RemCard — Service reviews",
     "Отзывы и рейтинг услуги RemCard.": "Reviews and rating for RemCard service.",
+    "RemCard — Карточка услуги": "RemCard — Service card",
+    "Карточка услуги RemCard: описание, характеристики, цена и отзывы.":
+      "RemCard service card: description, specs, price, and reviews.",
+    "Заказать услугу": "Order service",
+    "Фото": "Photo",
+    "Описание загружается...": "Description is loading...",
+    "Описание появится скоро.": "Description will be available soon.",
     "Услуга не найдена": "Service not found",
     "Не передан id услуги.": "Missing service id.",
     "Последние отзывы": "Latest reviews",

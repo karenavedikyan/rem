@@ -1954,6 +1954,125 @@ img {
   font-size: 14px;
 }
 
+.catalog-service-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 320px);
+  gap: 16px;
+  align-items: start;
+}
+
+.catalog-service-main-card {
+  display: grid;
+  gap: 12px;
+}
+
+.catalog-service-media-box {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.catalog-service-main-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.catalog-service-thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.catalog-service-thumb {
+  width: 84px;
+  height: 64px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(245, 245, 245, 0.16);
+  padding: 0;
+  background: rgba(18, 18, 18, 0.55);
+  cursor: pointer;
+}
+
+.catalog-service-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.catalog-service-thumb.is-active {
+  border-color: rgba(229, 57, 53, 0.55);
+  box-shadow: 0 0 0 2px rgba(229, 57, 53, 0.18);
+}
+
+.catalog-service-main-head h1 {
+  margin: 0;
+}
+
+.catalog-service-main-head .section-subtitle {
+  margin-top: 6px;
+}
+
+.catalog-service-full-description {
+  margin: 0;
+  color: rgba(245, 245, 245, 0.9);
+  line-height: 1.5;
+}
+
+.catalog-service-specs {
+  display: grid;
+  gap: 8px;
+  padding-top: 4px;
+}
+
+.catalog-service-spec-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed rgba(245, 245, 245, 0.1);
+}
+
+.catalog-service-spec-row strong {
+  text-align: right;
+}
+
+.catalog-service-sticky-card {
+  position: sticky;
+  top: 88px;
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+
+.catalog-service-sticky-title {
+  margin: 0;
+}
+
+.catalog-service-price {
+  font-size: 21px;
+  font-weight: 900;
+}
+
+.catalog-service-rating {
+  color: rgba(176, 190, 197, 0.95);
+}
+
+.catalog-service-sticky-actions {
+  display: grid;
+  gap: 8px;
+}
+
+.catalog-service-bottom {
+  margin-top: 14px;
+}
+
 .input-stage-active {
   border-color: rgba(229, 57, 53, 0.55) !important;
   box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.18);
@@ -2174,6 +2293,14 @@ img {
   }
 
   .catalog-filters-card {
+    position: static;
+  }
+
+  .catalog-service-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .catalog-service-sticky-card {
     position: static;
   }
 

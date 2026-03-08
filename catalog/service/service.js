@@ -4,6 +4,17 @@
 
   const titleEl = document.getElementById("service-title");
   const metaEl = document.getElementById("service-meta");
+  const mainImageEl = document.getElementById("service-main-image");
+  const thumbsEl = document.getElementById("service-image-thumbs");
+  const badgesEl = document.getElementById("service-badges");
+  const descriptionEl = document.getElementById("service-description");
+  const partnerEl = document.getElementById("service-partner");
+  const stageEl = document.getElementById("service-stage");
+  const taskTypeEl = document.getElementById("service-task-type");
+  const cityEl = document.getElementById("service-city");
+  const areasEl = document.getElementById("service-areas");
+  const priceEl = document.getElementById("service-price");
+  const ratingEl = document.getElementById("service-rating");
   const listEl = document.getElementById("service-reviews-list");
   const emptyEl = document.getElementById("service-reviews-empty");
   const form = document.getElementById("service-review-form");
@@ -44,6 +55,17 @@
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;");
 
+  const PLACEHOLDER_IMAGE = "../../assets/img/catalog-placeholder.svg";
+
+  const normalizeImageUrl = (value) => {
+    const src = String(value || "").trim();
+    if (!src) return PLACEHOLDER_IMAGE;
+    if (src.startsWith("http://") || src.startsWith("https://") || src.startsWith("/") || src.startsWith("./") || src.startsWith("../")) {
+      return src;
+    }
+    return PLACEHOLDER_IMAGE;
+  };
+
   const stageLabel = (value) => {
     const map = {
       PLANNING: t("Планирование", "Planning"),
@@ -56,8 +78,38 @@
   };
 
   const getRatingText = (rating, ratingCount) => {
-    if (typeof rating !== "number" || !ratingCount) return t("Новый партнёр", "New partner");
+    if (typeof rating !== "number" || !ratingCount) return t("Новый", "New");
     return `${rating.toFixed(1)} · ${ratingCount} ${t("отзывов", "reviews")}`;
+  };
+
+  const taskTypeLabel = (value) => {
+    const map = {
+      SANUZEL: t("Санузел", "Bathroom"),
+      KITCHEN: t("Кухня", "Kitchen"),
+      ELECTRICAL: t("Электрика", "Electrical"),
+      PLUMBING: t("Сантехника", "Plumbing"),
+      TILING: t("Плитка", "Tiling"),
+      PAINTING: t("Покраска / обои", "Painting / wallpaper"),
+      FLOORING: t("Полы", "Flooring"),
+      WINDOWS: t("Окна", "Windows"),
+      DESIGN: t("Дизайн / проект", "Design / planning"),
+      GENERAL: t("Другое", "General")
+    };
+    return map[value] || value || "-";
+  };
+
+  const formatPrice = (n) =>
+    typeof n === "number"
+      ? new Intl.NumberFormat(I18N && I18N.isEn ? "en-US" : "ru-RU", { maximumFractionDigits: 0 }).format(n)
+      : null;
+
+  const formatPriceRange = (minPrice, maxPrice) => {
+    const min = formatPrice(minPrice);
+    const max = formatPrice(maxPrice);
+    if (min && max) return `${t("от", "from")} ${min} ${t("до", "to")} ${max} ₽`;
+    if (min) return `${t("от", "from")} ${min} ₽`;
+    if (max) return `${t("до", "up to")} ${max} ₽`;
+    return t("Цена по запросу", "Price on request");
   };
 
   const api = (path) => new URL(path, window.location.origin).href;
@@ -99,6 +151,78 @@
     emptyEl.hidden = items.length > 0;
   };
 
+  const renderGallery = (service) => {
+    if (!mainImageEl) return;
+    const sources = [];
+    const primary = normalizeImageUrl(service.imageUrl);
+    sources.push(primary);
+    const secondary = normalizeImageUrl(service.partner && service.partner.promotionBannerUrl);
+    if (secondary !== primary) sources.push(secondary);
+    const images = Array.from(new Set(sources.filter(Boolean)));
+
+    const setActive = (src) => {
+      mainImageEl.src = src;
+      mainImageEl.alt = service.title || t("Услуга", "Service");
+      if (!thumbsEl) return;
+      thumbsEl.querySelectorAll("button[data-src]").forEach((btn) => {
+        btn.classList.toggle("is-active", btn.getAttribute("data-src") === src);
+      });
+    };
+
+    setActive(images[0] || PLACEHOLDER_IMAGE);
+    if (!thumbsEl) return;
+
+    thumbsEl.innerHTML = "";
+    if (images.length <= 1) {
+      thumbsEl.hidden = true;
+      return;
+    }
+    thumbsEl.hidden = false;
+    images.forEach((src, idx) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "catalog-service-thumb";
+      btn.setAttribute("data-src", src);
+      btn.setAttribute("aria-label", `${t("Фото", "Photo")} ${idx + 1}`);
+      btn.innerHTML = `<img src="${escapeHtml(src)}" alt="" loading="lazy" />`;
+      btn.addEventListener("click", () => setActive(src));
+      thumbsEl.appendChild(btn);
+    });
+    setActive(images[0]);
+  };
+
+  const renderServiceInfo = (service) => {
+    if (descriptionEl) {
+      descriptionEl.textContent = service.description || t("Описание появится скоро.", "Description will be available soon.");
+    }
+    if (partnerEl) partnerEl.textContent = service.partner?.name || "-";
+    if (stageEl) stageEl.textContent = stageLabel(service.stage);
+    if (taskTypeEl) taskTypeEl.textContent = taskTypeLabel(service.taskType);
+    if (cityEl) cityEl.textContent = service.city || "-";
+    if (areasEl) areasEl.textContent = Array.isArray(service.areas) && service.areas.length ? service.areas.join(", ") : "—";
+    if (priceEl) priceEl.textContent = formatPriceRange(service.minPrice, service.maxPrice);
+    if (ratingEl) ratingEl.textContent = getRatingText(service.rating, service.ratingCount);
+
+    if (badgesEl) {
+      badgesEl.innerHTML = "";
+      const stageChip = document.createElement("span");
+      stageChip.className = "tag";
+      stageChip.textContent = stageLabel(service.stage);
+      const taskChip = document.createElement("span");
+      taskChip.className = "tag";
+      taskChip.textContent = taskTypeLabel(service.taskType);
+      badgesEl.appendChild(stageChip);
+      badgesEl.appendChild(taskChip);
+      if (service.isOffer && service.promotionLabel) {
+        const promoChip = document.createElement("span");
+        promoChip.className = "tag tag-promo";
+        promoChip.textContent = service.promotionLabel;
+        badgesEl.appendChild(promoChip);
+      }
+    }
+    renderGallery(service);
+  };
+
   const setResult = ({ type, title, text }) => {
     const titleNode = resultEl.querySelector(".form-result-title");
     const textNode = resultEl.querySelector(".form-result-text");
@@ -115,6 +239,7 @@
     titleEl.textContent = service.title || t("Услуга", "Service");
     metaEl.textContent = `${t("Этап", "Stage")}: ${stageLabel(service.stage)} • ${getRatingText(service.rating, service.ratingCount)}`;
     if (requestLink) requestLink.href = buildRequestHref(service);
+    renderServiceInfo(service);
     renderReviews(reviews);
 
     if (I18N && I18N.isEn && typeof I18N.applyTo === "function") {
