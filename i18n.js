@@ -441,6 +441,8 @@
     "Новые": "Newest",
     "Открыть фильтры": "Open filters",
     "Закрыть фильтры": "Close filters",
+    "Развернуть фильтры": "Expand filters",
+    "Свернуть фильтры": "Collapse filters",
     "Применить фильтры": "Apply filters",
     "Сбросить фильтры": "Reset filters",
     "Сбросить всё": "Reset all",

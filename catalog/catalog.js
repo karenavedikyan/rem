@@ -31,8 +31,12 @@
   const stageSelectEl = getStageSelect();
   const state = { page: 1, totalPages: 1, isLoading: false };
   const FALLBACK_ITEMS = Array.isArray(window.REMCARD_CATALOG_SEED) ? window.REMCARD_CATALOG_SEED : [];
-  const SHEET_CLOSE_THRESHOLD = 96;
+  const SHEET_CLOSE_THRESHOLD = 120;
+  const SHEET_SNAP_THRESHOLD = 64;
+  const SHEET_CLOSE_FROM_EXPANDED_THRESHOLD = 180;
   let sheetDragState = null;
+  let sheetMode = "mid";
+  let suppressGrabberClick = false;
 
   function getStageSelect() {
     return form.querySelector('select[name="stage"]');
@@ -205,6 +209,14 @@
 
   const getField = (name) => form.querySelector(`[name="${CSS.escape(name)}"]`);
   const isMobileView = () => window.matchMedia("(max-width: 760px)").matches;
+  const setSheetMode = (mode) => {
+    sheetMode = mode === "expanded" ? "expanded" : "mid";
+    if (filtersCardEl) filtersCardEl.classList.toggle("is-expanded", sheetMode === "expanded");
+    if (sheetGrabberEl) {
+      sheetGrabberEl.setAttribute("aria-label", sheetMode === "expanded" ? t("Свернуть фильтры", "Collapse filters") : t("Развернуть фильтры", "Expand filters"));
+    }
+  };
+
   const clearSheetDragStyle = () => {
     if (!filtersCardEl) return;
     filtersCardEl.style.removeProperty("transform");
@@ -214,7 +226,9 @@
   const closeMobileFilters = () => {
     if (!filtersCardEl || !filtersBackdropEl) return;
     sheetDragState = null;
+    suppressGrabberClick = false;
     clearSheetDragStyle();
+    setSheetMode("mid");
     filtersCardEl.classList.remove("is-open");
     document.body.classList.remove("catalog-filters-open");
     filtersBackdropEl.hidden = true;
@@ -224,7 +238,9 @@
   const openMobileFilters = () => {
     if (!filtersCardEl || !filtersBackdropEl || !isMobileView()) return;
     sheetDragState = null;
+    suppressGrabberClick = false;
     clearSheetDragStyle();
+    setSheetMode("mid");
     filtersCardEl.classList.add("is-open");
     document.body.classList.add("catalog-filters-open");
     filtersBackdropEl.hidden = false;
@@ -233,7 +249,8 @@
 
   const startSheetDrag = (clientY) => {
     if (!filtersCardEl || !isMobileView() || !filtersCardEl.classList.contains("is-open")) return false;
-    sheetDragState = { startY: clientY, currentY: clientY };
+    sheetDragState = { startY: clientY, currentY: clientY, modeAtStart: sheetMode };
+    suppressGrabberClick = false;
     filtersCardEl.classList.add("is-dragging");
     return true;
   };
@@ -241,18 +258,47 @@
   const updateSheetDrag = (clientY) => {
     if (!sheetDragState || !filtersCardEl) return;
     sheetDragState.currentY = clientY;
-    const delta = Math.max(0, sheetDragState.currentY - sheetDragState.startY);
-    filtersCardEl.style.transform = `translateY(${Math.round(delta)}px)`;
+    const rawDelta = sheetDragState.currentY - sheetDragState.startY;
+    if (Math.abs(rawDelta) > 8) suppressGrabberClick = true;
+    const boundedDelta = sheetDragState.modeAtStart === "expanded" ? Math.max(0, rawDelta) : Math.max(-130, rawDelta);
+    filtersCardEl.style.transform = `translateY(${Math.round(boundedDelta)}px)`;
   };
 
   const finishSheetDrag = () => {
     if (!sheetDragState) return;
-    const delta = Math.max(0, sheetDragState.currentY - sheetDragState.startY);
+    const delta = sheetDragState.currentY - sheetDragState.startY;
+    const modeAtStart = sheetDragState.modeAtStart;
     sheetDragState = null;
+    if (modeAtStart === "expanded") {
+      if (delta >= SHEET_CLOSE_FROM_EXPANDED_THRESHOLD) {
+        closeMobileFilters();
+        return;
+      }
+      if (delta >= SHEET_SNAP_THRESHOLD) {
+        clearSheetDragStyle();
+        setSheetMode("mid");
+        return;
+      }
+      clearSheetDragStyle();
+      setSheetMode("expanded");
+      return;
+    }
+    if (delta <= -SHEET_SNAP_THRESHOLD) {
+      clearSheetDragStyle();
+      setSheetMode("expanded");
+      return;
+    }
     if (delta >= SHEET_CLOSE_THRESHOLD) {
       closeMobileFilters();
       return;
     }
+    clearSheetDragStyle();
+    setSheetMode("mid");
+  };
+
+  const toggleSheetMode = () => {
+    if (!filtersCardEl || !filtersCardEl.classList.contains("is-open")) return;
+    setSheetMode(sheetMode === "expanded" ? "mid" : "expanded");
     clearSheetDragStyle();
   };
   const setFieldValue = (name, value) => {
@@ -606,6 +652,15 @@
   }
 
   if (sheetGrabberEl) {
+    sheetGrabberEl.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (suppressGrabberClick) {
+        suppressGrabberClick = false;
+        return;
+      }
+      toggleSheetMode();
+    });
+
     if ("PointerEvent" in window) {
       let activePointerId = null;
       sheetGrabberEl.addEventListener("pointerdown", (e) => {
@@ -666,6 +721,8 @@
   window.addEventListener("resize", () => {
     if (!isMobileView()) closeMobileFilters();
   });
+
+  setSheetMode("mid");
 
   if (activeFiltersEl) {
     activeFiltersEl.addEventListener("click", (e) => {

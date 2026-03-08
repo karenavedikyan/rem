@@ -1882,6 +1882,9 @@ img {
 
 .catalog-sheet-grabber {
   display: none;
+  border: 0;
+  padding: 0;
+  appearance: none;
 }
 
 .catalog-results-head {
@@ -2152,15 +2155,19 @@ img {
     bottom: 0;
     top: auto;
     z-index: 30;
-    max-height: 88vh;
+    height: min(70vh, calc(100vh - 18px));
     overflow-y: auto;
     border-radius: 14px 14px 0 0;
     transform: translateY(112%);
-    transition: transform 220ms var(--ease);
+    transition: transform 220ms var(--ease), height 220ms var(--ease);
   }
 
   .catalog-filters-card.is-open {
     transform: translateY(0);
+  }
+
+  .catalog-filters-card.is-expanded {
+    height: min(95vh, calc(100vh - 8px));
   }
 
   .catalog-filters-card.is-dragging {
@@ -2176,6 +2183,11 @@ img {
     background: rgba(245, 245, 245, 0.35);
     touch-action: none;
     cursor: grab;
+  }
+
+  .catalog-sheet-grabber:focus-visible {
+    outline: 2px solid rgba(229, 57, 53, 0.65);
+    outline-offset: 6px;
   }
 
   .catalog-filters-card.is-dragging .catalog-sheet-grabber {
