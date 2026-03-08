@@ -16,6 +16,7 @@
   const errorMessageEl = document.getElementById("catalog-error-message");
   const countEl = document.getElementById("catalog-results-count");
   const activeFiltersEl = document.getElementById("catalog-active-filters");
+  const quickSortEl = document.getElementById("catalog-quick-sort");
   const paginationEl = document.getElementById("catalog-pagination");
   const prevBtn = document.getElementById("catalog-prev-page");
   const nextBtn = document.getElementById("catalog-next-page");
@@ -63,6 +64,16 @@
       price_asc: t("По цене: сначала дешевле", "Price: low to high"),
       price_desc: t("По цене: сначала дороже", "Price: high to low"),
       newest: t("Сначала новые", "Newest first")
+    };
+    return map[value] || map.rating;
+  };
+
+  const quickSortChipLabel = (value) => {
+    const map = {
+      rating: t("Рейтинг", "Rating"),
+      price_asc: t("Дешевле", "Cheaper"),
+      price_desc: t("Дороже", "More expensive"),
+      newest: t("Новые", "Newest")
     };
     return map[value] || map.rating;
   };
@@ -371,6 +382,19 @@
     activeFiltersEl.appendChild(reset);
   };
 
+  const renderQuickSortChips = () => {
+    if (!quickSortEl) return;
+    const sort = SORT_VALUES.has(getFieldValue("sort")) ? getFieldValue("sort") : "rating";
+    const chips = quickSortEl.querySelectorAll("button[data-sort]");
+    chips.forEach((chip) => {
+      const value = String(chip.dataset.sort || "");
+      const active = value === sort;
+      chip.classList.toggle("is-active", active);
+      chip.setAttribute("aria-pressed", active ? "true" : "false");
+      chip.textContent = quickSortChipLabel(value);
+    });
+  };
+
   const setLoading = (loading) => {
     state.isLoading = loading;
     if (loading && countEl) countEl.textContent = t("Загружаем услуги...", "Loading services...");
@@ -383,6 +407,7 @@
     if (submitBtn) submitBtn.disabled = loading;
     if (prevBtn) prevBtn.disabled = loading || state.page <= 1;
     if (nextBtn) nextBtn.disabled = loading || state.page >= state.totalPages;
+    renderQuickSortChips();
   };
 
   const setError = (message) => {
@@ -394,6 +419,7 @@
     if (countEl) countEl.textContent = t("Ошибка загрузки каталога", "Catalog loading error");
     if (paginationEl) paginationEl.hidden = true;
     renderActiveFilterChips();
+    renderQuickSortChips();
   };
 
   const renderCatalogPayload = (payload, page, { fromFallback = false } = {}) => {
@@ -420,6 +446,7 @@
     if (prevBtn) prevBtn.disabled = state.page <= 1;
     if (nextBtn) nextBtn.disabled = state.page >= state.totalPages;
     renderActiveFilterChips();
+    renderQuickSortChips();
   };
 
   const loadCatalog = async ({ page = 1 } = {}) => {
@@ -484,6 +511,18 @@
   if (nextBtn) {
     nextBtn.addEventListener("click", () => {
       loadCatalog({ page: Math.min(state.totalPages, state.page + 1) });
+    });
+  }
+
+  if (quickSortEl) {
+    quickSortEl.addEventListener("click", (e) => {
+      const btn = e.target && e.target.closest ? e.target.closest("button[data-sort]") : null;
+      if (!btn) return;
+      const nextSort = String(btn.dataset.sort || "");
+      if (!SORT_VALUES.has(nextSort)) return;
+      if (getFieldValue("sort") === nextSort) return;
+      setFieldValue("sort", nextSort);
+      loadCatalog({ page: 1 });
     });
   }
 

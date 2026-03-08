@@ -1900,6 +1900,34 @@ img {
   background: rgba(229, 57, 53, 0.12);
 }
 
+.catalog-quick-sort {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.catalog-sort-chip {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(245, 245, 245, 0.95);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12px;
+  line-height: 1.2;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.catalog-sort-chip:hover {
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.catalog-sort-chip.is-active {
+  border-color: rgba(229, 57, 53, 0.5);
+  background: rgba(229, 57, 53, 0.18);
+}
+
 .catalog-current-stage {
   display: inline-flex;
   margin-left: 8px;
@@ -2092,6 +2120,25 @@ img {
 @media (max-width: 760px) {
   .catalog-list {
     grid-template-columns: 1fr;
+  }
+
+  .catalog-results-head {
+    position: sticky;
+    top: 70px;
+    z-index: 8;
+    background: rgba(18, 18, 18, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 10px;
+    backdrop-filter: blur(8px);
+  }
+
+  .catalog-active-filters,
+  .catalog-quick-sort {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 2px;
   }
 }
 
