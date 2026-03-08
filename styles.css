@@ -1990,6 +1990,54 @@ body.navigator-stage-modal-open {
   gap: 8px;
 }
 
+.stage-diagram-seq {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.stage-seq-chip {
+  border-radius: 999px;
+  border: 1px solid rgba(229, 57, 53, 0.26);
+  background: rgba(229, 57, 53, 0.12);
+  color: rgba(245, 245, 245, 0.96);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 10px;
+}
+
+.stage-material-compare {
+  margin-top: 10px;
+  display: grid;
+  gap: 8px;
+}
+
+.stage-material-row {
+  border-radius: 10px;
+  border: 1px solid rgba(245, 245, 245, 0.1);
+  background: rgba(30, 30, 30, 0.62);
+  padding: 8px 10px;
+  display: grid;
+  gap: 2px;
+}
+
+.stage-material-row strong {
+  color: rgba(245, 245, 245, 0.98);
+  font-size: 12.5px;
+}
+
+.stage-material-row span {
+  color: rgba(176, 190, 197, 0.96);
+  font-size: 12px;
+}
+
+.stage-diagram-note {
+  margin: 10px 0 0;
+  color: rgba(176, 190, 197, 0.95);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
 .stage-layer {
   border-radius: 10px;
   border: 1px solid rgba(229, 57, 53, 0.2);

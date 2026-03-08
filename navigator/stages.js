@@ -44,14 +44,15 @@
       shortLabel: "Черновые",
       description: "Здесь создаётся база, на которой держится весь результат: демонтаж, выравнивание, стяжка, подготовка.",
       whatWeDo: [
-        "Делаем демонтаж и готовим поверхности.",
-        "Выполняем штукатурку и стяжку с технологическими паузами.",
-        "Проверяем геометрию перед переходом дальше."
+        "Сначала фиксируем трассы инженерии, затем идём в выравнивание стен и пола.",
+        "Грунтуем стены и пол перед каждым следующим слоем.",
+        "Штукатурим стены по маякам и только после этого делаем стяжку пола.",
+        "Подбираем перегородки (ПГП, кирпич, ГКЛ) под задачу по шумоизоляции и скорости монтажа."
       ],
       pitfalls: [
-        "Спешка с финишем до набора прочности стяжки.",
-        "Избыток воды в растворах (риск трещин).",
-        "Отсутствие контроля маяков и уровня."
+        "Штукатурка и стяжка до согласованной инженерной схемы.",
+        "Пропуск грунтования перед штукатуркой, краской или плиткой.",
+        "Неправильный выбор материала перегородок под требуемую нагрузку и акустику."
       ],
       whoYouNeed: ["мастер-универсал", "отделочник", "прораб"],
       icon: "layers"
@@ -63,14 +64,14 @@
       shortLabel: "Инженерия",
       description: "Электрика и сантехника делаются до чистовой, чтобы потом не вскрывать стены и пол.",
       whatWeDo: [
-        "Прокладываем электрику и сантехнические линии.",
-        "Разносим точки розеток, выключателей и выводов воды.",
-        "Проверяем узлы до закрытия отделкой."
+        "Делаем план электрики и собираем щит с группами и защитой.",
+        "Прокладываем кабель, слаботочку (ТВ/интернет/роутер), отопление и трассы кондиционирования.",
+        "Тестируем узлы и фиксируем скрытые работы до закрытия отделкой."
       ],
       pitfalls: [
         "Случайные диагонали проводки вместо понятной схемы.",
-        "Недооценка влажных зон: нет УЗО и заземления.",
-        "Скрытые соединения без фотофиксации."
+        "Недооценка влажных зон: нет УЗО, заземления и защиты линий.",
+        "Скрытые соединения без фотофиксации и актов."
       ],
       whoYouNeed: ["электрик", "сантехник", "инженер-проектировщик (по необходимости)"],
       icon: "engineering"
@@ -82,12 +83,12 @@
       shortLabel: "Чистовая",
       description: "На этом шаге ремонт становится визуально завершённым: стены, пол, плитка, двери и финальные поверхности.",
       whatWeDo: [
-        "Подбираем и укладываем чистовые материалы.",
-        "Проверяем геометрию перед плиткой и покраской.",
-        "Формируем аккуратные финишные узлы."
+        "Соблюдаем порядок: плитка -> потолки -> полы -> межкомнатные двери.",
+        "Перед каждым слоем снова грунтуем основание для адгезии и долговечности.",
+        "Формируем чистые примыкания и аккуратные финишные узлы."
       ],
       pitfalls: [
-        "Старт чистовой на неподготовленном основании.",
+        "Старт чистовой без контрольного грунтования основания.",
         "Нет запаса плитки и материалов на подрезку.",
         "Игнорирование проб и образцов при освещении объекта."
       ],
@@ -101,8 +102,8 @@
       shortLabel: "Мебель и декор",
       description: "Финальный этап: установка мебели, настройка света и проверка, что всем удобно пользоваться.",
       whatWeDo: [
-        "Делаем финальную уборку после стройки.",
-        "Устанавливаем мебель, кухню и свет.",
+        "Делаем генеральную уборку после стройки до монтажа кухни и мебели.",
+        "Устанавливаем мебель, кухню, свет и подключаем оборудование.",
         "Проводим контрольную проверку перед въездом."
       ],
       pitfalls: [
@@ -143,14 +144,15 @@
       shortLabel: "Rough works",
       description: "This is the foundation for final quality: demolition, leveling, screed, and preparation.",
       whatWeDo: [
-        "Complete demolition and surface preparation.",
-        "Do plaster and screed with proper drying pauses.",
-        "Check geometry before moving to next stage."
+        "Lock engineering routes first, then move to wall and floor leveling.",
+        "Prime walls and floors before each next layer.",
+        "Plaster walls by beacons and only then do the floor screed.",
+        "Choose partition type (blocks, brick, drywall) by acoustic and installation priorities."
       ],
       pitfalls: [
-        "Rushing to finishing before screed reaches strength.",
-        "Too much water in mixes (crack risk).",
-        "No level and beacon control."
+        "Plastering/screeding before engineering routes are finalized.",
+        "Skipping primer before plaster, paint, or tiles.",
+        "Wrong partition material for required load and sound isolation."
       ],
       whoYouNeed: ["general contractor", "finishing specialist", "site manager"],
       icon: "layers"
@@ -162,14 +164,14 @@
       shortLabel: "Engineering",
       description: "Electrical and plumbing are done before finishing to avoid breaking walls later.",
       whatWeDo: [
-        "Install electrical lines and plumbing routes.",
-        "Place sockets, switches, and water points.",
-        "Test key nodes before closing surfaces."
+        "Prepare electrical plan and switchboard with groups and protection.",
+        "Install power lines, low-current networks (TV/internet/router), heating and AC routes.",
+        "Test all critical nodes and document hidden works before closing."
       ],
       pitfalls: [
         "Random wire diagonals instead of clear scheme.",
-        "Ignoring wet-zone safety: no RCD and grounding.",
-        "Hidden joints without photo records."
+        "Ignoring wet-zone safety: missing RCD, grounding and line protection.",
+        "Hidden joints without photo records and acceptance notes."
       ],
       whoYouNeed: ["electrician", "plumber", "MEP engineer (if needed)"],
       icon: "engineering"
@@ -181,12 +183,12 @@
       shortLabel: "Finishing",
       description: "This is where renovation looks complete: walls, floors, tiles, doors, and finish details.",
       whatWeDo: [
-        "Select and install finishing materials.",
-        "Check geometry before tiles and paint.",
-        "Finalize visible joints and edges neatly."
+        "Keep the sequence: tiles -> ceilings -> floors -> interior doors.",
+        "Prime each base layer before applying the next finish.",
+        "Finalize visible joints and transition nodes neatly."
       ],
       pitfalls: [
-        "Starting finishing on unprepared base.",
+        "Starting finishing without primer and base checks.",
         "No reserve for tile cutting and waste.",
         "Skipping sample checks under real lighting."
       ],
@@ -200,8 +202,8 @@
       shortLabel: "Furniture & decor",
       description: "Final stage: install furniture, tune lighting, and make sure everything is practical.",
       whatWeDo: [
-        "Complete post-construction cleaning.",
-        "Install furniture, kitchen, and lighting.",
+        "Complete deep post-construction cleaning before kitchen and furniture installation.",
+        "Install furniture, kitchen, lighting, and connect final equipment.",
         "Run final checklist before move-in."
       ],
       pitfalls: [

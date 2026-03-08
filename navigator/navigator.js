@@ -546,19 +546,44 @@
   const getDiagramHTML = (stageId) => {
     if (stageId === "rough") {
       return `
-        <div class="stage-diagram-layers" aria-hidden="true">
-          <div class="stage-layer">${escapeHtml(t("Основание", "Base"))}</div>
-          <div class="stage-layer">${escapeHtml(t("Гидроизоляция", "Waterproofing"))}</div>
-          <div class="stage-layer">${escapeHtml(t("Стяжка", "Screed"))}</div>
-          <div class="stage-layer">${escapeHtml(t("Покрытие", "Final finish"))}</div>
+        <div class="stage-diagram-seq" aria-hidden="true">
+          <span class="stage-seq-chip">${escapeHtml(t("Инженерка", "Engineering"))}</span>
+          <span class="stage-seq-chip">${escapeHtml(t("Штукатурка стен", "Wall plaster"))}</span>
+          <span class="stage-seq-chip">${escapeHtml(t("Стяжка пола", "Floor screed"))}</span>
+          <span class="stage-seq-chip">${escapeHtml(t("Чистовое покрытие", "Final finish"))}</span>
         </div>
+        <div class="stage-material-compare" aria-hidden="true">
+          <div class="stage-material-row">
+            <strong>${escapeHtml(t("Кирпич", "Brick"))}</strong>
+            <span>${escapeHtml(t("Звукоизоляция: высокая", "Soundproofing: high"))}</span>
+            <span>${escapeHtml(t("Скорость: низкая", "Speed: low"))}</span>
+          </div>
+          <div class="stage-material-row">
+            <strong>${escapeHtml(t("ПГП", "Tongue-and-groove blocks"))}</strong>
+            <span>${escapeHtml(t("Звукоизоляция: хорошая", "Soundproofing: good"))}</span>
+            <span>${escapeHtml(t("Скорость: высокая", "Speed: high"))}</span>
+          </div>
+          <div class="stage-material-row">
+            <strong>${escapeHtml(t("ГКЛ", "Drywall"))}</strong>
+            <span>${escapeHtml(t("Звукоизоляция: средняя", "Soundproofing: medium"))}</span>
+            <span>${escapeHtml(t("Скорость: очень высокая", "Speed: very high"))}</span>
+          </div>
+        </div>
+        <p class="stage-diagram-note">${escapeHtml(
+          t(
+            "Грунтование обязательно перед каждым следующим слоем: штукатурка, краска, клей.",
+            "Primer is required before each next layer: plaster, paint, adhesive."
+          )
+        )}</p>
       `;
     }
     if (stageId === "engineering") {
       return `
         <div class="stage-diagram-icons" aria-hidden="true">
-          <div class="stage-icon-box">${escapeHtml(t("Розетки и линии", "Sockets and power lines"))}</div>
-          <div class="stage-icon-box">${escapeHtml(t("Трубы и точки воды", "Pipes and water points"))}</div>
+          <div class="stage-icon-box">${escapeHtml(t("Электрика и щит", "Electrical and switchboard"))}</div>
+          <div class="stage-icon-box">${escapeHtml(t("Слаботочка: ТВ / интернет / роутер", "Low-current: TV / internet / router"))}</div>
+          <div class="stage-icon-box">${escapeHtml(t("Разводка отопления", "Heating distribution"))}</div>
+          <div class="stage-icon-box">${escapeHtml(t("Трассы кондиционирования", "AC routes and blocks"))}</div>
         </div>
       `;
     }
@@ -573,16 +598,26 @@
     }
     if (stageId === "finishing") {
       return `
-        <div class="stage-diagram-icons" aria-hidden="true">
-          <div class="stage-icon-box">${escapeHtml(t("Стены и пол", "Walls and floor"))}</div>
-          <div class="stage-icon-box">${escapeHtml(t("Плитка и двери", "Tiles and doors"))}</div>
+        <div class="stage-diagram-seq" aria-hidden="true">
+          <span class="stage-seq-chip">${escapeHtml(t("Плитка", "Tiles"))}</span>
+          <span class="stage-seq-chip">${escapeHtml(t("Потолки", "Ceilings"))}</span>
+          <span class="stage-seq-chip">${escapeHtml(t("Полы", "Floors"))}</span>
+          <span class="stage-seq-chip">${escapeHtml(t("Межкомнатные двери", "Interior doors"))}</span>
         </div>
+        <p class="stage-diagram-note">${escapeHtml(
+          t(
+            "Соблюдайте порядок этапов и не пропускайте грунтование перед каждым чистовым слоем.",
+            "Keep the sequence and do not skip primer before each finishing layer."
+          )
+        )}</p>
       `;
     }
     return `
       <div class="stage-diagram-icons" aria-hidden="true">
-        <div class="stage-icon-box">${escapeHtml(t("Мебель", "Furniture"))}</div>
-        <div class="stage-icon-box">${escapeHtml(t("Свет и декор", "Lighting and decor"))}</div>
+        <div class="stage-icon-box">${escapeHtml(t("Генеральная уборка", "Deep cleaning"))}</div>
+        <div class="stage-icon-box">${escapeHtml(t("Монтаж кухни и мебели", "Kitchen and furniture install"))}</div>
+        <div class="stage-icon-box">${escapeHtml(t("Финальные подключения", "Final connections"))}</div>
+        <div class="stage-icon-box">${escapeHtml(t("Чек-лист перед въездом", "Move-in checklist"))}</div>
       </div>
     `;
   };
