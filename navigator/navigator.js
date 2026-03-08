@@ -25,6 +25,10 @@
   const stagePitfallsListEl = document.getElementById("stage-pitfalls-list");
   const stageWhoListEl = document.getElementById("stage-who-list");
   const stageDiagramEl = document.getElementById("stage-diagram");
+  const stageSubstepMarketEl = document.getElementById("stage-substep-market");
+  const stageSubstepTitleEl = document.getElementById("stage-substep-title");
+  const stageSubstepWhoEl = document.getElementById("stage-substep-who");
+  const stageSubstepBuyLink = document.getElementById("stage-substep-buy-link");
   const stageDetailsEl = document.getElementById("stage-details");
   const nextStagesGridEl = document.getElementById("navigator-next-grid");
   const stageNextBtn = document.getElementById("stage-next-btn");
@@ -330,6 +334,7 @@
   let navigatorStages = Array.isArray(window.REMCARD_NAVIGATOR_STAGES) && window.REMCARD_NAVIGATOR_STAGES.length ? window.REMCARD_NAVIGATOR_STAGES : DEFAULT_NAVIGATOR_STAGES;
   let activeStageId = "planning";
   let activeComplexityId = "standard";
+  let activeSubstepByStage = {};
 
   const objectLabels = I18N.isEn
     ? {
@@ -405,6 +410,271 @@
   };
 
   const getMapPointByStage = (stageId) => STAGE_MAP_POINTS[stageId] || { x: 50, y: 50 };
+
+  const getCatalogHrefByStageAndKind = (stageId, kind) => {
+    const catalogStage = STAGE_TO_CATALOG_VALUE[stageId] || "PLANNING";
+    const params = new URLSearchParams({ stage: catalogStage });
+    if (kind === "service" || kind === "product") params.set("itemKind", kind);
+    return `../catalog/?${params.toString()}`;
+  };
+
+  const getSubstepMarketByStage = (stageId) => {
+    if (stageId === "planning") {
+      return [
+        {
+          key: "budget",
+          label: t("Оценка бюджета", "Budget estimate"),
+          marketText: t(
+            "Помогут: прораб, сметчик и строительные магазины для расчета базовой корзины материалов.",
+            "Who can help: site manager, estimator, and building stores for a realistic material basket."
+          ),
+          itemKind: "mixed"
+        },
+        {
+          key: "design_measure",
+          label: t("Дизайн-проект и замеры", "Design and measurements"),
+          marketText: t(
+            "Помогут: дизайнеры, замерщики и проектные студии.",
+            "Who can help: designers, survey specialists, and design studios."
+          ),
+          itemKind: "service"
+        },
+        {
+          key: "crew_materials",
+          label: t("Выбор бригады и материалов", "Crew and materials"),
+          marketText: t(
+            "Помогут: проверенные бригады и магазины-партнеры с черновыми и чистовыми материалами.",
+            "Who can help: verified crews and partner stores with rough and finishing materials."
+          ),
+          itemKind: "mixed"
+        },
+        {
+          key: "temporary_plumbing",
+          label: t("Временная сантехника", "Temporary plumbing"),
+          marketText: t(
+            "Помогут: сантехники и магазины инженерной комплектации.",
+            "Who can help: plumbers and engineering supply stores."
+          ),
+          itemKind: "mixed"
+        }
+      ];
+    }
+    if (stageId === "rough") {
+      return [
+        {
+          key: "engineering_routes",
+          label: t("Инженерка", "Engineering routes"),
+          marketText: t(
+            "Помогут: электрики и сантехники, которые заранее разметят трассы до штукатурки и стяжки.",
+            "Who can help: electricians and plumbers to lock routes before plaster and screed."
+          ),
+          itemKind: "service"
+        },
+        {
+          key: "wall_plaster",
+          label: t("Штукатурка стен", "Wall plaster"),
+          marketText: t(
+            "Помогут: штукатуры и поставщики смесей, маяков и грунтовок.",
+            "Who can help: plaster teams and stores with mixes, beacons, and primers."
+          ),
+          itemKind: "mixed"
+        },
+        {
+          key: "floor_screed",
+          label: t("Стяжка пола", "Floor screed"),
+          marketText: t(
+            "Помогут: бригады по устройству стяжки и магазины сухих смесей/гидроизоляции.",
+            "Who can help: screed contractors and stores with dry mixes/waterproofing."
+          ),
+          itemKind: "mixed"
+        },
+        {
+          key: "final_base",
+          label: t("Чистовое покрытие", "Final covering prep"),
+          marketText: t(
+            "Помогут: отделочники и магазины финишных материалов для следующего этапа.",
+            "Who can help: finishing teams and stores with final covering materials."
+          ),
+          itemKind: "mixed"
+        },
+        {
+          key: "brick",
+          label: t("Кирпич", "Brick partitions"),
+          marketText: t(
+            "Продавцы: строительные базы и магазины кладочных материалов. Исполнители: каменщики.",
+            "Sellers: masonry supply stores and building depots. Providers: masonry teams."
+          ),
+          itemKind: "product"
+        },
+        {
+          key: "pgp",
+          label: t("ПГП", "Tongue-and-groove blocks"),
+          marketText: t(
+            "Продавцы: магазины перегородочных блоков. Исполнители: универсальные бригады.",
+            "Sellers: stores with partition blocks. Providers: general construction crews."
+          ),
+          itemKind: "product"
+        },
+        {
+          key: "gkl",
+          label: t("ГКЛ", "Drywall systems"),
+          marketText: t(
+            "Продавцы: магазины гипсокартона и профилей. Исполнители: бригады по ГКЛ-конструкциям.",
+            "Sellers: drywall and metal-profile stores. Providers: drywall installation teams."
+          ),
+          itemKind: "product"
+        }
+      ];
+    }
+    if (stageId === "engineering") {
+      return [
+        {
+          key: "electrical_board",
+          label: t("Электрика и щит", "Electrical and switchboard"),
+          marketText: t(
+            "Помогут: электромонтажные бригады и магазины электрощитов, автоматики и кабеля.",
+            "Who can help: electrical crews and stores with boards, protection devices, and cable."
+          ),
+          itemKind: "mixed"
+        },
+        {
+          key: "low_current",
+          label: t("Слаботочка", "Low-current networks"),
+          marketText: t(
+            "Помогут: специалисты по слаботочным сетям и поставщики сетевого оборудования.",
+            "Who can help: low-current specialists and network equipment stores."
+          ),
+          itemKind: "mixed"
+        },
+        {
+          key: "heating",
+          label: t("Разводка отопления", "Heating distribution"),
+          marketText: t(
+            "Помогут: инженерные компании и магазины отопительного оборудования.",
+            "Who can help: MEP contractors and heating equipment stores."
+          ),
+          itemKind: "mixed"
+        },
+        {
+          key: "ac_routes",
+          label: t("Трассы кондиционирования", "AC routes and blocks"),
+          marketText: t(
+            "Помогут: монтажники кондиционеров и продавцы климатического оборудования.",
+            "Who can help: AC installers and climate equipment stores."
+          ),
+          itemKind: "mixed"
+        }
+      ];
+    }
+    if (stageId === "finishing") {
+      return [
+        {
+          key: "tiles",
+          label: t("Плитка", "Tiles"),
+          marketText: t(
+            "Помогут: плиточники и салоны плитки/керамогранита.",
+            "Who can help: tilers and tile/porcelain stores."
+          ),
+          itemKind: "mixed"
+        },
+        {
+          key: "ceilings",
+          label: t("Потолки", "Ceilings"),
+          marketText: t(
+            "Помогут: монтажники натяжных и ГКЛ-потолков, магазины профильных систем.",
+            "Who can help: stretch/GKL ceiling teams and profile-system stores."
+          ),
+          itemKind: "mixed"
+        },
+        {
+          key: "floors",
+          label: t("Полы", "Floors"),
+          marketText: t(
+            "Помогут: мастера по полу и магазины напольных покрытий.",
+            "Who can help: flooring installers and floor-covering stores."
+          ),
+          itemKind: "mixed"
+        },
+        {
+          key: "doors",
+          label: t("Межкомнатные двери", "Interior doors"),
+          marketText: t(
+            "Помогут: дверные салоны и установщики дверей.",
+            "Who can help: door showrooms and installation crews."
+          ),
+          itemKind: "mixed"
+        }
+      ];
+    }
+    return [
+      {
+        key: "deep_cleaning",
+        label: t("Генеральная уборка", "Deep cleaning"),
+        marketText: t(
+          "Помогут: клининговые сервисы после ремонта.",
+          "Who can help: post-construction cleaning services."
+        ),
+        itemKind: "service"
+      },
+      {
+        key: "kitchen_furniture",
+        label: t("Монтаж кухни и мебели", "Kitchen and furniture install"),
+        marketText: t(
+          "Помогут: мебельные студии, кухни на заказ и монтажные бригады.",
+          "Who can help: furniture studios, kitchen suppliers, and installation crews."
+        ),
+        itemKind: "mixed"
+      },
+      {
+        key: "final_connections",
+        label: t("Финальные подключения", "Final connections"),
+        marketText: t(
+          "Помогут: электрики и сантехники для безопасного ввода в эксплуатацию.",
+          "Who can help: electricians and plumbers for safe commissioning."
+        ),
+        itemKind: "service"
+      },
+      {
+        key: "movein_checklist",
+        label: t("Чек-лист перед въездом", "Move-in checklist"),
+        marketText: t(
+          "Помогут: прораб и сервисные подрядчики для закрытия финальных замечаний.",
+          "Who can help: site manager and service contractors to close final punch-list."
+        ),
+        itemKind: "service"
+      }
+    ];
+  };
+
+  const renderSubstepMarket = (stageId, preferredSubstepKey) => {
+    if (!stageSubstepMarketEl || !stageSubstepTitleEl || !stageSubstepWhoEl || !stageSubstepBuyLink) return;
+    const substeps = getSubstepMarketByStage(stageId);
+    if (!substeps.length) {
+      stageSubstepMarketEl.hidden = true;
+      return;
+    }
+    stageSubstepMarketEl.hidden = false;
+
+    const remembered = activeSubstepByStage[stageId];
+    const selected =
+      substeps.find((item) => item.key === preferredSubstepKey) ||
+      substeps.find((item) => item.key === remembered) ||
+      substeps[0];
+
+    activeSubstepByStage[stageId] = selected.key;
+    stageSubstepTitleEl.textContent = selected.label;
+    stageSubstepWhoEl.textContent = selected.marketText;
+
+    const href = getCatalogHrefByStageAndKind(stageId, selected.itemKind);
+    stageSubstepBuyLink.setAttribute("href", href);
+    stageSubstepBuyLink.textContent = t("Посмотреть где купить / заказать", "See where to buy / order");
+
+    if (stageDiagramEl) {
+      stageDiagramEl.querySelectorAll("button[data-substep-key]").forEach((node) => {
+        node.classList.toggle("is-active", node.getAttribute("data-substep-key") === selected.key);
+      });
+    }
+  };
 
   const renderComplexityTabs = () => {
     if (!stageComplexityTabsEl) return;
@@ -546,28 +816,28 @@
   const getDiagramHTML = (stageId) => {
     if (stageId === "rough") {
       return `
-        <div class="stage-diagram-seq" aria-hidden="true">
-          <span class="stage-seq-chip">${escapeHtml(t("Инженерка", "Engineering"))}</span>
-          <span class="stage-seq-chip">${escapeHtml(t("Штукатурка стен", "Wall plaster"))}</span>
-          <span class="stage-seq-chip">${escapeHtml(t("Стяжка пола", "Floor screed"))}</span>
-          <span class="stage-seq-chip">${escapeHtml(t("Чистовое покрытие", "Final finish"))}</span>
+        <div class="stage-diagram-seq">
+          <button type="button" class="stage-substep-btn stage-seq-chip" data-substep-key="engineering_routes">${escapeHtml(t("Инженерка", "Engineering"))}</button>
+          <button type="button" class="stage-substep-btn stage-seq-chip" data-substep-key="wall_plaster">${escapeHtml(t("Штукатурка стен", "Wall plaster"))}</button>
+          <button type="button" class="stage-substep-btn stage-seq-chip" data-substep-key="floor_screed">${escapeHtml(t("Стяжка пола", "Floor screed"))}</button>
+          <button type="button" class="stage-substep-btn stage-seq-chip" data-substep-key="final_base">${escapeHtml(t("Чистовое покрытие", "Final finish"))}</button>
         </div>
-        <div class="stage-material-compare" aria-hidden="true">
-          <div class="stage-material-row">
+        <div class="stage-material-compare">
+          <button type="button" class="stage-substep-btn stage-material-row" data-substep-key="brick">
             <strong>${escapeHtml(t("Кирпич", "Brick"))}</strong>
             <span>${escapeHtml(t("Звукоизоляция: высокая", "Soundproofing: high"))}</span>
             <span>${escapeHtml(t("Скорость: низкая", "Speed: low"))}</span>
-          </div>
-          <div class="stage-material-row">
+          </button>
+          <button type="button" class="stage-substep-btn stage-material-row" data-substep-key="pgp">
             <strong>${escapeHtml(t("ПГП", "Tongue-and-groove blocks"))}</strong>
             <span>${escapeHtml(t("Звукоизоляция: хорошая", "Soundproofing: good"))}</span>
             <span>${escapeHtml(t("Скорость: высокая", "Speed: high"))}</span>
-          </div>
-          <div class="stage-material-row">
+          </button>
+          <button type="button" class="stage-substep-btn stage-material-row" data-substep-key="gkl">
             <strong>${escapeHtml(t("ГКЛ", "Drywall"))}</strong>
             <span>${escapeHtml(t("Звукоизоляция: средняя", "Soundproofing: medium"))}</span>
             <span>${escapeHtml(t("Скорость: очень высокая", "Speed: very high"))}</span>
-          </div>
+          </button>
         </div>
         <p class="stage-diagram-note">${escapeHtml(
           t(
@@ -579,30 +849,37 @@
     }
     if (stageId === "engineering") {
       return `
-        <div class="stage-diagram-icons" aria-hidden="true">
-          <div class="stage-icon-box">${escapeHtml(t("Электрика и щит", "Electrical and switchboard"))}</div>
-          <div class="stage-icon-box">${escapeHtml(t("Слаботочка: ТВ / интернет / роутер", "Low-current: TV / internet / router"))}</div>
-          <div class="stage-icon-box">${escapeHtml(t("Разводка отопления", "Heating distribution"))}</div>
-          <div class="stage-icon-box">${escapeHtml(t("Трассы кондиционирования", "AC routes and blocks"))}</div>
+        <div class="stage-diagram-icons">
+          <button type="button" class="stage-substep-btn stage-icon-box" data-substep-key="electrical_board">${escapeHtml(t("Электрика и щит", "Electrical and switchboard"))}</button>
+          <button type="button" class="stage-substep-btn stage-icon-box" data-substep-key="low_current">${escapeHtml(t("Слаботочка: ТВ / интернет / роутер", "Low-current: TV / internet / router"))}</button>
+          <button type="button" class="stage-substep-btn stage-icon-box" data-substep-key="heating">${escapeHtml(t("Разводка отопления", "Heating distribution"))}</button>
+          <button type="button" class="stage-substep-btn stage-icon-box" data-substep-key="ac_routes">${escapeHtml(t("Трассы кондиционирования", "AC routes and blocks"))}</button>
         </div>
       `;
     }
     if (stageId === "planning") {
       return `
-        <div class="stage-diagram-plan" aria-hidden="true">
-          <div class="stage-room stage-room-wide">${escapeHtml(t("Кухня", "Kitchen"))}</div>
-          <div class="stage-room">${escapeHtml(t("Спальня", "Bedroom"))}</div>
-          <div class="stage-room">${escapeHtml(t("Санузел", "Bathroom"))}</div>
+        <div class="stage-diagram-seq">
+          <button type="button" class="stage-substep-btn stage-seq-chip" data-substep-key="budget">${escapeHtml(t("Оценка бюджета", "Budget estimate"))}</button>
+          <button type="button" class="stage-substep-btn stage-seq-chip" data-substep-key="design_measure">${escapeHtml(
+            t("Дизайн-проект и замеры", "Design and measurements")
+          )}</button>
+          <button type="button" class="stage-substep-btn stage-seq-chip" data-substep-key="crew_materials">${escapeHtml(
+            t("Выбор бригады и материалов", "Crew and materials")
+          )}</button>
+          <button type="button" class="stage-substep-btn stage-seq-chip" data-substep-key="temporary_plumbing">${escapeHtml(
+            t("Временная сантехника", "Temporary plumbing")
+          )}</button>
         </div>
       `;
     }
     if (stageId === "finishing") {
       return `
-        <div class="stage-diagram-seq" aria-hidden="true">
-          <span class="stage-seq-chip">${escapeHtml(t("Плитка", "Tiles"))}</span>
-          <span class="stage-seq-chip">${escapeHtml(t("Потолки", "Ceilings"))}</span>
-          <span class="stage-seq-chip">${escapeHtml(t("Полы", "Floors"))}</span>
-          <span class="stage-seq-chip">${escapeHtml(t("Межкомнатные двери", "Interior doors"))}</span>
+        <div class="stage-diagram-seq">
+          <button type="button" class="stage-substep-btn stage-seq-chip" data-substep-key="tiles">${escapeHtml(t("Плитка", "Tiles"))}</button>
+          <button type="button" class="stage-substep-btn stage-seq-chip" data-substep-key="ceilings">${escapeHtml(t("Потолки", "Ceilings"))}</button>
+          <button type="button" class="stage-substep-btn stage-seq-chip" data-substep-key="floors">${escapeHtml(t("Полы", "Floors"))}</button>
+          <button type="button" class="stage-substep-btn stage-seq-chip" data-substep-key="doors">${escapeHtml(t("Межкомнатные двери", "Interior doors"))}</button>
         </div>
         <p class="stage-diagram-note">${escapeHtml(
           t(
@@ -613,11 +890,17 @@
       `;
     }
     return `
-      <div class="stage-diagram-icons" aria-hidden="true">
-        <div class="stage-icon-box">${escapeHtml(t("Генеральная уборка", "Deep cleaning"))}</div>
-        <div class="stage-icon-box">${escapeHtml(t("Монтаж кухни и мебели", "Kitchen and furniture install"))}</div>
-        <div class="stage-icon-box">${escapeHtml(t("Финальные подключения", "Final connections"))}</div>
-        <div class="stage-icon-box">${escapeHtml(t("Чек-лист перед въездом", "Move-in checklist"))}</div>
+      <div class="stage-diagram-icons">
+        <button type="button" class="stage-substep-btn stage-icon-box" data-substep-key="deep_cleaning">${escapeHtml(t("Генеральная уборка", "Deep cleaning"))}</button>
+        <button type="button" class="stage-substep-btn stage-icon-box" data-substep-key="kitchen_furniture">${escapeHtml(
+          t("Монтаж кухни и мебели", "Kitchen and furniture install")
+        )}</button>
+        <button type="button" class="stage-substep-btn stage-icon-box" data-substep-key="final_connections">${escapeHtml(
+          t("Финальные подключения", "Final connections")
+        )}</button>
+        <button type="button" class="stage-substep-btn stage-icon-box" data-substep-key="movein_checklist">${escapeHtml(
+          t("Чек-лист перед въездом", "Move-in checklist")
+        )}</button>
       </div>
     `;
   };
@@ -755,6 +1038,7 @@
       stagePitfallsListEl.innerHTML = stageListToHTML(stage.pitfalls, t("Проверяйте типовые риски перед стартом.", "Check common risks before starting."));
     if (stageWhoListEl) stageWhoListEl.innerHTML = stageListToHTML(stage.whoYouNeed, t("Нужен профильный специалист.", "A specialist is required."));
     if (stageDiagramEl) stageDiagramEl.innerHTML = getDiagramHTML(stage.id);
+    renderSubstepMarket(stage.id);
 
     const currentEstimate = getCurrentEstimate(stage.id);
     if (stageDurationTextEl) {
@@ -1090,6 +1374,16 @@
       const btn = e.target && e.target.closest ? e.target.closest("button[data-stage-id]") : null;
       if (!btn) return;
       setActiveStage(btn.getAttribute("data-stage-id"));
+    });
+  }
+
+  if (stageDiagramEl) {
+    stageDiagramEl.addEventListener("click", (e) => {
+      const btn = e.target && e.target.closest ? e.target.closest("button[data-substep-key]") : null;
+      if (!btn) return;
+      const key = String(btn.getAttribute("data-substep-key") || "");
+      if (!key) return;
+      renderSubstepMarket(activeStageId, key);
     });
   }
 

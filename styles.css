@@ -2006,6 +2006,29 @@ body.navigator-stage-modal-open {
   padding: 6px 10px;
 }
 
+.stage-substep-btn {
+  appearance: none;
+  border: 1px solid transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  transition: border-color 160ms var(--ease), background 160ms var(--ease), transform 160ms var(--ease), box-shadow 160ms var(--ease);
+}
+
+.stage-substep-btn:hover {
+  border-color: rgba(229, 57, 53, 0.44);
+}
+
+.stage-substep-btn:active {
+  transform: translateY(1px);
+}
+
+.stage-substep-btn.is-active {
+  border-color: rgba(229, 57, 53, 0.58) !important;
+  background: rgba(229, 57, 53, 0.2) !important;
+  box-shadow: 0 8px 18px rgba(229, 57, 53, 0.16);
+}
+
 .stage-material-compare {
   margin-top: 10px;
   display: grid;
@@ -2013,6 +2036,8 @@ body.navigator-stage-modal-open {
 }
 
 .stage-material-row {
+  width: 100%;
+  text-align: left;
   border-radius: 10px;
   border: 1px solid rgba(245, 245, 245, 0.1);
   background: rgba(30, 30, 30, 0.62);
@@ -2036,6 +2061,24 @@ body.navigator-stage-modal-open {
   color: rgba(176, 190, 197, 0.95);
   font-size: 12px;
   line-height: 1.4;
+}
+
+.stage-substep-market {
+  margin-top: 10px;
+}
+
+.stage-substep-title {
+  margin: 8px 0 4px;
+  font-size: 16px;
+  line-height: 1.3;
+}
+
+.stage-substep-who {
+  margin: 0;
+}
+
+.stage-substep-actions {
+  margin-top: 10px;
 }
 
 .stage-layer {
