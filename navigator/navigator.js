@@ -158,12 +158,54 @@
   let dynamicStepTemplates = { ...STEP_TEMPLATES };
   let dynamicKbCore = {};
   const STAGE_ORDER = ["planning", "rough", "engineering", "finishing", "furniture"];
-  const STAGE_ICON = {
-    planning: "📏",
-    rough: "🧱",
-    engineering: "⚡",
-    finishing: "🎨",
-    furniture: "🛋️"
+  const getStageIconMarkup = (stageId) => {
+    if (stageId === "planning") {
+      return `
+        <svg class="navigator-stage-icon-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <rect x="3" y="8" width="18" height="8" rx="2"></rect>
+          <path d="M7 8v4M10 8v3M13 8v4M16 8v3M19 8v4"></path>
+        </svg>
+      `;
+    }
+    if (stageId === "rough") {
+      return `
+        <svg class="navigator-stage-icon-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <rect x="3" y="5" width="7" height="5" rx="1"></rect>
+          <rect x="11" y="5" width="10" height="5" rx="1"></rect>
+          <rect x="3" y="11" width="10" height="5" rx="1"></rect>
+          <rect x="14" y="11" width="7" height="5" rx="1"></rect>
+          <rect x="3" y="17" width="7" height="2" rx="1"></rect>
+          <rect x="11" y="17" width="10" height="2" rx="1"></rect>
+        </svg>
+      `;
+    }
+    if (stageId === "engineering") {
+      return `
+        <svg class="navigator-stage-icon-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M10 3v6"></path>
+          <path d="M14 3v6"></path>
+          <path d="M8 9h8v3a4 4 0 0 1-4 4 4 4 0 0 1-4-4z"></path>
+          <path d="M12 16v5"></path>
+        </svg>
+      `;
+    }
+    if (stageId === "finishing") {
+      return `
+        <svg class="navigator-stage-icon-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <rect x="3" y="4" width="12" height="5" rx="2"></rect>
+          <path d="M15 6h4a2 2 0 0 1 2 2"></path>
+          <path d="M15 9v3a2 2 0 0 1-2 2h-2"></path>
+          <path d="M11 14v5"></path>
+        </svg>
+      `;
+    }
+    return `
+      <svg class="navigator-stage-icon-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="4" y="10" width="16" height="7" rx="2"></rect>
+        <path d="M6 10V8a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v2"></path>
+        <path d="M7 17v2M17 17v2"></path>
+      </svg>
+    `;
   };
   const STAGE_STATE_KEY = "remcard_navigator_active_stage";
   const STAGE_TO_FORM_VALUE = {
@@ -578,7 +620,7 @@
       btn.className = "navigator-next-item";
       btn.dataset.stageId = id;
       btn.innerHTML = `
-        <span class="navigator-next-icon" aria-hidden="true">${escapeHtml(STAGE_ICON[id] || "•")}</span>
+        <span class="navigator-next-icon" aria-hidden="true">${getStageIconMarkup(id)}</span>
         <span class="navigator-next-content">
           <span class="navigator-next-title">${escapeHtml(stage.shortLabel || stage.title)}</span>
           <span class="navigator-next-sub">${escapeHtml((stage.whatWeDo && stage.whatWeDo[0]) || stage.description || "")}</span>
@@ -606,7 +648,7 @@
       button.dataset.stageId = stage.id;
       button.innerHTML = `
         <span class="navigator-timeline-index">${idx + 1}</span>
-        <span class="navigator-timeline-icon" aria-hidden="true">${escapeHtml(STAGE_ICON[stage.id] || "•")}</span>
+        <span class="navigator-timeline-icon" aria-hidden="true">${getStageIconMarkup(stage.id)}</span>
         <span class="navigator-timeline-meta">
           <span class="navigator-timeline-label">${escapeHtml(stage.shortLabel || stage.title)}</span>
           <span class="navigator-timeline-status">${escapeHtml(stateLabel)}</span>
@@ -979,7 +1021,7 @@
       btn.className = `navigator-stage-pick${stage.id === activeStageId ? " is-active" : ""}`;
       btn.dataset.stageId = stage.id;
       btn.innerHTML = `
-        <span class="navigator-stage-pick-icon" aria-hidden="true">${escapeHtml(STAGE_ICON[stage.id] || "•")}</span>
+        <span class="navigator-stage-pick-icon" aria-hidden="true">${getStageIconMarkup(stage.id)}</span>
         <span class="navigator-stage-pick-text">
           <strong>${escapeHtml(stage.shortLabel || stage.title)}</strong>
           <span>${escapeHtml(stage.description)}</span>

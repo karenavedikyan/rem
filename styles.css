@@ -1560,9 +1560,9 @@ img {
   border-radius: 10px;
   display: grid;
   place-items: center;
-  font-size: 16px;
   border: 1px solid rgba(245, 245, 245, 0.16);
   background: rgba(245, 245, 245, 0.05);
+  color: rgba(240, 244, 246, 0.95);
 }
 
 .navigator-timeline-meta {
@@ -1663,7 +1663,7 @@ img {
   place-items: center;
   border: 1px solid rgba(245, 245, 245, 0.14);
   background: rgba(245, 245, 245, 0.06);
-  font-size: 16px;
+  color: rgba(240, 244, 246, 0.95);
 }
 
 .navigator-next-content {
@@ -1781,6 +1781,29 @@ img {
   display: grid;
   place-items: center;
   background: rgba(245, 245, 245, 0.08);
+  color: rgba(240, 244, 246, 0.95);
+  border: 1px solid rgba(245, 245, 245, 0.14);
+}
+
+.navigator-stage-icon-svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.navigator-timeline-step.is-active .navigator-timeline-icon,
+.navigator-stage-pick.is-active .navigator-stage-pick-icon {
+  color: rgba(255, 232, 232, 0.98);
+  border-color: rgba(229, 57, 53, 0.38);
+  background: rgba(229, 57, 53, 0.14);
+}
+
+.navigator-timeline-step.is-done .navigator-timeline-icon {
+  color: rgba(214, 224, 230, 0.9);
 }
 
 .navigator-stage-pick-text {
