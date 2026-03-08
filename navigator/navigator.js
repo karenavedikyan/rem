@@ -19,6 +19,12 @@
   const stageServicesLink = document.getElementById("stage-services-link");
   const stageKnowledgeLink = document.getElementById("stage-knowledge-link");
   const stageIdInput = document.getElementById("nv-stage-id");
+  const stageEstimateGroup = document.getElementById("stage-estimate-group");
+  const stageEstimateTransitionEl = document.getElementById("stage-estimate-transition");
+  const stageComplexityTabsEl = document.getElementById("stage-complexity-tabs");
+  const stageEstimateTimeValueEl = document.getElementById("stage-estimate-time-value");
+  const stageEstimateBudgetValueEl = document.getElementById("stage-estimate-budget-value");
+  const stageEstimateNoteEl = document.getElementById("stage-estimate-note");
   if (!form || !resultSection || !stepsEl || !summaryEl || !sendBtn || !sendResult) return;
 
   const buildBtn = form.querySelector("button[type='submit']");
@@ -152,6 +158,38 @@
     finishing: "FINISHING",
     furniture: "FURNITURE"
   };
+  const COMPLEXITY_LEVELS = [
+    { id: "basic", label: () => t("Базовая сложность", "Basic complexity") },
+    { id: "standard", label: () => t("Средняя сложность", "Standard complexity") },
+    { id: "complex", label: () => t("Сложный проект", "Complex project") }
+  ];
+  const TRANSITION_ESTIMATES = {
+    planning: {
+      basic: { days: [10, 16], budget: [120000, 260000] },
+      standard: { days: [16, 24], budget: [260000, 520000] },
+      complex: { days: [24, 40], budget: [520000, 1200000] }
+    },
+    rough: {
+      basic: { days: [12, 20], budget: [140000, 320000] },
+      standard: { days: [20, 35], budget: [320000, 760000] },
+      complex: { days: [35, 56], budget: [760000, 1650000] }
+    },
+    engineering: {
+      basic: { days: [10, 18], budget: [120000, 300000] },
+      standard: { days: [18, 30], budget: [300000, 720000] },
+      complex: { days: [30, 45], budget: [720000, 1500000] }
+    },
+    finishing: {
+      basic: { days: [14, 24], budget: [180000, 420000] },
+      standard: { days: [24, 42], budget: [420000, 980000] },
+      complex: { days: [42, 70], budget: [980000, 2100000] }
+    },
+    furniture: {
+      basic: { days: [7, 14], budget: [80000, 220000] },
+      standard: { days: [14, 28], budget: [220000, 620000] },
+      complex: { days: [28, 45], budget: [620000, 1400000] }
+    }
+  };
 
   const DEFAULT_NAVIGATOR_STAGES = [
     {
@@ -212,6 +250,7 @@
   ];
   let navigatorStages = Array.isArray(window.REMCARD_NAVIGATOR_STAGES) && window.REMCARD_NAVIGATOR_STAGES.length ? window.REMCARD_NAVIGATOR_STAGES : DEFAULT_NAVIGATOR_STAGES;
   let activeStageId = "planning";
+  let activeComplexityId = "standard";
 
   const objectLabels = I18N.isEn
     ? {
@@ -255,6 +294,75 @@
 
   const uniq = (arr) => Array.from(new Set((arr || []).filter(Boolean)));
   const isObject = (value) => value && typeof value === "object" && !Array.isArray(value);
+  const formatMoney = (amount) =>
+    new Intl.NumberFormat(I18N && I18N.isEn ? "en-US" : "ru-RU", { maximumFractionDigits: 0 }).format(Number(amount) || 0);
+
+  const formatDaysRange = (range) => {
+    const min = Array.isArray(range) ? Number(range[0]) : 0;
+    const max = Array.isArray(range) ? Number(range[1]) : 0;
+    if (!Number.isFinite(min) || !Number.isFinite(max) || min <= 0 || max <= 0) return "—";
+    const minWeeks = Math.round((min / 7) * 10) / 10;
+    const maxWeeks = Math.round((max / 7) * 10) / 10;
+    return I18N.isEn
+      ? `${min}-${max} days (≈ ${minWeeks}-${maxWeeks} weeks)`
+      : `${min}-${max} дн. (≈ ${minWeeks}-${maxWeeks} нед.)`;
+  };
+
+  const getNextStageId = (stageId) => {
+    const idx = STAGE_ORDER.indexOf(stageId);
+    if (idx < 0 || idx >= STAGE_ORDER.length - 1) return null;
+    return STAGE_ORDER[idx + 1];
+  };
+
+  const getStageLabelById = (stageId) => {
+    const stage = getStageById(stageId);
+    return stage ? stage.shortLabel || stage.title : stageId;
+  };
+
+  const renderComplexityTabs = () => {
+    if (!stageComplexityTabsEl) return;
+    stageComplexityTabsEl.innerHTML = "";
+    COMPLEXITY_LEVELS.forEach((level) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = `navigator-complexity-tab${level.id === activeComplexityId ? " is-active" : ""}`;
+      btn.dataset.complexity = level.id;
+      btn.setAttribute("role", "tab");
+      btn.setAttribute("aria-selected", level.id === activeComplexityId ? "true" : "false");
+      btn.textContent = level.label();
+      stageComplexityTabsEl.appendChild(btn);
+    });
+  };
+
+  const renderTransitionEstimate = (stageId) => {
+    if (!stageEstimateGroup) return;
+    const estimateByComplexity = TRANSITION_ESTIMATES[stageId];
+    if (!estimateByComplexity) {
+      stageEstimateGroup.hidden = true;
+      return;
+    }
+    stageEstimateGroup.hidden = false;
+
+    const toStageId = getNextStageId(stageId);
+    const toLabel = toStageId ? getStageLabelById(toStageId) : t("Сдача и въезд", "Handover and move-in");
+    if (stageEstimateTransitionEl) {
+      stageEstimateTransitionEl.textContent = `${getStageLabelById(stageId)} → ${toLabel}`;
+    }
+
+    const currentEstimate = estimateByComplexity[activeComplexityId] || estimateByComplexity.standard || estimateByComplexity.basic;
+    if (stageEstimateTimeValueEl) stageEstimateTimeValueEl.textContent = formatDaysRange(currentEstimate.days);
+    if (stageEstimateBudgetValueEl) {
+      stageEstimateBudgetValueEl.textContent = `${formatMoney(currentEstimate.budget[0])}–${formatMoney(currentEstimate.budget[1])} ₽`;
+    }
+    if (stageEstimateNoteEl) {
+      stageEstimateNoteEl.textContent = t(
+        "Оценка ориентировочная для Краснодара: зависит от площади, состояния основания, материалов и скорости поставок.",
+        "This is an approximate estimate for Krasnodar and depends on area, base condition, materials, and delivery speed."
+      );
+    }
+
+    renderComplexityTabs();
+  };
 
   const normalizeTemplate = (raw, fallback) => ({
     id: String((raw && raw.id) || (fallback && fallback.id) || ""),
@@ -449,6 +557,7 @@
       stageNextBtn.disabled = isLast;
     }
 
+    renderTransitionEstimate(stage.id);
     syncStageToForm(stage.id);
     renderTimeline();
   };
@@ -741,6 +850,17 @@
       const btn = e.target && e.target.closest ? e.target.closest("button[data-stage-id]") : null;
       if (!btn) return;
       setActiveStage(btn.getAttribute("data-stage-id"));
+    });
+  }
+
+  if (stageComplexityTabsEl) {
+    stageComplexityTabsEl.addEventListener("click", (e) => {
+      const btn = e.target && e.target.closest ? e.target.closest("button[data-complexity]") : null;
+      if (!btn) return;
+      const nextId = String(btn.getAttribute("data-complexity") || "");
+      if (!COMPLEXITY_LEVELS.some((level) => level.id === nextId)) return;
+      activeComplexityId = nextId;
+      renderTransitionEstimate(activeStageId);
     });
   }
 

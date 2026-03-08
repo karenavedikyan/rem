@@ -1333,6 +1333,82 @@ img {
   font-size: 13.5px;
 }
 
+.navigator-estimate-group {
+  margin-top: 12px;
+}
+
+.navigator-estimate-transition {
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(245, 245, 245, 0.97);
+}
+
+.navigator-complexity-tabs {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.navigator-complexity-tab {
+  border-radius: 999px;
+  border: 1px solid rgba(245, 245, 245, 0.16);
+  background: rgba(18, 18, 18, 0.45);
+  color: rgba(245, 245, 245, 0.92);
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 160ms var(--ease), background 160ms var(--ease), transform 160ms var(--ease);
+}
+
+.navigator-complexity-tab:hover {
+  border-color: rgba(229, 57, 53, 0.35);
+}
+
+.navigator-complexity-tab:active {
+  transform: translateY(1px);
+}
+
+.navigator-complexity-tab.is-active {
+  border-color: rgba(229, 57, 53, 0.45);
+  background: rgba(229, 57, 53, 0.14);
+  color: rgba(255, 235, 235, 0.98);
+}
+
+.navigator-estimate-metrics {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.navigator-estimate-metric {
+  border-radius: 10px;
+  border: 1px solid rgba(245, 245, 245, 0.08);
+  background: rgba(18, 18, 18, 0.35);
+  padding: 8px 10px;
+}
+
+.navigator-estimate-k {
+  display: block;
+  color: rgba(176, 190, 197, 0.95);
+  font-size: 12px;
+}
+
+.navigator-estimate-v {
+  display: block;
+  margin-top: 4px;
+  font-size: 14px;
+  color: rgba(245, 245, 245, 0.98);
+}
+
+.navigator-estimate-note {
+  margin-top: 10px;
+  font-size: 12.5px;
+}
+
 .navigator-hero-actions {
   margin-top: 14px;
 }
@@ -2273,6 +2349,10 @@ img {
   }
 
   .navigator-stage-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .navigator-estimate-metrics {
     grid-template-columns: 1fr;
   }
 
