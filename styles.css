@@ -1544,7 +1544,30 @@ img {
 .navigator-stage-map-segment.is-done {
   stroke: rgba(229, 57, 53, 0.95);
   stroke-width: 3;
-  stroke-dasharray: none;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: navigator-route-draw 420ms cubic-bezier(0.22, 1, 0.36, 1) forwards, navigator-route-glow 1800ms ease-in-out infinite;
+}
+
+@keyframes navigator-route-draw {
+  from {
+    stroke-dashoffset: 100;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes navigator-route-glow {
+  0%,
+  100% {
+    stroke: rgba(229, 57, 53, 0.86);
+    filter: drop-shadow(0 0 0 rgba(229, 57, 53, 0));
+  }
+  50% {
+    stroke: rgba(255, 116, 112, 0.98);
+    filter: drop-shadow(0 0 7px rgba(229, 57, 53, 0.42));
+  }
 }
 
 .navigator-stage-map-nodes {
@@ -1634,9 +1657,23 @@ img {
   box-shadow: 0 12px 24px rgba(229, 57, 53, 0.22);
 }
 
+.navigator-map-node.is-active .navigator-map-node-pin::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 16px;
+  border: 1px solid rgba(229, 57, 53, 0.36);
+  animation: navigator-node-pulse 1500ms ease-out infinite;
+  pointer-events: none;
+}
+
 .navigator-map-node.is-active .navigator-map-node-index {
   background: rgba(229, 57, 53, 0.95);
   color: rgba(255, 240, 240, 0.98);
+}
+
+.navigator-map-node.is-active .navigator-map-node-icon {
+  animation: navigator-node-breath 2200ms ease-in-out infinite;
 }
 
 .navigator-map-node.is-done .navigator-map-node-pin {
@@ -1646,6 +1683,31 @@ img {
 
 .navigator-map-node.is-future {
   opacity: 0.88;
+}
+
+@keyframes navigator-node-pulse {
+  0% {
+    transform: scale(0.92);
+    opacity: 0.9;
+  }
+  70% {
+    transform: scale(1.16);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.16);
+    opacity: 0;
+  }
+}
+
+@keyframes navigator-node-breath {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
 }
 
 .navigator-stage-card .muted {
@@ -1872,6 +1934,14 @@ img {
 
 .navigator-map-node.is-done .navigator-map-node-icon {
   color: rgba(214, 224, 230, 0.9);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navigator-stage-map-segment.is-done,
+  .navigator-map-node.is-active .navigator-map-node-pin::after,
+  .navigator-map-node.is-active .navigator-map-node-icon {
+    animation: none !important;
+  }
 }
 
 .navigator-stage-pick-text {

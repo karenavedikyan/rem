@@ -649,6 +649,7 @@
       .map((point, idx) => {
         const next = points[idx + 1];
         const isDone = idx < activeIdx;
+        const delayMs = idx * 90;
         return `
           <line
             x1="${point.x}"
@@ -656,6 +657,7 @@
             x2="${next.x}"
             y2="${next.y}"
             class="navigator-stage-map-segment${isDone ? " is-done" : ""}"
+            style="${isDone ? `animation-delay:${delayMs}ms, ${delayMs + 420}ms;` : ""}"
           ></line>
         `;
       })
