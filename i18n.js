@@ -406,12 +406,22 @@
     "Доставка": "Delivery",
     "Посмотреть акции": "View promotions",
     "RemCard — Каталог услуг": "RemCard — Services catalog",
+    "RemCard — Каталог услуг и товаров": "RemCard — Services and products catalog",
     "Каталог услуг RemCard": "RemCard services catalog",
+    "Каталог услуг и товаров RemCard": "RemCard services and products catalog",
     "Каталог услуг RemCard: фильтруйте услуги мастеров и компаний по этапу ремонта, задаче, району и бюджету.":
       "RemCard services catalog: filter contractors and company services by renovation stage, task type, district, and budget.",
+    "Каталог услуг и товаров RemCard: фильтруйте предложения мастеров, компаний и магазинов по этапу ремонта, типу позиции, задаче, району и бюджету.":
+      "RemCard services and products catalog: filter offers from contractors, companies and stores by stage, listing type, task, district and budget.",
     "Найдите услуги мастеров и компаний по этапу ремонта, задаче и району.":
       "Find contractor and company services by renovation stage, task type, and district.",
+    "Найдите услуги мастеров и компаний, а также товары магазинов по этапу ремонта, типу позиции, задаче и району.":
+      "Find contractor and company services plus store products by renovation stage, listing type, task type and district.",
     "Фильтры каталога": "Catalog filters",
+    "Тип позиции": "Listing type",
+    "Все позиции": "All listings",
+    "Только услуги": "Services only",
+    "Только товары": "Products only",
     "Этап ремонта": "Renovation stage",
     "Все этапы": "All stages",
     "Планирование": "Planning",
@@ -448,8 +458,10 @@
     "Сбросить всё": "Reset all",
     "Загружаем услуги...": "Loading services...",
     "По выбранным фильтрам пока нет услуг": "No services match selected filters yet",
+    "По выбранным фильтрам пока нет позиций": "No listings match selected filters yet",
     "Услуги не найдены по выбранным фильтрам.": "No services match selected filters.",
     "Найдено услуг": "Services found",
+    "Найдено позиций": "Listings found",
     "резервный режим": "fallback mode",
     "Не удалось загрузить каталог услуг": "Could not load services catalog",
     "Ошибка загрузки каталога": "Catalog loading error",

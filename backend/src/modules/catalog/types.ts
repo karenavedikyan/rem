@@ -7,6 +7,7 @@ export interface ServiceFilter {
   taskType?: ServiceTaskType;
   minPrice?: number;
   maxPrice?: number;
+  itemKind?: "service" | "product";
 }
 
 export interface PaginationInput {
@@ -31,6 +32,7 @@ export interface PublicCatalogItem {
   areas: string[];
   rating: number | null;
   ratingCount: number;
+  itemKind?: "service" | "product";
   partner: {
     id: string;
     name: string;

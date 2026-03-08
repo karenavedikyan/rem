@@ -6,6 +6,7 @@
   const PAGE_SIZE = 20;
   const DEFAULT_PLACEHOLDER_IMAGE = "../assets/img/catalog-placeholder.svg";
   const SORT_VALUES = new Set(["rating", "price_asc", "price_desc", "newest"]);
+  const ITEM_KIND_VALUES = new Set(["service", "product"]);
 
   const form = document.getElementById("catalog-filter-form");
   if (!form) return;
@@ -88,6 +89,28 @@
       newest: t("Новые", "Newest")
     };
     return map[value] || map.rating;
+  };
+
+  const itemKindLabel = (value) => {
+    const map = {
+      service: t("Услуга", "Service"),
+      product: t("Товар", "Product")
+    };
+    return map[value] || map.service;
+  };
+
+  const itemKindFilterLabel = (value) => {
+    const map = {
+      service: t("Только услуги", "Services only"),
+      product: t("Только товары", "Products only")
+    };
+    return map[value] || t("Все позиции", "All listings");
+  };
+
+  const resolveItemKind = (item) => {
+    const raw = String((item && item.itemKind) || "").trim().toLowerCase();
+    if (ITEM_KIND_VALUES.has(raw)) return raw;
+    return item && item.partner && item.partner.type === "STORE" ? "product" : "service";
   };
 
   const escapeHtml = (value) =>
@@ -177,6 +200,8 @@
   };
 
   const listFallbackServices = (query, page) => {
+    const itemKindRaw = String(query.get("itemKind") || "").trim().toLowerCase();
+    const itemKind = ITEM_KIND_VALUES.has(itemKindRaw) ? itemKindRaw : "";
     const stage = String(query.get("stage") || "").toUpperCase();
     const taskType = String(query.get("taskType") || "").toUpperCase();
     const city = String(query.get("city") || "").trim().toLowerCase();
@@ -188,6 +213,7 @@
     const filtered = FALLBACK_ITEMS.filter((item) => {
       if (!item || !item.isActive) return false;
       if (!item.partner || !item.partner.isApproved) return false;
+      if (itemKind && resolveItemKind(item) !== itemKind) return false;
       if (stage && item.stage !== stage) return false;
       if (taskType && item.taskType !== taskType) return false;
       if (city && String(item.city || "").trim().toLowerCase() !== city) return false;
@@ -357,7 +383,9 @@
     const params = new URLSearchParams(window.location.search || "");
     const page = Math.max(1, Number(params.get("page")) || 1);
     const sortRaw = String(params.get("sort") || "");
+    const itemKindRaw = String(params.get("itemKind") || "").trim().toLowerCase();
     return {
+      itemKind: ITEM_KIND_VALUES.has(itemKindRaw) ? itemKindRaw : "",
       stage: params.get("stage") || "",
       taskType: params.get("taskType") || "",
       sort: SORT_VALUES.has(sortRaw) ? sortRaw : "rating",
@@ -370,6 +398,7 @@
   };
 
   const applyParamsToForm = (params) => {
+    setFieldValue("itemKind", params.itemKind || "");
     setFieldValue("stage", params.stage);
     setFieldValue("taskType", params.taskType);
     setFieldValue("sort", params.sort || "rating");
@@ -381,6 +410,8 @@
 
   const buildParamsFromForm = ({ page = 1 } = {}) => {
     const out = new URLSearchParams();
+    const itemKindRaw = getFieldValue("itemKind").toLowerCase();
+    const itemKind = ITEM_KIND_VALUES.has(itemKindRaw) ? itemKindRaw : "";
     const stage = getFieldValue("stage").toUpperCase();
     const taskType = getFieldValue("taskType").toUpperCase();
     const sort = SORT_VALUES.has(getFieldValue("sort")) ? getFieldValue("sort") : "rating";
@@ -389,6 +420,7 @@
     const minPrice = getFieldValue("minPrice");
     const maxPrice = getFieldValue("maxPrice");
 
+    if (itemKind) out.set("itemKind", itemKind);
     if (stage) out.set("stage", stage);
     if (taskType) out.set("taskType", taskType);
     if (sort) out.set("sort", sort);
@@ -430,14 +462,18 @@
     article.className = "card catalog-item-card";
     article.dataset.serviceId = String(item.id || "");
     const detailsHref = buildServiceDetailsHref(item);
+    const itemKind = resolveItemKind(item);
+    const fallbackLabel = itemKind === "product" ? t("Товар", "Product") : t("Услуга", "Service");
+    const displayTitle = item.title || fallbackLabel;
+    const kindChip = `<span class="tag ${itemKind === "product" ? "tag-product" : "tag-service"}">${escapeHtml(itemKindLabel(itemKind))}</span>`;
     const offerChip = item.isOffer && item.promotionLabel ? `<span class="tag tag-promo">${escapeHtml(item.promotionLabel)}</span>` : "";
     article.innerHTML = `
-      <a class="catalog-item-media" href="${detailsHref}" aria-label="${escapeHtml(item.title || t("Услуга", "Service"))}">
-        <img class="catalog-item-image" src="${escapeHtml(normalizeImageUrl(item.imageUrl))}" alt="${escapeHtml(item.title || t("Услуга", "Service"))}" loading="lazy" />
+      <a class="catalog-item-media" href="${detailsHref}" aria-label="${escapeHtml(displayTitle)}">
+        <img class="catalog-item-image" src="${escapeHtml(normalizeImageUrl(item.imageUrl))}" alt="${escapeHtml(displayTitle)}" loading="lazy" />
       </a>
       <div class="catalog-item-body">
         <h3 class="catalog-item-title"><a class="catalog-item-title-link" href="${detailsHref}">${escapeHtml(
-      item.title || t("Услуга", "Service")
+      displayTitle
     )}</a></h3>
         <p class="catalog-item-subtitle">${escapeHtml(toSubtitle(item))}</p>
         <div class="catalog-item-price">${escapeHtml(formatPriceRange(item.minPrice, item.maxPrice))}</div>
@@ -446,6 +482,7 @@
           <span class="catalog-item-rating">${escapeHtml(formatRating(item))}</span>
         </div>
         <div class="partner-meta catalog-item-tags">
+          ${kindChip}
           <span class="tag">${escapeHtml(stageLabel(item.stage))}</span>
           <span class="tag">${escapeHtml(taskTypeLabel(item.taskType))}</span>
           ${offerChip}
@@ -486,6 +523,7 @@
   const renderActiveFilterChips = () => {
     if (!activeFiltersEl) return;
     const entries = [];
+    const itemKind = String(getFieldValue("itemKind") || "").toLowerCase();
     const stage = getFieldValue("stage").toUpperCase();
     const taskType = getFieldValue("taskType").toUpperCase();
     const city = getFieldValue("city");
@@ -494,6 +532,7 @@
     const maxPrice = getFieldValue("maxPrice");
     const sort = SORT_VALUES.has(getFieldValue("sort")) ? getFieldValue("sort") : "rating";
 
+    if (ITEM_KIND_VALUES.has(itemKind)) entries.push({ key: "itemKind", label: `${t("Тип позиции", "Listing type")}: ${itemKindFilterLabel(itemKind)}` });
     if (stage) entries.push({ key: "stage", label: `${t("Этап", "Stage")}: ${stageLabel(stage)}` });
     if (taskType) entries.push({ key: "taskType", label: `${t("Тип задачи", "Task type")}: ${taskTypeLabel(taskType)}` });
     if (city) entries.push({ key: "city", label: `${t("Город", "City")}: ${city}` });
@@ -577,7 +616,7 @@
     }
 
     if (countEl) {
-      const base = total ? `${t("Найдено услуг", "Services found")}: ${total}` : t("Услуги не найдены по выбранным фильтрам.", "No services match selected filters.");
+      const base = total ? `${t("Найдено позиций", "Listings found")}: ${total}` : t("Услуги не найдены по выбранным фильтрам.", "No services match selected filters.");
       countEl.textContent = fromFallback ? `${base} (${t("резервный режим", "fallback mode")})` : base;
     }
     if (emptyEl) emptyEl.hidden = items.length > 0;
@@ -638,6 +677,7 @@
 
   if (resetBtn) {
     resetBtn.addEventListener("click", () => {
+      setFieldValue("itemKind", "");
       setFieldValue("stage", "");
       setFieldValue("taskType", "");
       setFieldValue("sort", "rating");

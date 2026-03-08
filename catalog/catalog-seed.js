@@ -130,5 +130,39 @@ window.REMCARD_CATALOG_SEED = [
     ratingCount: 0,
     isActive: false,
     partner: { id: "p-008", name: "RemStart", type: "COMPANY", city: "Краснодар", isApproved: true }
+  },
+  {
+    id: "prd-001",
+    title: "Ламинат 33 класс дуб натуральный",
+    description: "Износостойкий ламинат для жилых комнат, 8 мм, фаска 4V.",
+    imageUrl: "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1200&q=80",
+    itemKind: "product",
+    stage: "FINISHING",
+    taskType: "FLOORING",
+    minPrice: 1350,
+    maxPrice: 1890,
+    city: "Краснодар",
+    areas: ["ЦМР", "ФМР", "ЮМР"],
+    rating: 4.7,
+    ratingCount: 41,
+    isActive: true,
+    partner: { id: "p-101", name: "ДомМаркет", type: "STORE", city: "Краснодар", isApproved: true }
+  },
+  {
+    id: "prd-002",
+    title: "Смеситель для ванной с термостатом",
+    description: "Латунный корпус, керамический картридж, гарантия 5 лет.",
+    imageUrl: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+    itemKind: "product",
+    stage: "FURNITURE",
+    taskType: "PLUMBING",
+    minPrice: 9800,
+    maxPrice: 16500,
+    city: "Краснодар",
+    areas: ["ПМР", "Гидрострой", "ККБ"],
+    rating: 4.6,
+    ratingCount: 23,
+    isActive: true,
+    partner: { id: "p-102", name: "СантехПойнт", type: "STORE", city: "Краснодар", isApproved: true }
   }
 ];

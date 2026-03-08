@@ -100,6 +100,8 @@
     return map[value] || value || "-";
   };
 
+  const itemKindLabel = (value) => (String(value || "").toLowerCase() === "product" ? t("Товар", "Product") : t("Услуга", "Service"));
+
   const formatPrice = (n) =>
     typeof n === "number"
       ? new Intl.NumberFormat(I18N && I18N.isEn ? "en-US" : "ru-RU", { maximumFractionDigits: 0 }).format(n)
@@ -150,6 +152,7 @@
     areas: Array.isArray(item.areas) ? item.areas : [],
     rating: typeof item.rating === "number" ? item.rating : null,
     ratingCount: Number.isFinite(item.ratingCount) ? item.ratingCount : 0,
+    itemKind: item.itemKind || (item.partner?.type === "STORE" ? "product" : "service"),
     partner: {
       id: item.partner?.id || "",
       name: item.partner?.name || "",
@@ -262,12 +265,17 @@
 
     if (badgesEl) {
       badgesEl.innerHTML = "";
+      const kindChip = document.createElement("span");
+      const isProduct = String(service.itemKind || "").toLowerCase() === "product";
+      kindChip.className = `tag ${isProduct ? "tag-product" : "tag-service"}`;
+      kindChip.textContent = itemKindLabel(service.itemKind);
       const stageChip = document.createElement("span");
       stageChip.className = "tag";
       stageChip.textContent = stageLabel(service.stage);
       const taskChip = document.createElement("span");
       taskChip.className = "tag";
       taskChip.textContent = taskTypeLabel(service.taskType);
+      badgesEl.appendChild(kindChip);
       badgesEl.appendChild(stageChip);
       badgesEl.appendChild(taskChip);
       if (service.isOffer && service.promotionLabel) {

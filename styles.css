@@ -2134,6 +2134,16 @@ img {
   color: rgba(255, 240, 196, 0.98);
 }
 
+.tag-service {
+  border-color: rgba(63, 81, 181, 0.35);
+  background: rgba(63, 81, 181, 0.14);
+}
+
+.tag-product {
+  border-color: rgba(46, 125, 50, 0.35);
+  background: rgba(46, 125, 50, 0.16);
+}
+
 .catalog-service-actions {
   display: flex;
   justify-content: flex-end;

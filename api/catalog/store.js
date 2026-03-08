@@ -13,6 +13,7 @@ const ALLOWED_ORIGINS = [
 const STAGES = new Set(["PLANNING", "ROUGH", "ENGINEERING", "FINISHING", "FURNITURE"]);
 const TASK_TYPES = new Set(["SANUZEL", "KITCHEN", "ELECTRICAL", "PLUMBING", "TILING", "PAINTING", "FLOORING", "WINDOWS", "DESIGN", "GENERAL"]);
 const SORTS = new Set(["rating", "price_asc", "price_desc", "newest"]);
+const ITEM_KINDS = new Set(["service", "product"]);
 
 const MAX_REVIEW_COMMENT = 1000;
 
@@ -37,6 +38,12 @@ const asNonNegativeInt = (value, fallback) => {
 
 const clone = (v) => JSON.parse(JSON.stringify(v));
 
+const resolveItemKind = (item) => {
+  const rawKind = asString(item && item.itemKind).toLowerCase();
+  if (ITEM_KINDS.has(rawKind)) return rawKind;
+  return item && item.partner && item.partner.type === "STORE" ? "product" : "service";
+};
+
 const mapService = (item) => ({
   id: item.id,
   title: item.title,
@@ -52,6 +59,7 @@ const mapService = (item) => ({
   areas: Array.isArray(item.areas) ? item.areas : [],
   rating: item.rating ?? null,
   ratingCount: Number.isFinite(item.ratingCount) ? item.ratingCount : 0,
+  itemKind: resolveItemKind(item),
   partner: {
     id: item.partner.id,
     name: item.partner.name,
@@ -101,6 +109,7 @@ export function normalizeCatalogFilter(query = {}) {
   const stage = asString(query.stage).toUpperCase();
   const taskType = asString(query.taskType).toUpperCase();
   const sortRaw = asString(query.sort);
+  const itemKindRaw = asString(query.itemKind).toLowerCase();
   return {
     stage: STAGES.has(stage) ? stage : undefined,
     city: asString(query.city) || undefined,
@@ -108,7 +117,8 @@ export function normalizeCatalogFilter(query = {}) {
     taskType: TASK_TYPES.has(taskType) ? taskType : undefined,
     minPrice: asOptionalNumber(query.minPrice),
     maxPrice: asOptionalNumber(query.maxPrice),
-    sort: SORTS.has(sortRaw) ? sortRaw : "rating"
+    sort: SORTS.has(sortRaw) ? sortRaw : "rating",
+    itemKind: ITEM_KINDS.has(itemKindRaw) ? itemKindRaw : undefined
   };
 }
 
@@ -179,10 +189,13 @@ async function runWithPrisma(work) {
 }
 
 function buildPrismaWhere(filter) {
-  const where = {
-    isActive: true,
-    partner: { isApproved: true }
-  };
+  const partnerWhere = { isApproved: true };
+  if (filter.itemKind === "product") {
+    partnerWhere.type = "STORE";
+  } else if (filter.itemKind === "service") {
+    partnerWhere.type = { not: "STORE" };
+  }
+  const where = { isActive: true, partner: partnerWhere };
 
   if (filter.stage) where.stage = filter.stage;
   if (filter.city) where.city = filter.city;
@@ -274,6 +287,7 @@ export async function listCatalogServices(filter, pagination) {
     if (filter.stage && item.stage !== filter.stage) return false;
     if (filter.city && item.city !== filter.city) return false;
     if (filter.taskType && item.taskType !== filter.taskType) return false;
+    if (filter.itemKind && resolveItemKind(item) !== filter.itemKind) return false;
     if (filter.area && (!Array.isArray(item.areas) || !item.areas.includes(filter.area))) return false;
     if (!intersectsPriceRange(item, filter.minPrice, filter.maxPrice)) return false;
     return true;

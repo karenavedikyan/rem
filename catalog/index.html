@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Каталог услуг RemCard: фильтруйте услуги мастеров и компаний по этапу ремонта, задаче, району и бюджету."
+      content="Каталог услуг и товаров RemCard: фильтруйте предложения мастеров, компаний и магазинов по этапу ремонта, типу позиции, задаче, району и бюджету."
     />
-    <title>RemCard — Каталог услуг</title>
+    <title>RemCard — Каталог услуг и товаров</title>
 
     <link rel="stylesheet" href="../styles.css" />
   </head>
@@ -49,9 +49,9 @@
       <section class="section catalog-section">
         <div class="container">
           <header class="section-header">
-            <h1>Каталог услуг RemCard</h1>
+            <h1>Каталог услуг и товаров RemCard</h1>
             <p class="section-subtitle">
-              Найдите услуги мастеров и компаний по этапу ремонта, задаче и району.
+              Найдите услуги мастеров и компаний, а также товары магазинов по этапу ремонта, типу позиции, задаче и району.
               <span class="catalog-current-stage" id="catalog-current-stage" hidden></span>
             </p>
           </header>
@@ -65,6 +65,15 @@
               </div>
               <form class="form" id="catalog-filter-form" novalidate>
                 <div class="form-grid">
+                  <div class="field">
+                    <label for="catalog-item-kind">Тип позиции</label>
+                    <select class="input" id="catalog-item-kind" name="itemKind">
+                      <option value="">Все позиции</option>
+                      <option value="service">Только услуги</option>
+                      <option value="product">Только товары</option>
+                    </select>
+                  </div>
+
                   <div class="field">
                     <label for="catalog-stage">Этап ремонта</label>
                     <select class="input" id="catalog-stage" name="stage" data-stage-filter="true">
@@ -148,7 +157,7 @@
               <div class="catalog-list" id="catalog-list" aria-live="polite"></div>
 
               <div class="card catalog-empty" id="catalog-empty" hidden>
-                <h3>По выбранным фильтрам пока нет услуг</h3>
+                <h3>По выбранным фильтрам пока нет позиций</h3>
                 <p class="muted">Попробуйте расширить фильтры по этапу, району или диапазону цены.</p>
               </div>
 
