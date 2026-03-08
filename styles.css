@@ -2228,15 +2228,16 @@ img {
     z-index: 20;
     display: inline-flex;
     justify-content: center;
-    background: linear-gradient(145deg, rgba(168, 44, 44, 0.84), rgba(98, 28, 28, 0.92));
-    border-color: rgba(229, 57, 53, 0.24);
-    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.34);
+    background: rgba(20, 20, 20, 0.9);
+    border-color: rgba(229, 57, 53, 0.34);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
     transition: opacity 160ms var(--ease), transform 160ms var(--ease);
   }
 
   .catalog-open-filters-btn:hover,
   .catalog-open-filters-btn:focus-visible {
-    background: linear-gradient(145deg, rgba(178, 52, 52, 0.88), rgba(106, 32, 32, 0.94));
+    background: rgba(26, 26, 26, 0.94);
+    border-color: rgba(229, 57, 53, 0.5);
   }
 
   .catalog-open-filters-btn.is-hidden {
