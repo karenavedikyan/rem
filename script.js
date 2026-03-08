@@ -475,6 +475,7 @@
   const sortSel = document.getElementById("offers-sort");
   const resetOffersBtn = document.getElementById("offers-reset-filters");
   const priorityChipsWrap = document.getElementById("offers-priority-chips");
+  const activeOffersFiltersWrap = document.getElementById("offers-active-filters");
   const OFFERS_QUERY_KEYS = {
     city: "offersCity",
     category: "offersCategory",
@@ -538,6 +539,53 @@
       });
     };
 
+    const priorityLabel = (value) =>
+      ({
+        hot: t("Горит", "Hot"),
+        week: t("До 7 дней", "Up to 7 days"),
+        long: t("Долгосрочная", "Long-term")
+      }[value] || t("Все", "All"));
+
+    const sortLabel = (value) =>
+      ({
+        soon: t("Сначала “горящие”", "Urgent first"),
+        benefit: t("По выгоде", "By benefit"),
+        new: t("Новые сначала", "Newest first")
+      }[value] || t("Сначала “горящие”", "Urgent first"));
+
+    const renderOffersActiveFilterChips = ({ city, cat, priority, sort }) => {
+      if (!activeOffersFiltersWrap) return;
+      const entries = [];
+      if (city) entries.push({ key: "city", label: `${t("Город", "City")}: ${city}` });
+      if (cat) entries.push({ key: "category", label: `${t("Категория", "Category")}: ${cat}` });
+      if (priority) entries.push({ key: "priority", label: `${t("Приоритет", "Priority")}: ${priorityLabel(priority)}` });
+      if (sort && sort !== "soon") entries.push({ key: "sort", label: `${t("Сортировка", "Sorting")}: ${sortLabel(sort)}` });
+
+      if (!entries.length) {
+        activeOffersFiltersWrap.hidden = true;
+        activeOffersFiltersWrap.innerHTML = "";
+        return;
+      }
+
+      activeOffersFiltersWrap.hidden = false;
+      activeOffersFiltersWrap.innerHTML = "";
+      entries.forEach((entry) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "offers-filter-chip";
+        btn.dataset.offersFilterKey = entry.key;
+        btn.textContent = `${entry.label} ×`;
+        activeOffersFiltersWrap.appendChild(btn);
+      });
+
+      const reset = document.createElement("button");
+      reset.type = "button";
+      reset.className = "offers-filter-chip is-reset";
+      reset.dataset.offersFilterKey = "__reset";
+      reset.textContent = t("Сбросить всё", "Reset all");
+      activeOffersFiltersWrap.appendChild(reset);
+    };
+
     const applyFiltersAndRender = () => {
       let list = sourcePromotions.slice();
       const city = citySel && citySel.value !== "all" ? citySel.value : null;
@@ -545,6 +593,7 @@
       const priority = prioritySel && prioritySel.value !== "all" ? prioritySel.value : null;
       const sort = sortSel ? sortSel.value : "soon";
       syncPriorityChips(prioritySel ? prioritySel.value : "all");
+      renderOffersActiveFilterChips({ city, cat, priority, sort });
 
       const url = new URL(window.location.href);
       const params = url.searchParams;
@@ -605,6 +654,27 @@
         if (!btn) return;
         const value = btn.getAttribute("data-priority-chip") || "all";
         prioritySel.value = value;
+        applyFiltersAndRender();
+      });
+    }
+
+    if (activeOffersFiltersWrap) {
+      activeOffersFiltersWrap.addEventListener("click", (e) => {
+        const btn = e.target && e.target.closest ? e.target.closest("button[data-offers-filter-key]") : null;
+        if (!btn) return;
+        const key = btn.getAttribute("data-offers-filter-key") || "";
+        if (key === "__reset") {
+          if (citySel) citySel.value = "all";
+          if (catSel) catSel.value = "all";
+          if (prioritySel) prioritySel.value = "all";
+          if (sortSel) sortSel.value = "soon";
+          applyFiltersAndRender();
+          return;
+        }
+        if (key === "city" && citySel) citySel.value = "all";
+        if (key === "category" && catSel) catSel.value = "all";
+        if (key === "priority" && prioritySel) prioritySel.value = "all";
+        if (key === "sort" && sortSel) sortSel.value = "soon";
         applyFiltersAndRender();
       });
     }

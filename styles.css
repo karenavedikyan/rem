@@ -778,7 +778,7 @@ img {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(10, 10, 10, 0.02), rgba(10, 10, 10, 0.52));
+  background: linear-gradient(180deg, rgba(10, 10, 10, 0.01), rgba(10, 10, 10, 0.32));
   pointer-events: none;
 }
 
@@ -792,6 +792,7 @@ img {
   justify-content: space-between;
   gap: 12px;
   padding: 16px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0));
 }
 
 .promo-banner-caption {
@@ -823,6 +824,8 @@ img {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  background: linear-gradient(180deg, rgba(34, 34, 34, 0.82), rgba(22, 22, 22, 0.88));
+  border-top: 1px solid rgba(245, 245, 245, 0.12);
 }
 
 .promo-summary {
@@ -836,7 +839,7 @@ img {
   margin: 0;
   font-size: 17px;
   line-height: 1.3;
-  color: rgba(245, 245, 245, 0.98);
+  color: rgba(255, 255, 255, 0.99);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -918,7 +921,7 @@ img {
 
 .promo-meta {
   font-size: 13px;
-  color: rgba(176, 190, 197, 0.95);
+  color: rgba(196, 208, 214, 0.98);
 }
 
 .promo-meta-row {
@@ -960,12 +963,12 @@ img {
 
 .promo-desc {
   margin: 0;
-  color: rgba(245, 245, 245, 0.9);
+  color: rgba(245, 245, 245, 0.98);
 }
 
 .promo-valid {
   font-size: 12.5px;
-  color: rgba(176, 190, 197, 0.9);
+  color: rgba(210, 220, 226, 0.95);
 }
 
 .promo-actions {
@@ -983,11 +986,13 @@ img {
 
 .offers-controls {
   padding: 14px;
+  border-color: rgba(245, 245, 245, 0.16);
+  background: linear-gradient(180deg, rgba(36, 36, 36, 0.9), rgba(24, 24, 24, 0.8));
 }
 
 .offers-priority-chips {
   margin-top: 10px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
@@ -995,8 +1000,8 @@ img {
 
 .offers-priority-chip {
   border-radius: 999px;
-  border: 1px solid rgba(245, 245, 245, 0.16);
-  background: rgba(18, 18, 18, 0.45);
+  border: 1px solid rgba(245, 245, 245, 0.2);
+  background: rgba(30, 30, 30, 0.72);
   color: rgba(245, 245, 245, 0.92);
   padding: 7px 11px;
   font-size: 12px;
@@ -1015,8 +1020,35 @@ img {
 
 .offers-priority-chip.is-active {
   border-color: rgba(229, 57, 53, 0.45);
-  background: rgba(229, 57, 53, 0.14);
+  background: rgba(229, 57, 53, 0.2);
   color: rgba(255, 235, 235, 0.98);
+}
+
+.offers-active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.offers-filter-chip {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(245, 245, 245, 0.95);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 12px;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.offers-filter-chip:hover {
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.offers-filter-chip.is-reset {
+  border-color: rgba(229, 57, 53, 0.35);
+  background: rgba(229, 57, 53, 0.12);
 }
 
 .offers-grid {
@@ -2682,6 +2714,14 @@ img {
 
   .offers-grid {
     grid-template-columns: 1fr;
+  }
+
+  .offers-priority-chips,
+  .offers-active-filters {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 2px;
   }
 
   .catalog-service-layout {

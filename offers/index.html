@@ -49,6 +49,13 @@
             <div>
               <h2>Все акции партнёров</h2>
               <p class="section-subtitle">Выберите акцию и перейдите к заявке через RemCard.</p>
+              <div class="offers-priority-chips" id="offers-priority-chips" aria-label="Быстрый фильтр по приоритету">
+                <button class="offers-priority-chip is-active" type="button" data-priority-chip="all">Все</button>
+                <button class="offers-priority-chip" type="button" data-priority-chip="hot">Горит</button>
+                <button class="offers-priority-chip" type="button" data-priority-chip="week">До 7 дней</button>
+                <button class="offers-priority-chip" type="button" data-priority-chip="long">Долгосрочная</button>
+              </div>
+              <div class="offers-active-filters" id="offers-active-filters" hidden></div>
             </div>
             <a class="section-link" href="../index.html">На главную</a>
           </header>
@@ -88,13 +95,6 @@
             <div class="offers-actions">
               <button class="btn btn-ghost" type="button" id="offers-reset-filters">Сбросить фильтры</button>
             </div>
-          </div>
-
-          <div class="offers-priority-chips" id="offers-priority-chips" aria-label="Быстрый фильтр по приоритету">
-            <button class="offers-priority-chip is-active" type="button" data-priority-chip="all">Все</button>
-            <button class="offers-priority-chip" type="button" data-priority-chip="hot">Горит</button>
-            <button class="offers-priority-chip" type="button" data-priority-chip="week">До 7 дней</button>
-            <button class="offers-priority-chip" type="button" data-priority-chip="long">Долгосрочная</button>
           </div>
 
           <div class="offers-list" id="all-promotions" aria-label="Список акций"></div>
