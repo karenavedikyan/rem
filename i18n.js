@@ -489,7 +489,7 @@
       "Try broader filters for stage, district, or price range.",
     "Назад": "Back",
     "Вперёд": "Next",
-    "Посмотреть услуги по этому этапу": "View services for this stage",
+    "Посмотреть услуги и товары по этому этапу": "View services and products for this stage",
     "Выбран этап": "Selected stage",
     "Отзывы и рейтинг": "Reviews and rating",
     "Новый партнёр": "New partner",
