@@ -417,6 +417,10 @@
       "Find contractor and company services by renovation stage, task type, and district.",
     "Найдите услуги мастеров и компаний, а также товары магазинов по этапу ремонта, типу позиции, задаче и району.":
       "Find contractor and company services plus store products by renovation stage, listing type, task type and district.",
+    "Быстрый фильтр": "Quick filter",
+    "Все": "All",
+    "Услуги": "Services",
+    "Товары": "Products",
     "Фильтры каталога": "Catalog filters",
     "Тип позиции": "Listing type",
     "Все позиции": "All listings",

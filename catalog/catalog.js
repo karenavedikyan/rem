@@ -17,6 +17,7 @@
   const errorMessageEl = document.getElementById("catalog-error-message");
   const countEl = document.getElementById("catalog-results-count");
   const activeFiltersEl = document.getElementById("catalog-active-filters");
+  const quickKindEl = document.getElementById("catalog-quick-kind");
   const quickSortEl = document.getElementById("catalog-quick-sort");
   const filtersCardEl = document.getElementById("catalog-filters-card");
   const sheetGrabberEl = document.getElementById("catalog-sheet-grabber");
@@ -89,6 +90,15 @@
       newest: t("Новые", "Newest")
     };
     return map[value] || map.rating;
+  };
+
+  const quickKindChipLabel = (value) => {
+    const map = {
+      "": t("Все", "All"),
+      service: t("Услуги", "Services"),
+      product: t("Товары", "Products")
+    };
+    return map[value] || map[""];
   };
 
   const itemKindLabel = (value) => {
@@ -579,6 +589,21 @@
     });
   };
 
+  const renderQuickKindChips = () => {
+    if (!quickKindEl) return;
+    const activeKindRaw = String(getFieldValue("itemKind") || "").toLowerCase();
+    const activeKind = ITEM_KIND_VALUES.has(activeKindRaw) ? activeKindRaw : "";
+    const chips = quickKindEl.querySelectorAll("button[data-kind]");
+    chips.forEach((chip) => {
+      const valueRaw = String(chip.dataset.kind || "").toLowerCase();
+      const value = ITEM_KIND_VALUES.has(valueRaw) ? valueRaw : "";
+      const isActive = value === activeKind;
+      chip.classList.toggle("is-active", isActive);
+      chip.setAttribute("aria-pressed", isActive ? "true" : "false");
+      chip.textContent = quickKindChipLabel(value);
+    });
+  };
+
   const setLoading = (loading) => {
     state.isLoading = loading;
     if (loading && countEl) countEl.textContent = t("Загружаем услуги...", "Loading services...");
@@ -591,6 +616,7 @@
     if (submitBtn) submitBtn.disabled = loading;
     if (prevBtn) prevBtn.disabled = loading || state.page <= 1;
     if (nextBtn) nextBtn.disabled = loading || state.page >= state.totalPages;
+    renderQuickKindChips();
     renderQuickSortChips();
   };
 
@@ -603,6 +629,7 @@
     if (countEl) countEl.textContent = t("Ошибка загрузки каталога", "Catalog loading error");
     if (paginationEl) paginationEl.hidden = true;
     renderActiveFilterChips();
+    renderQuickKindChips();
     renderQuickSortChips();
   };
 
@@ -630,6 +657,7 @@
     if (prevBtn) prevBtn.disabled = state.page <= 1;
     if (nextBtn) nextBtn.disabled = state.page >= state.totalPages;
     renderActiveFilterChips();
+    renderQuickKindChips();
     renderQuickSortChips();
   };
 
@@ -709,6 +737,20 @@
       if (!SORT_VALUES.has(nextSort)) return;
       if (getFieldValue("sort") === nextSort) return;
       setFieldValue("sort", nextSort);
+      loadCatalog({ page: 1 });
+    });
+  }
+
+  if (quickKindEl) {
+    quickKindEl.addEventListener("click", (e) => {
+      const btn = e.target && e.target.closest ? e.target.closest("button[data-kind]") : null;
+      if (!btn) return;
+      const kindRaw = String(btn.dataset.kind || "").toLowerCase();
+      const nextKind = ITEM_KIND_VALUES.has(kindRaw) ? kindRaw : "";
+      const currentKindRaw = String(getFieldValue("itemKind") || "").toLowerCase();
+      const currentKind = ITEM_KIND_VALUES.has(currentKindRaw) ? currentKindRaw : "";
+      if (nextKind === currentKind) return;
+      setFieldValue("itemKind", nextKind);
       loadCatalog({ page: 1 });
     });
   }
