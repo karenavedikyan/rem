@@ -1954,6 +1954,10 @@ img {
   display: none;
 }
 
+.catalog-filters-backdrop[hidden] {
+  display: none !important;
+}
+
 .catalog-current-stage {
   display: inline-flex;
   margin-left: 8px;
@@ -2233,7 +2237,7 @@ img {
     transform: translateY(10px);
   }
 
-  .catalog-filters-backdrop {
+  .catalog-filters-backdrop:not([hidden]) {
     display: block;
     position: fixed;
     inset: 0;
