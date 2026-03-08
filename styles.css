@@ -1501,83 +1501,151 @@ img {
 
 .navigator-timeline {
   margin-top: 14px;
-  display: grid;
-  gap: 10px;
 }
 
-.navigator-timeline-step {
+.navigator-stage-map {
+  position: relative;
+  min-height: 290px;
+  border-radius: 16px;
+  border: 1px solid rgba(245, 245, 245, 0.1);
+  background:
+    radial-gradient(110px 84px at 12% 18%, rgba(245, 245, 245, 0.06), transparent 72%),
+    radial-gradient(140px 100px at 86% 74%, rgba(229, 57, 53, 0.08), transparent 74%),
+    radial-gradient(120px 90px at 56% 44%, rgba(245, 245, 245, 0.045), transparent 78%),
+    linear-gradient(180deg, rgba(32, 32, 32, 0.66), rgba(18, 18, 18, 0.9));
+  overflow: hidden;
+}
+
+.navigator-stage-map::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(26deg, rgba(245, 245, 245, 0.028), rgba(245, 245, 245, 0.028) 1px, transparent 1px, transparent 18px),
+    repeating-linear-gradient(-24deg, rgba(245, 245, 245, 0.018), rgba(245, 245, 245, 0.018) 1px, transparent 1px, transparent 20px);
+  pointer-events: none;
+}
+
+.navigator-stage-map-svg {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  border-radius: 12px;
-  border: 1px solid rgba(245, 245, 245, 0.12);
-  background: rgba(18, 18, 18, 0.35);
-  color: rgba(245, 245, 245, 0.95);
-  text-align: left;
+  height: 100%;
+  pointer-events: none;
+}
+
+.navigator-stage-map-segment {
+  stroke: rgba(176, 190, 197, 0.4);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-dasharray: 1.8 1.8;
+}
+
+.navigator-stage-map-segment.is-done {
+  stroke: rgba(229, 57, 53, 0.95);
+  stroke-width: 3;
+  stroke-dasharray: none;
+}
+
+.navigator-stage-map-nodes {
+  position: relative;
+  min-height: 290px;
+}
+
+.navigator-map-node {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  transform: translate(-50%, -50%);
+  border: 0;
+  background: transparent;
+  padding: 0;
+  width: 118px;
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  text-align: center;
+  color: rgba(245, 245, 245, 0.96);
   cursor: pointer;
-  padding: 10px 11px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: border-color 160ms var(--ease), transform 160ms var(--ease), background 160ms var(--ease);
 }
 
-.navigator-timeline-step:hover {
-  border-color: rgba(229, 57, 53, 0.35);
-}
-
-.navigator-timeline-step:active {
-  transform: translateY(1px);
-}
-
-.navigator-timeline-step.is-active {
-  border-color: rgba(229, 57, 53, 0.5);
-  background: linear-gradient(180deg, rgba(229, 57, 53, 0.16), rgba(18, 18, 18, 0.4));
-}
-
-.navigator-timeline-step.is-done {
-  border-color: rgba(245, 245, 245, 0.2);
-  background: rgba(40, 40, 40, 0.4);
-}
-
-.navigator-timeline-step.is-future {
-  opacity: 0.9;
-}
-
-.navigator-timeline-index {
-  width: 24px;
-  height: 24px;
-  border-radius: 8px;
+.navigator-map-node-pin {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  border: 1px solid rgba(245, 245, 245, 0.2);
+  background: rgba(20, 20, 20, 0.86);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
   display: grid;
   place-items: center;
-  font-size: 11px;
-  font-weight: 850;
-  background: rgba(229, 57, 53, 0.14);
-  border: 1px solid rgba(229, 57, 53, 0.28);
+  transition: transform 160ms var(--ease), border-color 160ms var(--ease), background 160ms var(--ease), box-shadow 160ms var(--ease);
 }
 
-.navigator-timeline-icon {
+.navigator-map-node:hover .navigator-map-node-pin {
+  transform: translateY(-1px);
+}
+
+.navigator-map-node-index {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-size: 10px;
+  font-weight: 800;
+  background: rgba(245, 245, 245, 0.9);
+  color: rgba(32, 32, 32, 0.96);
+}
+
+.navigator-map-node-icon {
   width: 30px;
   height: 30px;
   border-radius: 10px;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(245, 245, 245, 0.16);
+  border: 1px solid rgba(245, 245, 245, 0.14);
   background: rgba(245, 245, 245, 0.05);
-  color: rgba(240, 244, 246, 0.95);
+  color: rgba(240, 244, 246, 0.96);
 }
 
-.navigator-timeline-meta {
+.navigator-map-node-meta {
   display: grid;
-  gap: 2px;
+  gap: 1px;
 }
 
-.navigator-timeline-label {
-  font-size: 14px;
+.navigator-map-node-label {
+  font-size: 11.5px;
   font-weight: 700;
+  line-height: 1.2;
 }
 
-.navigator-timeline-status {
-  font-size: 11px;
+.navigator-map-node-status {
+  font-size: 10px;
   color: rgba(176, 190, 197, 0.95);
+}
+
+.navigator-map-node.is-active .navigator-map-node-pin {
+  border-color: rgba(229, 57, 53, 0.6);
+  background: linear-gradient(180deg, rgba(229, 57, 53, 0.18), rgba(20, 20, 20, 0.92));
+  box-shadow: 0 12px 24px rgba(229, 57, 53, 0.22);
+}
+
+.navigator-map-node.is-active .navigator-map-node-index {
+  background: rgba(229, 57, 53, 0.95);
+  color: rgba(255, 240, 240, 0.98);
+}
+
+.navigator-map-node.is-done .navigator-map-node-pin {
+  border-color: rgba(245, 245, 245, 0.26);
+  background: rgba(46, 46, 46, 0.82);
+}
+
+.navigator-map-node.is-future {
+  opacity: 0.88;
 }
 
 .navigator-stage-card .muted {
@@ -1795,14 +1863,14 @@ img {
   stroke-linejoin: round;
 }
 
-.navigator-timeline-step.is-active .navigator-timeline-icon,
+.navigator-map-node.is-active .navigator-map-node-icon,
 .navigator-stage-pick.is-active .navigator-stage-pick-icon {
   color: rgba(255, 232, 232, 0.98);
   border-color: rgba(229, 57, 53, 0.38);
   background: rgba(229, 57, 53, 0.14);
 }
 
-.navigator-timeline-step.is-done .navigator-timeline-icon {
+.navigator-map-node.is-done .navigator-map-node-icon {
   color: rgba(214, 224, 230, 0.9);
 }
 
@@ -2524,16 +2592,38 @@ body.navigator-stage-modal-open {
 }
 
 @media (max-width: 760px) {
-  .navigator-timeline {
-    display: flex;
-    overflow-x: auto;
-    gap: 8px;
-    padding-bottom: 4px;
+  .navigator-stage-map,
+  .navigator-stage-map-nodes {
+    min-height: 248px;
   }
 
-  .navigator-timeline-step {
-    min-width: 208px;
-    flex: 0 0 auto;
+  .navigator-map-node {
+    width: 92px;
+    gap: 4px;
+  }
+
+  .navigator-map-node-pin {
+    width: 42px;
+    height: 42px;
+  }
+
+  .navigator-map-node-index {
+    width: 16px;
+    height: 16px;
+    font-size: 9px;
+  }
+
+  .navigator-map-node-icon {
+    width: 26px;
+    height: 26px;
+  }
+
+  .navigator-map-node-label {
+    font-size: 10.5px;
+  }
+
+  .navigator-map-node-status {
+    display: none;
   }
 
   .navigator-stage-grid {

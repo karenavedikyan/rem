@@ -158,6 +158,13 @@
   let dynamicStepTemplates = { ...STEP_TEMPLATES };
   let dynamicKbCore = {};
   const STAGE_ORDER = ["planning", "rough", "engineering", "finishing", "furniture"];
+  const STAGE_MAP_POINTS = {
+    planning: { x: 12, y: 74 },
+    rough: { x: 31, y: 38 },
+    engineering: { x: 50, y: 67 },
+    finishing: { x: 69, y: 35 },
+    furniture: { x: 88, y: 62 }
+  };
   const getStageIconMarkup = (stageId) => {
     if (stageId === "planning") {
       return `
@@ -397,6 +404,8 @@
     return estimateByComplexity[activeComplexityId] || estimateByComplexity.standard || estimateByComplexity.basic || null;
   };
 
+  const getMapPointByStage = (stageId) => STAGE_MAP_POINTS[stageId] || { x: 50, y: 50 };
+
   const renderComplexityTabs = () => {
     if (!stageComplexityTabsEl) return;
     stageComplexityTabsEl.innerHTML = "";
@@ -633,28 +642,63 @@
 
   const renderTimeline = () => {
     if (!timelineEl) return;
-    timelineEl.innerHTML = "";
     const activeIdx = STAGE_ORDER.indexOf(activeStageId);
+    const points = STAGE_ORDER.map((id) => ({ id, ...getMapPointByStage(id) }));
+    const lines = points
+      .slice(0, -1)
+      .map((point, idx) => {
+        const next = points[idx + 1];
+        const isDone = idx < activeIdx;
+        return `
+          <line
+            x1="${point.x}"
+            y1="${point.y}"
+            x2="${next.x}"
+            y2="${next.y}"
+            class="navigator-stage-map-segment${isDone ? " is-done" : ""}"
+          ></line>
+        `;
+      })
+      .join("");
+
+    timelineEl.innerHTML = `
+      <div class="navigator-stage-map">
+        <svg class="navigator-stage-map-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          ${lines}
+        </svg>
+        <div class="navigator-stage-map-nodes"></div>
+      </div>
+    `;
+
+    const nodesWrap = timelineEl.querySelector(".navigator-stage-map-nodes");
+    if (!nodesWrap) return;
+
     navigatorStages.forEach((stage, idx) => {
       const isDone = idx < activeIdx;
       const isActive = idx === activeIdx;
       const stateClass = isActive ? "is-active" : isDone ? "is-done" : "is-future";
       const stateLabel = isActive ? t("Текущий этап", "Current stage") : isDone ? t("Пройден", "Completed") : t("Впереди", "Upcoming");
+      const point = getMapPointByStage(stage.id);
       const button = document.createElement("button");
       button.type = "button";
-      button.className = `navigator-timeline-step ${stateClass}`;
+      button.className = `navigator-map-node ${stateClass}`;
       button.setAttribute("aria-selected", isActive ? "true" : "false");
       button.setAttribute("role", "tab");
+      button.setAttribute("aria-label", `${stage.shortLabel || stage.title}. ${stateLabel}`);
       button.dataset.stageId = stage.id;
+      button.style.setProperty("--x", `${point.x}%`);
+      button.style.setProperty("--y", `${point.y}%`);
       button.innerHTML = `
-        <span class="navigator-timeline-index">${idx + 1}</span>
-        <span class="navigator-timeline-icon" aria-hidden="true">${getStageIconMarkup(stage.id)}</span>
-        <span class="navigator-timeline-meta">
-          <span class="navigator-timeline-label">${escapeHtml(stage.shortLabel || stage.title)}</span>
-          <span class="navigator-timeline-status">${escapeHtml(stateLabel)}</span>
+        <span class="navigator-map-node-pin">
+          <span class="navigator-map-node-index">${idx + 1}</span>
+          <span class="navigator-map-node-icon" aria-hidden="true">${getStageIconMarkup(stage.id)}</span>
+        </span>
+        <span class="navigator-map-node-meta">
+          <span class="navigator-map-node-label">${escapeHtml(stage.shortLabel || stage.title)}</span>
+          <span class="navigator-map-node-status">${escapeHtml(stateLabel)}</span>
         </span>
       `;
-      timelineEl.appendChild(button);
+      nodesWrap.appendChild(button);
     });
   };
 
