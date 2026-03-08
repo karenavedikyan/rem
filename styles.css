@@ -1880,6 +1880,10 @@ img {
   display: none;
 }
 
+.catalog-sheet-grabber {
+  display: none;
+}
+
 .catalog-results-head {
   margin-bottom: 10px;
 }
@@ -2157,6 +2161,25 @@ img {
 
   .catalog-filters-card.is-open {
     transform: translateY(0);
+  }
+
+  .catalog-filters-card.is-dragging {
+    transition: none;
+  }
+
+  .catalog-sheet-grabber {
+    display: block;
+    width: 48px;
+    height: 5px;
+    margin: -2px auto 10px;
+    border-radius: 999px;
+    background: rgba(245, 245, 245, 0.35);
+    touch-action: none;
+    cursor: grab;
+  }
+
+  .catalog-filters-card.is-dragging .catalog-sheet-grabber {
+    cursor: grabbing;
   }
 
   .catalog-filters-head {

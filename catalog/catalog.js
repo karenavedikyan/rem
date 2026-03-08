@@ -18,6 +18,7 @@
   const activeFiltersEl = document.getElementById("catalog-active-filters");
   const quickSortEl = document.getElementById("catalog-quick-sort");
   const filtersCardEl = document.getElementById("catalog-filters-card");
+  const sheetGrabberEl = document.getElementById("catalog-sheet-grabber");
   const openFiltersBtn = document.getElementById("catalog-open-filters");
   const closeFiltersBtn = document.getElementById("catalog-filters-close");
   const filtersBackdropEl = document.getElementById("catalog-filters-backdrop");
@@ -30,6 +31,8 @@
   const stageSelectEl = getStageSelect();
   const state = { page: 1, totalPages: 1, isLoading: false };
   const FALLBACK_ITEMS = Array.isArray(window.REMCARD_CATALOG_SEED) ? window.REMCARD_CATALOG_SEED : [];
+  const SHEET_CLOSE_THRESHOLD = 96;
+  let sheetDragState = null;
 
   function getStageSelect() {
     return form.querySelector('select[name="stage"]');
@@ -202,9 +205,16 @@
 
   const getField = (name) => form.querySelector(`[name="${CSS.escape(name)}"]`);
   const isMobileView = () => window.matchMedia("(max-width: 760px)").matches;
+  const clearSheetDragStyle = () => {
+    if (!filtersCardEl) return;
+    filtersCardEl.style.removeProperty("transform");
+    filtersCardEl.classList.remove("is-dragging");
+  };
 
   const closeMobileFilters = () => {
     if (!filtersCardEl || !filtersBackdropEl) return;
+    sheetDragState = null;
+    clearSheetDragStyle();
     filtersCardEl.classList.remove("is-open");
     document.body.classList.remove("catalog-filters-open");
     filtersBackdropEl.hidden = true;
@@ -213,10 +223,37 @@
 
   const openMobileFilters = () => {
     if (!filtersCardEl || !filtersBackdropEl || !isMobileView()) return;
+    sheetDragState = null;
+    clearSheetDragStyle();
     filtersCardEl.classList.add("is-open");
     document.body.classList.add("catalog-filters-open");
     filtersBackdropEl.hidden = false;
     if (openFiltersBtn) openFiltersBtn.setAttribute("aria-expanded", "true");
+  };
+
+  const startSheetDrag = (clientY) => {
+    if (!filtersCardEl || !isMobileView() || !filtersCardEl.classList.contains("is-open")) return false;
+    sheetDragState = { startY: clientY, currentY: clientY };
+    filtersCardEl.classList.add("is-dragging");
+    return true;
+  };
+
+  const updateSheetDrag = (clientY) => {
+    if (!sheetDragState || !filtersCardEl) return;
+    sheetDragState.currentY = clientY;
+    const delta = Math.max(0, sheetDragState.currentY - sheetDragState.startY);
+    filtersCardEl.style.transform = `translateY(${Math.round(delta)}px)`;
+  };
+
+  const finishSheetDrag = () => {
+    if (!sheetDragState) return;
+    const delta = Math.max(0, sheetDragState.currentY - sheetDragState.startY);
+    sheetDragState = null;
+    if (delta >= SHEET_CLOSE_THRESHOLD) {
+      closeMobileFilters();
+      return;
+    }
+    clearSheetDragStyle();
   };
   const setFieldValue = (name, value) => {
     const el = getField(name);
@@ -566,6 +603,60 @@
     filtersBackdropEl.addEventListener("click", () => {
       closeMobileFilters();
     });
+  }
+
+  if (sheetGrabberEl) {
+    if ("PointerEvent" in window) {
+      let activePointerId = null;
+      sheetGrabberEl.addEventListener("pointerdown", (e) => {
+        if (e.pointerType === "mouse" && e.button !== 0) return;
+        if (!startSheetDrag(e.clientY)) return;
+        activePointerId = e.pointerId;
+        if (typeof sheetGrabberEl.setPointerCapture === "function") {
+          sheetGrabberEl.setPointerCapture(activePointerId);
+        }
+        e.preventDefault();
+      });
+      window.addEventListener(
+        "pointermove",
+        (e) => {
+          if (activePointerId == null || e.pointerId !== activePointerId) return;
+          updateSheetDrag(e.clientY);
+          e.preventDefault();
+        },
+        { passive: false }
+      );
+      const onPointerStop = (e) => {
+        if (activePointerId == null || e.pointerId !== activePointerId) return;
+        activePointerId = null;
+        finishSheetDrag();
+      };
+      window.addEventListener("pointerup", onPointerStop);
+      window.addEventListener("pointercancel", onPointerStop);
+    } else {
+      sheetGrabberEl.addEventListener(
+        "touchstart",
+        (e) => {
+          const touch = e.touches && e.touches[0];
+          if (!touch) return;
+          if (!startSheetDrag(touch.clientY)) return;
+          e.preventDefault();
+        },
+        { passive: false }
+      );
+      sheetGrabberEl.addEventListener(
+        "touchmove",
+        (e) => {
+          const touch = e.touches && e.touches[0];
+          if (!touch) return;
+          updateSheetDrag(touch.clientY);
+          e.preventDefault();
+        },
+        { passive: false }
+      );
+      sheetGrabberEl.addEventListener("touchend", finishSheetDrag);
+      sheetGrabberEl.addEventListener("touchcancel", finishSheetDrag);
+    }
   }
 
   document.addEventListener("keydown", (e) => {
