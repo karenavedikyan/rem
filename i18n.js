@@ -26,10 +26,21 @@
     "RemCard — ремонт так же просто, как такси": "RemCard — ремонт just got as easy as calling a taxi",
     "RemCard • старт в Краснодаре": "RemCard • launching in Krasnodar",
     "Сейчас запускаемся в Краснодаре. Далее — другие города России.": "Launching in Krasnodar now. Other Russian cities are next.",
+    "Преимущества": "Benefits",
+    "Заявка": "Request",
+    "Партнёрам": "For partners",
+    "Бонусы": "Bonuses",
+    "Помогаем пройти ремонт по шагам: навигатор подсказывает этапы, а одна заявка в RemCard помогает быстро найти подходящих исполнителей в Краснодаре.":
+      "We guide renovation step by step: the navigator explains stages, and one RemCard request quickly helps find the right pros in Krasnodar.",
     "Найти мастера": "Find a contractor",
     "Найти товар": "Find a product",
     "Откройте каталог и подберите товары по этапу ремонта, цене и рейтингу.":
       "Open the catalog and choose products by renovation stage, price, and rating.",
+    "Заполните короткую форму и получите предложения от мастеров и компаний.":
+      "Fill out a short form and receive offers from contractors and companies.",
+    "Я мастер / компания — подключиться к RemCard": "I am a contractor / company — join RemCard",
+    "Для мастеров, бригад, компаний и магазинов — отдельная страница партнёра.":
+      "For contractors, teams, companies, and stores — a dedicated partner page.",
     "Стать партнёром": "Become a partner",
     "Почему RemCard удобен всем участникам ремонта": "Why RemCard is convenient for everyone in renovation",
     "Единый сервис": "One unified service",
@@ -42,6 +53,13 @@
     "Оставить заявку на партнёрство": "Submit a partnership request",
     "Стать партнёром RemCard": "Become a RemCard partner",
     "RemCard как карта лояльности": "RemCard as a loyalty card",
+    "Подробнее о бонусной карте": "More about the bonus card",
+    "Для мастеров и бизнеса": "For contractors and businesses",
+    "Подробная страница подключения к RemCard: кому подходит, как выглядит работа с заявками и как попасть в каталог и акции.":
+      "Detailed RemCard onboarding page: who it is for, how lead workflow works, and how to get into catalog and promotions.",
+    "Как подключение выглядит на практике": "How onboarding works in practice",
+    "Подключайтесь к RemCard и получайте целевые заявки, размещайте услуги и товары в каталоге, участвуйте в акциях и бонусной программе.":
+      "Join RemCard to get targeted leads, list services and products in the catalog, and participate in promotions and bonuses.",
     "Заявка клиента в RemCard (Краснодар)": "Client request to RemCard (Krasnodar)",
     "Отправить заявку в RemCard": "Submit request to RemCard",
     "Заявка партнёра в RemCard (Краснодар)": "Partner request to RemCard (Krasnodar)",

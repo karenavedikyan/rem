@@ -304,6 +304,11 @@ img {
   max-width: 330px;
 }
 
+.hero-action-item-primary {
+  flex-basis: 100%;
+  max-width: 420px;
+}
+
 .hero-action-note {
   margin: 0;
   font-size: 12.5px;

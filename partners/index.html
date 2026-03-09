@@ -46,58 +46,48 @@
       <section class="section" id="partners">
         <div class="container">
           <header class="section-header">
-            <h2>Для партнёров (Краснодар)</h2>
+            <h2>Для мастеров и бизнеса</h2>
             <p class="section-subtitle">
-              <strong>RemCard приводит целевых клиентов по ремонту в Краснодаре, помогает продавать услуги</strong> и включать их в общую
-              бонусную программу.
+              Подробная страница подключения к RemCard: кому подходит, как выглядит работа с заявками и как попасть в каталог и акции.
             </p>
           </header>
 
-          <div class="grid two-col">
-            <article class="card">
-              <h3>Кто такие партнёры</h3>
+          <div class="grid cards-3">
+            <article class="card role-card" id="masters">
+              <div class="card-icon" aria-hidden="true">М</div>
+              <h3>Мастерам — поток заказов без лишней рекламы</h3>
+              <p>Подключитесь к RemCard, чтобы получать заявки от клиентов, которые уже готовы к ремонту.</p>
               <ul class="list">
-                <li><strong>Физлица:</strong> мастера, прорабы, бригады, дизайнеры, декораторы.</li>
-                <li><strong>Юрлица:</strong> магазины стройматериалов, мебели, сантехники, подрядчики, консалтинг и др.</li>
+                <li>Целевые заявки по Краснодару: клиенты уже описали задачу и оставили контакты.</li>
+                <li>Удобный учёт: заявки, статусы и история заказов — в одном сервисе.</li>
+                <li>Возможность попасть в подборки и акции RemCard, чтобы выделяться среди конкурентов.</li>
+                <li>Бонусная программа для клиентов мотивирует их возвращаться именно к вам.</li>
               </ul>
             </article>
-
-            <article class="card">
-              <h3>Преимущества</h3>
+            <article class="card role-card" id="business">
+              <div class="card-icon" aria-hidden="true">Б</div>
+              <h3>Бизнесу — новые клиенты и продажи через ремонт</h3>
+              <p>Магазины, студии и сервисные компании могут подключиться к RemCard и получать поток клиентов из экосистемы ремонта.</p>
               <ul class="list">
-                <li>Витрина товаров и услуг в общем каталоге RemCard.</li>
-                <li>Инструменты для акций и продвижения.</li>
-                <li>Единая бонусная программа без разработки своей системы.</li>
+                <li>Витрина товаров и услуг в общем каталоге RemCard: вас видят клиенты и мастера.</li>
+                <li>Общая бонусная программа: клиент получает бонусы за ремонт и может потратить их именно у вас.</li>
+                <li>Участие в акциях и специальных предложениях RemCard для привлечения трафика.</li>
+                <li>Локальный фокус на Краснодар с возможностью расширения на другие города.</li>
               </ul>
             </article>
-          </div>
-
-          <div class="card card-wide">
-            <h3>Разделы кабинета партнёра</h3>
-            <div class="grid cards-4">
-              <div class="mini">
-                <div class="mini-title">Дашборд</div>
-                <div class="mini-text">Статус и краткая статистика</div>
-              </div>
-              <div class="mini">
-                <div class="mini-title">Профиль</div>
-                <div class="mini-text">Описание, зона работы, реквизиты</div>
-              </div>
-              <div class="mini">
-                <div class="mini-title">Товары и услуги</div>
-                <div class="mini-text">Управление позициями</div>
-              </div>
-              <div class="mini">
-                <div class="mini-title">Акции</div>
-                <div class="mini-text">Спецпредложения и условия</div>
-              </div>
-            </div>
+            <article class="card">
+              <h3>Как подключение выглядит на практике</h3>
+              <ul class="list">
+                <li><strong>1.</strong> Оставляете заявку на подключение.</li>
+                <li><strong>2.</strong> Согласуем специализацию и район работы.</li>
+                <li><strong>3.</strong> Подключаем к RemCard и передаём первые запросы.</li>
+              </ul>
+            </article>
           </div>
 
           <div class="promo-more">
-            <a class="btn btn-primary" href="./add/">Добавить партнёра в каталог</a>
+            <a class="btn btn-primary" href="#partner-request">Оставить заявку партнёра</a>
             <a class="btn btn-ghost" href="../partner/cabinet/">Личный кабинет партнёра</a>
-            <a class="btn btn-ghost" href="#partner-request">Оставить заявку партнёра</a>
             <a class="btn btn-ghost" href="../index.html#request">Нужны заявки как клиент</a>
           </div>
         </div>
@@ -106,84 +96,55 @@
       <section class="section" id="partner-request">
         <div class="container">
           <header class="section-header">
-            <h2>Заявка на подключение партнёра (Краснодар)</h2>
+            <h2>Заявка партнёра в RemCard (Краснодар)</h2>
             <p class="section-subtitle">
-              Оставьте контакты и кратко опишите услуги/товары — команда RemCard свяжется с вами. Заявка отправляется в Telegram.
+              Для мастеров, бригад, компаний и магазинов. Заполните короткую форму — обсудим подключение и условия.
             </p>
           </header>
 
           <div class="grid two-col">
             <div class="card">
-              <h3>Форма партнёра</h3>
-              <p class="muted">Это быстрый старт. Позже подключим личный кабинет и полноценную анкету.</p>
+              <h3>Быстрая форма партнёра</h3>
+              <p class="muted">Нужно 4 поля, чтобы начать диалог по подключению.</p>
 
               <!-- TODO: Подключить реальный backend (телеграм‑бот / почта / API). -->
               <form class="form" id="partner-form" novalidate>
                 <div class="form-grid">
                   <div class="field">
-                    <label for="p-name">Имя / Компания</label>
-                    <input class="input" id="p-name" name="name" autocomplete="name" required placeholder="Например, Иван / ООО “…”" />
-                  </div>
-
-                  <div class="field">
-                    <label for="p-phone">Телефон</label>
-                    <input
-                      class="input"
-                      id="p-phone"
-                      name="phone"
-                      type="tel"
-                      inputmode="tel"
-                      autocomplete="tel"
-                      required
-                      placeholder="+7 (___) ___‑__‑__"
-                    />
-                  </div>
-
-                  <div class="field">
-                    <label for="p-email">Email</label>
-                    <input class="input" id="p-email" name="email" type="email" autocomplete="email" placeholder="name@example.com" />
-                  </div>
-
-                  <div class="field">
-                    <label for="p-city">Город</label>
-                    <input class="input" id="p-city" name="city" value="Краснодар" readonly />
-                  </div>
-
-                  <div class="field field-wide">
-                    <label for="p-type">Тип партнёра</label>
-                    <select class="input" id="p-type" name="partnerType" required>
-                      <option value="" selected disabled>Выберите вариант</option>
-                      <option>Физ лицо (мастер/бригада)</option>
-                      <option>Юр лицо (компания/магазин)</option>
+                    <label for="hp-role">Кто вы</label>
+                    <select class="input" id="hp-role" name="role" required>
+                      <option value="" selected disabled>Выберите роль</option>
+                      <option>Мастер / бригада</option>
+                      <option>Компания услуг</option>
+                      <option>Магазин материалов / товаров</option>
                     </select>
                   </div>
 
-                  <div class="field field-wide">
-                    <label for="p-specialization">Специализация / виды работ</label>
+                  <div class="field">
+                    <label for="hp-spec">Специализация / направление</label>
                     <input
                       class="input"
-                      id="p-specialization"
+                      id="hp-spec"
                       name="specialization"
                       required
-                      placeholder="Например: ремонт ванной, плитка, сантехника, электрика…"
+                      placeholder="Например: санузлы под ключ, электрика, кухни, двери, плитка"
                     />
                   </div>
 
-                  <div class="field field-wide">
-                    <label for="p-comment">Комментарий</label>
-                    <textarea
-                      class="input textarea"
-                      id="p-comment"
-                      name="comment"
-                      rows="5"
-                      placeholder="Опишите: зоны работы, примеры объектов, наличие договора/гарантии, ссылка на портфолио (если есть)…"
-                    ></textarea>
+                  <div class="field">
+                    <label for="hp-location">Город и район работы</label>
+                    <input class="input" id="hp-location" name="location" required placeholder="Например: Краснодар, ФМР и Юбилейный" />
+                  </div>
+
+                  <div class="field">
+                    <label for="hp-contact">Телефон / Telegram</label>
+                    <input class="input" id="hp-contact" name="contact" required placeholder="+7 (...) ...-..-.. или @telegram" />
                   </div>
                 </div>
 
                 <div class="form-actions">
-                  <button class="btn btn-primary" type="submit">Отправить заявку партнёра</button>
-                  <p class="fineprint">Нажимая “Отправить”, вы соглашаетесь на обработку данных для связи по заявке.</p>
+                  <button class="btn btn-primary" type="submit">Отправить заявку в RemCard</button>
+                  <p class="fineprint">Нажимая кнопку, вы соглашаетесь на обработку данных для связи по заявке.</p>
                 </div>
 
                 <div class="form-result" id="partner-result" role="status" aria-live="polite" hidden>
@@ -194,13 +155,13 @@
             </div>
 
             <div class="card">
-              <h3>Что будет дальше</h3>
+              <h3>Что происходит после заявки</h3>
               <ul class="list">
-                <li>Связь и уточнение услуг/товаров</li>
-                <li>Проверка базовой информации (контакты, зона работы)</li>
-                <li>Добавление в каталог и запуск первых акций (при необходимости)</li>
+                <li>Связываемся и уточняем ваш профиль и районы работы.</li>
+                <li>Проверяем базовые данные и формат сотрудничества.</li>
+                <li>Подключаем к RemCard и согласовываем первые заявки или акции.</li>
               </ul>
-              <p class="muted" style="margin-top: 12px">Заявка сразу попадает в Telegram‑группу RemCard.</p>
+              <p class="muted" style="margin-top: 12px">Первые партнёры формируют локальную сеть RemCard в Краснодаре.</p>
             </div>
           </div>
         </div>
