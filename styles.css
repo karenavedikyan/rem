@@ -387,6 +387,10 @@ img {
   color: rgba(176, 190, 197, 0.92);
 }
 
+.hero-metrics .metric {
+  min-height: 86px;
+}
+
 .hero-card {
   border-radius: 22px;
   border: 1px solid rgba(245, 245, 245, 0.12);
@@ -616,6 +620,45 @@ img {
   justify-items: flex-start;
 }
 
+.navigator-visual {
+  display: grid;
+  gap: 14px;
+}
+
+.navigator-stage-strip {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.navigator-stage-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(245, 245, 245, 0.12);
+  background: rgba(18, 18, 18, 0.46);
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.navigator-visual-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.navigator-visual-meta span {
+  border: 1px solid rgba(229, 57, 53, 0.3);
+  background: rgba(229, 57, 53, 0.12);
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-size: 12px;
+  color: rgba(245, 245, 245, 0.95);
+}
+
 .role-card {
   display: flex;
   flex-direction: column;
@@ -722,6 +765,65 @@ img {
 
 .roadmap {
   margin-top: 0;
+}
+
+.loyalty-infographic {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.loyalty-point {
+  border-radius: 12px;
+  border: 1px solid rgba(245, 245, 245, 0.1);
+  background: rgba(18, 18, 18, 0.42);
+  padding: 12px;
+  display: grid;
+  gap: 6px;
+}
+
+.loyalty-point strong {
+  font-size: 15px;
+  letter-spacing: -0.2px;
+}
+
+.loyalty-point span {
+  font-size: 12px;
+  color: rgba(176, 190, 197, 0.95);
+}
+
+.request-flow {
+  display: grid;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.request-flow-step {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  align-items: start;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(245, 245, 245, 0.1);
+  background: rgba(18, 18, 18, 0.35);
+}
+
+.request-flow-step p {
+  margin: 0;
+  color: rgba(176, 190, 197, 0.95);
+}
+
+.request-flow-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(145deg, rgba(229, 57, 53, 0.95), rgba(183, 28, 28, 0.95));
+  box-shadow: 0 8px 18px rgba(229, 57, 53, 0.2);
+  font-size: 12px;
+  font-weight: 800;
 }
 
 .contacts-line {
@@ -3372,6 +3474,14 @@ body.navigator-stage-modal-open {
     grid-template-columns: 1fr;
   }
 
+  .navigator-stage-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .loyalty-infographic {
+    grid-template-columns: 1fr;
+  }
+
   .navigator-step-grid {
     grid-template-columns: 1fr;
   }
@@ -3476,6 +3586,15 @@ body.navigator-stage-modal-open {
 
   .hero-metrics {
     grid-template-columns: 1fr;
+  }
+
+  .navigator-stage-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .request-flow-step {
+    grid-template-columns: 26px 1fr;
+    padding: 10px;
   }
 
   .hero {
