@@ -12,6 +12,7 @@
     "Клиентам": "For Clients",
     "Мастерам": "For Pros",
     "Бизнесу": "For Business",
+    "Разделы о проекте": "About sections",
     "Как это работает": "How It Works",
     "Навигатор": "Navigator",
     "Этапы": "Stages",
@@ -30,6 +31,8 @@
     "Заявка": "Request",
     "Партнёрам": "For partners",
     "Бонусы": "Bonuses",
+    "Лояльность": "Loyalty",
+    "Почему RemCard": "Why RemCard",
     "RemCard — навигатор ремонта по шагам": "RemCard — step-by-step repair navigator",
     "Сервис, который показывает этапы, считает бюджет и подбирает мастеров в Краснодаре":
       "A service that maps stages, estimates budget, and matches contractors in Krasnodar",
