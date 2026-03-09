@@ -230,6 +230,10 @@
               </button>
 
               <div class="request-form-panel" id="request-form-panel" hidden>
+                <div class="request-form-panel-head">
+                  <h4>Заполнение заявки</h4>
+                  <button class="request-form-close" id="request-form-close" type="button" aria-label="Закрыть форму заявки">✕</button>
+                </div>
                 <!-- TODO: Подключить реальный backend (телеграм‑бот / почта / API). -->
                 <form class="form" id="request-form" novalidate>
                   <div class="form-grid">
@@ -292,6 +296,7 @@
                 </form>
               </div>
           </div>
+          <div class="request-form-backdrop" id="request-form-backdrop" hidden></div>
         </div>
       </section>
 

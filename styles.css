@@ -1212,12 +1212,37 @@ img {
   border-top: 1px solid rgba(245, 245, 245, 0.1);
 }
 
+.request-form-panel-head {
+  display: none;
+}
+
+.request-form-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  border: 1px solid rgba(245, 245, 245, 0.16);
+  background: rgba(20, 20, 20, 0.78);
+  color: rgba(245, 245, 245, 0.92);
+  font-size: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .request-form-panel[hidden] {
   display: none !important;
 }
 
 .request-form-panel .form {
   margin-top: 0;
+}
+
+.request-form-backdrop {
+  display: none;
+}
+
+.request-form-backdrop[hidden] {
+  display: none !important;
 }
 
 .contacts-line {
@@ -3273,6 +3298,63 @@ body.navigator-stage-modal-open {
 }
 
 @media (max-width: 760px) {
+  .request-form-panel {
+    position: fixed;
+    left: 10px;
+    right: 10px;
+    bottom: 0;
+    top: auto;
+    z-index: 72;
+    margin-top: 0;
+    padding: 14px 14px calc(12px + env(safe-area-inset-bottom, 0px));
+    border-top: none;
+    border: 1px solid rgba(245, 245, 245, 0.14);
+    border-radius: 16px 16px 0 0;
+    background: rgba(12, 12, 12, 0.98);
+    box-shadow: 0 -14px 40px rgba(0, 0, 0, 0.46);
+    max-height: 86vh;
+    overflow-y: auto;
+    transform: translateY(112%);
+    transition: transform 240ms var(--ease);
+  }
+
+  .request-form-panel.is-open {
+    transform: translateY(0);
+  }
+
+  .request-form-panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    margin: -14px -14px 10px;
+    padding: 14px;
+    background: rgba(18, 18, 18, 0.96);
+    border-bottom: 1px solid rgba(245, 245, 245, 0.1);
+    border-radius: 16px 16px 0 0;
+  }
+
+  .request-form-panel-head h4 {
+    margin: 0;
+    font-size: 16px;
+    letter-spacing: -0.2px;
+  }
+
+  .request-form-backdrop:not([hidden]) {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 70;
+    background: rgba(0, 0, 0, 0.68);
+  }
+
+  body.request-form-open {
+    overflow: hidden;
+  }
+
   .navigator-stage-map,
   .navigator-stage-map-nodes {
     min-height: 248px;

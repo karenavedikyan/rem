@@ -926,12 +926,19 @@
   const requestFormPanel = document.getElementById("request-form-panel");
   const requestOpenBtn = document.getElementById("request-open-btn");
   const requestOpenBtnText = requestOpenBtn ? requestOpenBtn.querySelector(".request-open-btn-text") : null;
+  const requestFormCloseBtn = document.getElementById("request-form-close");
+  const requestFormBackdrop = document.getElementById("request-form-backdrop");
   const requestOpenLabel = t("Открыть форму заявки", "Open request form");
   const requestCloseLabel = t("Скрыть форму заявки", "Hide request form");
+  const isMobileRequestSheet = () => window.matchMedia("(max-width: 760px)").matches;
 
   const setRequestFormPanelOpen = (open, { focusFirstField = false } = {}) => {
     if (!requestFormPanel || !requestOpenBtn) return;
+    const mobileSheet = isMobileRequestSheet();
     requestFormPanel.hidden = !open;
+    requestFormPanel.classList.toggle("is-open", open && mobileSheet);
+    if (requestFormBackdrop) requestFormBackdrop.hidden = !(open && mobileSheet);
+    document.body.classList.toggle("request-form-open", open && mobileSheet);
     requestOpenBtn.classList.toggle("is-open", open);
     requestOpenBtn.setAttribute("aria-expanded", open ? "true" : "false");
     if (requestOpenBtnText) requestOpenBtnText.textContent = open ? requestCloseLabel : requestOpenLabel;
@@ -948,6 +955,27 @@
     requestOpenBtn.addEventListener("click", () => {
       const isOpen = requestOpenBtn.getAttribute("aria-expanded") === "true";
       setRequestFormPanelOpen(!isOpen, { focusFirstField: !isOpen });
+    });
+    if (requestFormCloseBtn) {
+      requestFormCloseBtn.addEventListener("click", () => setRequestFormPanelOpen(false));
+    }
+    if (requestFormBackdrop) {
+      requestFormBackdrop.addEventListener("click", () => setRequestFormPanelOpen(false));
+    }
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      const isOpen = requestOpenBtn.getAttribute("aria-expanded") === "true";
+      if (!isOpen) return;
+      setRequestFormPanelOpen(false);
+    });
+    window.addEventListener("resize", () => {
+      const isOpen = requestOpenBtn.getAttribute("aria-expanded") === "true";
+      if (!isOpen) {
+        document.body.classList.remove("request-form-open");
+        if (requestFormBackdrop) requestFormBackdrop.hidden = true;
+        return;
+      }
+      setRequestFormPanelOpen(true);
     });
     setRequestFormPanelOpen(false);
   }
