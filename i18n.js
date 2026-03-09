@@ -400,12 +400,15 @@
     "Первые партнёры формируют локальную сеть RemCard в Краснодаре.": "First partners are building the local RemCard network in Krasnodar.",
     "Хотите стать партнёром RemCard, инвестором или помочь в развитии проекта — свяжитесь со мной.":
       "Want to become a RemCard partner, investor, or help develop the project — contact me.",
+    "Для партнёрства, инвестиций и предложений — свяжитесь с командой RemCard.":
+      "For partnerships, investments, and proposals — contact the RemCard team.",
     "Написать": "Write to us",
     "Ссылка на Telegram-группу RemCard": "Link to RemCard Telegram group",
     "RemCard заявки (группа)": "RemCard requests (group)",
     "Замените контакты на реальные перед публикацией.": "Replace contacts with real ones before public launch.",
     "Оставьте заявку — мы свяжемся и подскажем, как быстро подключиться к RemCard.":
       "Leave a request and we will contact you with the fastest onboarding path.",
+    "Для партнёрства — оставьте заявку ниже.": "For partnership, leave a request below.",
     "Оставить заявку партнёра": "Submit partner request",
     "Пока форма не подключена — используйте email.": "While the form backend is not connected, use email.",
     "Для партнёров: первые компании Краснодара уже с нами": "For partners: first Krasnodar companies are already with us",

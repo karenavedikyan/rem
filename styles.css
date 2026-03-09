@@ -667,11 +667,11 @@ img {
 
 /* Sections */
 .section {
-  padding: 44px 0;
+  padding: 40px 0;
 }
 
 .section-header {
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 
 .section-header h2 {
@@ -682,8 +682,8 @@ img {
 
 .section-subtitle {
   margin: 0;
-  max-width: 78ch;
-  line-height: 1.45;
+  max-width: 72ch;
+  line-height: 1.42;
   color: rgba(176, 190, 197, 0.95);
 }
 
@@ -821,9 +821,9 @@ img {
 }
 
 .navigator-cta {
-  margin-top: 18px;
+  margin-top: 12px;
   display: grid;
-  gap: 8px;
+  gap: 6px;
   justify-items: flex-start;
 }
 
@@ -1350,11 +1350,11 @@ img {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 10px 12px;
+  padding: 9px 12px;
   border-radius: 14px;
   background: rgba(18, 18, 18, 0.35);
   border: 1px solid rgba(245, 245, 245, 0.08);
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
 .contacts-label {
@@ -2992,8 +2992,12 @@ body.navigator-stage-modal-open {
 }
 
 .section-compact {
-  padding-top: 14px;
-  padding-bottom: 30px;
+  padding-top: 10px;
+  padding-bottom: 24px;
+}
+
+.contacts-main-card .navigator-cta {
+  margin-top: 10px;
 }
 
 .logos-grid {
@@ -4048,11 +4052,11 @@ body.navigator-stage-modal-open {
   }
 
   .section {
-    padding: 34px 0;
+    padding: 30px 0;
   }
 
   .hero + .section {
-    padding-top: 22px;
+    padding-top: 18px;
   }
 
   .hero-card {
@@ -4193,11 +4197,11 @@ body.navigator-stage-modal-open {
 
 @media (max-width: 560px) {
   .section {
-    padding: 30px 0;
+    padding: 26px 0;
   }
 
   .section-header {
-    margin-bottom: 14px;
+    margin-bottom: 12px;
   }
 
   .section-subtitle {
