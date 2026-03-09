@@ -79,7 +79,13 @@
     if (!link) return;
 
     const href = link.getAttribute("href");
-    if (!href || href === "#" || href === "#top") return;
+    if (!href || href === "#") return;
+    if (href === "#top") {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      if (window.location.hash !== "#top") history.replaceState(null, "", "#top");
+      return;
+    }
 
     const el = document.querySelector(href);
     if (!el) return;
