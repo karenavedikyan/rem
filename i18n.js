@@ -36,6 +36,7 @@
     "Запустить навигатор ремонта": "Start repair navigator",
     "Работаем пока в Краснодаре": "Currently operating in Krasnodar",
     "Ключевые показатели": "Key metrics",
+    "Мини-маршрут этапов ремонта": "Mini roadmap of renovation stages",
     "и до 5 предложений": "and up to 5 offers",
     "от плана до мебели": "from planning to furniture",
     "под район и бюджет": "by district and budget",

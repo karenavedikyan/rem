@@ -264,7 +264,7 @@ img {
 }
 
 .hero-layout-main {
-  grid-template-columns: 1.05fr 0.95fr;
+  grid-template-columns: 1fr;
 }
 
 .hero-copy h1 {
@@ -299,6 +299,24 @@ img {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
+}
+
+.hero-mini-route {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  color: rgba(176, 190, 197, 0.95);
+  font-size: 13px;
+}
+
+.hero-mini-step {
+  border: 1px solid rgba(245, 245, 245, 0.14);
+  border-radius: 999px;
+  background: rgba(18, 18, 18, 0.42);
+  padding: 4px 9px;
+  color: rgba(245, 245, 245, 0.96);
 }
 
 .hero-kpi-card {
@@ -3735,7 +3753,7 @@ body.navigator-stage-modal-open {
   }
 
   .hero-layout-main {
-    gap: 14px;
+    gap: 10px;
   }
 
   .hero-kpis {
@@ -3904,6 +3922,11 @@ body.navigator-stage-modal-open {
   .hero-kpis {
     grid-template-columns: 1fr;
     gap: 6px;
+  }
+
+  .hero-mini-route {
+    font-size: 12px;
+    gap: 5px;
   }
 
   .hero-kpi-card {
