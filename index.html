@@ -30,7 +30,7 @@
           <div class="nav-menu" id="nav-menu">
             <a class="nav-link" href="./navigator/">Навигатор</a>
             <a class="nav-link" href="#navigator-block">Как это работает</a>
-            <a class="nav-link" href="#benefits">Преимущества</a>
+            <a class="nav-link" href="#client-benefits">Преимущества</a>
             <a class="nav-link" href="#request">Заявка</a>
             <a class="nav-link" href="./partners/">Партнёрам</a>
             <a class="nav-link" href="./catalog/">Каталог</a>
@@ -43,56 +43,32 @@
 
     <main id="main">
       <section class="hero" id="hero">
-        <div class="container hero-inner">
+        <div class="container hero-inner hero-layout-main">
           <div class="hero-copy">
             <p class="eyebrow">RemCard • старт в Краснодаре</p>
-            <h1>RemCard — ремонт так же просто, как такси</h1>
-            <p class="lead">
-              Помогаем пройти ремонт по шагам: навигатор подсказывает этапы, а одна заявка в RemCard помогает быстро найти подходящих
-              исполнителей в Краснодаре.
-            </p>
-            <div class="hero-metrics" aria-label="Ключевые выгоды с первого взгляда">
-              <div class="metric">
-                <div class="metric-title">1 заявка</div>
-                <div class="metric-text">и несколько предложений</div>
-              </div>
-              <div class="metric">
-                <div class="metric-title">5 этапов</div>
-                <div class="metric-text">в навигаторе ремонта</div>
-              </div>
-              <div class="metric">
-                <div class="metric-title">Клиент · мастер · магазин</div>
-                <div class="metric-text">одна платформа RemCard</div>
-              </div>
+            <h1>RemCard — навигатор ремонта по шагам</h1>
+            <p class="lead">Сервис, который показывает этапы, считает бюджет и подбирает мастеров в Краснодаре</p>
+            <div class="hero-actions hero-actions-inline">
+              <a class="btn btn-primary" href="./navigator/">Запустить навигатор ремонта</a>
+              <a class="btn btn-ghost" href="#request">Оставить заявку на ремонт</a>
             </div>
-            <div class="hero-actions">
-              <div class="hero-action-item hero-action-item-primary">
-                <a class="btn btn-primary" href="#request">Оставить заявку на ремонт</a>
-                <p class="hero-action-note">Заполните короткую форму и получите предложения от мастеров и компаний.</p>
-              </div>
-              <div class="hero-action-item">
-                <a class="btn btn-ghost" href="./partners/#partner-request">Я мастер / компания — подключиться к RemCard</a>
-                <p class="hero-action-note">Для мастеров, бригад, компаний и магазинов — отдельная страница партнёра.</p>
-              </div>
-            </div>
+            <p class="fineprint hero-fineprint">Работаем пока в Краснодаре</p>
           </div>
 
-          <div class="hero-card" aria-hidden="true">
-            <div class="hero-card-top">
-              <div class="chip">RemCard</div>
-              <div class="hero-card-badge">BONUS</div>
+          <article class="card hero-roadmap-card" aria-label="Этапы ремонта RemCard">
+            <div class="hero-route">
+              <a class="hero-route-step" href="./navigator/?stage=planning">План</a>
+              <a class="hero-route-step" href="./navigator/?stage=rough">Черновые</a>
+              <a class="hero-route-step" href="./navigator/?stage=engineering">Инженерия</a>
+              <a class="hero-route-step" href="./navigator/?stage=finishing">Чистовые</a>
+              <a class="hero-route-step" href="./navigator/?stage=furniture">Мебель</a>
             </div>
-            <div class="hero-card-mid">
-              <div class="hero-card-line"></div>
-              <div class="hero-card-line short"></div>
+            <div class="hero-route-chips">
+              <span class="hero-route-chip">1 заявка → до 5 предложений</span>
+              <span class="hero-route-chip">5 этапов понятного плана</span>
+              <span class="hero-route-chip">Бонусы за ремонт и покупки</span>
             </div>
-            <div class="hero-card-bottom">
-              <div class="hero-card-name">Bonus Card</div>
-              <div class="hero-card-dots">
-                <span></span><span></span><span></span>
-              </div>
-            </div>
-          </div>
+          </article>
         </div>
         <div class="hero-glow" aria-hidden="true"></div>
       </section>
@@ -100,75 +76,81 @@
       <section class="section" id="navigator-block">
         <div class="container">
           <header class="section-header">
-            <h2>Навигатор ремонта RemCard</h2>
-            <p class="section-subtitle">
-              Выберите этап и сразу получите понятный план действий, сроки, бюджет и нужных специалистов.
-            </p>
+            <h2>Как работает навигатор ремонта</h2>
           </header>
 
-          <article class="card navigator-visual">
-            <h3>Маршрут в одном экране</h3>
-            <div class="navigator-stage-strip" aria-label="Этапы ремонта">
-              <span class="navigator-stage-pill">План</span>
-              <span class="navigator-stage-pill">Черновые</span>
-              <span class="navigator-stage-pill">Инженерия</span>
-              <span class="navigator-stage-pill">Чистовые</span>
-              <span class="navigator-stage-pill">Мебель</span>
-            </div>
-            <div class="navigator-visual-meta">
-              <span>Сроки</span>
-              <span>Бюджет</span>
-              <span>Специалисты</span>
-            </div>
-          </article>
-
-          <div class="grid cards-3 card-wide">
-            <article class="card">
-              <div class="step-number" aria-hidden="true">1</div>
-              <h3>Понимает, на каком вы этапе</h3>
-              <p>Определяет текущий этап и показывает следующий шаг.</p>
+          <div class="grid cards-3 how-cards">
+            <article class="card how-card">
+              <div class="how-card-top">
+                <div class="step-number" aria-hidden="true">1</div>
+                <span class="how-card-icon" aria-hidden="true">🧩</span>
+              </div>
+              <h3>1. Выберите этап и задачу</h3>
+              <p>На какой стадии ваш ремонт и что нужно сделать.</p>
             </article>
-            <article class="card">
-              <div class="step-number" aria-hidden="true">2</div>
-              <h3>Подсказывает, кто и что нужно</h3>
-              <p>Подбирает специалистов, услуги и товары под этап.</p>
+            <article class="card how-card">
+              <div class="how-card-top">
+                <div class="step-number" aria-hidden="true">2</div>
+                <span class="how-card-icon" aria-hidden="true">📊</span>
+              </div>
+              <h3>2. Получите план и бюджет</h3>
+              <p>Видите этапы, примерные сроки и диапазон затрат.</p>
             </article>
-            <article class="card">
-              <div class="step-number" aria-hidden="true">3</div>
-              <h3>Делится опытом и лайфхаками</h3>
-              <p>Даёт короткие подсказки и предупреждает об ошибках.</p>
+            <article class="card how-card">
+              <div class="how-card-top">
+                <div class="step-number" aria-hidden="true">3</div>
+                <span class="how-card-icon" aria-hidden="true">📝</span>
+              </div>
+              <h3>3. Оформите одну заявку</h3>
+              <p>Мы подберём мастеров и магазины под ваш запрос.</p>
             </article>
           </div>
 
-          <div class="navigator-cta">
-            <a class="btn btn-primary" href="./navigator/">Запустить навигатор ремонта</a>
-            <p class="fineprint">Бесплатно. Доступно онлайн — без установки приложений.</p>
-            <a class="section-link" href="./navigator/#navigator-knowledge">Открыть знания в навигаторе</a>
+          <div class="how-timeline card card-wide" aria-label="Таймлайн из трёх шагов">
+            <div class="how-timeline-track">
+              <div class="how-timeline-step">
+                <span class="how-timeline-dot">1</span>
+                <span class="how-timeline-label">Этап</span>
+              </div>
+              <div class="how-timeline-step">
+                <span class="how-timeline-dot">2</span>
+                <span class="how-timeline-label">План</span>
+              </div>
+              <div class="how-timeline-step">
+                <span class="how-timeline-dot">3</span>
+                <span class="how-timeline-label">Заявка</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <section class="section" id="benefits">
+      <section class="section" id="client-benefits">
         <div class="container">
           <header class="section-header">
-            <h2>Почему RemCard удобен всем участникам ремонта</h2>
+            <h2>Что получает клиент с RemCard</h2>
           </header>
 
-          <div class="grid cards-3">
+          <div class="grid cards-4">
             <article class="card">
-              <div class="card-icon" aria-hidden="true">С</div>
-              <h3>Единый сервис</h3>
-              <p>Заявка, каталог, акции и бонусы — всё в одном месте.</p>
+              <div class="card-icon" aria-hidden="true">⏱</div>
+              <h3>Экономия времени</h3>
+              <p>1 заявка вместо десятков звонков.</p>
             </article>
             <article class="card">
-              <div class="card-icon" aria-hidden="true">П</div>
-              <h3>Понятная логика</h3>
-              <p>Понятный путь: от задачи до выбора исполнителя.</p>
+              <div class="card-icon" aria-hidden="true">🧭</div>
+              <h3>Понятный план ремонта</h3>
+              <p>Этапы, сроки и бюджет на одном экране.</p>
             </article>
             <article class="card">
-              <div class="card-icon" aria-hidden="true">Б</div>
-              <h3>Бонусы и лояльность</h3>
-              <p>Бонусы за ремонт и покупки у партнёров RemCard.</p>
+              <div class="card-icon" aria-hidden="true">👷</div>
+              <h3>Подбор мастеров</h3>
+              <p>Исполнители под ваш район и бюджет.</p>
+            </article>
+            <article class="card">
+              <div class="card-icon" aria-hidden="true">🎁</div>
+              <h3>Бонусы за покупки</h3>
+              <p>Начисляем бонусы за ремонт и покупки у партнёров.</p>
             </article>
           </div>
         </div>
@@ -178,25 +160,25 @@
         <div class="container">
           <header class="section-header">
             <h2>RemCard как карта лояльности</h2>
-            <p class="section-subtitle">Как начисляются и тратятся бонусы RemCard — в 3 шага.</p>
+            <p class="section-subtitle">Видите сумму заказа, начисление и оплату бонусами в одном блоке.</p>
           </header>
 
-          <article class="card">
+          <article class="card loyalty-main-card">
             <div class="loyalty-infographic" aria-label="Пример работы бонусов">
               <div class="loyalty-point">
                 <strong>180 000 ₽</strong>
-                <span>Заказ</span>
+                <span>Сумма заказа</span>
               </div>
               <div class="loyalty-point">
                 <strong>5 400</strong>
-                <span>Бонусы</span>
+                <span>Начисленные бонусы</span>
               </div>
               <div class="loyalty-point">
-                <strong>Оплата бонусами</strong>
-                <span>Следующая покупка</span>
+                <strong>2 000 бонусов</strong>
+                <span>Пример оплаты следующей покупки</span>
               </div>
             </div>
-            <p class="muted" style="margin-top: 12px">Начисление и списание прозрачны: видите выгоду до оплаты.</p>
+            <p class="muted" style="margin-top: 12px">Начисление и списание прозрачны. Вы заранее видите, сколько бонусов получите и где потратите.</p>
             <a class="section-link" href="./bonus-card/">Подробнее о бонусной карте</a>
           </article>
         </div>
@@ -206,15 +188,18 @@
         <div class="container">
           <header class="section-header">
             <h2>Заявка клиента в RemCard (Краснодар)</h2>
-            <p class="section-subtitle">
-              Заполните 5 полей — мы подберём мастера или компанию под вашу задачу, район и бюджет.
-            </p>
+            <p class="section-subtitle">Оставьте короткую заявку — подберём мастеров под задачу и бюджет.</p>
           </header>
 
           <div class="grid two-col">
             <div class="card">
+              <div class="request-badges" aria-label="Преимущества заявки">
+                <span class="request-badge">Всего 5 полей</span>
+                <span class="request-badge">Ответим в течение 4 часов</span>
+                <span class="request-badge">Подбор мастеров под ваш бюджет</span>
+              </div>
               <h3>Быстрая заявка клиента</h3>
-              <p class="muted">Сейчас работаем в Краснодаре. Оставьте заявку — ответим и уточним детали.</p>
+              <p class="muted">Заполните форму и получите обратную связь от команды RemCard.</p>
 
               <!-- TODO: Подключить реальный backend (телеграм‑бот / почта / API). -->
               <form class="form" id="request-form" novalidate>
@@ -302,14 +287,51 @@
 
       <section class="section section-compact" id="partners-brief">
         <div class="container">
-          <article class="card">
-            <h3>Для мастеров и бизнеса</h3>
-            <p class="muted">
-              Подключайтесь к RemCard и получайте целевые заявки, размещайте услуги и товары в каталоге, участвуйте в акциях и бонусной
-              программе.
-            </p>
-            <a class="btn btn-ghost card-action" href="./partners/">Стать партнёром RemCard</a>
-          </article>
+          <header class="section-header">
+            <h2>Для мастеров и компаний</h2>
+          </header>
+          <div class="grid cards-3">
+            <article class="card">
+              <h3>Целевые заявки</h3>
+              <p>Клиенты с понятными задачами и бюджетом.</p>
+            </article>
+            <article class="card">
+              <h3>Каталог услуг и товаров</h3>
+              <p>Размещение в навигаторе ремонта.</p>
+            </article>
+            <article class="card">
+              <h3>Акции и бонусы</h3>
+              <p>Участие в программе лояльности RemCard.</p>
+            </article>
+          </div>
+          <div class="navigator-cta">
+            <a class="btn btn-ghost" href="./partners/">Стать партнёром RemCard</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="benefits">
+        <div class="container">
+          <header class="section-header">
+            <h2>Почему RemCard удобен всем участникам ремонта</h2>
+          </header>
+          <div class="grid cards-3">
+            <article class="card">
+              <div class="card-icon" aria-hidden="true">⛓</div>
+              <h3>Единый сервис</h3>
+              <p>Заявка, каталог, бонусы — всё в одном месте.</p>
+            </article>
+            <article class="card">
+              <div class="card-icon" aria-hidden="true">🛣</div>
+              <h3>Понятный путь</h3>
+              <p>От задачи до выбора исполнителя.</p>
+            </article>
+            <article class="card">
+              <div class="card-icon" aria-hidden="true">💳</div>
+              <h3>Бонусы и лояльность</h3>
+              <p>Вознаграждаем за покупки у партнёров.</p>
+            </article>
+          </div>
         </div>
       </section>
 
