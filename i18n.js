@@ -40,8 +40,12 @@
     "и до 5 предложений": "and up to 5 offers",
     "от плана до мебели": "from planning to furniture",
     "под район и бюджет": "by district and budget",
+    "под этап, район и бюджет": "by stage, district, and budget",
+    "Мастера и товары": "Contractors and products",
     "Навигатор показывает этапы ремонта, бюджет и нужных специалистов. Одна заявка помогает быстро найти исполнителей в Краснодаре.":
       "The navigator shows renovation stages, budget, and required specialists. One request helps quickly find contractors in Krasnodar.",
+    "Навигатор показывает этапы ремонта, бюджет, мастеров и компаний для каждого этапа, а также где купить нужные товары. Одна заявка помогает быстро найти исполнителей в Краснодаре.":
+      "The navigator shows renovation stages, budget, contractors and companies for each stage, and where to buy the required products. One request helps quickly find contractors in Krasnodar.",
     "1 заявка → до 5 предложений": "1 request → up to 5 offers",
     "5 этапов понятного плана": "5 stages of a clear plan",
     "Бонусы за ремонт и покупки": "Bonuses for renovation and purchases",
@@ -51,6 +55,8 @@
     "Показывает, что делать дальше": "Shows what to do next",
     "Подсказывает нужных специалистов": "Suggests needed specialists",
     "Подбирает услуги и исполнителей под этап": "Matches services and contractors for the stage",
+    "Подсказывает мастеров, компании и товары": "Suggests contractors, companies, and products",
+    "Показывает, кто выполнит работы и где купить нужное": "Shows who can do the work and where to buy what you need",
     "Помогает избежать ошибок": "Helps avoid mistakes",
     "Даёт короткие подсказки по ходу ремонта": "Provides short tips throughout renovation",
     "1. Выберите этап и задачу": "1. Choose stage and task",
@@ -113,6 +119,7 @@
     "Мебель": "Furniture",
     "Сроки": "Timeline",
     "Специалисты": "Specialists",
+    "Мастера и компании": "Contractors and companies",
     "Определяет текущий этап и показывает следующий шаг.": "Detects your current stage and shows the next step.",
     "Подбирает специалистов, услуги и товары под этап.": "Matches specialists, services, and products for your stage.",
     "Даёт короткие подсказки и предупреждает об ошибках.": "Gives quick tips and warns about common mistakes.",
@@ -181,6 +188,8 @@
     "Подробно: чек-лист и риски этапа": "Detailed checklist and stage risks",
     "Выберите ваш текущий этап": "Choose your current stage",
     "Это поможет сразу показать сроки, бюджет и нужных специалистов.": "This helps instantly show timeline, budget, and the right specialists.",
+    "Это поможет сразу показать сроки, бюджет, мастеров и компании, а также нужные товары по этапу.":
+      "This helps instantly show timeline, budget, contractors and companies, as well as required products for your stage.",
     "Закрыть выбор этапа": "Close stage picker",
     "Запрос по этапу: Планирование": "Request for stage: Planning",
     "Выберите ваш текущий этап. Карточка справа покажет, что делать дальше и какие ошибки не допускать.": "Choose your current stage. The card on the right shows what to do next and what mistakes to avoid.",
