@@ -424,6 +424,8 @@ img {
   font-weight: 650;
   font-size: 14px;
   border: 1px solid transparent;
+  color: rgba(245, 245, 245, 0.96);
+  -webkit-text-fill-color: rgba(245, 245, 245, 0.96);
   transition: transform 160ms var(--ease), background 160ms var(--ease), border-color 160ms var(--ease);
   cursor: pointer;
 }
@@ -433,13 +435,15 @@ img {
 }
 
 .btn-primary {
-  background: linear-gradient(145deg, var(--red), var(--red-dark));
-  box-shadow: 0 12px 28px rgba(229, 57, 53, 0.22);
+  background: linear-gradient(145deg, #b03a34, #7e2622);
+  border-color: rgba(229, 84, 74, 0.36);
+  box-shadow: 0 10px 22px rgba(116, 30, 27, 0.24);
 }
 
 .btn-primary:hover,
 .btn-primary:focus-visible {
-  background: linear-gradient(145deg, #f44336, var(--red-dark));
+  background: linear-gradient(145deg, #bf443c, #8a2a26);
+  border-color: rgba(229, 84, 74, 0.5);
   outline: none;
 }
 
@@ -1223,7 +1227,27 @@ img {
   width: 100%;
   margin-top: 0;
   justify-content: space-between;
-  border-color: rgba(245, 245, 245, 0.18);
+  border-color: rgba(245, 245, 245, 0.12);
+}
+
+.request-open-btn.btn-primary {
+  background: linear-gradient(145deg, rgba(168, 46, 41, 0.95), rgba(118, 30, 27, 0.95));
+  border-color: rgba(221, 93, 82, 0.36);
+  box-shadow: 0 8px 18px rgba(116, 30, 27, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  color: rgba(253, 246, 244, 0.98);
+  -webkit-text-fill-color: rgba(253, 246, 244, 0.98);
+}
+
+.request-open-btn.btn-primary:hover,
+.request-open-btn.btn-primary:focus-visible {
+  background: linear-gradient(145deg, rgba(178, 53, 48, 0.95), rgba(129, 35, 32, 0.95));
+  border-color: rgba(233, 110, 99, 0.46);
+}
+
+.request-open-btn-text,
+.request-open-btn-icon {
+  color: inherit;
+  -webkit-text-fill-color: inherit;
 }
 
 .request-actions {
@@ -1234,10 +1258,21 @@ img {
 
 .request-about-btn {
   width: 100%;
+  background: rgba(22, 22, 22, 0.78);
+  border-color: rgba(245, 245, 245, 0.16);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.request-about-btn:hover,
+.request-about-btn:focus-visible {
+  border-color: rgba(229, 84, 74, 0.32);
+  background: rgba(28, 28, 28, 0.84);
 }
 
 .request-actions-card {
-  padding: 14px;
+  padding: 12px;
+  border-color: rgba(245, 245, 245, 0.1);
+  background: linear-gradient(180deg, rgba(28, 28, 28, 0.82), rgba(20, 20, 20, 0.72));
 }
 
 .request-open-btn-icon {
