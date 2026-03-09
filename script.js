@@ -979,6 +979,43 @@
     setRequestFormPanelOpen(false);
   }
 
+  const homeStickyCtaBtn = document.getElementById("home-sticky-cta");
+  const requestSectionEl = document.getElementById("request");
+  const heroSectionEl = document.getElementById("hero");
+  const footerEl = document.querySelector(".site-footer");
+
+  const syncHomeStickyCtaVisibility = () => {
+    if (!homeStickyCtaBtn) return;
+    if (!isMobileRequestSheet()) {
+      homeStickyCtaBtn.classList.remove("is-visible");
+      return;
+    }
+
+    const heroPassed = heroSectionEl ? heroSectionEl.getBoundingClientRect().bottom < 64 : window.scrollY > 260;
+    const nearFooter = footerEl ? footerEl.getBoundingClientRect().top < window.innerHeight - 120 : false;
+    const requestRect = requestSectionEl ? requestSectionEl.getBoundingClientRect() : null;
+    const requestVisible = requestRect ? requestRect.top < window.innerHeight * 0.68 && requestRect.bottom > 90 : false;
+    const isRequestOpen = requestOpenBtn && requestOpenBtn.getAttribute("aria-expanded") === "true";
+
+    homeStickyCtaBtn.classList.toggle("is-visible", heroPassed && !nearFooter && !requestVisible && !isRequestOpen);
+  };
+
+  if (homeStickyCtaBtn) {
+    homeStickyCtaBtn.addEventListener("click", () => {
+      if (requestOpenBtn) {
+        setRequestFormPanelOpen(true, { focusFirstField: true });
+      } else if (requestSectionEl) {
+        const headerH = header ? header.getBoundingClientRect().height : 0;
+        const y = window.scrollY + requestSectionEl.getBoundingClientRect().top - headerH - 10;
+        window.scrollTo({ top: y, behavior: "smooth" });
+      }
+    });
+
+    window.addEventListener("scroll", syncHomeStickyCtaVisibility, { passive: true });
+    window.addEventListener("resize", syncHomeStickyCtaVisibility);
+    syncHomeStickyCtaVisibility();
+  }
+
   // Optional: prefill request comment when coming from a promo card
   document.addEventListener("click", (e) => {
     const a = e.target.closest("a[data-promo-title]");
