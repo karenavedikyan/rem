@@ -45,10 +45,14 @@
     "под район и бюджет": "by district and budget",
     "под этап, район и бюджет": "by stage, district, and budget",
     "Мастера и товары": "Contractors and products",
+    "Товары и услуги": "Products and services",
+    "для выбранного этапа ремонта": "for the selected repair stage",
     "Навигатор показывает этапы ремонта, бюджет и нужных специалистов. Одна заявка помогает быстро найти исполнителей в Краснодаре.":
-      "The navigator shows renovation stages, budget, and required specialists. One request helps quickly find contractors in Krasnodar.",
+      "The navigator shows renovation stages, budget, and helps find products and services for the selected stage. One request quickly brings offers in Krasnodar.",
     "Навигатор показывает этапы ремонта, бюджет, мастеров и компаний для каждого этапа, а также где купить нужные товары. Одна заявка помогает быстро найти исполнителей в Краснодаре.":
-      "The navigator shows renovation stages, budget, contractors and companies for each stage, and where to buy the required products. One request helps quickly find contractors in Krasnodar.",
+      "The navigator shows renovation stages and budget, and helps find products and services for the selected stage. One request quickly brings offers in Krasnodar.",
+    "Навигатор показывает этапы ремонта, бюджет и помогает найти товары и услуги для выбранного этапа ремонта. Одна заявка помогает быстро получить предложения в Краснодаре.":
+      "The navigator shows renovation stages and budget, and helps find products and services for the selected repair stage. One request helps you quickly get offers in Krasnodar.",
     "1 заявка → до 5 предложений": "1 request → up to 5 offers",
     "5 этапов понятного плана": "5 stages of a clear plan",
     "Бонусы за ремонт и покупки": "Bonuses for renovation and purchases",
@@ -56,10 +60,12 @@
     "Как работает навигатор ремонта": "How the repair navigator works",
     "Понимает ваш этап": "Understands your stage",
     "Показывает, что делать дальше": "Shows what to do next",
-    "Подсказывает нужных специалистов": "Suggests needed specialists",
-    "Подбирает услуги и исполнителей под этап": "Matches services and contractors for the stage",
-    "Подсказывает мастеров, компании и товары": "Suggests contractors, companies, and products",
-    "Показывает, кто выполнит работы и где купить нужное": "Shows who can do the work and where to buy what you need",
+    "Подсказывает нужных специалистов": "Helps find products and services by stage",
+    "Подбирает услуги и исполнителей под этап": "Suggests products and services for the selected stage",
+    "Подсказывает мастеров, компании и товары": "Helps find products and services by selected stage",
+    "Показывает, кто выполнит работы и где купить нужное": "Shows what services and products are needed and where to get them",
+    "Помогает найти товары и услуги по выбранному этапу": "Helps find products and services by selected stage",
+    "Подбирает нужные позиции и где их заказать": "Suggests the right options and where to order them",
     "Помогает избежать ошибок": "Helps avoid mistakes",
     "Даёт короткие подсказки по ходу ремонта": "Provides short tips throughout renovation",
     "1. Выберите этап и задачу": "1. Choose stage and task",
@@ -123,7 +129,7 @@
     "Помогаем пройти ремонт по шагам: навигатор подсказывает этапы, а одна заявка в RemCard помогает быстро найти подходящих исполнителей в Краснодаре.":
       "We guide renovation step by step: the navigator explains stages, and one RemCard request quickly helps find the right pros in Krasnodar.",
     "Выберите этап и сразу получите понятный план действий, сроки, бюджет и нужных специалистов.":
-      "Choose your stage and instantly get a clear action plan, timeline, budget, and the right specialists.",
+      "Choose your stage and instantly get a clear action plan, timeline, budget, plus products and services for that stage.",
     "Маршрут в одном экране": "Route on one screen",
     "Этапы ремонта": "Renovation stages",
     "План": "Planning",
@@ -134,8 +140,9 @@
     "Сроки": "Timeline",
     "Специалисты": "Specialists",
     "Мастера и компании": "Contractors and companies",
+    "Услуги": "Services",
     "Определяет текущий этап и показывает следующий шаг.": "Detects your current stage and shows the next step.",
-    "Подбирает специалистов, услуги и товары под этап.": "Matches specialists, services, and products for your stage.",
+    "Подбирает специалистов, услуги и товары под этап.": "Suggests products and services for your stage.",
     "Даёт короткие подсказки и предупреждает об ошибках.": "Gives quick tips and warns about common mistakes.",
     "Найти мастера": "Find a contractor",
     "Найти товар": "Find a product",
@@ -201,9 +208,11 @@
     "Что будет дальше": "What comes next",
     "Подробно: чек-лист и риски этапа": "Detailed checklist and stage risks",
     "Выберите ваш текущий этап": "Choose your current stage",
-    "Это поможет сразу показать сроки, бюджет и нужных специалистов.": "This helps instantly show timeline, budget, and the right specialists.",
+    "Это поможет сразу показать сроки, бюджет и нужных специалистов.": "This helps instantly show timeline, budget, plus products and services for the selected stage.",
     "Это поможет сразу показать сроки, бюджет, мастеров и компании, а также нужные товары по этапу.":
-      "This helps instantly show timeline, budget, contractors and companies, as well as required products for your stage.",
+      "This helps instantly show timeline, budget, and products and services for your selected stage.",
+    "Это поможет сразу показать сроки, бюджет, а также товары и услуги для выбранного этапа.":
+      "This helps instantly show timeline, budget, and products and services for the selected stage.",
     "Закрыть выбор этапа": "Close stage picker",
     "Запрос по этапу: Планирование": "Request for stage: Planning",
     "Выберите ваш текущий этап. Карточка справа покажет, что делать дальше и какие ошибки не допускать.": "Choose your current stage. The card on the right shows what to do next and what mistakes to avoid.",
@@ -904,7 +913,9 @@
     "Мария Смирнова — дизайнер интерьеров": "Maria Smirnova — interior designer",
     "Мобильное приложение RemCard.": "RemCard mobile app.",
     "Навигатор ремонта RemCard: ответьте на вопросы и получите маршрут этапов, исполнителей, материалов и советов по ремонту.":
-      "RemCard Repair Navigator: answer a few questions and get your step-by-step route, specialists, materials, and practical tips.",
+      "RemCard Repair Navigator: answer a few questions and get your step-by-step route with products and services for each stage.",
+    "Навигатор ремонта RemCard: ответьте на вопросы и получите маршрут этапов, товары и услуги для выбранного этапа и советы по ремонту.":
+      "RemCard Repair Navigator: answer a few questions and get your stage route, products and services for the selected stage, and practical tips.",
     "Например, Иван / ООО “…”": "For example: Ivan / LLC “...”",
     "Например: ремонт ванной, плитка, сантехника, электрика…": "For example: bathroom renovation, tiling, plumbing, electrical...",
     "Находят мастеров и товары, сравнивают предложения, видят акции и управляют бонусами в одном профиле.":

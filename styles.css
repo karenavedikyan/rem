@@ -667,22 +667,23 @@ img {
 
 /* Sections */
 .section {
-  padding: 48px 0;
+  padding: 44px 0;
 }
 
 .section-header {
-  margin-bottom: 22px;
+  margin-bottom: 18px;
 }
 
 .section-header h2 {
-  margin: 0 0 10px;
+  margin: 0 0 8px;
   font-size: clamp(22px, 2.1vw, 32px);
   letter-spacing: -0.3px;
 }
 
 .section-subtitle {
   margin: 0;
-  max-width: 85ch;
+  max-width: 78ch;
+  line-height: 1.45;
   color: rgba(176, 190, 197, 0.95);
 }
 
@@ -798,7 +799,7 @@ img {
 }
 
 .card h3 {
-  margin: 0 0 8px;
+  margin: 0 0 6px;
   font-size: 18px;
   letter-spacing: -0.2px;
 }
@@ -811,6 +812,7 @@ img {
 
 .card p {
   margin: 0;
+  line-height: 1.42;
   color: rgba(176, 190, 197, 0.95);
 }
 
@@ -827,20 +829,20 @@ img {
 
 .navigator-visual {
   display: grid;
-  gap: 14px;
+  gap: 12px;
 }
 
 .how-cards {
-  margin-top: 10px;
-  gap: 10px;
+  margin-top: 8px;
+  gap: 8px;
 }
 
 .how-card {
-  padding: 14px;
+  padding: 13px;
 }
 
 .how-card h3 {
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   font-size: 17px;
 }
 
@@ -2990,8 +2992,8 @@ body.navigator-stage-modal-open {
 }
 
 .section-compact {
-  padding-top: 20px;
-  padding-bottom: 56px;
+  padding-top: 14px;
+  padding-bottom: 30px;
 }
 
 .logos-grid {
@@ -4046,11 +4048,11 @@ body.navigator-stage-modal-open {
   }
 
   .section {
-    padding: 40px 0;
+    padding: 34px 0;
   }
 
   .hero + .section {
-    padding-top: 30px;
+    padding-top: 22px;
   }
 
   .hero-card {
@@ -4190,6 +4192,24 @@ body.navigator-stage-modal-open {
 }
 
 @media (max-width: 560px) {
+  .section {
+    padding: 30px 0;
+  }
+
+  .section-header {
+    margin-bottom: 14px;
+  }
+
+  .section-subtitle {
+    font-size: 15px;
+    line-height: 1.4;
+  }
+
+  .request-actions .btn {
+    min-height: 58px;
+    font-size: 15px;
+  }
+
   .container {
     width: min(var(--container), calc(100% - 28px));
   }
