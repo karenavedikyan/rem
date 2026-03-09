@@ -928,7 +928,7 @@
   const requestOpenBtnText = requestOpenBtn ? requestOpenBtn.querySelector(".request-open-btn-text") : null;
   const requestFormCloseBtn = document.getElementById("request-form-close");
   const requestFormBackdrop = document.getElementById("request-form-backdrop");
-  const requestOpenLabel = t("Заявка в RemCard", "Request to RemCard");
+  const requestOpenLabel = t("Оставить заявку в RemCard", "Leave request in RemCard");
   const isMobileRequestSheet = () => window.matchMedia("(max-width: 760px)").matches;
 
   const setRequestFormPanelOpen = (open, { focusFirstField = false } = {}) => {

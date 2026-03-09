@@ -100,6 +100,7 @@
     "Форма открывается по кнопке — так экран чище и проще.":
       "The form opens on button tap so the screen stays clean and focused.",
     "Заявка в RemCard": "Request to RemCard",
+    "Оставить заявку в RemCard": "Leave request in RemCard",
     "Заполнение заявки": "Request form",
     "Закрыть форму заявки": "Close request form",
     "Открыть форму заявки": "Open request form",
