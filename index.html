@@ -10,6 +10,74 @@
   </head>
   <body>
     <a class="skip-link" href="#main">Перейти к содержимому</a>
+    <svg class="icon-sprite" aria-hidden="true" focusable="false">
+      <symbol id="ic-doc" viewBox="0 0 24 24">
+        <path d="M8 3h7l4 4v14H8z" />
+        <path d="M15 3v4h4" />
+        <path d="M11 12h5M11 16h5" />
+      </symbol>
+      <symbol id="ic-layers" viewBox="0 0 24 24">
+        <path d="M12 4l8 4-8 4-8-4 8-4z" />
+        <path d="M4 12l8 4 8-4" />
+        <path d="M4 16l8 4 8-4" />
+      </symbol>
+      <symbol id="ic-specialist" viewBox="0 0 24 24">
+        <circle cx="12" cy="8" r="3" />
+        <path d="M6 19c1.8-3.3 10.2-3.3 12 0" />
+        <path d="M17.5 11.5l1.5 1.5 3-3" />
+      </symbol>
+      <symbol id="ic-stage" viewBox="0 0 24 24">
+        <circle cx="7" cy="7" r="2.5" />
+        <circle cx="17" cy="17" r="2.5" />
+        <path d="M9 8h4l2 2h2" />
+        <path d="M7 9.5V14h5" />
+      </symbol>
+      <symbol id="ic-stats" viewBox="0 0 24 24">
+        <path d="M5 20V10M12 20V6M19 20V13" />
+        <path d="M3 20h18" />
+      </symbol>
+      <symbol id="ic-tip" viewBox="0 0 24 24">
+        <path d="M8 4h8l3 3v13H8z" />
+        <path d="M16 4v3h3" />
+        <path d="M10.5 12l1.5 1.5 3-3" />
+      </symbol>
+      <symbol id="ic-clock" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="8" />
+        <path d="M12 8v4l3 2" />
+      </symbol>
+      <symbol id="ic-route" viewBox="0 0 24 24">
+        <circle cx="6" cy="18" r="2" />
+        <circle cx="18" cy="6" r="2" />
+        <path d="M8 18h5a4 4 0 0 0 4-4V8" />
+      </symbol>
+      <symbol id="ic-users" viewBox="0 0 24 24">
+        <circle cx="9" cy="9" r="2.5" />
+        <circle cx="16" cy="10" r="2" />
+        <path d="M4.5 18c1.2-2.6 7.8-2.6 9 0" />
+        <path d="M14 18c.7-1.8 4.3-2 5.5-.5" />
+      </symbol>
+      <symbol id="ic-gift" viewBox="0 0 24 24">
+        <path d="M4 9h16v11H4z" />
+        <path d="M12 9v11M4 13h16" />
+        <path d="M8.5 9c-1.2 0-2-.8-2-1.8C6.5 6 7.3 5.2 8.5 5.2c1.8 0 3.5 1.8 3.5 3.8" />
+        <path d="M15.5 9c1.2 0 2-.8 2-1.8 0-1.2-.8-2-2-2-1.8 0-3.5 1.8-3.5 3.8" />
+      </symbol>
+      <symbol id="ic-hub" viewBox="0 0 24 24">
+        <rect x="4" y="4" width="6" height="6" rx="1.5" />
+        <rect x="14" y="4" width="6" height="6" rx="1.5" />
+        <rect x="4" y="14" width="6" height="6" rx="1.5" />
+        <rect x="14" y="14" width="6" height="6" rx="1.5" />
+      </symbol>
+      <symbol id="ic-path" viewBox="0 0 24 24">
+        <path d="M4 17c3-6 7-6 10-2 2 2 4 2 6 .5" />
+        <path d="M17 13.5 20 15l-1.5 3" />
+      </symbol>
+      <symbol id="ic-card" viewBox="0 0 24 24">
+        <rect x="3.5" y="6" width="17" height="12" rx="2" />
+        <path d="M3.5 10h17" />
+        <path d="M7 14h4" />
+      </symbol>
+    </svg>
 
     <header class="site-header" id="top">
       <div class="container header-inner">
@@ -63,17 +131,17 @@
             </div>
             <div class="hero-kpis" aria-label="Ключевые показатели">
               <article class="hero-kpi-card">
-                <span class="hero-kpi-icon" aria-hidden="true">📝</span>
+                <span class="hero-kpi-icon" aria-hidden="true"><svg class="icon-svg"><use href="#ic-doc" /></svg></span>
                 <span class="hero-kpi-value">1 заявка</span>
                 <span class="hero-kpi-sub">и до 5 предложений</span>
               </article>
               <article class="hero-kpi-card">
-                <span class="hero-kpi-icon" aria-hidden="true">🧱</span>
+                <span class="hero-kpi-icon" aria-hidden="true"><svg class="icon-svg"><use href="#ic-layers" /></svg></span>
                 <span class="hero-kpi-value">5 этапов</span>
                 <span class="hero-kpi-sub">от плана до мебели</span>
               </article>
               <article class="hero-kpi-card">
-                <span class="hero-kpi-icon" aria-hidden="true">👷</span>
+                <span class="hero-kpi-icon" aria-hidden="true"><svg class="icon-svg"><use href="#ic-specialist" /></svg></span>
                 <span class="hero-kpi-value">Подбор специалистов</span>
                 <span class="hero-kpi-sub">под район и бюджет</span>
               </article>
@@ -114,7 +182,7 @@
             <article class="card how-card">
               <div class="how-card-top">
                 <div class="step-number" aria-hidden="true">1</div>
-                <span class="how-card-icon" aria-hidden="true">🧩</span>
+                <span class="how-card-icon" aria-hidden="true"><svg class="icon-svg"><use href="#ic-stage" /></svg></span>
               </div>
               <h3>Понимает ваш этап</h3>
               <p>Показывает, что делать дальше</p>
@@ -122,7 +190,7 @@
             <article class="card how-card">
               <div class="how-card-top">
                 <div class="step-number" aria-hidden="true">2</div>
-                <span class="how-card-icon" aria-hidden="true">📊</span>
+                <span class="how-card-icon" aria-hidden="true"><svg class="icon-svg"><use href="#ic-stats" /></svg></span>
               </div>
               <h3>Подсказывает нужных специалистов</h3>
               <p>Подбирает услуги и исполнителей под этап</p>
@@ -130,7 +198,7 @@
             <article class="card how-card">
               <div class="how-card-top">
                 <div class="step-number" aria-hidden="true">3</div>
-                <span class="how-card-icon" aria-hidden="true">📝</span>
+                <span class="how-card-icon" aria-hidden="true"><svg class="icon-svg"><use href="#ic-tip" /></svg></span>
               </div>
               <h3>Помогает избежать ошибок</h3>
               <p>Даёт короткие подсказки по ходу ремонта</p>
@@ -248,22 +316,22 @@
 
           <div class="grid cards-4">
             <article class="card">
-              <div class="card-icon" aria-hidden="true">⏱</div>
+              <div class="card-icon" aria-hidden="true"><svg class="icon-svg"><use href="#ic-clock" /></svg></div>
               <h3>Экономия времени</h3>
               <p>1 заявка вместо десятков звонков.</p>
             </article>
             <article class="card">
-              <div class="card-icon" aria-hidden="true">🧭</div>
+              <div class="card-icon" aria-hidden="true"><svg class="icon-svg"><use href="#ic-route" /></svg></div>
               <h3>Понятный план ремонта</h3>
               <p>Этапы, сроки и бюджет на одном экране.</p>
             </article>
             <article class="card">
-              <div class="card-icon" aria-hidden="true">👷</div>
+              <div class="card-icon" aria-hidden="true"><svg class="icon-svg"><use href="#ic-users" /></svg></div>
               <h3>Подбор мастеров</h3>
               <p>Исполнители под ваш район и бюджет.</p>
             </article>
             <article class="card">
-              <div class="card-icon" aria-hidden="true">🎁</div>
+              <div class="card-icon" aria-hidden="true"><svg class="icon-svg"><use href="#ic-gift" /></svg></div>
               <h3>Бонусы за покупки</h3>
               <p>Начисляем бонусы за ремонт и покупки у партнёров.</p>
             </article>
@@ -331,17 +399,17 @@
           </header>
           <div class="grid cards-3">
             <article class="card">
-              <div class="card-icon" aria-hidden="true">⛓</div>
+              <div class="card-icon" aria-hidden="true"><svg class="icon-svg"><use href="#ic-hub" /></svg></div>
               <h3>Единый сервис</h3>
               <p>Заявка, каталог, бонусы — всё в одном месте.</p>
             </article>
             <article class="card">
-              <div class="card-icon" aria-hidden="true">🛣</div>
+              <div class="card-icon" aria-hidden="true"><svg class="icon-svg"><use href="#ic-path" /></svg></div>
               <h3>Понятный путь</h3>
               <p>От задачи до выбора исполнителя.</p>
             </article>
             <article class="card">
-              <div class="card-icon" aria-hidden="true">💳</div>
+              <div class="card-icon" aria-hidden="true"><svg class="icon-svg"><use href="#ic-card" /></svg></div>
               <h3>Бонусы и лояльность</h3>
               <p>Вознаграждаем за покупки у партнёров.</p>
             </article>

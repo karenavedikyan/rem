@@ -274,6 +274,23 @@ img {
   letter-spacing: -0.6px;
 }
 
+.icon-sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.icon-svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .eyebrow {
   margin: 0;
   display: inline-flex;
@@ -330,8 +347,14 @@ img {
 }
 
 .hero-kpi-icon {
-  font-size: 16px;
-  line-height: 1;
+  width: 26px;
+  height: 26px;
+  border-radius: 9px;
+  border: 1px solid rgba(245, 245, 245, 0.14);
+  background: rgba(245, 245, 245, 0.04);
+  display: grid;
+  place-items: center;
+  color: rgba(245, 245, 245, 0.95);
 }
 
 .hero-kpi-value {
@@ -799,7 +822,7 @@ img {
   place-items: center;
   border: 1px solid rgba(245, 245, 245, 0.12);
   background: rgba(18, 18, 18, 0.42);
-  font-size: 15px;
+  color: rgba(245, 245, 245, 0.94);
 }
 
 .navigator-scenario {
@@ -972,7 +995,6 @@ img {
   border: 1px solid rgba(229, 57, 53, 0.22);
   color: rgba(245, 245, 245, 0.92);
   font-weight: 800;
-  font-size: 13px;
   margin-bottom: 10px;
 }
 
