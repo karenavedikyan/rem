@@ -27,6 +27,9 @@
     "RemCard • старт в Краснодаре": "RemCard • launching in Krasnodar",
     "Сейчас запускаемся в Краснодаре. Далее — другие города России.": "Launching in Krasnodar now. Other Russian cities are next.",
     "Найти мастера": "Find a contractor",
+    "Найти товар": "Find a product",
+    "Откройте каталог и подберите товары по этапу ремонта, цене и рейтингу.":
+      "Open the catalog and choose products by renovation stage, price, and rating.",
     "Стать партнёром": "Become a partner",
     "Почему RemCard удобен всем участникам ремонта": "Why RemCard is convenient for everyone in renovation",
     "Единый сервис": "One unified service",
