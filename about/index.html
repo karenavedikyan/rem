@@ -10,6 +10,44 @@
   </head>
   <body>
     <a class="skip-link" href="#main">Перейти к содержимому</a>
+    <svg class="icon-sprite" aria-hidden="true" focusable="false">
+      <symbol id="ic-clock" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="8" />
+        <path d="M12 8v4l3 2" />
+      </symbol>
+      <symbol id="ic-route" viewBox="0 0 24 24">
+        <circle cx="6" cy="18" r="2" />
+        <circle cx="18" cy="6" r="2" />
+        <path d="M8 18h5a4 4 0 0 0 4-4V8" />
+      </symbol>
+      <symbol id="ic-users" viewBox="0 0 24 24">
+        <circle cx="9" cy="9" r="2.5" />
+        <circle cx="16" cy="10" r="2" />
+        <path d="M4.5 18c1.2-2.6 7.8-2.6 9 0" />
+        <path d="M14 18c.7-1.8 4.3-2 5.5-.5" />
+      </symbol>
+      <symbol id="ic-gift" viewBox="0 0 24 24">
+        <path d="M4 9h16v11H4z" />
+        <path d="M12 9v11M4 13h16" />
+        <path d="M8.5 9c-1.2 0-2-.8-2-1.8C6.5 6 7.3 5.2 8.5 5.2c1.8 0 3.5 1.8 3.5 3.8" />
+        <path d="M15.5 9c1.2 0 2-.8 2-1.8 0-1.2-.8-2-2-2-1.8 0-3.5 1.8-3.5 3.8" />
+      </symbol>
+      <symbol id="ic-hub" viewBox="0 0 24 24">
+        <rect x="4" y="4" width="6" height="6" rx="1.5" />
+        <rect x="14" y="4" width="6" height="6" rx="1.5" />
+        <rect x="4" y="14" width="6" height="6" rx="1.5" />
+        <rect x="14" y="14" width="6" height="6" rx="1.5" />
+      </symbol>
+      <symbol id="ic-path" viewBox="0 0 24 24">
+        <path d="M4 17c3-6 7-6 10-2 2 2 4 2 6 .5" />
+        <path d="M17 13.5 20 15l-1.5 3" />
+      </symbol>
+      <symbol id="ic-card" viewBox="0 0 24 24">
+        <rect x="3.5" y="6" width="17" height="12" rx="2" />
+        <path d="M3.5 10h17" />
+        <path d="M7 14h4" />
+      </symbol>
+    </svg>
 
     <header class="site-header" id="top">
       <div class="container header-inner">
@@ -73,6 +111,98 @@
 
       <section class="section" id="structure">
         <div class="container">
+          <header class="section-header">
+            <h2>Что получает клиент с RemCard</h2>
+          </header>
+
+          <div class="grid cards-4">
+            <article class="card">
+              <div class="card-icon" aria-hidden="true"><svg class="icon-svg"><use href="#ic-clock" /></svg></div>
+              <h3>Экономия времени</h3>
+              <p>1 заявка вместо десятков звонков.</p>
+            </article>
+            <article class="card">
+              <div class="card-icon" aria-hidden="true"><svg class="icon-svg"><use href="#ic-route" /></svg></div>
+              <h3>Понятный план ремонта</h3>
+              <p>Этапы, сроки и бюджет на одном экране.</p>
+            </article>
+            <article class="card">
+              <div class="card-icon" aria-hidden="true"><svg class="icon-svg"><use href="#ic-users" /></svg></div>
+              <h3>Подбор мастеров</h3>
+              <p>Исполнители под ваш район и бюджет.</p>
+            </article>
+            <article class="card">
+              <div class="card-icon" aria-hidden="true"><svg class="icon-svg"><use href="#ic-gift" /></svg></div>
+              <h3>Бонусы за покупки</h3>
+              <p>Начисляем бонусы за ремонт и покупки у партнёров.</p>
+            </article>
+          </div>
+
+          <header class="section-header" style="margin-top: 28px">
+            <h2>Для мастеров и компаний</h2>
+          </header>
+          <div class="grid cards-3">
+            <article class="card">
+              <h3>Целевые заявки</h3>
+              <p>Клиенты с понятными задачами и бюджетом.</p>
+            </article>
+            <article class="card">
+              <h3>Каталог услуг и товаров</h3>
+              <p>Размещение в навигаторе ремонта.</p>
+            </article>
+            <article class="card">
+              <h3>Акции и бонусы</h3>
+              <p>Участие в программе лояльности RemCard.</p>
+            </article>
+          </div>
+          <div class="navigator-cta">
+            <a class="btn btn-ghost" href="../partners/">Стать партнёром RemCard</a>
+          </div>
+
+          <header class="section-header" style="margin-top: 28px">
+            <h2>RemCard как карта лояльности</h2>
+            <p class="section-subtitle">Видите сумму заказа, начисление и оплату бонусами в одном блоке.</p>
+          </header>
+          <article class="card loyalty-main-card">
+            <div class="loyalty-infographic" aria-label="Пример работы бонусов">
+              <div class="loyalty-point">
+                <strong>180 000 ₽</strong>
+                <span>Сумма заказа</span>
+              </div>
+              <div class="loyalty-point">
+                <strong>5 400</strong>
+                <span>Начисленные бонусы</span>
+              </div>
+              <div class="loyalty-point">
+                <strong>2 000 бонусов</strong>
+                <span>Пример оплаты следующей покупки</span>
+              </div>
+            </div>
+            <p class="muted" style="margin-top: 12px">Начисление и списание прозрачны. Вы заранее видите, сколько бонусов получите и где потратите.</p>
+            <a class="section-link" href="../bonus-card/">Подробнее о бонусной карте</a>
+          </article>
+
+          <header class="section-header" style="margin-top: 28px">
+            <h2>Почему RemCard удобен всем участникам ремонта</h2>
+          </header>
+          <div class="grid cards-3">
+            <article class="card">
+              <div class="card-icon" aria-hidden="true"><svg class="icon-svg"><use href="#ic-hub" /></svg></div>
+              <h3>Единый сервис</h3>
+              <p>Заявка, каталог, бонусы — всё в одном месте.</p>
+            </article>
+            <article class="card">
+              <div class="card-icon" aria-hidden="true"><svg class="icon-svg"><use href="#ic-path" /></svg></div>
+              <h3>Понятный путь</h3>
+              <p>От задачи до выбора исполнителя.</p>
+            </article>
+            <article class="card">
+              <div class="card-icon" aria-hidden="true"><svg class="icon-svg"><use href="#ic-card" /></svg></div>
+              <h3>Бонусы и лояльность</h3>
+              <p>Вознаграждаем за покупки у партнёров.</p>
+            </article>
+          </div>
+
           <header class="section-header">
             <h2>Структура сервиса</h2>
             <p class="section-subtitle">Карта ключевых разделов RemCard — от справочника партнёров до админ‑панели.</p>

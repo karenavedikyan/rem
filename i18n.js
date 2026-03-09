@@ -101,6 +101,9 @@
     "Открыть форму заявки": "Open request form",
     "Скрыть форму заявки": "Hide request form",
     "Преимущества заявки": "Request benefits",
+    "Вынесли подробности в отдельный раздел: как работает сервис, преимущества для клиента, блок для мастеров и программа лояльности.":
+      "We moved details to a dedicated page: how the service works, client benefits, partner value, and loyalty program.",
+    "Подробнее о проекте RemCard": "Learn more about RemCard",
     "Всего 5 полей": "Only 5 fields",
     "Ответим в течение 4 часов": "We reply within 4 hours",
     "Подбор мастеров под ваш бюджет": "Contractor matching for your budget",
