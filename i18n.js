@@ -94,6 +94,10 @@
       "Earning and spending are transparent. You see in advance how many bonuses you get and where to spend them.",
     "Оставьте короткую заявку — подберём мастеров под задачу и бюджет.":
       "Leave a short request — we will match contractors to your task and budget.",
+    "Форма открывается по кнопке — так экран чище и проще.":
+      "The form opens on button tap so the screen stays clean and focused.",
+    "Открыть форму заявки": "Open request form",
+    "Скрыть форму заявки": "Hide request form",
     "Преимущества заявки": "Request benefits",
     "Всего 5 полей": "Only 5 fields",
     "Ответим в течение 4 часов": "We reply within 4 hours",

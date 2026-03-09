@@ -216,96 +216,81 @@
             <p class="section-subtitle">Оставьте короткую заявку — подберём мастеров под задачу и бюджет.</p>
           </header>
 
-          <div class="grid two-col">
-            <div class="card">
+          <div class="card request-card-compact">
               <div class="request-badges" aria-label="Преимущества заявки">
                 <span class="request-badge">Всего 5 полей</span>
                 <span class="request-badge">Ответим в течение 4 часов</span>
                 <span class="request-badge">Подбор мастеров под ваш бюджет</span>
               </div>
               <h3>Быстрая заявка клиента</h3>
-              <p class="muted">Заполните форму и получите обратную связь от команды RemCard.</p>
+              <p class="muted">Форма открывается по кнопке — так экран чище и проще.</p>
+              <button class="btn btn-ghost request-open-btn" id="request-open-btn" type="button" aria-expanded="false" aria-controls="request-form-panel">
+                <span class="request-open-btn-text">Открыть форму заявки</span>
+                <span class="request-open-btn-icon" aria-hidden="true">▾</span>
+              </button>
 
-              <!-- TODO: Подключить реальный backend (телеграм‑бот / почта / API). -->
-              <form class="form" id="request-form" novalidate>
-                <div class="form-grid">
-                  <div class="field">
-                    <label for="req-type">Тип задачи</label>
-                    <select class="input" id="req-type" name="taskType" required>
-                      <option value="" selected disabled>Выберите вариант</option>
-                      <option>Косметический ремонт</option>
-                      <option>Ванная / санузел</option>
-                      <option>Кухня</option>
-                      <option>Ремонт под ключ</option>
-                      <option>Другое</option>
-                    </select>
-                    <p class="field-hint">Что нужно сделать в первую очередь.</p>
+              <div class="request-form-panel" id="request-form-panel" hidden>
+                <!-- TODO: Подключить реальный backend (телеграм‑бот / почта / API). -->
+                <form class="form" id="request-form" novalidate>
+                  <div class="form-grid">
+                    <div class="field">
+                      <label for="req-type">Тип задачи</label>
+                      <select class="input" id="req-type" name="taskType" required>
+                        <option value="" selected disabled>Выберите вариант</option>
+                        <option>Косметический ремонт</option>
+                        <option>Ванная / санузел</option>
+                        <option>Кухня</option>
+                        <option>Ремонт под ключ</option>
+                        <option>Другое</option>
+                      </select>
+                      <p class="field-hint">Что нужно сделать в первую очередь.</p>
+                    </div>
+
+                    <div class="field">
+                      <label for="req-district">Район объекта</label>
+                      <input class="input" id="req-district" name="district" required placeholder="Например: Фестивальный, ЮМР, Гидрострой" />
+                    </div>
+
+                    <div class="field">
+                      <label for="req-budget">Бюджет / диапазон</label>
+                      <select class="input" id="req-budget" name="budget" required>
+                        <option value="" selected disabled>Выберите диапазон</option>
+                        <option>До 150 000 ₽</option>
+                        <option>150 000–400 000 ₽</option>
+                        <option>400 000–900 000 ₽</option>
+                        <option>900 000 ₽ и выше</option>
+                      </select>
+                    </div>
+
+                    <div class="field">
+                      <label for="req-name">Имя</label>
+                      <input class="input" id="req-name" name="name" autocomplete="name" required placeholder="Как к вам обращаться" />
+                    </div>
+
+                    <div class="field">
+                      <label for="req-contact">Телефон / Telegram</label>
+                      <input
+                        class="input"
+                        id="req-contact"
+                        name="contact"
+                        autocomplete="tel"
+                        required
+                        placeholder="+7 (...) ...-..-.. или @telegram"
+                      />
+                    </div>
                   </div>
 
-                  <div class="field">
-                    <label for="req-district">Район объекта</label>
-                    <input class="input" id="req-district" name="district" required placeholder="Например: Фестивальный, ЮМР, Гидрострой" />
+                  <div class="form-actions">
+                    <button class="btn btn-primary" type="submit">Отправить заявку в RemCard</button>
+                    <p class="fineprint">Нажимая кнопку, вы соглашаетесь на обработку данных для связи по заявке.</p>
                   </div>
 
-                  <div class="field">
-                    <label for="req-budget">Бюджет / диапазон</label>
-                    <select class="input" id="req-budget" name="budget" required>
-                      <option value="" selected disabled>Выберите диапазон</option>
-                      <option>До 150 000 ₽</option>
-                      <option>150 000–400 000 ₽</option>
-                      <option>400 000–900 000 ₽</option>
-                      <option>900 000 ₽ и выше</option>
-                    </select>
+                  <div class="form-result" id="request-result" role="status" aria-live="polite" hidden>
+                    <div class="form-result-title">Спасибо!</div>
+                    <div class="form-result-text">Заявка отправлена. В ближайшее время команда RemCard свяжется с вами.</div>
                   </div>
-
-                  <div class="field">
-                    <label for="req-name">Имя</label>
-                    <input class="input" id="req-name" name="name" autocomplete="name" required placeholder="Как к вам обращаться" />
-                  </div>
-
-                  <div class="field">
-                    <label for="req-contact">Телефон / Telegram</label>
-                    <input
-                      class="input"
-                      id="req-contact"
-                      name="contact"
-                      autocomplete="tel"
-                      required
-                      placeholder="+7 (...) ...-..-.. или @telegram"
-                    />
-                  </div>
-                </div>
-
-                <div class="form-actions">
-                  <button class="btn btn-primary" type="submit">Отправить заявку в RemCard</button>
-                  <p class="fineprint">Нажимая кнопку, вы соглашаетесь на обработку данных для связи по заявке.</p>
-                </div>
-
-                <div class="form-result" id="request-result" role="status" aria-live="polite" hidden>
-                  <div class="form-result-title">Спасибо!</div>
-                  <div class="form-result-text">Заявка отправлена. В ближайшее время команда RemCard свяжется с вами.</div>
-                </div>
-              </form>
-            </div>
-
-            <div class="card">
-              <h3>Как ускорить подбор</h3>
-              <div class="request-flow">
-                <div class="request-flow-step">
-                  <span class="request-flow-num">1</span>
-                  <p>Заполните ключевые поля: тип задачи, район и бюджет.</p>
-                </div>
-                <div class="request-flow-step">
-                  <span class="request-flow-num">2</span>
-                  <p>Оставьте контакт, где вам удобно ответить.</p>
-                </div>
-                <div class="request-flow-step">
-                  <span class="request-flow-num">3</span>
-                  <p>Получите обратную связь и подходящие предложения.</p>
-                </div>
+                </form>
               </div>
-              <p class="muted" style="margin-top: 10px">Сейчас работаем в Краснодаре.</p>
-            </div>
           </div>
         </div>
       </section>

@@ -923,6 +923,35 @@
     if (partnersEmptyEl) partnersEmptyEl.hidden = true;
   }
 
+  const requestFormPanel = document.getElementById("request-form-panel");
+  const requestOpenBtn = document.getElementById("request-open-btn");
+  const requestOpenBtnText = requestOpenBtn ? requestOpenBtn.querySelector(".request-open-btn-text") : null;
+  const requestOpenLabel = t("Открыть форму заявки", "Open request form");
+  const requestCloseLabel = t("Скрыть форму заявки", "Hide request form");
+
+  const setRequestFormPanelOpen = (open, { focusFirstField = false } = {}) => {
+    if (!requestFormPanel || !requestOpenBtn) return;
+    requestFormPanel.hidden = !open;
+    requestOpenBtn.classList.toggle("is-open", open);
+    requestOpenBtn.setAttribute("aria-expanded", open ? "true" : "false");
+    if (requestOpenBtnText) requestOpenBtnText.textContent = open ? requestCloseLabel : requestOpenLabel;
+
+    if (open && focusFirstField) {
+      const firstField = requestFormPanel.querySelector("select, input, textarea, button");
+      if (firstField && typeof firstField.focus === "function") {
+        firstField.focus({ preventScroll: true });
+      }
+    }
+  };
+
+  if (requestOpenBtn && requestFormPanel) {
+    requestOpenBtn.addEventListener("click", () => {
+      const isOpen = requestOpenBtn.getAttribute("aria-expanded") === "true";
+      setRequestFormPanelOpen(!isOpen, { focusFirstField: !isOpen });
+    });
+    setRequestFormPanelOpen(false);
+  }
+
   // Optional: prefill request comment when coming from a promo card
   document.addEventListener("click", (e) => {
     const a = e.target.closest("a[data-promo-title]");
@@ -950,6 +979,7 @@
           `Promotion selected: ${promoTitle || "partner offer"}${promoDiscount ? ` (${promoDiscount})` : ""}`
         )
       );
+      setRequestFormPanelOpen(true);
     }
 
     if (commentEl && !String(commentEl.value || "").trim()) {
@@ -1039,6 +1069,8 @@
     if (hasPromo && commentEl && !String(commentEl.value || "").trim()) {
       commentEl.value = `Акция: ${promoTitle}${promoPartner ? " — " + promoPartner : ""}${promoBenefit ? " (" + promoBenefit + ")" : ""}\n`;
     }
+
+    setRequestFormPanelOpen(true);
   };
 
   prefillClientRequestFromQuery();

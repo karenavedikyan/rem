@@ -1187,6 +1187,39 @@ img {
   color: rgba(245, 245, 245, 0.95);
 }
 
+.request-card-compact .muted {
+  margin-bottom: 0;
+}
+
+.request-open-btn {
+  width: 100%;
+  margin-top: 12px;
+  justify-content: space-between;
+  border-color: rgba(245, 245, 245, 0.18);
+}
+
+.request-open-btn-icon {
+  transition: transform 180ms var(--ease);
+}
+
+.request-open-btn.is-open .request-open-btn-icon {
+  transform: rotate(180deg);
+}
+
+.request-form-panel {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(245, 245, 245, 0.1);
+}
+
+.request-form-panel[hidden] {
+  display: none !important;
+}
+
+.request-form-panel .form {
+  margin-top: 0;
+}
+
 .contacts-line {
   display: flex;
   align-items: center;
