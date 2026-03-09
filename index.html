@@ -209,25 +209,16 @@
         </div>
       </section>
 
-      <section class="section" id="request">
+      <section class="section section-compact" id="request">
         <div class="container">
-          <header class="section-header">
-            <h2>Заявка клиента в RemCard (Краснодар)</h2>
-            <p class="section-subtitle">Оставьте короткую заявку — подберём мастеров под задачу и бюджет.</p>
-          </header>
-
-          <div class="card request-card-compact">
-              <div class="request-badges" aria-label="Преимущества заявки">
-                <span class="request-badge">Всего 5 полей</span>
-                <span class="request-badge">Ответим в течение 4 часов</span>
-                <span class="request-badge">Подбор мастеров под ваш бюджет</span>
+          <div class="card request-actions-card">
+              <div class="request-actions">
+                <button class="btn btn-primary request-open-btn" id="request-open-btn" type="button" aria-expanded="false" aria-controls="request-form-panel">
+                  <span class="request-open-btn-text">Заявка в RemCard</span>
+                  <span class="request-open-btn-icon" aria-hidden="true">▾</span>
+                </button>
+                <a class="btn btn-ghost request-about-btn" href="./about/">О проекте RemCard</a>
               </div>
-              <h3>Быстрая заявка клиента</h3>
-              <p class="muted">Форма открывается по кнопке — так экран чище и проще.</p>
-              <button class="btn btn-ghost request-open-btn" id="request-open-btn" type="button" aria-expanded="false" aria-controls="request-form-panel">
-                <span class="request-open-btn-text">Открыть форму заявки</span>
-                <span class="request-open-btn-icon" aria-hidden="true">▾</span>
-              </button>
 
               <div class="request-form-panel" id="request-form-panel" hidden>
                 <div class="request-form-panel-head">
@@ -297,20 +288,6 @@
               </div>
           </div>
           <div class="request-form-backdrop" id="request-form-backdrop" hidden></div>
-        </div>
-      </section>
-
-      <section class="section section-compact" id="about-project-cta">
-        <div class="container">
-          <article class="card">
-            <h2>О проекте RemCard</h2>
-            <p class="muted">
-              Вынесли подробности в отдельный раздел: как работает сервис, преимущества для клиента, блок для мастеров и программа лояльности.
-            </p>
-            <div class="navigator-cta">
-              <a class="btn btn-ghost" href="./about/">Подробнее о проекте RemCard</a>
-            </div>
-          </article>
         </div>
       </section>
 

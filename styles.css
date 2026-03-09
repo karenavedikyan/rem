@@ -1219,15 +1219,25 @@ img {
   color: rgba(245, 245, 245, 0.95);
 }
 
-.request-card-compact .muted {
-  margin-bottom: 0;
-}
-
 .request-open-btn {
   width: 100%;
-  margin-top: 12px;
+  margin-top: 0;
   justify-content: space-between;
   border-color: rgba(245, 245, 245, 0.18);
+}
+
+.request-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.request-about-btn {
+  width: 100%;
+}
+
+.request-actions-card {
+  padding: 14px;
 }
 
 .request-open-btn-icon {
@@ -3330,6 +3340,10 @@ body.navigator-stage-modal-open {
 }
 
 @media (max-width: 760px) {
+  .request-actions {
+    grid-template-columns: 1fr;
+  }
+
   .about-toc {
     flex-wrap: nowrap;
     overflow-x: auto;

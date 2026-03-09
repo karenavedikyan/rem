@@ -928,8 +928,7 @@
   const requestOpenBtnText = requestOpenBtn ? requestOpenBtn.querySelector(".request-open-btn-text") : null;
   const requestFormCloseBtn = document.getElementById("request-form-close");
   const requestFormBackdrop = document.getElementById("request-form-backdrop");
-  const requestOpenLabel = t("Открыть форму заявки", "Open request form");
-  const requestCloseLabel = t("Скрыть форму заявки", "Hide request form");
+  const requestOpenLabel = t("Заявка в RemCard", "Request to RemCard");
   const isMobileRequestSheet = () => window.matchMedia("(max-width: 760px)").matches;
 
   const setRequestFormPanelOpen = (open, { focusFirstField = false } = {}) => {
@@ -941,7 +940,7 @@
     document.body.classList.toggle("request-form-open", open && mobileSheet);
     requestOpenBtn.classList.toggle("is-open", open);
     requestOpenBtn.setAttribute("aria-expanded", open ? "true" : "false");
-    if (requestOpenBtnText) requestOpenBtnText.textContent = open ? requestCloseLabel : requestOpenLabel;
+    if (requestOpenBtnText) requestOpenBtnText.textContent = requestOpenLabel;
 
     if (open && focusFirstField) {
       const firstField = requestFormPanel.querySelector("select, input, textarea, button");

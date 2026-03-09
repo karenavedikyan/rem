@@ -99,6 +99,7 @@
       "Leave a short request — we will match contractors to your task and budget.",
     "Форма открывается по кнопке — так экран чище и проще.":
       "The form opens on button tap so the screen stays clean and focused.",
+    "Заявка в RemCard": "Request to RemCard",
     "Заполнение заявки": "Request form",
     "Закрыть форму заявки": "Close request form",
     "Открыть форму заявки": "Open request form",
