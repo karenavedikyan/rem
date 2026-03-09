@@ -253,13 +253,13 @@ img {
 .hero {
   position: relative;
   overflow: hidden;
-  padding: 84px 0 34px;
+  padding: 68px 0 24px;
 }
 
 .hero-inner {
   display: grid;
   grid-template-columns: 1.35fr 0.65fr;
-  gap: 32px;
+  gap: 24px;
   align-items: center;
 }
 
@@ -290,7 +290,41 @@ img {
 .lead {
   margin: 0;
   max-width: 62ch;
-  font-size: clamp(16px, 1.4vw, 18px);
+  font-size: clamp(15px, 1.25vw, 17px);
+  color: rgba(176, 190, 197, 0.95);
+}
+
+.hero-kpis {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.hero-kpi-card {
+  border-radius: 14px;
+  border: 1px solid rgba(245, 245, 245, 0.12);
+  background: rgba(18, 18, 18, 0.45);
+  padding: 10px;
+  display: grid;
+  gap: 4px;
+  min-height: 92px;
+}
+
+.hero-kpi-icon {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.hero-kpi-value {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+  color: rgba(245, 245, 245, 0.98);
+}
+
+.hero-kpi-sub {
+  font-size: 12px;
   color: rgba(176, 190, 197, 0.95);
 }
 
@@ -321,11 +355,11 @@ img {
 }
 
 .hero-actions-inline {
-  margin-top: 20px;
+  margin-top: 14px;
 }
 
 .hero-fineprint {
-  margin-top: 10px;
+  margin-top: 6px;
 }
 
 .hero-note {
@@ -405,26 +439,55 @@ img {
 
 .hero-roadmap-card {
   display: grid;
-  gap: 14px;
+  gap: 12px;
+  padding: 14px;
 }
 
 .hero-route {
+  position: relative;
   display: flex;
-  gap: 8px;
+  gap: 14px;
   overflow-x: auto;
-  padding-bottom: 4px;
+  padding: 4px 2px 6px;
+}
+
+.hero-route::before {
+  content: "";
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  top: 24px;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(229, 57, 53, 0.45), rgba(229, 57, 53, 0.18));
+  pointer-events: none;
 }
 
 .hero-route-step {
+  position: relative;
+  z-index: 1;
   min-width: 118px;
   text-align: center;
   border-radius: 12px;
-  border: 1px solid rgba(245, 245, 245, 0.12);
-  background: rgba(18, 18, 18, 0.5);
-  padding: 10px 12px;
+  border: 1px solid rgba(245, 245, 245, 0.16);
+  background: rgba(14, 14, 14, 0.78);
+  padding: 12px 12px;
   font-size: 13px;
   font-weight: 700;
   transition: border-color 160ms var(--ease), transform 160ms var(--ease), background 160ms var(--ease);
+}
+
+.hero-route-step::after {
+  content: "→";
+  position: absolute;
+  right: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(229, 57, 53, 0.78);
+  font-size: 12px;
+}
+
+.hero-route-step:last-child::after {
+  display: none;
 }
 
 .hero-route-step:hover {
@@ -445,7 +508,7 @@ img {
 .hero-route-chip {
   border-radius: 999px;
   border: 1px solid rgba(229, 57, 53, 0.3);
-  background: rgba(229, 57, 53, 0.12);
+  background: rgba(229, 57, 53, 0.1);
   padding: 6px 10px;
   font-size: 12px;
   color: rgba(245, 245, 245, 0.95);
@@ -554,7 +617,7 @@ img {
 
 /* Sections */
 .section {
-  padding: 56px 0;
+  padding: 48px 0;
 }
 
 .section-header {
@@ -686,11 +749,22 @@ img {
 }
 
 .how-cards {
-  margin-top: 4px;
+  margin-top: 10px;
+  gap: 10px;
+}
+
+.how-card {
+  padding: 14px;
+}
+
+.how-card h3 {
+  margin-bottom: 6px;
+  font-size: 17px;
 }
 
 .how-card p {
-  font-size: 14px;
+  font-size: 13px;
+  line-height: 1.35;
 }
 
 .how-card-top {
@@ -708,6 +782,72 @@ img {
   border: 1px solid rgba(245, 245, 245, 0.12);
   background: rgba(18, 18, 18, 0.42);
   font-size: 15px;
+}
+
+.navigator-scenario {
+  margin-top: 4px;
+}
+
+.navigator-scenario-track {
+  position: relative;
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 6px 2px;
+}
+
+.navigator-scenario-track::before {
+  content: "";
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  top: 24px;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(229, 57, 53, 0.42), rgba(229, 57, 53, 0.18));
+}
+
+.navigator-scenario-step {
+  position: relative;
+  z-index: 1;
+  min-width: 116px;
+  border-radius: 12px;
+  border: 1px solid rgba(245, 245, 245, 0.14);
+  background: rgba(18, 18, 18, 0.5);
+  padding: 12px 10px;
+  text-align: center;
+  font-size: 12.5px;
+  font-weight: 700;
+  transition: border-color 160ms var(--ease), background 160ms var(--ease), transform 160ms var(--ease);
+}
+
+.navigator-scenario-step::after {
+  content: "→";
+  position: absolute;
+  right: -11px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(229, 57, 53, 0.72);
+  font-size: 12px;
+}
+
+.navigator-scenario-step:last-child::after {
+  display: none;
+}
+
+.navigator-scenario-step:hover {
+  border-color: rgba(229, 57, 53, 0.45);
+}
+
+.navigator-scenario-step.is-active {
+  border-color: rgba(229, 57, 53, 0.62);
+  background: rgba(229, 57, 53, 0.2);
+  box-shadow: 0 10px 20px rgba(229, 57, 53, 0.18);
+}
+
+.navigator-visual-meta-muted span {
+  border-color: rgba(245, 245, 245, 0.14);
+  background: rgba(245, 245, 245, 0.05);
+  color: rgba(176, 190, 197, 0.95);
 }
 
 .how-timeline {
@@ -3586,8 +3726,33 @@ body.navigator-stage-modal-open {
 
 /* Responsive */
 @media (max-width: 980px) {
+  .hero {
+    padding: 58px 0 16px;
+  }
+
   .hero-inner {
     grid-template-columns: 1fr;
+  }
+
+  .hero-layout-main {
+    gap: 14px;
+  }
+
+  .hero-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hero-route-step,
+  .navigator-scenario-step {
+    min-width: 104px;
+  }
+
+  .section {
+    padding: 40px 0;
+  }
+
+  .hero + .section {
+    padding-top: 30px;
   }
 
   .hero-card {
@@ -3731,12 +3896,35 @@ body.navigator-stage-modal-open {
     width: min(var(--container), calc(100% - 28px));
   }
 
-  .hero-metrics {
-    grid-template-columns: 1fr;
+  .hero {
+    padding-top: 52px;
+    padding-bottom: 12px;
   }
 
-  .navigator-stage-strip {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .hero-kpis {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .hero-kpi-card {
+    min-height: 78px;
+    padding: 9px;
+  }
+
+  .hero-route {
+    gap: 10px;
+  }
+
+  .hero-route-step,
+  .navigator-scenario-step {
+    min-width: 96px;
+    padding: 10px 8px;
+    font-size: 12px;
+  }
+
+  .hero-route-step::after,
+  .navigator-scenario-step::after {
+    right: -9px;
   }
 
   .request-flow-step {
@@ -3744,8 +3932,16 @@ body.navigator-stage-modal-open {
     padding: 10px;
   }
 
-  .hero {
-    padding-top: 76px;
+  .how-card {
+    padding: 12px;
+  }
+
+  .how-card h3 {
+    font-size: 16px;
+  }
+
+  .navigator-stage-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .cards-5 {
