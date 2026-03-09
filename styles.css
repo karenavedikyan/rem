@@ -2868,7 +2868,7 @@ body.navigator-stage-modal-open {
     position: fixed;
     left: 12px;
     right: 12px;
-    bottom: 14px;
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
     z-index: 20;
     display: inline-flex;
     justify-content: center;
@@ -2971,7 +2971,7 @@ body.navigator-stage-modal-open {
     position: fixed;
     left: 12px;
     right: 12px;
-    bottom: 14px;
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
     z-index: 20;
     display: inline-flex;
     justify-content: center;
@@ -3034,12 +3034,12 @@ body.navigator-stage-modal-open {
   }
 
   .catalog-pagination {
-    margin-bottom: 76px;
+    margin-bottom: calc(102px + env(safe-area-inset-bottom, 0px));
   }
 
   .offers-list,
   .promo-more {
-    margin-bottom: 76px;
+    margin-bottom: calc(102px + env(safe-area-inset-bottom, 0px));
   }
 }
 

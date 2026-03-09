@@ -506,17 +506,41 @@
     if (!allEl) return;
 
     const isOffersMobileView = () => window.matchMedia("(max-width: 760px)").matches;
+    const offersFooterEl = document.querySelector(".site-footer");
+    const offersFooterBackLinkEl = document.querySelector(".site-footer .footer-link");
+    const offersPromoMoreEl = document.querySelector(".promo-more");
+    const isInBottomOverlayZone = (el, overlayHeight = 112) => {
+      if (!el || typeof el.getBoundingClientRect !== "function") return false;
+      const rect = el.getBoundingClientRect();
+      if (rect.width <= 0 && rect.height <= 0) return false;
+      const vh = window.innerHeight || document.documentElement.clientHeight || 0;
+      return rect.bottom > vh - overlayHeight && rect.top < vh;
+    };
     const setOffersOpenBtnVisible = (visible) => {
       if (!offersOpenFiltersBtn) return;
       offersOpenFiltersBtn.classList.toggle("is-hidden", !visible);
       offersOpenFiltersBtn.setAttribute("aria-hidden", visible ? "false" : "true");
+    };
+    const syncOffersOpenBtnVisibility = () => {
+      if (!offersOpenFiltersBtn) return;
+      if (!isOffersMobileView()) {
+        setOffersOpenBtnVisible(true);
+        return;
+      }
+      if (document.body.classList.contains("offers-filters-open")) {
+        setOffersOpenBtnVisible(false);
+        return;
+      }
+      const hideForOverlap =
+        isInBottomOverlayZone(offersPromoMoreEl, 118) || isInBottomOverlayZone(offersFooterBackLinkEl, 118) || isInBottomOverlayZone(offersFooterEl, 118);
+      setOffersOpenBtnVisible(!hideForOverlap);
     };
     const closeOffersFilters = () => {
       if (!offersFiltersCard || !offersFiltersBackdrop) return;
       offersFiltersCard.classList.remove("is-open");
       document.body.classList.remove("offers-filters-open");
       offersFiltersBackdrop.hidden = true;
-      setOffersOpenBtnVisible(true);
+      syncOffersOpenBtnVisibility();
       if (offersOpenFiltersBtn) offersOpenFiltersBtn.setAttribute("aria-expanded", "false");
     };
     const openOffersFilters = () => {
@@ -524,7 +548,7 @@
       offersFiltersCard.classList.add("is-open");
       document.body.classList.add("offers-filters-open");
       offersFiltersBackdrop.hidden = false;
-      setOffersOpenBtnVisible(false);
+      syncOffersOpenBtnVisibility();
       if (offersOpenFiltersBtn) offersOpenFiltersBtn.setAttribute("aria-expanded", "true");
     };
 
@@ -655,6 +679,7 @@
       renderPromotionsInto(allEl, list);
       applyI18n(allEl);
       if (emptyEl) emptyEl.hidden = list.length > 0;
+      syncOffersOpenBtnVisibility();
     };
 
     applyFiltersFromURL();
@@ -688,7 +713,7 @@
 
     if (offersOpenFiltersBtn) {
       offersOpenFiltersBtn.setAttribute("aria-expanded", "false");
-      setOffersOpenBtnVisible(true);
+      syncOffersOpenBtnVisibility();
       offersOpenFiltersBtn.addEventListener("click", () => {
         openOffersFilters();
       });
@@ -712,7 +737,15 @@
 
     window.addEventListener("resize", () => {
       if (!isOffersMobileView()) closeOffersFilters();
+      syncOffersOpenBtnVisibility();
     });
+    window.addEventListener(
+      "scroll",
+      () => {
+        syncOffersOpenBtnVisibility();
+      },
+      { passive: true }
+    );
 
     if (activeOffersFiltersWrap) {
       activeOffersFiltersWrap.addEventListener("click", (e) => {
@@ -735,6 +768,7 @@
         applyFiltersAndRender();
       });
     }
+    syncOffersOpenBtnVisibility();
   };
 
   initPromotions();

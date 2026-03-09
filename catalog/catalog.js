@@ -30,6 +30,8 @@
   const pageLabelEl = document.getElementById("catalog-page-label");
   const resetBtn = document.getElementById("catalog-reset-filters");
   const currentStageEl = document.getElementById("catalog-current-stage");
+  const footerEl = document.querySelector(".site-footer");
+  const footerBackLinkEl = document.querySelector(".site-footer .footer-link");
   const stageSelectEl = getStageSelect();
   const state = { page: 1, totalPages: 1, isLoading: false };
   const FALLBACK_ITEMS = Array.isArray(window.REMCARD_CATALOG_SEED) ? window.REMCARD_CATALOG_SEED : [];
@@ -246,10 +248,31 @@
 
   const getField = (name) => form.querySelector(`[name="${CSS.escape(name)}"]`);
   const isMobileView = () => window.matchMedia("(max-width: 760px)").matches;
+  const isInBottomOverlayZone = (el, overlayHeight = 112) => {
+    if (!el || typeof el.getBoundingClientRect !== "function") return false;
+    const rect = el.getBoundingClientRect();
+    if (rect.width <= 0 && rect.height <= 0) return false;
+    const vh = window.innerHeight || document.documentElement.clientHeight || 0;
+    return rect.bottom > vh - overlayHeight && rect.top < vh;
+  };
   const setOpenFiltersBtnVisible = (visible) => {
     if (!openFiltersBtn) return;
     openFiltersBtn.classList.toggle("is-hidden", !visible);
     openFiltersBtn.setAttribute("aria-hidden", visible ? "false" : "true");
+  };
+  const syncOpenFiltersBtnVisibility = () => {
+    if (!openFiltersBtn) return;
+    if (!isMobileView()) {
+      setOpenFiltersBtnVisible(true);
+      return;
+    }
+    if (document.body.classList.contains("catalog-filters-open")) {
+      setOpenFiltersBtnVisible(false);
+      return;
+    }
+    const hideForOverlap =
+      isInBottomOverlayZone(paginationEl, 118) || isInBottomOverlayZone(footerBackLinkEl, 118) || isInBottomOverlayZone(footerEl, 118);
+    setOpenFiltersBtnVisible(!hideForOverlap);
   };
   const setSheetMode = (mode) => {
     sheetMode = mode === "expanded" ? "expanded" : "mid";
@@ -300,7 +323,7 @@
     filtersCardEl.classList.remove("is-open");
     document.body.classList.remove("catalog-filters-open");
     filtersBackdropEl.hidden = true;
-    setOpenFiltersBtnVisible(true);
+    syncOpenFiltersBtnVisibility();
     if (openFiltersBtn) openFiltersBtn.setAttribute("aria-expanded", "false");
   };
 
@@ -313,7 +336,7 @@
     filtersCardEl.classList.add("is-open");
     document.body.classList.add("catalog-filters-open");
     filtersBackdropEl.hidden = false;
-    setOpenFiltersBtnVisible(false);
+    syncOpenFiltersBtnVisibility();
     if (openFiltersBtn) openFiltersBtn.setAttribute("aria-expanded", "true");
   };
 
@@ -631,6 +654,7 @@
     renderActiveFilterChips();
     renderQuickKindChips();
     renderQuickSortChips();
+    syncOpenFiltersBtnVisibility();
   };
 
   const renderCatalogPayload = (payload, page, { fromFallback = false } = {}) => {
@@ -659,6 +683,7 @@
     renderActiveFilterChips();
     renderQuickKindChips();
     renderQuickSortChips();
+    syncOpenFiltersBtnVisibility();
   };
 
   const loadCatalog = async ({ page = 1 } = {}) => {
@@ -757,7 +782,7 @@
 
   if (openFiltersBtn) {
     openFiltersBtn.setAttribute("aria-expanded", "false");
-    setOpenFiltersBtnVisible(true);
+    syncOpenFiltersBtnVisibility();
     openFiltersBtn.addEventListener("click", () => {
       openMobileFilters();
     });
@@ -844,7 +869,15 @@
 
   window.addEventListener("resize", () => {
     if (!isMobileView()) closeMobileFilters();
+    syncOpenFiltersBtnVisibility();
   });
+  window.addEventListener(
+    "scroll",
+    () => {
+      syncOpenFiltersBtnVisibility();
+    },
+    { passive: true }
+  );
 
   setSheetMode("mid");
 
@@ -866,4 +899,5 @@
   const initial = readCurrentParams();
   applyParamsToForm(initial);
   loadCatalog({ page: initial.page || 1 });
+  syncOpenFiltersBtnVisibility();
 })();
