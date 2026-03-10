@@ -111,6 +111,9 @@
     "Заполнение заявки": "Request form",
     "Закрыть форму заявки": "Close request form",
     "Открыть форму заявки": "Open request form",
+    "Открыть форму заявки в RemCard": "Open RemCard request form",
+    "Открыть Навигатор ремонта RemCard": "Open RemCard Repair Navigator",
+    "Открыть каталог товаров и услуг RemCard": "Open RemCard products and services catalog",
     "Скрыть форму заявки": "Hide request form",
     "Преимущества заявки": "Request benefits",
     "Вынесли подробности в отдельный раздел: как работает сервис, преимущества для клиента, блок для мастеров и программа лояльности.":

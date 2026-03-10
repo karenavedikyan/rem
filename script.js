@@ -925,6 +925,7 @@
 
   const requestFormPanel = document.getElementById("request-form-panel");
   const requestOpenBtn = document.getElementById("request-open-btn");
+  const heroKpiOpenRequestBtn = document.getElementById("hero-kpi-open-request");
   const requestOpenBtnText = requestOpenBtn ? requestOpenBtn.querySelector(".request-open-btn-text") : null;
   const requestFormCloseBtn = document.getElementById("request-form-close");
   const requestFormBackdrop = document.getElementById("request-form-backdrop");
@@ -983,6 +984,18 @@
   const requestSectionEl = document.getElementById("request");
   const heroSectionEl = document.getElementById("hero");
   const footerEl = document.querySelector(".site-footer");
+  const openRequestForm = ({ focusFirstField = true } = {}) => {
+    if (!requestOpenBtn) return;
+    setRequestFormPanelOpen(true, { focusFirstField });
+    if (isMobileRequestSheet() || !requestSectionEl) return;
+    const headerH = header ? header.getBoundingClientRect().height : 0;
+    const y = window.scrollY + requestSectionEl.getBoundingClientRect().top - headerH - 10;
+    window.scrollTo({ top: y, behavior: "smooth" });
+  };
+
+  if (heroKpiOpenRequestBtn) {
+    heroKpiOpenRequestBtn.addEventListener("click", () => openRequestForm({ focusFirstField: true }));
+  }
 
   const syncHomeStickyCtaVisibility = () => {
     if (!homeStickyCtaBtn) return;
@@ -1005,7 +1018,7 @@
   if (homeStickyCtaBtn) {
     homeStickyCtaBtn.addEventListener("click", () => {
       if (requestOpenBtn) {
-        setRequestFormPanelOpen(true, { focusFirstField: true });
+        openRequestForm({ focusFirstField: true });
       } else if (requestSectionEl) {
         const headerH = header ? header.getBoundingClientRect().height : 0;
         const y = window.scrollY + requestSectionEl.getBoundingClientRect().top - headerH - 10;

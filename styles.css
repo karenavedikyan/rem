@@ -345,6 +345,24 @@ img {
   display: grid;
   gap: 4px;
   min-height: 92px;
+  width: 100%;
+  text-align: left;
+  color: inherit;
+  text-decoration: none;
+  font: inherit;
+  transition: border-color 180ms var(--ease), background 180ms var(--ease), transform 180ms var(--ease), box-shadow 180ms var(--ease);
+}
+
+button.hero-kpi-card {
+  cursor: pointer;
+}
+
+.hero-kpi-card.is-clickable:hover,
+.hero-kpi-card.is-clickable:focus-visible {
+  border-color: rgba(229, 57, 53, 0.4);
+  background: rgba(24, 24, 24, 0.72);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.22);
 }
 
 .hero-kpi-icon {
