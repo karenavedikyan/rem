@@ -8,6 +8,9 @@
   const sendBtn = document.getElementById("send-route-btn");
   const sendResult = document.getElementById("navigator-send-result");
   const timelineEl = document.getElementById("navigator-timeline");
+  const mapSelectedStageEl = document.getElementById("navigator-map-selected-stage");
+  const mapServiceLinkEl = document.getElementById("navigator-map-service-link");
+  const mapProductLinkEl = document.getElementById("navigator-map-product-link");
   const startStageBtn = document.getElementById("navigator-start-btn");
   const stageModalEl = document.getElementById("navigator-stage-modal");
   const stageModalListEl = document.getElementById("navigator-stage-modal-list");
@@ -958,6 +961,20 @@
     });
   };
 
+  const renderMapActions = (stageId) => {
+    const stage = getStageById(stageId);
+    if (!stage) return;
+    if (mapSelectedStageEl) {
+      mapSelectedStageEl.textContent = `${t("Выбран этап", "Selected stage")}: ${stage.shortLabel || stage.title}`;
+    }
+    if (mapServiceLinkEl) {
+      mapServiceLinkEl.setAttribute("href", getCatalogHrefByStageAndKind(stageId, "service"));
+    }
+    if (mapProductLinkEl) {
+      mapProductLinkEl.setAttribute("href", getCatalogHrefByStageAndKind(stageId, "product"));
+    }
+  };
+
   const renderTimeline = () => {
     if (!timelineEl) return;
     const activeIdx = STAGE_ORDER.indexOf(activeStageId);
@@ -974,7 +991,9 @@
             y1="${point.y}"
             x2="${next.x}"
             y2="${next.y}"
-            class="navigator-stage-map-segment${isDone ? " is-done" : ""}"
+            class="navigator-stage-map-segment is-link${isDone ? " is-done" : ""}"
+            data-from-stage-id="${point.id}"
+            data-to-stage-id="${next.id}"
             style="${isDone ? `animation-delay:${delayMs}ms, ${delayMs + 420}ms;` : ""}"
           ></line>
         `;
@@ -1071,6 +1090,7 @@
     syncStageToForm(stage.id);
     updateFormStageNote(stage);
     renderNextStages(stage.id);
+    renderMapActions(stage.id);
     renderTimeline();
     if (stageModalEl && !stageModalEl.hidden) renderStageModalList();
   };
@@ -1372,8 +1392,13 @@
   if (timelineEl) {
     timelineEl.addEventListener("click", (e) => {
       const btn = e.target && e.target.closest ? e.target.closest("button[data-stage-id]") : null;
-      if (!btn) return;
-      setActiveStage(btn.getAttribute("data-stage-id"));
+      if (btn) {
+        setActiveStage(btn.getAttribute("data-stage-id"));
+        return;
+      }
+      const segment = e.target && e.target.closest ? e.target.closest("line[data-to-stage-id]") : null;
+      if (!segment) return;
+      setActiveStage(segment.getAttribute("data-to-stage-id"));
     });
   }
 

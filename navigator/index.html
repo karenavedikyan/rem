@@ -58,8 +58,15 @@
           <div class="grid two-col navigator-workspace">
             <article class="card navigator-timeline-card" id="navigator-map">
               <h2>Карта этапов ремонта</h2>
-              <p class="muted">Тапните по нужному этапу: дорожка покажет где вы сейчас и что делать дальше.</p>
+              <p class="muted">Нажмите на этап или переход между этапами — справа сразу обновится маршрут и действия.</p>
               <div class="navigator-timeline" id="navigator-timeline" role="tablist" aria-label="Этапы ремонта"></div>
+              <div class="navigator-map-actions">
+                <p class="navigator-map-selected-stage" id="navigator-map-selected-stage">Выбран этап: Планирование</p>
+                <div class="navigator-map-actions-row">
+                  <a class="btn btn-primary" id="navigator-map-service-link" href="../catalog/?stage=PLANNING&itemKind=service">Найти услуги по этапу</a>
+                  <a class="btn btn-ghost" id="navigator-map-product-link" href="../catalog/?stage=PLANNING&itemKind=product">Найти товары по этапу</a>
+                </div>
+              </div>
             </article>
 
             <article class="card navigator-stage-card" id="navigator-stage-card">

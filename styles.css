@@ -2167,10 +2167,17 @@ button.hero-kpi-card {
 
 .navigator-workspace {
   margin-bottom: 14px;
+  grid-template-columns: minmax(0, 1.65fr) minmax(320px, 1fr);
+  align-items: start;
 }
 
 .navigator-timeline-card .muted {
   margin-top: 8px;
+}
+
+.navigator-timeline-card {
+  display: grid;
+  gap: 10px;
 }
 
 .navigator-timeline {
@@ -2179,7 +2186,7 @@ button.hero-kpi-card {
 
 .navigator-stage-map {
   position: relative;
-  min-height: 290px;
+  min-height: clamp(380px, 56vh, 560px);
   border-radius: 16px;
   border: 1px solid rgba(245, 245, 245, 0.1);
   background:
@@ -2205,7 +2212,7 @@ button.hero-kpi-card {
   inset: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none;
+  pointer-events: auto;
 }
 
 .navigator-stage-map-segment {
@@ -2213,6 +2220,18 @@ button.hero-kpi-card {
   stroke-width: 2.4;
   stroke-linecap: round;
   stroke-dasharray: 1.8 1.8;
+  transition: stroke 160ms var(--ease), stroke-width 160ms var(--ease), filter 160ms var(--ease);
+}
+
+.navigator-stage-map-segment.is-link {
+  cursor: pointer;
+  pointer-events: stroke;
+}
+
+.navigator-stage-map-segment.is-link:hover {
+  stroke: rgba(229, 57, 53, 0.86);
+  stroke-width: 3;
+  filter: drop-shadow(0 0 5px rgba(229, 57, 53, 0.3));
 }
 
 .navigator-stage-map-segment.is-done {
@@ -2246,7 +2265,7 @@ button.hero-kpi-card {
 
 .navigator-stage-map-nodes {
   position: relative;
-  min-height: 290px;
+  min-height: clamp(380px, 56vh, 560px);
 }
 
 .navigator-map-node {
@@ -2281,6 +2300,11 @@ button.hero-kpi-card {
 
 .navigator-map-node:hover .navigator-map-node-pin {
   transform: translateY(-1px);
+}
+
+.navigator-map-node:focus-visible .navigator-map-node-pin {
+  border-color: rgba(229, 57, 53, 0.6);
+  box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.24), 0 10px 22px rgba(0, 0, 0, 0.25);
 }
 
 .navigator-map-node-index {
@@ -2357,6 +2381,32 @@ button.hero-kpi-card {
 
 .navigator-map-node.is-future {
   opacity: 0.88;
+}
+
+.navigator-map-actions {
+  margin-top: 2px;
+  border: 1px solid rgba(245, 245, 245, 0.1);
+  border-radius: 14px;
+  background: rgba(18, 18, 18, 0.42);
+  padding: 10px;
+}
+
+.navigator-map-selected-stage {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(245, 245, 245, 0.96);
+}
+
+.navigator-map-actions-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.navigator-map-actions-row .btn {
+  min-height: 42px;
+  justify-content: center;
 }
 
 @keyframes navigator-node-pulse {
@@ -3533,7 +3583,7 @@ body.navigator-stage-modal-open {
 
   .navigator-stage-map,
   .navigator-stage-map-nodes {
-    min-height: 248px;
+    min-height: 280px;
   }
 
   .navigator-map-node {
@@ -3566,6 +3616,10 @@ body.navigator-stage-modal-open {
   }
 
   .navigator-stage-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .navigator-map-actions-row {
     grid-template-columns: 1fr;
   }
 
@@ -4149,6 +4203,15 @@ body.navigator-stage-modal-open {
   .two-col,
   .tiles {
     grid-template-columns: 1fr;
+  }
+
+  .navigator-workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .navigator-stage-map,
+  .navigator-stage-map-nodes {
+    min-height: clamp(320px, 48vh, 420px);
   }
 
   .navigator-stage-strip {

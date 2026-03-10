@@ -203,6 +203,10 @@
     "Помогаем пройти ремонт по шагам — от планирования до мебели. Простые правила, ошибки и подсказки.": "We help you pass renovation step by step — from planning to furniture. Simple rules, common mistakes, and clear tips.",
     "Начать с моего этапа": "Start from my stage",
     "Карта этапов ремонта": "Renovation stage map",
+    "Нажмите на этап или переход между этапами — справа сразу обновится маршрут и действия.":
+      "Click a stage or a transition line — the right panel updates instantly with actions.",
+    "Найти услуги по этапу": "Find services for this stage",
+    "Найти товары по этапу": "Find products for this stage",
     "Тапните по нужному этапу: дорожка покажет где вы сейчас и что делать дальше.": "Tap your stage: the roadmap instantly shows where you are and what comes next.",
     "Маршрут для вас": "Route for you",
     "Что делаем на этом этапе": "What we do at this stage",
