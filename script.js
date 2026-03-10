@@ -994,10 +994,12 @@
     const heroPassed = heroSectionEl ? heroSectionEl.getBoundingClientRect().bottom < 64 : window.scrollY > 260;
     const nearFooter = footerEl ? footerEl.getBoundingClientRect().top < window.innerHeight - 120 : false;
     const requestRect = requestSectionEl ? requestSectionEl.getBoundingClientRect() : null;
-    const requestVisible = requestRect ? requestRect.top < window.innerHeight * 0.68 && requestRect.bottom > 90 : false;
+    const requestVisible = requestRect ? requestRect.top < window.innerHeight - 20 && requestRect.bottom > 20 : false;
+    const requestBtnRect = requestOpenBtn ? requestOpenBtn.getBoundingClientRect() : null;
+    const requestBtnVisible = requestBtnRect ? requestBtnRect.top < window.innerHeight - 20 && requestBtnRect.bottom > 20 : false;
     const isRequestOpen = requestOpenBtn && requestOpenBtn.getAttribute("aria-expanded") === "true";
 
-    homeStickyCtaBtn.classList.toggle("is-visible", heroPassed && !nearFooter && !requestVisible && !isRequestOpen);
+    homeStickyCtaBtn.classList.toggle("is-visible", heroPassed && !nearFooter && !requestVisible && !requestBtnVisible && !isRequestOpen);
   };
 
   if (homeStickyCtaBtn) {
