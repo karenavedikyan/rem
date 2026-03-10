@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "audit:efficiency": "node tools/efficiency-audit.mjs",
+    "audit:conversion": "node tools/conversion-funnel-audit.mjs",
     "validate:knowledge": "node validate-knowledge-base.mjs"
   }
 }

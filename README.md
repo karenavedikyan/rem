@@ -204,3 +204,21 @@ node validate-knowledge-base.mjs
 ```bash
 npm run audit:efficiency
 ```
+
+### UX/конверсия + Lighthouse (уровень 2)
+
+Добавлен отдельный workflow `.github/workflows/experience-watch.yml`:
+
+- каждые 6 часов проверяет ключевой funnel конверсии (`audit:conversion`);
+- запускает Lighthouse (mobile) для:
+  - `/`
+  - `/navigator/`
+  - `/catalog/`
+  - `/contacts/`
+- сохраняет отчёты как artifacts и публикует ссылки в job summary.
+
+Локально:
+
+```bash
+npm run audit:conversion
+```

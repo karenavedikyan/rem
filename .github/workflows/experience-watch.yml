@@ -1,0 +1,53 @@
+name: Experience watch (24/7)
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "30 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  conversion-funnel-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Run conversion funnel audit
+        run: npm run audit:conversion
+
+  lighthouse-mobile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Run Lighthouse CI (mobile)
+        run: npx --yes @lhci/cli@0.15.x autorun --config=.github/lighthouse/lighthouserc.json
+
+      - name: Add Lighthouse links to job summary
+        if: always()
+        run: node tools/lighthouse-summary.mjs
+
+      - name: Upload Lighthouse artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci
+          if-no-files-found: ignore
