@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Контакты RemCard и форма обратной связи клиентов: предложения, претензии и отзывы." />
+    <title>RemCard — Контакты</title>
+
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Перейти к содержимому</a>
+
+    <header class="site-header" id="top">
+      <div class="container header-inner">
+        <a class="brand" href="../index.html" aria-label="RemCard — на главную">
+          <img class="brand-mark-img" src="../assets/img/remcard-mark.svg" alt="" aria-hidden="true" />
+          <span class="brand-wrap">
+            <span class="brand-text">RemCard</span>
+            <span class="brand-tagline">навигатор ремонта</span>
+          </span>
+        </a>
+
+        <nav class="nav" aria-label="Основная навигация">
+          <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
+            <span class="nav-toggle-lines" aria-hidden="true"></span>
+            <span class="sr-only">Открыть меню</span>
+          </button>
+
+          <div class="nav-menu" id="nav-menu">
+            <a class="nav-link" href="../index.html">Главная</a>
+            <a class="nav-link" href="../navigator/">Навигатор</a>
+            <a class="nav-link" href="../about/">О проекте</a>
+            <a class="nav-link" href="../index.html#request">Заявка</a>
+            <a class="nav-link" href="../partners/">Партнёрам</a>
+            <a class="nav-link" href="../catalog/">Каталог</a>
+            <a class="nav-link" href="../bonus-card/">Бонусы</a>
+            <a class="nav-link" href="../contacts/" aria-current="page">Контакты</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="section" id="contacts">
+        <div class="container">
+          <header class="section-header">
+            <h2>Контакты RemCard</h2>
+            <p class="section-subtitle">Для партнёрства, инвестиций и предложений — свяжитесь с командой RemCard.</p>
+          </header>
+
+          <article class="card contacts-main-card">
+            <h3>Написать</h3>
+            <p class="contacts-line">
+              <span class="contacts-label">Email</span>
+              <a class="contacts-link" href="mailto:kraavediks@gmail.com">kraavediks@gmail.com</a>
+            </p>
+            <p class="contacts-line">
+              <span class="contacts-label">Telegram</span>
+              <a class="contacts-link" href="#" aria-label="Ссылка на Telegram-группу RemCard">RemCard заявки (группа)</a>
+            </p>
+            <div class="contacts-actions">
+              <a class="btn btn-primary" href="../partners/#partner-request">Оставить заявку партнёра</a>
+              <a class="btn btn-ghost" href="#feedback-form-card">Оставить отзыв</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section section-compact" id="feedback">
+        <div class="container">
+          <header class="section-header">
+            <h2>Отзывы и обратная связь клиентов</h2>
+            <p class="section-subtitle">Обратная связь, претензии и предложения помогают улучшать RemCard.</p>
+          </header>
+
+          <article class="card" id="feedback-form-card">
+            <form class="form" id="feedback-form" novalidate>
+              <div class="form-grid">
+                <div class="field">
+                  <label for="feedback-type">Тип обращения</label>
+                  <select class="input" id="feedback-type" name="feedbackType" required>
+                    <option value="" selected disabled>Выберите тип</option>
+                    <option>Обратная связь</option>
+                    <option>Претензия</option>
+                    <option>Предложение</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label for="feedback-topic">Тема (опционально)</label>
+                  <input class="input" id="feedback-topic" name="topic" placeholder="Коротко о теме обращения" />
+                </div>
+
+                <div class="field field-wide">
+                  <label for="feedback-message">Сообщение</label>
+                  <textarea class="input textarea" id="feedback-message" name="message" rows="4" required placeholder="Опишите вашу ситуацию, предложение или замечание"></textarea>
+                </div>
+
+                <div class="field">
+                  <label for="feedback-name">Имя (опционально)</label>
+                  <input class="input" id="feedback-name" name="name" placeholder="Как к вам обращаться" />
+                </div>
+
+                <div class="field">
+                  <label for="feedback-contact">Телефон / Telegram / Email</label>
+                  <input class="input" id="feedback-contact" name="contact" required placeholder="+7 (...) ...-..-.. / @telegram / email" />
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button class="btn btn-primary" type="submit">Отправить отзыв</button>
+                <p class="fineprint">Мы читаем все обращения и при необходимости связываемся для уточнений.</p>
+              </div>
+
+              <div class="form-result" id="feedback-result" role="status" aria-live="polite" hidden>
+                <div class="form-result-title">Спасибо!</div>
+                <div class="form-result-text">Отзыв отправлен. Спасибо за обратную связь.</div>
+              </div>
+            </form>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="footer-left">
+          <div class="brand footer-brand">
+            <img class="brand-mark-img" src="../assets/img/remcard-mark.svg" alt="" aria-hidden="true" />
+            <span class="brand-wrap">
+              <span class="brand-text">RemCard</span>
+              <span class="brand-tagline">навигатор ремонта</span>
+            </span>
+          </div>
+          <p class="muted">© <span id="year">2026</span> RemCard. Все права защищены.</p>
+        </div>
+        <div class="footer-right">
+          <a class="footer-link" href="#top">Наверх</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../i18n.js" defer></script>
+    <script src="../script.js" defer></script>
+  </body>
+</html>

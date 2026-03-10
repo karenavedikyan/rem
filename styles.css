@@ -1368,6 +1368,17 @@ img {
   padding-bottom: 1px;
 }
 
+.contacts-actions {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.contacts-actions .btn {
+  min-height: 48px;
+}
+
 .cta .btn {
   margin-top: 12px;
 }
@@ -4244,6 +4255,11 @@ body.navigator-stage-modal-open {
   .request-actions .btn {
     min-height: 58px;
     font-size: 15px;
+  }
+
+  .contacts-actions {
+    display: grid;
+    grid-template-columns: 1fr;
   }
 
   .container {

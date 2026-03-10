@@ -1269,4 +1269,21 @@
       `Имя/Компания: ${get("name") || "-"}` +
       (get("comment") ? `\nКомментарий: ${get("comment")}` : ""),
   });
+
+  // Client feedback form (contacts page)
+  bindTelegramForm({
+    formId: "feedback-form",
+    resultId: "feedback-result",
+    successText: t(
+      "Отзыв отправлен. Мы ценим обратную связь и при необходимости свяжемся с вами.",
+      "Feedback sent. We value your input and will contact you if needed."
+    ),
+    buildMessage: (get) =>
+      "Новый отзыв RemCard (клиент):\n" +
+      `Тип обращения: ${get("feedbackType") || "-"}\n` +
+      `Тема: ${get("topic") || "-"}\n` +
+      `Сообщение: ${get("message") || "-"}\n` +
+      `Имя: ${get("name") || "-"}\n` +
+      `Контакт: ${get("contact") || "-"}`,
+  });
 })();
