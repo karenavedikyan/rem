@@ -187,3 +187,20 @@ node validate-knowledge-base.mjs
 
 Проверяются обязательные секции, поля этапов, массивы, URL ресурсов и согласованность ключей стадий.
 Эта же проверка автоматически запускается в GitHub Actions workflow `Validate knowledge base` на каждый push и pull request.
+
+## Режим непрерывных улучшений (24/7)
+
+Чтобы проект сам находил точки роста и регрессии, добавлен workflow
+`.github/workflows/continuous-efficiency.yml`:
+
+- каждые 6 часов (`schedule`), а также на `push/pull_request`;
+- проверка базы знаний;
+- аудит локальных ссылок и якорей (`tools/efficiency-audit.mjs`);
+- подсветка тяжёлых JS/CSS файлов (budget warning);
+- проверка backend (Prisma generate/validate + TypeScript check).
+
+Локальный запуск аудита:
+
+```bash
+npm run audit:efficiency
+```

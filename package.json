@@ -1,5 +1,9 @@
 {
   "name": "remcard-site",
   "private": true,
-  "type": "module"
+  "type": "module",
+  "scripts": {
+    "audit:efficiency": "node tools/efficiency-audit.mjs",
+    "validate:knowledge": "node validate-knowledge-base.mjs"
+  }
 }
