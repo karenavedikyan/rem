@@ -4499,6 +4499,7 @@ body.navigator-stage-modal-open {
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-x: contain;
     scroll-snap-type: x proximity;
+    touch-action: pan-x;
     padding-bottom: 4px;
   }
 

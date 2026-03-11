@@ -1052,6 +1052,89 @@
     }
   };
 
+  const enableHorizontalDragScroll = (container) => {
+    if (!container || !("PointerEvent" in window)) return;
+    let pointerId = null;
+    let startX = 0;
+    let startY = 0;
+    let startScrollLeft = 0;
+    let active = false;
+    let axisLocked = false;
+    let isHorizontalDrag = false;
+    let suppressClick = false;
+
+    container.addEventListener("pointerdown", (e) => {
+      if (e.pointerType === "mouse" && e.button !== 0) return;
+      pointerId = e.pointerId;
+      startX = e.clientX;
+      startY = e.clientY;
+      startScrollLeft = container.scrollLeft;
+      active = true;
+      axisLocked = false;
+      isHorizontalDrag = false;
+      suppressClick = false;
+      if (typeof container.setPointerCapture === "function") {
+        try {
+          container.setPointerCapture(pointerId);
+        } catch {
+          // Ignore capture errors for unsupported elements.
+        }
+      }
+    });
+
+    container.addEventListener(
+      "pointermove",
+      (e) => {
+        if (!active || e.pointerId !== pointerId) return;
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+
+        if (!axisLocked) {
+          if (Math.abs(dx) < 4 && Math.abs(dy) < 4) return;
+          axisLocked = true;
+          isHorizontalDrag = Math.abs(dx) > Math.abs(dy);
+        }
+
+        if (!isHorizontalDrag) return;
+        container.scrollLeft = startScrollLeft - dx;
+        if (Math.abs(dx) > 6) suppressClick = true;
+        e.preventDefault();
+      },
+      { passive: false }
+    );
+
+    const stop = (e) => {
+      if (!active || e.pointerId !== pointerId) return;
+      active = false;
+      if (typeof container.releasePointerCapture === "function") {
+        try {
+          container.releasePointerCapture(pointerId);
+        } catch {
+          // Ignore capture errors.
+        }
+      }
+      pointerId = null;
+    };
+
+    container.addEventListener("pointerup", stop);
+    container.addEventListener("pointercancel", stop);
+    container.addEventListener(
+      "click",
+      (e) => {
+        if (!suppressClick) return;
+        e.preventDefault();
+        e.stopPropagation();
+        suppressClick = false;
+      },
+      true
+    );
+  };
+
+  [focusChipsEl, quickKindEl, quickSortEl, activeFiltersEl]
+    .filter(Boolean)
+    .forEach((row) => enableHorizontalDragScroll(row));
+  document.querySelectorAll(".catalog-entry-chips").forEach((row) => enableHorizontalDragScroll(row));
+
   if (focusChipsEl) {
     focusChipsEl.addEventListener("click", (e) => {
       const toggleBtn = e.target && e.target.closest ? e.target.closest("button[data-toggle-filter]") : null;
