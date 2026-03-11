@@ -47,7 +47,7 @@
     params.set("serviceTitle", service.title || "");
     if (service.stage) params.set("serviceStage", service.stage);
     if (service.taskType) params.set("serviceTaskType", service.taskType);
-    return `../../index.html?${params.toString()}#request`;
+    return `../../request/?${params.toString()}#request`;
   };
 
   const escapeHtml = (value) =>

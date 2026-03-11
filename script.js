@@ -410,13 +410,25 @@
       if (!base || base.startsWith("#")) return "index.html";
       return base;
     };
+    const getRequestBase = () => {
+      const homeBase = getHomeBase();
+      if (homeBase.endsWith("index.html")) {
+        return `${homeBase.slice(0, -10)}request/`;
+      }
+      if (homeBase.endsWith("/")) return `${homeBase}request/`;
+      return `${homeBase}/request/`;
+    };
 
     const link = document.createElement("a");
     link.className = "btn btn-primary";
     let href = promo.link || "#request";
     if (href.startsWith("#")) {
       const id = href.slice(1);
-      if (id && !document.getElementById(id)) href = `${getHomeBase()}${href}`;
+      if (id && !document.getElementById(id) && id === "request") {
+        href = `${getRequestBase()}${href}`;
+      } else if (id && !document.getElementById(id)) {
+        href = `${getHomeBase()}${href}`;
+      }
     }
     const appendPromoQueryToRequestHref = (targetHref, currentPromo) => {
       if (targetHref.startsWith("#request")) return targetHref;
