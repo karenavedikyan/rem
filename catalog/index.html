@@ -69,7 +69,6 @@
               <button class="catalog-focus-chip" type="button" data-focus-field="area">Район</button>
               <button class="catalog-focus-chip" type="button" data-focus-field="minPrice">Бюджет</button>
               <button class="catalog-focus-chip" type="button" data-focus-field="type">Тип</button>
-              <button class="catalog-focus-chip" type="button" data-toggle-filter="promo" aria-pressed="false">Акции</button>
             </div>
           </header>
 
@@ -211,12 +210,17 @@
               <div class="catalog-results-head">
                 <p class="muted" id="catalog-results-count">Загружаем решения...</p>
                 <div class="catalog-active-filters" id="catalog-active-filters" hidden></div>
+                <div class="catalog-quick-kind" id="catalog-quick-kind" role="group" aria-label="Быстрый тип выдачи">
+                  <button class="catalog-kind-chip is-active" type="button" data-kind="">Все</button>
+                  <button class="catalog-kind-chip" type="button" data-kind="service">Услуги</button>
+                  <button class="catalog-kind-chip" type="button" data-kind="product">Товары</button>
+                  <button class="catalog-kind-chip" id="catalog-kind-promo" type="button" data-toggle-filter="promo" aria-pressed="false">Акции</button>
+                </div>
                 <div class="catalog-quick-sort" id="catalog-quick-sort" role="group" aria-label="Быстрая сортировка">
                   <button class="catalog-sort-chip is-active" type="button" data-sort="rating">Рейтинг</button>
                   <button class="catalog-sort-chip" type="button" data-sort="price_asc">Дешевле</button>
                   <button class="catalog-sort-chip" type="button" data-sort="price_desc">Дороже</button>
                   <button class="catalog-sort-chip" type="button" data-sort="newest">Новые</button>
-                  <button class="catalog-sort-chip" id="catalog-quick-promo" type="button" data-toggle-filter="promo" aria-pressed="false">Акции</button>
                 </div>
               </div>
               <button class="btn btn-primary catalog-open-filters-btn" id="catalog-open-filters" type="button">Открыть фильтры</button>

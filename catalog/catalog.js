@@ -21,8 +21,8 @@
   const countEl = document.getElementById("catalog-results-count");
   const activeFiltersEl = document.getElementById("catalog-active-filters");
   const quickKindEl = document.getElementById("catalog-quick-kind");
+  const quickKindPromoBtn = document.getElementById("catalog-kind-promo");
   const quickSortEl = document.getElementById("catalog-quick-sort");
-  const quickPromoBtn = document.getElementById("catalog-quick-promo");
   const searchForm = document.getElementById("catalog-search-form");
   const searchInput = document.getElementById("catalog-main-query");
   const focusChipsEl = document.getElementById("catalog-focus-chips");
@@ -806,11 +806,6 @@
       chip.setAttribute("aria-pressed", active ? "true" : "false");
       chip.textContent = quickSortChipLabel(value);
     });
-    if (quickPromoBtn) {
-      const promoActive = getFieldChecked("promo");
-      quickPromoBtn.classList.toggle("is-active", promoActive);
-      quickPromoBtn.setAttribute("aria-pressed", promoActive ? "true" : "false");
-    }
   };
 
   const renderFocusChipsState = () => {
@@ -837,6 +832,11 @@
       chip.setAttribute("aria-pressed", isActive ? "true" : "false");
       chip.textContent = quickKindChipLabel(value);
     });
+    if (quickKindPromoBtn) {
+      const promoActive = getFieldChecked("promo");
+      quickKindPromoBtn.classList.toggle("is-active", promoActive);
+      quickKindPromoBtn.setAttribute("aria-pressed", promoActive ? "true" : "false");
+    }
   };
 
   const setLoading = (loading) => {
@@ -1084,13 +1084,21 @@
   if (quickKindEl) {
     quickKindEl.addEventListener("click", (e) => {
       const btn = e.target && e.target.closest ? e.target.closest("button[data-kind]") : null;
-      if (!btn) return;
-      const kindRaw = String(btn.dataset.kind || "").toLowerCase();
-      const nextKind = ITEM_KIND_VALUES.has(kindRaw) ? kindRaw : "";
-      const currentKindRaw = String(getFieldValue("itemKind") || "").toLowerCase();
-      const currentKind = ITEM_KIND_VALUES.has(currentKindRaw) ? currentKindRaw : "";
-      if (nextKind === currentKind) return;
-      setFieldValue("itemKind", nextKind);
+      if (btn) {
+        const kindRaw = String(btn.dataset.kind || "").toLowerCase();
+        const nextKind = ITEM_KIND_VALUES.has(kindRaw) ? kindRaw : "";
+        const currentKindRaw = String(getFieldValue("itemKind") || "").toLowerCase();
+        const currentKind = ITEM_KIND_VALUES.has(currentKindRaw) ? currentKindRaw : "";
+        if (nextKind === currentKind) return;
+        setFieldValue("itemKind", nextKind);
+        loadCatalog({ page: 1 });
+        return;
+      }
+      const toggleBtn = e.target && e.target.closest ? e.target.closest("button[data-toggle-filter]") : null;
+      if (!toggleBtn) return;
+      const filterName = String(toggleBtn.dataset.toggleFilter || "").trim();
+      if (!filterName) return;
+      setFieldChecked(filterName, !getFieldChecked(filterName));
       loadCatalog({ page: 1 });
     });
   }
