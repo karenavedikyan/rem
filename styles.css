@@ -3667,15 +3667,18 @@ body.navigator-stage-modal-open {
 }
 
 .catalog-entry-chips {
-  display: flex;
-  flex-wrap: nowrap;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: max-content;
   gap: 8px;
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-x: contain;
   scroll-snap-type: x proximity;
+  touch-action: pan-x;
   padding-bottom: 4px;
+  width: 100%;
 }
 
 .catalog-entry-chips > * {

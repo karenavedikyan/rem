@@ -1053,7 +1053,7 @@
   };
 
   const enableHorizontalDragScroll = (container) => {
-    if (!container || !("PointerEvent" in window)) return;
+    if (!container) return;
     let pointerId = null;
     let startX = 0;
     let startY = 0;
@@ -1063,61 +1063,108 @@
     let isHorizontalDrag = false;
     let suppressClick = false;
 
-    container.addEventListener("pointerdown", (e) => {
-      if (e.pointerType === "mouse" && e.button !== 0) return;
-      pointerId = e.pointerId;
-      startX = e.clientX;
-      startY = e.clientY;
-      startScrollLeft = container.scrollLeft;
-      active = true;
-      axisLocked = false;
-      isHorizontalDrag = false;
-      suppressClick = false;
-      if (typeof container.setPointerCapture === "function") {
-        try {
-          container.setPointerCapture(pointerId);
-        } catch {
-          // Ignore capture errors for unsupported elements.
+    if ("PointerEvent" in window) {
+      container.addEventListener("pointerdown", (e) => {
+        if (e.pointerType === "mouse" && e.button !== 0) return;
+        pointerId = e.pointerId;
+        startX = e.clientX;
+        startY = e.clientY;
+        startScrollLeft = container.scrollLeft;
+        active = true;
+        axisLocked = false;
+        isHorizontalDrag = false;
+        suppressClick = false;
+        if (typeof container.setPointerCapture === "function") {
+          try {
+            container.setPointerCapture(pointerId);
+          } catch {
+            // Ignore capture errors for unsupported elements.
+          }
         }
-      }
-    });
+      });
 
-    container.addEventListener(
-      "pointermove",
-      (e) => {
+      container.addEventListener(
+        "pointermove",
+        (e) => {
+          if (!active || e.pointerId !== pointerId) return;
+          const dx = e.clientX - startX;
+          const dy = e.clientY - startY;
+
+          if (!axisLocked) {
+            if (Math.abs(dx) < 4 && Math.abs(dy) < 4) return;
+            axisLocked = true;
+            isHorizontalDrag = Math.abs(dx) > Math.abs(dy);
+          }
+
+          if (!isHorizontalDrag) return;
+          container.scrollLeft = startScrollLeft - dx;
+          if (Math.abs(dx) > 6) suppressClick = true;
+          e.preventDefault();
+        },
+        { passive: false }
+      );
+
+      const stop = (e) => {
         if (!active || e.pointerId !== pointerId) return;
-        const dx = e.clientX - startX;
-        const dy = e.clientY - startY;
-
-        if (!axisLocked) {
-          if (Math.abs(dx) < 4 && Math.abs(dy) < 4) return;
-          axisLocked = true;
-          isHorizontalDrag = Math.abs(dx) > Math.abs(dy);
+        active = false;
+        if (typeof container.releasePointerCapture === "function") {
+          try {
+            container.releasePointerCapture(pointerId);
+          } catch {
+            // Ignore capture errors.
+          }
         }
+        pointerId = null;
+      };
 
-        if (!isHorizontalDrag) return;
-        container.scrollLeft = startScrollLeft - dx;
-        if (Math.abs(dx) > 6) suppressClick = true;
-        e.preventDefault();
-      },
-      { passive: false }
-    );
+      container.addEventListener("pointerup", stop);
+      container.addEventListener("pointercancel", stop);
+    } else {
+      let touchActive = false;
+      container.addEventListener(
+        "touchstart",
+        (e) => {
+          const touch = e.touches && e.touches[0];
+          if (!touch) return;
+          startX = touch.clientX;
+          startY = touch.clientY;
+          startScrollLeft = container.scrollLeft;
+          touchActive = true;
+          axisLocked = false;
+          isHorizontalDrag = false;
+          suppressClick = false;
+        },
+        { passive: true }
+      );
 
-    const stop = (e) => {
-      if (!active || e.pointerId !== pointerId) return;
-      active = false;
-      if (typeof container.releasePointerCapture === "function") {
-        try {
-          container.releasePointerCapture(pointerId);
-        } catch {
-          // Ignore capture errors.
-        }
-      }
-      pointerId = null;
-    };
+      container.addEventListener(
+        "touchmove",
+        (e) => {
+          if (!touchActive) return;
+          const touch = e.touches && e.touches[0];
+          if (!touch) return;
+          const dx = touch.clientX - startX;
+          const dy = touch.clientY - startY;
 
-    container.addEventListener("pointerup", stop);
-    container.addEventListener("pointercancel", stop);
+          if (!axisLocked) {
+            if (Math.abs(dx) < 4 && Math.abs(dy) < 4) return;
+            axisLocked = true;
+            isHorizontalDrag = Math.abs(dx) > Math.abs(dy);
+          }
+          if (!isHorizontalDrag) return;
+          container.scrollLeft = startScrollLeft - dx;
+          if (Math.abs(dx) > 6) suppressClick = true;
+          e.preventDefault();
+        },
+        { passive: false }
+      );
+
+      const stopTouch = () => {
+        touchActive = false;
+      };
+      container.addEventListener("touchend", stopTouch, { passive: true });
+      container.addEventListener("touchcancel", stopTouch, { passive: true });
+    }
     container.addEventListener(
       "click",
       (e) => {
