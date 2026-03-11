@@ -1289,6 +1289,47 @@ button.hero-kpi-card {
   margin-bottom: 12px;
 }
 
+.request-page-header .request-badges {
+  margin-top: 12px;
+  margin-bottom: 0;
+}
+
+.request-page-layout {
+  margin-top: 14px;
+  align-items: start;
+}
+
+.request-main-form-card {
+  display: grid;
+  gap: 8px;
+}
+
+.request-form-badges {
+  margin-bottom: 2px;
+}
+
+.request-side-stack {
+  display: grid;
+  gap: 12px;
+}
+
+.request-context-card {
+  margin-top: 10px;
+  margin-bottom: 4px;
+  border-color: rgba(229, 57, 53, 0.25);
+  background: linear-gradient(180deg, rgba(229, 57, 53, 0.12), rgba(18, 18, 18, 0.58));
+}
+
+.request-context-badge {
+  margin: 0;
+  font-weight: 760;
+  color: rgba(255, 236, 236, 0.98);
+}
+
+.request-context-hint {
+  margin: 6px 0 0;
+}
+
 .request-badge {
   border-radius: 999px;
   border: 1px solid rgba(245, 245, 245, 0.16);
@@ -3379,6 +3420,17 @@ body.navigator-stage-modal-open {
   border-radius: 10px;
   border: 1px solid rgba(255, 193, 7, 0.25);
   background: rgba(255, 193, 7, 0.11);
+  padding: 10px 12px;
+  color: rgba(245, 245, 245, 0.95);
+  font-size: 13px;
+}
+
+.form-selected-context {
+  margin-top: 2px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(76, 175, 80, 0.24);
+  background: rgba(76, 175, 80, 0.1);
   padding: 10px 12px;
   color: rgba(245, 245, 245, 0.95);
   font-size: 13px;

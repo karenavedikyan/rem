@@ -1117,6 +1117,13 @@
     if (!requestForm) return;
 
     const params = new URLSearchParams(window.location.search || "");
+    const contextCard = document.getElementById("request-context-card");
+    const contextBadge = document.getElementById("request-context-badge");
+    const taskTypeEl = requestForm.querySelector("#req-type");
+    const stageEl = requestForm.querySelector("#req-stage");
+    const districtEl = requestForm.querySelector("#req-district");
+    const budgetEl = requestForm.querySelector("#req-budget");
+    const commentEl = requestForm.querySelector("textarea[name='comment']");
     const serviceId = String(params.get("serviceId") || "").trim();
     const serviceTitle = String(params.get("serviceTitle") || "").trim();
     const serviceStage = String(params.get("serviceStage") || "").trim();
@@ -1125,10 +1132,51 @@
     const promoTitle = String(params.get("promoTitle") || "").trim();
     const promoPartner = String(params.get("promoPartner") || "").trim();
     const promoBenefit = String(params.get("promoBenefit") || "").trim();
+    const source = String(params.get("source") || "").trim();
+    const stageFromQuery = String(params.get("stage") || "").trim();
+    const typeFromQuery = String(params.get("type") || params.get("taskType") || serviceTaskType || "").trim();
+    const districtFromQuery = String(params.get("district") || "").trim();
+    const budgetFromQuery = String(params.get("budget") || "").trim();
+
+    const normalizeStageParam = (value) => {
+      const raw = String(value || "").trim().toLowerCase();
+      if (!raw) return "";
+      if (raw === "planning" || raw === "plan" || raw === "measurements") return "planning";
+      if (raw === "rough" || raw === "chernovye" || raw === "черновые") return "rough";
+      if (raw === "engineering" || raw === "engineer" || raw === "инженерия") return "engineering";
+      if (raw === "finishing" || raw === "finish" || raw === "чистовые") return "finishing";
+      if (raw === "furniture" || raw === "мебель") return "furniture";
+      return "";
+    };
+    const stageLabelById = (stageId) => {
+      if (stageId === "planning") return t("План", "Planning");
+      if (stageId === "rough") return t("Черновые", "Rough works");
+      if (stageId === "engineering") return t("Инженерия", "Engineering");
+      if (stageId === "finishing") return t("Чистовые", "Finishing");
+      if (stageId === "furniture") return t("Мебель", "Furniture");
+      return "";
+    };
+    const selectByValueOrText = (selectEl, value) => {
+      if (!selectEl || !value) return false;
+      const target = String(value || "").trim().toLowerCase();
+      const option = Array.from(selectEl.options || []).find((opt) => {
+        const byValue = String(opt.value || "").trim().toLowerCase();
+        const byText = String(opt.textContent || "").trim().toLowerCase();
+        return byValue === target || byText === target;
+      });
+      if (!option) return false;
+      selectEl.value = option.value;
+      return true;
+    };
+
+    const normalizedStage = normalizeStageParam(stageFromQuery || serviceStage);
+    const normalizedSource = source.toLowerCase();
 
     const hasService = Boolean(serviceId || serviceTitle);
     const hasPromo = Boolean(promoId || promoTitle);
-    if (!hasService && !hasPromo) return;
+    const effectiveSource = source || (hasService || hasPromo ? "catalog" : "");
+    const hasExtraContext = Boolean(normalizedStage || typeFromQuery || districtFromQuery || budgetFromQuery || source);
+    if (!hasService && !hasPromo && !hasExtraContext) return;
 
     ensureHiddenField(requestForm, "serviceId").value = serviceId;
     ensureHiddenField(requestForm, "serviceTitle").value = serviceTitle;
@@ -1138,6 +1186,50 @@
     ensureHiddenField(requestForm, "promoTitle").value = promoTitle;
     ensureHiddenField(requestForm, "promoPartner").value = promoPartner;
     ensureHiddenField(requestForm, "promoBenefit").value = promoBenefit;
+    ensureHiddenField(requestForm, "requestSource").value = effectiveSource;
+    ensureHiddenField(requestForm, "requestTypeContext").value = typeFromQuery;
+    ensureHiddenField(requestForm, "stageLabel").value = stageLabelById(normalizedStage);
+    ensureHiddenField(requestForm, "stageContext").value = normalizedStage;
+
+    if (stageEl && normalizedStage && !String(stageEl.value || "").trim()) {
+      selectByValueOrText(stageEl, normalizedStage);
+    }
+    if (districtEl && districtFromQuery && !String(districtEl.value || "").trim()) {
+      districtEl.value = districtFromQuery;
+    }
+    if (budgetEl && budgetFromQuery && !String(budgetEl.value || "").trim()) {
+      const normalizedBudget = (() => {
+        const raw = budgetFromQuery.toLowerCase();
+        if (raw.includes("150") || raw === "low" || raw === "small" || raw === "economy" || raw === "up_to_150") {
+          return "До 150 000 ₽";
+        }
+        if (raw.includes("400") || raw === "medium" || raw === "mid" || raw === "150_400" || raw === "300_700") {
+          return "150 000–400 000 ₽";
+        }
+        if (raw.includes("900") || raw === "high" || raw === "400_900" || raw === "700_1500") {
+          return "400 000–900 000 ₽";
+        }
+        if (raw.includes("900_plus") || raw.includes("1500_plus") || raw === "premium" || raw === "max") {
+          return "900 000 ₽ и выше";
+        }
+        return budgetFromQuery;
+      })();
+      selectByValueOrText(budgetEl, normalizedBudget);
+    }
+    if (taskTypeEl && typeFromQuery && !String(taskTypeEl.value || "").trim()) {
+      const raw = typeFromQuery.toLowerCase();
+      const mappedTask =
+        (raw.includes("kitchen") || raw.includes("кух")) ? "Кухня" :
+        (raw.includes("bath") || raw.includes("сануз") || raw.includes("ванн")) ? "Ванная / санузел" :
+        (raw.includes("элект") || raw.includes("plumb") || raw.includes("сант")) ? "Электрика / сантехника" :
+        (raw.includes("turnkey") || raw.includes("под ключ") || raw.includes("key")) ? "Ремонт под ключ" :
+        "";
+      if (mappedTask) {
+        selectByValueOrText(taskTypeEl, mappedTask);
+      } else if (commentEl && !String(commentEl.value || "").trim()) {
+        commentEl.value = `${t("Интерес из каталога", "Catalog interest")}: ${typeFromQuery}\n`;
+      }
+    }
 
     upsertFormNote(
       requestForm,
@@ -1160,12 +1252,31 @@
         : ""
     );
 
-    const commentEl = requestForm.querySelector("textarea[name='comment']");
     if (hasPromo && commentEl && !String(commentEl.value || "").trim()) {
       commentEl.value = `Акция: ${promoTitle}${promoPartner ? " — " + promoPartner : ""}${promoBenefit ? " (" + promoBenefit + ")" : ""}\n`;
     }
 
-    setRequestFormPanelOpen(true);
+    const contextParts = [];
+    if (normalizedSource === "navigator") {
+      contextParts.push(
+        normalizedStage
+          ? t(`Вы пришли из навигатора: ${stageLabelById(normalizedStage)}`, `You came from navigator: ${stageLabelById(normalizedStage)}`)
+          : t("Вы пришли из навигатора", "You came from navigator")
+      );
+    } else if (normalizedSource === "catalog" || effectiveSource === "catalog") {
+      contextParts.push(t("Вы пришли из каталога", "You came from catalog"));
+    } else if (normalizedStage) {
+      contextParts.push(t(`Этап: ${stageLabelById(normalizedStage)}`, `Stage: ${stageLabelById(normalizedStage)}`));
+    }
+    if (typeFromQuery) contextParts.push(t(`Запрос: ${typeFromQuery}`, `Request: ${typeFromQuery}`));
+    if (districtFromQuery) contextParts.push(t(`Район: ${districtFromQuery}`, `District: ${districtFromQuery}`));
+    if (contextParts.length) {
+      if (contextCard) contextCard.hidden = false;
+      if (contextBadge) contextBadge.textContent = contextParts.join(" • ");
+      upsertFormNote(requestForm, "form-selected-context", contextParts.join(" • "));
+    }
+
+    if (hasService || hasPromo) setRequestFormPanelOpen(true);
   };
 
   prefillClientRequestFromQuery();
@@ -1262,25 +1373,40 @@
     formId: "request-form",
     resultId: "request-result",
     successText: t(
-      "Заявка отправлена в RemCard. Мы свяжемся с вами в ближайшее время.",
-      "Your request was sent to RemCard. We will contact you shortly."
+      "Заявка отправлена в RemCard. Следующий шаг: мы уточним детали и подберём подходящие предложения.",
+      "Your request was sent to RemCard. Next step: we will clarify details and prepare suitable options."
     ),
-    buildMessage: (get) =>
-      "Новая заявка RemCard (клиент):\n" +
-      `Услуга (ID): ${get("serviceId") || "-"}\n` +
-      `Услуга (название): ${get("serviceTitle") || "-"}\n` +
-      `Этап услуги: ${get("serviceStage") || "-"}\n` +
-      `Тип задачи услуги: ${get("serviceTaskType") || "-"}\n` +
-      `Акция (ID): ${get("promoId") || "-"}\n` +
-      `Акция (название): ${get("promoTitle") || "-"}\n` +
-      `Акция (партнёр): ${get("promoPartner") || "-"}\n` +
-      `Акция (выгода): ${get("promoBenefit") || "-"}\n` +
-      `Тип задачи: ${get("taskType") || get("jobType") || "-"}\n` +
-      `Район: ${get("district") || get("city") || "Краснодар"}\n` +
-      `Бюджет: ${get("budget") || "-"}\n` +
-      `Имя: ${get("name") || "-"}\n` +
-      `Контакт: ${get("contact") || get("phone") || get("email") || "-"}` +
-      (get("comment") ? `\nКомментарий: ${get("comment")}` : ""),
+    buildMessage: (get) => {
+      const stageLabel = ((stageValue) => {
+        const normalized = String(stageValue || "").trim().toLowerCase();
+        if (normalized === "planning" || normalized === "plan") return "План";
+        if (normalized === "rough") return "Черновые";
+        if (normalized === "engineering") return "Инженерия";
+        if (normalized === "finishing") return "Чистовые";
+        if (normalized === "furniture") return "Мебель";
+        return stageValue || "-";
+      })(get("stageLabel") || get("stage") || get("serviceStage"));
+      return (
+        "Новая заявка RemCard (клиент):\n" +
+        `Услуга (ID): ${get("serviceId") || "-"}\n` +
+        `Услуга (название): ${get("serviceTitle") || "-"}\n` +
+        `Этап услуги: ${get("serviceStage") || "-"}\n` +
+        `Тип задачи услуги: ${get("serviceTaskType") || "-"}\n` +
+        `Источник заявки: ${get("requestSource") || "-"}\n` +
+        `Этап ремонта: ${stageLabel}\n` +
+        `Контекст типа/интереса: ${get("requestTypeContext") || "-"}\n` +
+        `Акция (ID): ${get("promoId") || "-"}\n` +
+        `Акция (название): ${get("promoTitle") || "-"}\n` +
+        `Акция (партнёр): ${get("promoPartner") || "-"}\n` +
+        `Акция (выгода): ${get("promoBenefit") || "-"}\n` +
+        `Тип задачи: ${get("taskType") || get("jobType") || "-"}\n` +
+        `Район: ${get("district") || get("city") || "Краснодар"}\n` +
+        `Бюджет: ${get("budget") || "-"}\n` +
+        `Имя: ${get("name") || "-"}\n` +
+        `Контакт: ${get("contact") || get("phone") || get("email") || "-"}` +
+        (get("comment") ? `\nКомментарий: ${get("comment")}` : "")
+      );
+    },
   });
 
   // Partner request form (partners page)

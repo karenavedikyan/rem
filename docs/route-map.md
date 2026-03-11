@@ -25,6 +25,8 @@
 - Переходы в заявку:
   - `/request/?serviceId=...&serviceTitle=...&serviceStage=...&serviceTaskType=...#request`
   - `/request/?promoId=...&promoTitle=...&promoPartner=...&promoBenefit=...#request`
+  - `/request/?stage=...&source=navigator`
+  - `/request/?type=...&district=...&budget=...&source=catalog`
 
 ## 4) Партнёрский сценарий
 
