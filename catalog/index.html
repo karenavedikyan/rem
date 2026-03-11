@@ -7,7 +7,7 @@
       name="description"
       content="Каталог услуг и товаров RemCard: фильтруйте предложения мастеров, компаний и магазинов по этапу ремонта, типу позиции, задаче, району и бюджету."
     />
-    <title>RemCard — Каталог услуг и товаров</title>
+    <title>RemCard — Каталог решений для ремонта</title>
 
     <link rel="stylesheet" href="../styles.css" />
   </head>
@@ -44,18 +44,67 @@
     <main id="main">
       <section class="section catalog-section">
         <div class="container">
-          <header class="section-header">
-            <h1>Каталог</h1>
+          <header class="section-header catalog-hero-header">
+            <h1>Каталог решений для ремонта</h1>
             <p class="section-subtitle">
-              Найдите услуги мастеров и компаний, а также товары магазинов по этапу ремонта, типу позиции, задаче и району.
+              Исполнители, товары и услуги под конкретный этап ремонта и задачу клиента.
               <span class="catalog-current-stage" id="catalog-current-stage" hidden></span>
             </p>
-            <div class="catalog-quick-kind" id="catalog-quick-kind" role="group" aria-label="Быстрый фильтр">
-              <button class="catalog-kind-chip is-active" type="button" data-kind="">Все</button>
-              <button class="catalog-kind-chip" type="button" data-kind="service">Услуги</button>
-              <button class="catalog-kind-chip" type="button" data-kind="product">Товары</button>
+
+            <form class="catalog-main-search" id="catalog-search-form" role="search" novalidate>
+              <label class="sr-only" for="catalog-main-query">Поиск по каталогу</label>
+              <input
+                class="input catalog-main-query"
+                id="catalog-main-query"
+                name="q"
+                placeholder="Что вам нужно: электрик, стяжка, плитка, двери, кухня…"
+                autocomplete="off"
+              />
+              <button class="btn btn-primary" type="submit">Найти</button>
+            </form>
+
+            <div class="catalog-focus-chips" id="catalog-focus-chips" role="group" aria-label="Быстрые фильтры">
+              <button class="catalog-focus-chip" type="button" data-focus-field="stage">Этап</button>
+              <button class="catalog-focus-chip" type="button" data-focus-field="taskType">Задача</button>
+              <button class="catalog-focus-chip" type="button" data-focus-field="area">Район</button>
+              <button class="catalog-focus-chip" type="button" data-focus-field="minPrice">Бюджет</button>
+              <button class="catalog-focus-chip" type="button" data-focus-field="type">Тип</button>
             </div>
           </header>
+
+          <section class="card catalog-entry-points" id="catalog-entry-points" aria-label="Быстрые сценарии поиска">
+            <div class="catalog-entry-group">
+              <h2>По этапу ремонта</h2>
+              <div class="catalog-entry-chips">
+                <button class="catalog-entry-chip" type="button" data-set-stage="PLANNING">План</button>
+                <button class="catalog-entry-chip" type="button" data-set-stage="ROUGH">Черновые</button>
+                <button class="catalog-entry-chip" type="button" data-set-stage="ENGINEERING">Инженерия</button>
+                <button class="catalog-entry-chip" type="button" data-set-stage="FINISHING">Чистовые</button>
+                <button class="catalog-entry-chip" type="button" data-set-stage="FURNITURE">Мебель</button>
+              </div>
+            </div>
+            <div class="catalog-entry-group">
+              <h2>По типу решения</h2>
+              <div class="catalog-entry-chips">
+                <button class="catalog-entry-chip" type="button" data-set-type="masters">Мастера</button>
+                <button class="catalog-entry-chip" type="button" data-set-type="companies">Компании</button>
+                <button class="catalog-entry-chip" type="button" data-set-type="stores">Магазины</button>
+                <button class="catalog-entry-chip" type="button" data-set-type="products">Товары</button>
+                <button class="catalog-entry-chip" type="button" data-set-type="services">Услуги</button>
+              </div>
+            </div>
+            <div class="catalog-entry-group">
+              <h2>По задаче</h2>
+              <div class="catalog-entry-chips">
+                <button class="catalog-entry-chip" type="button" data-set-task="ELECTRICAL" data-set-query="электрика">Электрика</button>
+                <button class="catalog-entry-chip" type="button" data-set-query="стяжка">Стяжка</button>
+                <button class="catalog-entry-chip" type="button" data-set-task="TILING" data-set-query="плитка">Плитка</button>
+                <button class="catalog-entry-chip" type="button" data-set-query="двери">Двери</button>
+                <button class="catalog-entry-chip" type="button" data-set-task="KITCHEN" data-set-query="кухня">Кухня</button>
+                <button class="catalog-entry-chip" type="button" data-set-task="PLUMBING" data-set-query="сантехника">Сантехника</button>
+              </div>
+            </div>
+          </section>
 
           <div class="catalog-layout">
             <aside class="card catalog-filters-card" id="catalog-filters-card">
@@ -67,12 +116,16 @@
               <form class="form" id="catalog-filter-form" novalidate>
                 <div class="form-grid">
                   <div class="field">
-                    <label for="catalog-item-kind">Тип позиции</label>
-                    <select class="input" id="catalog-item-kind" name="itemKind">
-                      <option value="">Все позиции</option>
-                      <option value="service">Только услуги</option>
-                      <option value="product">Только товары</option>
+                    <label for="catalog-type">Тип</label>
+                    <select class="input" id="catalog-type" name="type">
+                      <option value="">Все типы</option>
+                      <option value="masters">Мастера</option>
+                      <option value="companies">Компании</option>
+                      <option value="stores">Магазины</option>
+                      <option value="products">Товары</option>
+                      <option value="services">Услуги</option>
                     </select>
+                    <input id="catalog-item-kind" name="itemKind" type="hidden" value="" />
                   </div>
 
                   <div class="field">
@@ -135,6 +188,17 @@
                   </div>
                 </div>
 
+                <div class="catalog-switches">
+                  <label class="catalog-switch">
+                    <input type="checkbox" name="promo" id="catalog-promo-only" value="true" />
+                    <span>Только акции</span>
+                  </label>
+                  <label class="catalog-switch">
+                    <input type="checkbox" name="bonus" id="catalog-bonus-only" value="true" />
+                    <span>Бонусы доступны</span>
+                  </label>
+                </div>
+
                 <div class="form-actions">
                   <button class="btn btn-primary" type="submit">Применить фильтры</button>
                   <button class="btn btn-ghost" type="button" id="catalog-reset-filters">Сбросить фильтры</button>
@@ -158,12 +222,16 @@
               <div class="catalog-list" id="catalog-list" aria-live="polite"></div>
 
               <div class="card catalog-empty" id="catalog-empty" hidden>
-                <h3>По выбранным фильтрам пока нет позиций</h3>
-                <p class="muted">Попробуйте расширить фильтры по этапу, району или диапазону цены.</p>
+                <h3>По этим параметрам пока нет подходящих предложений</h3>
+                <p class="muted">Сбросьте часть фильтров или оставьте заявку — RemCard поможет подобрать решение вручную.</p>
+                <div class="catalog-empty-actions">
+                  <button class="btn btn-ghost" id="catalog-empty-reset" type="button">Сбросить фильтры</button>
+                  <a class="btn btn-primary" href="../request/">Оставить заявку</a>
+                </div>
               </div>
 
               <div class="card catalog-empty is-error" id="catalog-error" hidden>
-                <h3>Не удалось загрузить каталог услуг</h3>
+                <h3>Не удалось загрузить каталог решений</h3>
                 <p class="muted" id="catalog-error-message">Попробуйте обновить страницу чуть позже.</p>
               </div>
 

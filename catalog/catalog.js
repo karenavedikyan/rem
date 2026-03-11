@@ -7,6 +7,9 @@
   const DEFAULT_PLACEHOLDER_IMAGE = "../assets/img/catalog-placeholder.svg";
   const SORT_VALUES = new Set(["rating", "price_asc", "price_desc", "newest"]);
   const ITEM_KIND_VALUES = new Set(["service", "product"]);
+  const TYPE_VALUES = new Set(["masters", "companies", "stores", "products", "services"]);
+  const PARTNER_TYPE_VALUES = new Set(["MASTER", "COMPANY", "STORE"]);
+  const QUERY_FETCH_SIZE = 100;
 
   const form = document.getElementById("catalog-filter-form");
   if (!form) return;
@@ -19,6 +22,10 @@
   const activeFiltersEl = document.getElementById("catalog-active-filters");
   const quickKindEl = document.getElementById("catalog-quick-kind");
   const quickSortEl = document.getElementById("catalog-quick-sort");
+  const searchForm = document.getElementById("catalog-search-form");
+  const searchInput = document.getElementById("catalog-main-query");
+  const focusChipsEl = document.getElementById("catalog-focus-chips");
+  const entryPointsEl = document.getElementById("catalog-entry-points");
   const filtersCardEl = document.getElementById("catalog-filters-card");
   const sheetGrabberEl = document.getElementById("catalog-sheet-grabber");
   const openFiltersBtn = document.getElementById("catalog-open-filters");
@@ -29,6 +36,7 @@
   const nextBtn = document.getElementById("catalog-next-page");
   const pageLabelEl = document.getElementById("catalog-page-label");
   const resetBtn = document.getElementById("catalog-reset-filters");
+  const emptyResetBtn = document.getElementById("catalog-empty-reset");
   const currentStageEl = document.getElementById("catalog-current-stage");
   const footerEl = document.querySelector(".site-footer");
   const footerBackLinkEl = document.querySelector(".site-footer .footer-link");
@@ -119,10 +127,117 @@
     return map[value] || t("Все позиции", "All listings");
   };
 
+  const partnerTypeLabel = (value) => {
+    const map = {
+      MASTER: t("Мастер", "Master"),
+      COMPANY: t("Компания", "Company"),
+      STORE: t("Магазин", "Store")
+    };
+    return map[value] || t("Партнёр", "Partner");
+  };
+
+  const typeLabel = (value) => {
+    const map = {
+      masters: t("Мастера", "Masters"),
+      companies: t("Компании", "Companies"),
+      stores: t("Магазины", "Stores"),
+      products: t("Товары", "Products"),
+      services: t("Услуги", "Services")
+    };
+    return map[value] || t("Все типы", "All types");
+  };
+
   const resolveItemKind = (item) => {
     const raw = String((item && item.itemKind) || "").trim().toLowerCase();
     if (ITEM_KIND_VALUES.has(raw)) return raw;
     return item && item.partner && item.partner.type === "STORE" ? "product" : "service";
+  };
+
+  const normalizeType = (value) => {
+    const raw = String(value || "").trim().toLowerCase();
+    return TYPE_VALUES.has(raw) ? raw : "";
+  };
+
+  const normalizePartnerType = (value) => {
+    const raw = String(value || "").trim().toUpperCase();
+    return PARTNER_TYPE_VALUES.has(raw) ? raw : "";
+  };
+
+  const resolveBackendItemKindForType = (type) => {
+    if (type === "products") return "product";
+    if (type === "services") return "service";
+    return "";
+  };
+
+  const resolveTypeFromParams = (paramsType, paramsItemKind) => {
+    const normalizedType = normalizeType(paramsType);
+    if (normalizedType) return normalizedType;
+    const kind = String(paramsItemKind || "").trim().toLowerCase();
+    if (kind === "product") return "products";
+    if (kind === "service") return "services";
+    return "";
+  };
+
+  const isPromoItem = (item) => Boolean(item && (item.isOffer || String(item.promotionLabel || "").trim()));
+
+  const resolveBonusMeta = (item) => {
+    const explicitAvailable = item && (item.hasBonus === true || item.bonusAvailable === true || item.bonusCashback === true);
+    const explicitLabel =
+      (item && (item.bonusLabel || item.bonusText || item.bonusBadge || item.cashbackLabel)) || "";
+    const explicitRedeem = item && (item.bonusRedeem === true || item.bonusSpend === true || item.canRedeemBonus === true);
+    if (explicitAvailable || explicitLabel || explicitRedeem) {
+      return {
+        available: explicitAvailable || Boolean(explicitLabel),
+        label: String(explicitLabel || t("+ бонусы", "+ bonuses")),
+        redeem: Boolean(explicitRedeem)
+      };
+    }
+
+    // Fallback UI heuristic: products and promo listings can display a bonus hint.
+    const itemKind = resolveItemKind(item);
+    if (itemKind === "product") {
+      return { available: true, label: t("Кэшбек бонусами", "Bonus cashback"), redeem: true };
+    }
+    if (isPromoItem(item)) {
+      return { available: true, label: t("+ бонусы", "+ bonuses"), redeem: false };
+    }
+    return { available: false, label: "", redeem: false };
+  };
+
+  const matchesTypeFilter = (item, type) => {
+    if (!type) return true;
+    const normalizedType = normalizeType(type);
+    const itemKind = resolveItemKind(item);
+    const partnerType = normalizePartnerType(item && item.partner ? item.partner.type : "");
+    if (!normalizedType) return true;
+    if (normalizedType === "products") return itemKind === "product";
+    if (normalizedType === "services") return itemKind === "service";
+    if (normalizedType === "masters") return partnerType === "MASTER";
+    if (normalizedType === "companies") return partnerType === "COMPANY";
+    if (normalizedType === "stores") return partnerType === "STORE";
+    return true;
+  };
+
+  const itemSearchHaystack = (item) => {
+    const parts = [
+      item && item.title,
+      item && item.description,
+      item && item.partner && item.partner.name,
+      item && item.city,
+      item && taskTypeLabel(item.taskType),
+      item && stageLabel(item.stage)
+    ];
+    if (item && Array.isArray(item.areas)) parts.push(item.areas.join(" "));
+    return parts
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase();
+  };
+
+  const matchesQuery = (item, q) => {
+    const needle = String(q || "").trim().toLowerCase();
+    if (!needle) return true;
+    return itemSearchHaystack(item).includes(needle);
   };
 
   const escapeHtml = (value) =>
@@ -212,20 +327,25 @@
   };
 
   const listFallbackServices = (query, page) => {
+    const type = resolveTypeFromParams(query.get("type"), query.get("itemKind"));
     const itemKindRaw = String(query.get("itemKind") || "").trim().toLowerCase();
     const itemKind = ITEM_KIND_VALUES.has(itemKindRaw) ? itemKindRaw : "";
     const stage = String(query.get("stage") || "").toUpperCase();
     const taskType = String(query.get("taskType") || "").toUpperCase();
+    const q = String(query.get("q") || "").trim();
     const city = String(query.get("city") || "").trim().toLowerCase();
     const area = String(query.get("area") || "").trim().toLowerCase();
     const minPrice = toNum(query.get("minPrice"));
     const maxPrice = toNum(query.get("maxPrice"));
+    const promoOnly = query.get("promo") === "true";
+    const bonusOnly = query.get("bonus") === "true";
     const sort = SORT_VALUES.has(String(query.get("sort") || "")) ? String(query.get("sort")) : "rating";
 
     const filtered = FALLBACK_ITEMS.filter((item) => {
       if (!item || !item.isActive) return false;
       if (!item.partner || !item.partner.isApproved) return false;
       if (itemKind && resolveItemKind(item) !== itemKind) return false;
+      if (!matchesTypeFilter(item, type)) return false;
       if (stage && item.stage !== stage) return false;
       if (taskType && item.taskType !== taskType) return false;
       if (city && String(item.city || "").trim().toLowerCase() !== city) return false;
@@ -234,6 +354,9 @@
         if (!areas.includes(area)) return false;
       }
       if (!intersectsPriceRange(item, minPrice, maxPrice)) return false;
+      if (!matchesQuery(item, q)) return false;
+      if (promoOnly && !isPromoItem(item)) return false;
+      if (bonusOnly && !resolveBonusMeta(item).available) return false;
       return true;
     });
 
@@ -406,10 +529,20 @@
     if (!el || !("value" in el)) return;
     el.value = value || "";
   };
+  const setFieldChecked = (name, checked) => {
+    const el = getField(name);
+    if (!el || !("checked" in el)) return;
+    el.checked = Boolean(checked);
+  };
   const getFieldValue = (name) => {
     const el = getField(name);
     if (!el || !("value" in el)) return "";
     return String(el.value || "").trim();
+  };
+  const getFieldChecked = (name) => {
+    const el = getField(name);
+    if (!el || !("checked" in el)) return false;
+    return Boolean(el.checked);
   };
 
   const readCurrentParams = () => {
@@ -417,7 +550,10 @@
     const page = Math.max(1, Number(params.get("page")) || 1);
     const sortRaw = String(params.get("sort") || "");
     const itemKindRaw = String(params.get("itemKind") || "").trim().toLowerCase();
+    const type = resolveTypeFromParams(params.get("type"), itemKindRaw);
     return {
+      q: params.get("q") || "",
+      type,
       itemKind: ITEM_KIND_VALUES.has(itemKindRaw) ? itemKindRaw : "",
       stage: params.get("stage") || "",
       taskType: params.get("taskType") || "",
@@ -426,12 +562,16 @@
       area: params.get("area") || "",
       minPrice: params.get("minPrice") || "",
       maxPrice: params.get("maxPrice") || "",
+      promo: params.get("promo") === "true",
+      bonus: params.get("bonus") === "true",
       page
     };
   };
 
   const applyParamsToForm = (params) => {
-    setFieldValue("itemKind", params.itemKind || "");
+    if (searchInput) searchInput.value = params.q || "";
+    setFieldValue("type", params.type || "");
+    setFieldValue("itemKind", params.itemKind || resolveBackendItemKindForType(params.type));
     setFieldValue("stage", params.stage);
     setFieldValue("taskType", params.taskType);
     setFieldValue("sort", params.sort || "rating");
@@ -439,11 +579,15 @@
     setFieldValue("area", params.area);
     setFieldValue("minPrice", params.minPrice);
     setFieldValue("maxPrice", params.maxPrice);
+    setFieldChecked("promo", params.promo);
+    setFieldChecked("bonus", params.bonus);
   };
 
   const buildParamsFromForm = ({ page = 1 } = {}) => {
     const out = new URLSearchParams();
-    const itemKindRaw = getFieldValue("itemKind").toLowerCase();
+    const q = String((searchInput && searchInput.value) || "").trim();
+    const type = normalizeType(getFieldValue("type"));
+    const itemKindRaw = resolveBackendItemKindForType(type);
     const itemKind = ITEM_KIND_VALUES.has(itemKindRaw) ? itemKindRaw : "";
     const stage = getFieldValue("stage").toUpperCase();
     const taskType = getFieldValue("taskType").toUpperCase();
@@ -452,7 +596,11 @@
     const area = getFieldValue("area");
     const minPrice = getFieldValue("minPrice");
     const maxPrice = getFieldValue("maxPrice");
+    const promo = getFieldChecked("promo");
+    const bonus = getFieldChecked("bonus");
 
+    if (q) out.set("q", q);
+    if (type) out.set("type", type);
     if (itemKind) out.set("itemKind", itemKind);
     if (stage) out.set("stage", stage);
     if (taskType) out.set("taskType", taskType);
@@ -461,6 +609,8 @@
     if (area) out.set("area", area);
     if (minPrice) out.set("minPrice", minPrice);
     if (maxPrice) out.set("maxPrice", maxPrice);
+    if (promo) out.set("promo", "true");
+    if (bonus) out.set("bonus", "true");
     out.set("page", String(Math.max(1, page)));
     out.set("pageSize", String(PAGE_SIZE));
 
@@ -475,6 +625,29 @@
     const qs = next.toString();
     const nextUrl = `${window.location.pathname}${qs ? `?${qs}` : ""}`;
     window.history.replaceState(null, "", nextUrl);
+  };
+
+  const shouldUseLocalClientFiltering = (query) => {
+    if (String(query.get("q") || "").trim()) return true;
+    if (query.get("promo") === "true") return true;
+    if (query.get("bonus") === "true") return true;
+    const type = normalizeType(query.get("type"));
+    return type === "masters" || type === "companies" || type === "stores";
+  };
+
+  const applyClientOnlyFilters = (items, query) => {
+    const list = Array.isArray(items) ? items : [];
+    const type = resolveTypeFromParams(query.get("type"), query.get("itemKind"));
+    const q = String(query.get("q") || "").trim();
+    const promoOnly = query.get("promo") === "true";
+    const bonusOnly = query.get("bonus") === "true";
+    return list.filter((item) => {
+      if (!matchesTypeFilter(item, type)) return false;
+      if (!matchesQuery(item, q)) return false;
+      if (promoOnly && !isPromoItem(item)) return false;
+      if (bonusOnly && !resolveBonusMeta(item).available) return false;
+      return true;
+    });
   };
 
   const buildServiceDetailsHref = (item) => `/catalog/services/${encodeURIComponent(String(item.id || ""))}`;
@@ -496,10 +669,23 @@
     article.dataset.serviceId = String(item.id || "");
     const detailsHref = buildServiceDetailsHref(item);
     const itemKind = resolveItemKind(item);
+    const partnerType = normalizePartnerType(item && item.partner ? item.partner.type : "");
+    const bonus = resolveBonusMeta(item);
     const fallbackLabel = itemKind === "product" ? t("Товар", "Product") : t("Услуга", "Service");
     const displayTitle = item.title || fallbackLabel;
     const kindChip = `<span class="tag ${itemKind === "product" ? "tag-product" : "tag-service"}">${escapeHtml(itemKindLabel(itemKind))}</span>`;
-    const offerChip = item.isOffer && item.promotionLabel ? `<span class="tag tag-promo">${escapeHtml(item.promotionLabel)}</span>` : "";
+    const typeChip = partnerType ? `<span class="tag">${escapeHtml(partnerTypeLabel(partnerType))}</span>` : "";
+    const promoLabel = String(item.promotionLabel || "").trim();
+    const offerChip = isPromoItem(item) ? `<span class="tag tag-promo">${escapeHtml(promoLabel || t("Акция", "Promo"))}</span>` : "";
+    const bonusChip = bonus.available ? `<span class="tag tag-bonus">${escapeHtml(bonus.label)}</span>` : "";
+    const bonusMeta = bonus.available
+      ? `<div class="catalog-item-bonus">${escapeHtml(
+          bonus.redeem
+            ? t("Доступно начисление и списание бонусов", "Bonus accrual and redemption available")
+            : t("Начисляются бонусы по предложению", "Bonuses accrue for this listing")
+        )}</div>`
+      : "";
+    const areaLabel = Array.isArray(item.areas) && item.areas.length ? item.areas[0] : "";
     article.innerHTML = `
       <a class="catalog-item-media" href="${detailsHref}" aria-label="${escapeHtml(displayTitle)}">
         <img class="catalog-item-image" src="${escapeHtml(normalizeImageUrl(item.imageUrl))}" alt="${escapeHtml(displayTitle)}" loading="lazy" />
@@ -511,15 +697,18 @@
         <p class="catalog-item-subtitle">${escapeHtml(toSubtitle(item))}</p>
         <div class="catalog-item-price">${escapeHtml(formatPriceRange(item.minPrice, item.maxPrice))}</div>
         <div class="catalog-item-meta-row">
-          <span class="catalog-item-partner">${escapeHtml(`${item.partner?.name || "-"} · ${item.city || "-"}`)}</span>
+          <span class="catalog-item-partner">${escapeHtml(`${item.partner?.name || "-"} · ${areaLabel || item.city || "-"}`)}</span>
           <span class="catalog-item-rating">${escapeHtml(formatRating(item))}</span>
         </div>
         <div class="partner-meta catalog-item-tags">
           ${kindChip}
+          ${typeChip}
           <span class="tag">${escapeHtml(stageLabel(item.stage))}</span>
           <span class="tag">${escapeHtml(taskTypeLabel(item.taskType))}</span>
           ${offerChip}
+          ${bonusChip}
         </div>
+        ${bonusMeta}
         <div class="catalog-service-actions">
           <a class="btn btn-primary" href="${detailsHref}">${t("Подробнее", "Details")}</a>
         </div>
@@ -556,22 +745,28 @@
   const renderActiveFilterChips = () => {
     if (!activeFiltersEl) return;
     const entries = [];
-    const itemKind = String(getFieldValue("itemKind") || "").toLowerCase();
+    const q = String((searchInput && searchInput.value) || "").trim();
+    const type = normalizeType(getFieldValue("type"));
     const stage = getFieldValue("stage").toUpperCase();
     const taskType = getFieldValue("taskType").toUpperCase();
     const city = getFieldValue("city");
     const area = getFieldValue("area");
     const minPrice = getFieldValue("minPrice");
     const maxPrice = getFieldValue("maxPrice");
+    const promo = getFieldChecked("promo");
+    const bonus = getFieldChecked("bonus");
     const sort = SORT_VALUES.has(getFieldValue("sort")) ? getFieldValue("sort") : "rating";
 
-    if (ITEM_KIND_VALUES.has(itemKind)) entries.push({ key: "itemKind", label: `${t("Тип позиции", "Listing type")}: ${itemKindFilterLabel(itemKind)}` });
+    if (q) entries.push({ key: "q", label: `${t("Запрос", "Query")}: ${q}` });
+    if (type) entries.push({ key: "type", label: `${t("Тип", "Type")}: ${typeLabel(type)}` });
     if (stage) entries.push({ key: "stage", label: `${t("Этап", "Stage")}: ${stageLabel(stage)}` });
     if (taskType) entries.push({ key: "taskType", label: `${t("Тип задачи", "Task type")}: ${taskTypeLabel(taskType)}` });
     if (city) entries.push({ key: "city", label: `${t("Город", "City")}: ${city}` });
     if (area) entries.push({ key: "area", label: `${t("Район", "District")}: ${area}` });
     if (minPrice) entries.push({ key: "minPrice", label: `${t("Цена от (₽)", "Price from (₽)")}: ${minPrice}` });
     if (maxPrice) entries.push({ key: "maxPrice", label: `${t("Цена до (₽)", "Price to (₽)")}: ${maxPrice}` });
+    if (promo) entries.push({ key: "promo", label: t("Только акции", "Promo only") });
+    if (bonus) entries.push({ key: "bonus", label: t("Бонусы доступны", "Bonus available") });
     if (sort !== "rating") entries.push({ key: "sort", label: `${t("Сортировка", "Sorting")}: ${sortLabel(sort)}` });
 
     if (!entries.length) {
@@ -629,7 +824,7 @@
 
   const setLoading = (loading) => {
     state.isLoading = loading;
-    if (loading && countEl) countEl.textContent = t("Загружаем услуги...", "Loading services...");
+    if (loading && countEl) countEl.textContent = t("Загружаем решения...", "Loading listings...");
     if (loading && errorEl) errorEl.hidden = true;
     if (loading) {
       if (emptyEl) emptyEl.hidden = true;
@@ -667,7 +862,7 @@
     }
 
     if (countEl) {
-      const base = total ? `${t("Найдено позиций", "Listings found")}: ${total}` : t("Услуги не найдены по выбранным фильтрам.", "No services match selected filters.");
+      const base = total ? `${t("Найдено решений", "Listings found")}: ${total}` : t("По выбранным фильтрам ничего не найдено.", "No listings match selected filters.");
       countEl.textContent = fromFallback ? `${base} (${t("резервный режим", "fallback mode")})` : base;
     }
     if (emptyEl) emptyEl.hidden = items.length > 0;
@@ -688,6 +883,17 @@
 
   const loadCatalog = async ({ page = 1 } = {}) => {
     const query = buildParamsFromForm({ page });
+    const hasClientOnlyFilters = shouldUseLocalClientFiltering(query);
+    const requestQuery = new URLSearchParams(query.toString());
+    if (hasClientOnlyFilters) {
+      requestQuery.delete("q");
+      requestQuery.delete("type");
+      requestQuery.delete("promo");
+      requestQuery.delete("bonus");
+      requestQuery.set("page", "1");
+      requestQuery.set("pageSize", String(QUERY_FETCH_SIZE));
+    }
+
     updateStageUi(query.get("stage"));
     updateUrl(query);
     setLoading(true);
@@ -695,10 +901,23 @@
     if (errorEl) errorEl.hidden = true;
 
     try {
-      const res = await fetch(`${API_URL}?${query.toString()}`, { headers: { Accept: "application/json" } });
+      const res = await fetch(`${API_URL}?${requestQuery.toString()}`, { headers: { Accept: "application/json" } });
       const data = await res.json().catch(() => null);
       if (!res.ok || !data) throw new Error((data && (data.error || data.message)) || `HTTP ${res.status}`);
-      renderCatalogPayload(data, page);
+
+      if (hasClientOnlyFilters) {
+        const filtered = sortFallbackItems(applyClientOnlyFilters(data.items, query), query.get("sort") || "rating");
+        const offset = (Math.max(1, page) - 1) * PAGE_SIZE;
+        renderCatalogPayload(
+          {
+            total: filtered.length,
+            items: filtered.slice(offset, offset + PAGE_SIZE)
+          },
+          page
+        );
+      } else {
+        renderCatalogPayload(data, page);
+      }
 
       if (I18N && I18N.isEn && typeof I18N.applyTo === "function") {
         I18N.applyTo(document);
@@ -713,7 +932,7 @@
         return;
       }
       const raw = err instanceof Error ? err.message : "";
-      const msg = raw && raw !== "[object Object]" ? raw : t("Не удалось загрузить каталог услуг.", "Could not load services catalog.");
+      const msg = raw && raw !== "[object Object]" ? raw : t("Не удалось загрузить каталог решений.", "Could not load catalog listings.");
       setError(msg);
       // eslint-disable-next-line no-console
       console.error("Catalog load error:", err);
@@ -730,6 +949,8 @@
 
   if (resetBtn) {
     resetBtn.addEventListener("click", () => {
+      if (searchInput) searchInput.value = "";
+      setFieldValue("type", "");
       setFieldValue("itemKind", "");
       setFieldValue("stage", "");
       setFieldValue("taskType", "");
@@ -738,8 +959,16 @@
       setFieldValue("area", "");
       setFieldValue("minPrice", "");
       setFieldValue("maxPrice", "");
+      setFieldChecked("promo", false);
+      setFieldChecked("bonus", false);
       loadCatalog({ page: 1 });
       if (isMobileView()) closeMobileFilters();
+    });
+  }
+
+  if (emptyResetBtn && resetBtn) {
+    emptyResetBtn.addEventListener("click", () => {
+      resetBtn.click();
     });
   }
 
@@ -762,6 +991,56 @@
       if (!SORT_VALUES.has(nextSort)) return;
       if (getFieldValue("sort") === nextSort) return;
       setFieldValue("sort", nextSort);
+      loadCatalog({ page: 1 });
+    });
+  }
+
+  if (searchForm) {
+    searchForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      loadCatalog({ page: 1 });
+      if (isMobileView()) closeMobileFilters();
+    });
+  }
+
+  const focusFilterField = (fieldName) => {
+    const el = getField(fieldName);
+    if (!el || typeof el.focus !== "function") return;
+    if (isMobileView() && filtersCardEl && !filtersCardEl.classList.contains("is-open")) {
+      openMobileFilters();
+      window.setTimeout(() => {
+        el.focus({ preventScroll: true });
+      }, 220);
+      return;
+    }
+    el.focus({ preventScroll: true });
+    if (typeof el.scrollIntoView === "function") {
+      el.scrollIntoView({ block: "center", behavior: "smooth" });
+    }
+  };
+
+  if (focusChipsEl) {
+    focusChipsEl.addEventListener("click", (e) => {
+      const btn = e.target && e.target.closest ? e.target.closest("button[data-focus-field]") : null;
+      if (!btn) return;
+      const fieldName = String(btn.dataset.focusField || "");
+      if (!fieldName) return;
+      focusFilterField(fieldName);
+    });
+  }
+
+  if (entryPointsEl) {
+    entryPointsEl.addEventListener("click", (e) => {
+      const btn = e.target && e.target.closest ? e.target.closest("button.catalog-entry-chip") : null;
+      if (!btn) return;
+      const stage = String(btn.dataset.setStage || "").toUpperCase();
+      const type = normalizeType(btn.dataset.setType || "");
+      const task = String(btn.dataset.setTask || "").toUpperCase();
+      const queryText = String(btn.dataset.setQuery || "").trim();
+      if (stage) setFieldValue("stage", stage);
+      if (type || btn.dataset.setType !== undefined) setFieldValue("type", type);
+      if (task || btn.dataset.setTask !== undefined) setFieldValue("taskType", task);
+      if (searchInput && (queryText || btn.dataset.setQuery !== undefined)) searchInput.value = queryText;
       loadCatalog({ page: 1 });
     });
   }
@@ -891,6 +1170,9 @@
         return;
       }
       if (key === "sort") setFieldValue("sort", "rating");
+      else if (key === "q") {
+        if (searchInput) searchInput.value = "";
+      } else if (key === "promo" || key === "bonus") setFieldChecked(key, false);
       else setFieldValue(key, "");
       loadCatalog({ page: 1 });
     });
