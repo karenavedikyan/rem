@@ -395,7 +395,12 @@
       return;
     }
     const hideForOverlap =
-      isInBottomOverlayZone(paginationEl, 118) || isInBottomOverlayZone(footerBackLinkEl, 118) || isInBottomOverlayZone(footerEl, 118);
+      isInBottomOverlayZone(quickKindEl, 118) ||
+      isInBottomOverlayZone(quickSortEl, 118) ||
+      isInBottomOverlayZone(activeFiltersEl, 118) ||
+      isInBottomOverlayZone(paginationEl, 118) ||
+      isInBottomOverlayZone(footerBackLinkEl, 118) ||
+      isInBottomOverlayZone(footerEl, 118);
     setOpenFiltersBtnVisible(!hideForOverlap);
   };
   const setSheetMode = (mode) => {
