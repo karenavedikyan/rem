@@ -22,6 +22,7 @@
   const activeFiltersEl = document.getElementById("catalog-active-filters");
   const quickKindEl = document.getElementById("catalog-quick-kind");
   const quickSortEl = document.getElementById("catalog-quick-sort");
+  const quickPromoBtn = document.getElementById("catalog-quick-promo");
   const searchForm = document.getElementById("catalog-search-form");
   const searchInput = document.getElementById("catalog-main-query");
   const focusChipsEl = document.getElementById("catalog-focus-chips");
@@ -805,6 +806,11 @@
       chip.setAttribute("aria-pressed", active ? "true" : "false");
       chip.textContent = quickSortChipLabel(value);
     });
+    if (quickPromoBtn) {
+      const promoActive = getFieldChecked("promo");
+      quickPromoBtn.classList.toggle("is-active", promoActive);
+      quickPromoBtn.setAttribute("aria-pressed", promoActive ? "true" : "false");
+    }
   };
 
   const renderFocusChipsState = () => {
@@ -1000,11 +1006,19 @@
   if (quickSortEl) {
     quickSortEl.addEventListener("click", (e) => {
       const btn = e.target && e.target.closest ? e.target.closest("button[data-sort]") : null;
-      if (!btn) return;
-      const nextSort = String(btn.dataset.sort || "");
-      if (!SORT_VALUES.has(nextSort)) return;
-      if (getFieldValue("sort") === nextSort) return;
-      setFieldValue("sort", nextSort);
+      if (btn) {
+        const nextSort = String(btn.dataset.sort || "");
+        if (!SORT_VALUES.has(nextSort)) return;
+        if (getFieldValue("sort") === nextSort) return;
+        setFieldValue("sort", nextSort);
+        loadCatalog({ page: 1 });
+        return;
+      }
+      const toggleBtn = e.target && e.target.closest ? e.target.closest("button[data-toggle-filter]") : null;
+      if (!toggleBtn) return;
+      const filterName = String(toggleBtn.dataset.toggleFilter || "").trim();
+      if (!filterName) return;
+      setFieldChecked(filterName, !getFieldChecked(filterName));
       loadCatalog({ page: 1 });
     });
   }
