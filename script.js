@@ -938,6 +938,7 @@
   const requestFormPanel = document.getElementById("request-form-panel");
   const requestOpenBtn = document.getElementById("request-open-btn");
   const heroKpiOpenRequestBtn = document.getElementById("hero-kpi-open-request");
+  const heroOpenRequestBtn = document.getElementById("hero-open-request-btn");
   const requestOpenBtnText = requestOpenBtn ? requestOpenBtn.querySelector(".request-open-btn-text") : null;
   const requestFormCloseBtn = document.getElementById("request-form-close");
   const requestFormBackdrop = document.getElementById("request-form-backdrop");
@@ -1007,6 +1008,9 @@
 
   if (heroKpiOpenRequestBtn) {
     heroKpiOpenRequestBtn.addEventListener("click", () => openRequestForm({ focusFirstField: true }));
+  }
+  if (heroOpenRequestBtn) {
+    heroOpenRequestBtn.addEventListener("click", () => openRequestForm({ focusFirstField: true }));
   }
 
   const syncHomeStickyCtaVisibility = () => {
