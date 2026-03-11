@@ -12,6 +12,8 @@
   const mapServiceLinkEl = document.getElementById("navigator-map-service-link");
   const mapProductLinkEl = document.getElementById("navigator-map-product-link");
   const startStageBtn = document.getElementById("navigator-start-btn");
+  const heroRouteEl = document.getElementById("navigator-hero-route");
+  const quickEntryEl = document.getElementById("navigator-quick-entry");
   const stageModalEl = document.getElementById("navigator-stage-modal");
   const stageModalListEl = document.getElementById("navigator-stage-modal-list");
   const stageModalCloseBtn = document.getElementById("navigator-stage-modal-close");
@@ -27,6 +29,10 @@
   const stageWhatListEl = document.getElementById("stage-what-list");
   const stagePitfallsListEl = document.getElementById("stage-pitfalls-list");
   const stageWhoListEl = document.getElementById("stage-who-list");
+  const stageWhatListInlineEl = document.getElementById("stage-what-list-inline");
+  const stageMistakesInlineEl = document.getElementById("stage-mistakes-list-inline");
+  const stageSpecialistsChipsEl = document.getElementById("stage-specialists-chips");
+  const stageGoodsChipsEl = document.getElementById("stage-goods-chips");
   const stageDiagramEl = document.getElementById("stage-diagram");
   const stageSubstepMarketEl = document.getElementById("stage-substep-market");
   const stageSubstepTitleEl = document.getElementById("stage-substep-title");
@@ -35,9 +41,15 @@
   const stageDetailsEl = document.getElementById("stage-details");
   const nextStagesGridEl = document.getElementById("navigator-next-grid");
   const stageNextBtn = document.getElementById("stage-next-btn");
+  const stagePrevBtn = document.getElementById("stage-prev-btn");
   const stageApplyBtn = document.getElementById("stage-apply-btn");
   const stageServicesLink = document.getElementById("stage-services-link");
+  const stageRequestLink = document.getElementById("stage-request-link");
   const stageKnowledgeLink = document.getElementById("stage-knowledge-link");
+  const stagePrevLabelEl = document.getElementById("stage-prev-label");
+  const stageCurrentLabelEl = document.getElementById("stage-current-label");
+  const stageNextLabelEl = document.getElementById("stage-next-label");
+  const stageNextHintEl = document.getElementById("stage-next-hint");
   const formStageNoteEl = document.getElementById("navigator-form-stage-note");
   const stageIdInput = document.getElementById("nv-stage-id");
   const stageEstimateGroup = document.getElementById("stage-estimate-group");
@@ -401,6 +413,12 @@
     return STAGE_ORDER[idx + 1];
   };
 
+  const getPrevStageId = (stageId) => {
+    const idx = STAGE_ORDER.indexOf(stageId);
+    if (idx <= 0) return null;
+    return STAGE_ORDER[idx - 1];
+  };
+
   const getStageLabelById = (stageId) => {
     const stage = getStageById(stageId);
     return stage ? stage.shortLabel || stage.title : stageId;
@@ -420,6 +438,8 @@
     if (kind === "service" || kind === "product") params.set("itemKind", kind);
     return `../catalog/?${params.toString()}`;
   };
+
+  const getRequestHrefByStage = (stageId) => `../request/?stage=${encodeURIComponent(normalizeStageId(stageId))}`;
 
   const getSubstepMarketByStage = (stageId) => {
     if (stageId === "planning") {
@@ -816,6 +836,47 @@
     return list.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
   };
 
+  const renderTagList = (container, values, fallbackText) => {
+    if (!container) return;
+    const list = Array.isArray(values) ? values.filter(Boolean) : [];
+    if (!list.length) {
+      container.innerHTML = `<span class="navigator-tag-item is-muted">${escapeHtml(fallbackText)}</span>`;
+      return;
+    }
+    container.innerHTML = list
+      .slice(0, 8)
+      .map((item) => `<span class="navigator-tag-item">${escapeHtml(item)}</span>`)
+      .join("");
+  };
+
+  const renderHeroRoute = () => {
+    if (!heroRouteEl) return;
+    heroRouteEl.querySelectorAll("button[data-stage-id]").forEach((node) => {
+      const isActive = node.getAttribute("data-stage-id") === activeStageId;
+      node.classList.toggle("is-active", isActive);
+      node.setAttribute("aria-current", isActive ? "step" : "false");
+    });
+  };
+
+  const renderRouteMeta = (stageId) => {
+    const prevId = getPrevStageId(stageId);
+    const nextId = getNextStageId(stageId);
+    const currentLabel = getStageLabelById(stageId);
+    const prevLabel = prevId ? getStageLabelById(prevId) : t("Начало маршрута", "Route start");
+    const nextLabel = nextId ? getStageLabelById(nextId) : t("Сдача и въезд", "Handover and move-in");
+
+    if (stagePrevLabelEl) stagePrevLabelEl.textContent = prevLabel;
+    if (stageCurrentLabelEl) stageCurrentLabelEl.textContent = currentLabel;
+    if (stageNextLabelEl) stageNextLabelEl.textContent = nextLabel;
+    if (stageNextHintEl) {
+      stageNextHintEl.textContent = nextId
+        ? `${t("Что обычно идёт дальше", "What usually comes next")}: ${nextLabel}.`
+        : t("Этап завершает маршрут. Дальше — приёмка, въезд и эксплуатация.", "This stage closes the route. Next is handover, move-in, and operation.");
+    }
+    if (stagePrevBtn) stagePrevBtn.disabled = !prevId;
+    if (stageNextBtn) stageNextBtn.disabled = !nextId;
+  };
+
   const getDiagramHTML = (stageId) => {
     if (stageId === "rough") {
       return `
@@ -1056,6 +1117,35 @@
     if (stagePitfallsListEl)
       stagePitfallsListEl.innerHTML = stageListToHTML(stage.pitfalls, t("Проверяйте типовые риски перед стартом.", "Check common risks before starting."));
     if (stageWhoListEl) stageWhoListEl.innerHTML = stageListToHTML(stage.whoYouNeed, t("Нужен профильный специалист.", "A specialist is required."));
+    if (stageWhatListInlineEl) {
+      stageWhatListInlineEl.innerHTML = stageListToHTML(
+        stage.whatWeDo,
+        t("Скоро добавим расширенный список задач для этапа.", "Expanded task list for this stage will be added soon.")
+      );
+    }
+    if (stageMistakesInlineEl) {
+      stageMistakesInlineEl.innerHTML = stageListToHTML(
+        stage.pitfalls,
+        t("Скоро добавим частые ошибки и рекомендации.", "Common mistakes and tips will be added soon.")
+      );
+    }
+    renderTagList(
+      stageSpecialistsChipsEl,
+      stage.whoYouNeed,
+      t("Подбор специалистов доступен через каталог или заявку.", "Specialist matching is available via catalog or request.")
+    );
+
+    const substepGoods = getSubstepMarketByStage(stage.id)
+      .map((item) => item && item.label)
+      .filter(Boolean);
+    const templateGoods = (dynamicStepTemplates[stage.id] && dynamicStepTemplates[stage.id].recommended_categories) || [];
+    const goods = uniq([...(substepGoods || []), ...(templateGoods || [])]);
+    renderTagList(
+      stageGoodsChipsEl,
+      goods,
+      t("Списки товаров и услуг скоро появятся.", "Detailed goods/services list will be available soon.")
+    );
+
     if (stageDiagramEl) stageDiagramEl.innerHTML = getDiagramHTML(stage.id);
     renderSubstepMarket(stage.id);
 
@@ -1063,12 +1153,12 @@
     if (stageDurationTextEl) {
       stageDurationTextEl.textContent = currentEstimate
         ? formatDaysRange(currentEstimate.days)
-        : t("Зависит от объёма работ", "Depends on scope");
+        : t("Данные по срокам скоро появятся", "Timeline data will be available soon");
     }
     if (stageBudgetTextEl) {
       stageBudgetTextEl.textContent = currentEstimate
         ? `${formatMoney(currentEstimate.budget[0])}–${formatMoney(currentEstimate.budget[1])} ₽`
-        : t("По замеру и задаче", "By scope and estimate");
+        : t("Данные по бюджету скоро появятся", "Budget data will be available soon");
     }
 
     if (stageKnowledgeLink) {
@@ -1081,17 +1171,18 @@
       const catalogStage = STAGE_TO_CATALOG_VALUE[stage.id] || "PLANNING";
       stageServicesLink.setAttribute("href", `../catalog/?stage=${encodeURIComponent(catalogStage)}`);
     }
-    if (stageNextBtn) {
-      const isLast = STAGE_ORDER.indexOf(stage.id) === STAGE_ORDER.length - 1;
-      stageNextBtn.disabled = isLast;
+    if (stageRequestLink) {
+      stageRequestLink.setAttribute("href", getRequestHrefByStage(stage.id));
     }
 
     renderTransitionEstimate(stage.id);
+    renderRouteMeta(stage.id);
     syncStageToForm(stage.id);
     updateFormStageNote(stage);
     renderNextStages(stage.id);
     renderMapActions(stage.id);
     renderTimeline();
+    renderHeroRoute();
     if (stageModalEl && !stageModalEl.hidden) renderStageModalList();
   };
 
@@ -1402,6 +1493,45 @@
     });
   }
 
+  if (heroRouteEl) {
+    heroRouteEl.addEventListener("click", (e) => {
+      const btn = e.target && e.target.closest ? e.target.closest("button[data-stage-id]") : null;
+      if (!btn) return;
+      setActiveStage(btn.getAttribute("data-stage-id"));
+      const stageCard = document.getElementById("navigator-stage-card");
+      if (stageCard) stageCard.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+
+  if (quickEntryEl) {
+    quickEntryEl.addEventListener("click", (e) => {
+      const btn = e.target && e.target.closest ? e.target.closest("button[data-nav-preset]") : null;
+      if (!btn) return;
+      const preset = String(btn.getAttribute("data-nav-preset") || "");
+      if (preset === "start") {
+        setActiveStage("planning");
+        const mapCard = document.getElementById("navigator-map");
+        if (mapCard) mapCard.scrollIntoView({ behavior: "smooth", block: "start" });
+        return;
+      }
+      if (preset === "rough") {
+        setActiveStage("rough");
+        const stageCard = document.getElementById("navigator-stage-card");
+        if (stageCard) stageCard.scrollIntoView({ behavior: "smooth", block: "start" });
+        return;
+      }
+      if (preset === "specialist") {
+        setActiveStage("engineering");
+        if (stageServicesLink) window.location.href = stageServicesLink.getAttribute("href") || "../catalog/";
+        return;
+      }
+      if (preset === "budget") {
+        const estimateCard = document.getElementById("stage-estimate-group");
+        if (estimateCard) estimateCard.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    });
+  }
+
   if (stageDiagramEl) {
     stageDiagramEl.addEventListener("click", (e) => {
       const btn = e.target && e.target.closest ? e.target.closest("button[data-substep-key]") : null;
@@ -1488,9 +1618,19 @@
 
   if (stageNextBtn) {
     stageNextBtn.addEventListener("click", () => {
-      const currentIndex = STAGE_ORDER.indexOf(activeStageId);
-      const nextIndex = currentIndex >= 0 ? Math.min(currentIndex + 1, STAGE_ORDER.length - 1) : 0;
-      setActiveStage(STAGE_ORDER[nextIndex]);
+      const nextStageId = getNextStageId(activeStageId);
+      if (!nextStageId) return;
+      setActiveStage(nextStageId);
+      const stageCard = document.getElementById("navigator-stage-card");
+      if (stageCard) stageCard.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+  }
+
+  if (stagePrevBtn) {
+    stagePrevBtn.addEventListener("click", () => {
+      const prevStageId = getPrevStageId(activeStageId);
+      if (!prevStageId) return;
+      setActiveStage(prevStageId);
       const stageCard = document.getElementById("navigator-stage-card");
       if (stageCard) stageCard.scrollIntoView({ behavior: "smooth", block: "nearest" });
     });

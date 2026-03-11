@@ -2199,6 +2199,9 @@ button.hero-kpi-card {
 
 .navigator-hero-actions {
   margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .navigator-hero-actions #navigator-start-btn {
@@ -2218,6 +2221,86 @@ button.hero-kpi-card {
   border-color: rgba(255, 255, 255, 0.2);
   box-shadow: 0 10px 20px rgba(181, 41, 41, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.1);
   outline: none;
+}
+
+.navigator-hero-route-card {
+  margin-top: 12px;
+  display: grid;
+  gap: 10px;
+}
+
+.navigator-hero-route {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.navigator-hero-route-step {
+  border-radius: 999px;
+  border: 1px solid rgba(245, 245, 245, 0.16);
+  background: rgba(18, 18, 18, 0.46);
+  color: rgba(245, 245, 245, 0.95);
+  font-size: 12px;
+  font-weight: 760;
+  padding: 7px 11px;
+  cursor: pointer;
+  transition: border-color 160ms var(--ease), background 160ms var(--ease), transform 160ms var(--ease);
+}
+
+.navigator-hero-route-step:hover {
+  border-color: rgba(229, 57, 53, 0.44);
+}
+
+.navigator-hero-route-step:active {
+  transform: translateY(1px);
+}
+
+.navigator-hero-route-step.is-active {
+  border-color: rgba(229, 57, 53, 0.62);
+  background: rgba(229, 57, 53, 0.17);
+  color: rgba(255, 238, 238, 0.99);
+}
+
+.navigator-hero-route-sep {
+  color: rgba(176, 190, 197, 0.88);
+  font-size: 13px;
+}
+
+.navigator-value-grid {
+  margin-top: 12px;
+}
+
+.navigator-value-card {
+  min-height: 128px;
+}
+
+.navigator-value-card p {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: rgba(176, 190, 197, 0.94);
+}
+
+.navigator-quick-entry {
+  margin-top: 10px;
+}
+
+.navigator-quick-entry-row {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.navigator-quick-chip {
+  border-radius: 999px;
+  border: 1px solid rgba(245, 245, 245, 0.14);
+  background: rgba(245, 245, 245, 0.03);
+  color: rgba(245, 245, 245, 0.93);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 11px;
+  cursor: pointer;
 }
 
 .navigator-workspace {
@@ -2534,6 +2617,68 @@ button.hero-kpi-card {
   right: 0;
   height: 2px;
   background: linear-gradient(90deg, rgba(229, 57, 53, 0.9), rgba(229, 57, 53, 0.15));
+}
+
+.navigator-stage-content-grid {
+  margin-top: 10px;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.navigator-tag-list {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.navigator-tag-item {
+  border-radius: 999px;
+  border: 1px solid rgba(245, 245, 245, 0.16);
+  background: rgba(18, 18, 18, 0.48);
+  color: rgba(245, 245, 245, 0.95);
+  font-size: 12px;
+  font-weight: 650;
+  padding: 6px 10px;
+}
+
+.navigator-tag-item.is-muted {
+  border-style: dashed;
+  color: rgba(176, 190, 197, 0.92);
+}
+
+.navigator-route-panel {
+  margin-top: 12px;
+  border: 1px solid rgba(245, 245, 245, 0.1);
+  border-radius: 12px;
+  background: rgba(18, 18, 18, 0.34);
+  padding: 10px;
+}
+
+.navigator-route-meta {
+  margin-top: 8px;
+  display: grid;
+  gap: 6px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  font-size: 12px;
+  color: rgba(176, 190, 197, 0.96);
+}
+
+.navigator-route-meta strong {
+  color: rgba(245, 245, 245, 0.98);
+}
+
+.navigator-route-hint {
+  margin: 8px 0 0;
+  font-size: 12.5px;
+}
+
+.navigator-route-actions {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
 }
 
 .navigator-next-stages {
@@ -3717,6 +3862,29 @@ body.navigator-stage-modal-open {
     min-width: 0;
   }
 
+  .navigator-hero-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .navigator-hero-route {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 2px;
+  }
+
+  .navigator-value-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .navigator-quick-entry-row {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 2px;
+  }
+
   .about-toc {
     flex-wrap: nowrap;
     overflow-x: auto;
@@ -3819,6 +3987,10 @@ body.navigator-stage-modal-open {
     grid-template-columns: 1fr;
   }
 
+  .navigator-stage-content-grid {
+    grid-template-columns: 1fr;
+  }
+
   .navigator-stage-cards {
     grid-template-columns: 1fr;
   }
@@ -3832,6 +4004,14 @@ body.navigator-stage-modal-open {
   }
 
   .navigator-estimate-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .navigator-route-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .navigator-route-actions {
     grid-template-columns: 1fr;
   }
 
@@ -4818,6 +4998,10 @@ body.navigator-stage-modal-open {
   }
 
   .navigator-stage-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .navigator-stage-content-grid {
     grid-template-columns: 1fr;
   }
 
