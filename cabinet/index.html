@@ -36,63 +36,254 @@
     </header>
 
     <main id="main">
-      <section class="section">
+      <section class="section account-section">
         <div class="container">
           <header class="section-header">
             <h1>Личный кабинет клиента</h1>
-            <p class="section-subtitle">Архитектура кабинета заложена: разделы подключаются поэтапно без изменений публичной логики сайта.</p>
+            <p class="section-subtitle">
+              Единый центр управления вашим ремонтом в RemCard: профиль, заказы, бонусы, избранное и настройки.
+            </p>
           </header>
 
-          <div class="grid cards-3">
-            <article class="card">
-              <h2>Профиль</h2>
-              <ul class="list">
-                <li>Имя, телефон, email / Telegram</li>
-                <li>Город и адреса объектов</li>
-                <li>Редактирование личных данных</li>
-              </ul>
-              <p class="muted">Статус: заглушка архитектуры (этап 1).</p>
-            </article>
+          <div class="account-layout">
+            <aside class="card account-nav-card">
+              <nav class="account-nav" id="account-nav" aria-label="Разделы кабинета">
+                <button class="account-nav-btn is-active" type="button" data-section="overview">Обзор</button>
+                <button class="account-nav-btn" type="button" data-section="profile">Профиль</button>
+                <button class="account-nav-btn" type="button" data-section="orders">Заказы</button>
+                <button class="account-nav-btn" type="button" data-section="bonuses">Бонусы</button>
+                <button class="account-nav-btn" type="button" data-section="favorites">Избранное</button>
+                <button class="account-nav-btn" type="button" data-section="settings">Настройки</button>
+              </nav>
+            </aside>
 
-            <article class="card">
-              <h2>Заказы</h2>
-              <ul class="list">
-                <li>Список заказов и статусы</li>
-                <li>Дата, сумма, тип работ, объект</li>
-                <li>Переход в детали заказа</li>
-              </ul>
-              <p class="muted">Статус: заглушка архитектуры (этап 1).</p>
-            </article>
+            <div class="account-content">
+              <section class="card account-panel is-active" data-account-section="overview">
+                <div class="account-panel-head">
+                  <h2 id="account-greeting">Здравствуйте!</h2>
+                  <p class="muted">Краткая сводка по вашему профилю и текущим действиям.</p>
+                </div>
 
-            <article class="card">
-              <h2>Бонусы</h2>
-              <ul class="list">
-                <li>Текущий баланс, начислено, списано</li>
-                <li>История операций и источники</li>
-                <li>История списаний</li>
-              </ul>
-              <p class="muted">Статус: заглушка архитектуры (этап 1).</p>
-            </article>
+                <div class="account-metrics">
+                  <article class="account-metric">
+                    <div class="account-metric-label">Активные заказы</div>
+                    <div class="account-metric-value" id="account-metric-active-orders">0</div>
+                  </article>
+                  <article class="account-metric">
+                    <div class="account-metric-label">Бонусный баланс</div>
+                    <div class="account-metric-value" id="account-metric-balance">0</div>
+                  </article>
+                  <article class="account-metric">
+                    <div class="account-metric-label">В избранном</div>
+                    <div class="account-metric-value" id="account-metric-favorites">0</div>
+                  </article>
+                  <article class="account-metric">
+                    <div class="account-metric-label">Город</div>
+                    <div class="account-metric-value" id="account-metric-city">Краснодар</div>
+                  </article>
+                </div>
 
-            <article class="card">
-              <h2>Избранное</h2>
-              <ul class="list">
-                <li>Мастера и компании</li>
-                <li>Магазины</li>
-                <li>Товары и услуги</li>
-              </ul>
-              <p class="muted">Статус: заглушка архитектуры (этап 1).</p>
-            </article>
+                <div class="account-quick-actions" id="account-quick-actions">
+                  <button class="btn btn-ghost" type="button" data-go-section="orders">Мои заказы</button>
+                  <button class="btn btn-ghost" type="button" data-go-section="bonuses">Бонусы</button>
+                  <button class="btn btn-ghost" type="button" data-go-section="favorites">Избранное</button>
+                  <button class="btn btn-primary" type="button" data-go-section="settings">Настройки</button>
+                </div>
+              </section>
 
-            <article class="card">
-              <h2>Настройки</h2>
-              <ul class="list">
-                <li>Способы связи и уведомления</li>
-                <li>Безопасность и смена пароля</li>
-                <li>Выход</li>
-              </ul>
-              <p class="muted">Статус: заглушка архитектуры (этап 1).</p>
-            </article>
+              <section class="card account-panel" data-account-section="profile" hidden>
+                <div class="account-section-title-row">
+                  <h2>Профиль</h2>
+                  <button class="btn btn-ghost" id="account-profile-edit-btn" type="button">Редактировать</button>
+                </div>
+
+                <div class="account-kv-grid" id="account-profile-view">
+                  <article class="account-kv"><div class="account-k">Имя</div><div class="account-v" data-profile-field="name">—</div></article>
+                  <article class="account-kv"><div class="account-k">Телефон</div><div class="account-v" data-profile-field="phone">—</div></article>
+                  <article class="account-kv"><div class="account-k">Email</div><div class="account-v" data-profile-field="email">—</div></article>
+                  <article class="account-kv"><div class="account-k">Telegram</div><div class="account-v" data-profile-field="telegram">—</div></article>
+                  <article class="account-kv"><div class="account-k">Город</div><div class="account-v" data-profile-field="city">—</div></article>
+                  <article class="account-kv"><div class="account-k">Адреса объектов</div><div class="account-v" data-profile-field="addresses">—</div></article>
+                  <article class="account-kv account-kv-wide">
+                    <div class="account-k">Примечания</div>
+                    <div class="account-v" data-profile-field="notes">—</div>
+                  </article>
+                </div>
+
+                <form class="form account-profile-form" id="account-profile-form" hidden novalidate>
+                  <div class="form-grid">
+                    <div class="field">
+                      <label for="account-profile-name">Имя</label>
+                      <input class="input" id="account-profile-name" name="name" required />
+                    </div>
+                    <div class="field">
+                      <label for="account-profile-phone">Телефон</label>
+                      <input class="input" id="account-profile-phone" name="phone" />
+                    </div>
+                    <div class="field">
+                      <label for="account-profile-email">Email</label>
+                      <input class="input" id="account-profile-email" name="email" type="email" />
+                    </div>
+                    <div class="field">
+                      <label for="account-profile-telegram">Telegram</label>
+                      <input class="input" id="account-profile-telegram" name="telegram" placeholder="@username" />
+                    </div>
+                    <div class="field">
+                      <label for="account-profile-city">Город</label>
+                      <input class="input" id="account-profile-city" name="city" />
+                    </div>
+                    <div class="field field-wide">
+                      <label for="account-profile-addresses">Адреса объектов</label>
+                      <textarea class="input textarea" id="account-profile-addresses" name="addresses" rows="3" placeholder="По одному адресу на строку"></textarea>
+                    </div>
+                    <div class="field field-wide">
+                      <label for="account-profile-notes">Дополнительные примечания</label>
+                      <textarea class="input textarea" id="account-profile-notes" name="notes" rows="3"></textarea>
+                    </div>
+                  </div>
+                  <div class="form-actions">
+                    <button class="btn btn-primary" type="submit">Сохранить профиль</button>
+                    <button class="btn btn-ghost" id="account-profile-cancel-btn" type="button">Отмена</button>
+                  </div>
+                </form>
+              </section>
+
+              <section class="card account-panel" data-account-section="orders" hidden>
+                <div class="account-section-title-row">
+                  <h2>Заказы</h2>
+                  <span class="muted" id="account-orders-count">0 заказов</span>
+                </div>
+                <div class="account-orders-list" id="account-orders-list"></div>
+                <div class="card account-empty-state" id="account-orders-empty" hidden>
+                  <h3>У вас пока нет заказов</h3>
+                  <p class="muted">Оставьте первую заявку — и отслеживайте её статус прямо в кабинете.</p>
+                  <a class="btn btn-primary" href="../request/">Оставить заявку</a>
+                </div>
+              </section>
+
+              <section class="card account-panel" data-account-section="bonuses" hidden>
+                <div class="account-section-title-row">
+                  <h2>Бонусы</h2>
+                  <span class="muted">История начислений и списаний</span>
+                </div>
+
+                <div class="account-bonus-summary">
+                  <article class="account-metric">
+                    <div class="account-metric-label">Текущий баланс</div>
+                    <div class="account-metric-value" id="account-balance-current">0</div>
+                  </article>
+                  <article class="account-metric">
+                    <div class="account-metric-label">Начислено всего</div>
+                    <div class="account-metric-value" id="account-balance-earned">0</div>
+                  </article>
+                  <article class="account-metric">
+                    <div class="account-metric-label">Списано всего</div>
+                    <div class="account-metric-value" id="account-balance-spent">0</div>
+                  </article>
+                </div>
+
+                <div class="account-bonus-history" id="account-bonus-history"></div>
+                <div class="card account-empty-state" id="account-bonus-empty" hidden>
+                  <h3>История бонусов пока пуста</h3>
+                  <p class="muted">После первых заказов и покупок здесь появятся начисления и списания.</p>
+                </div>
+              </section>
+
+              <section class="card account-panel" data-account-section="favorites" hidden>
+                <div class="account-section-title-row">
+                  <h2>Избранное</h2>
+                  <span class="muted" id="account-favorites-count">0 позиций</span>
+                </div>
+
+                <div class="account-favorites-filter" id="account-favorites-filter">
+                  <button class="account-chip is-active" type="button" data-favorite-kind="all">Все</button>
+                  <button class="account-chip" type="button" data-favorite-kind="MASTER">Мастера</button>
+                  <button class="account-chip" type="button" data-favorite-kind="COMPANY">Компании</button>
+                  <button class="account-chip" type="button" data-favorite-kind="STORE">Магазины</button>
+                  <button class="account-chip" type="button" data-favorite-kind="product">Товары</button>
+                  <button class="account-chip" type="button" data-favorite-kind="service">Услуги</button>
+                </div>
+
+                <div class="account-favorites-list" id="account-favorites-list"></div>
+                <div class="card account-empty-state" id="account-favorites-empty" hidden>
+                  <h3>Вы пока ничего не добавили в избранное</h3>
+                  <p class="muted">Сохраняйте мастеров, товары и предложения, чтобы быстро вернуться к ним позже.</p>
+                  <a class="btn btn-primary" href="../catalog/">Перейти в каталог</a>
+                </div>
+              </section>
+
+              <section class="card account-panel" data-account-section="settings" hidden>
+                <div class="account-section-title-row">
+                  <h2>Настройки</h2>
+                  <span class="muted">Базовые параметры аккаунта</span>
+                </div>
+
+                <div class="account-settings-list">
+                  <article class="account-setting-item">
+                    <div>
+                      <h3>Личные данные</h3>
+                      <p class="muted">Имя, контакты и адреса объектов редактируются в разделе «Профиль».</p>
+                    </div>
+                    <button class="btn btn-ghost" type="button" data-go-section="profile">Открыть профиль</button>
+                  </article>
+
+                  <article class="account-setting-item">
+                    <div>
+                      <h3>Смена пароля</h3>
+                      <p class="muted">Интерфейс подготовлен. Подключение реального изменения пароля — на следующем этапе.</p>
+                    </div>
+                    <button class="btn btn-ghost" type="button" disabled>Скоро</button>
+                  </article>
+
+                  <article class="account-setting-item">
+                    <div>
+                      <h3>Способы связи</h3>
+                      <p class="muted">Выберите удобный канал для уведомлений и обратной связи.</p>
+                    </div>
+                    <label class="account-toggle">
+                      <input type="checkbox" id="account-setting-contact-telegram" />
+                      <span>Telegram приоритетный</span>
+                    </label>
+                  </article>
+
+                  <article class="account-setting-item">
+                    <div>
+                      <h3>Уведомления</h3>
+                      <p class="muted">Уведомления о статусах заказа и бонусных операциях.</p>
+                    </div>
+                    <label class="account-toggle">
+                      <input type="checkbox" id="account-setting-notifications" />
+                      <span>Включены</span>
+                    </label>
+                  </article>
+
+                  <article class="account-setting-item">
+                    <div>
+                      <h3>Безопасность</h3>
+                      <p class="muted">Контроль входов и защита аккаунта будут доступны в расширенной версии.</p>
+                    </div>
+                    <button class="btn btn-ghost" type="button" disabled>Скоро</button>
+                  </article>
+
+                  <article class="account-setting-item">
+                    <div>
+                      <h3>Выход из аккаунта</h3>
+                      <p class="muted">Действие подготовлено в интерфейсе, без изменения текущей авторизации.</p>
+                    </div>
+                    <button class="btn btn-ghost" type="button" disabled>Выйти</button>
+                  </article>
+                </div>
+
+                <div class="form-actions">
+                  <button class="btn btn-primary" id="account-settings-save-btn" type="button">Сохранить настройки</button>
+                </div>
+              </section>
+            </div>
+          </div>
+
+          <div class="form-result" id="account-result" role="status" aria-live="polite" hidden>
+            <div class="form-result-title"></div>
+            <div class="form-result-text"></div>
           </div>
         </div>
       </section>
@@ -125,5 +316,6 @@
 
     <script src="../i18n.js" defer></script>
     <script src="../script.js" defer></script>
+    <script src="./cabinet.js" defer></script>
   </body>
 </html>
