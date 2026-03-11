@@ -3668,8 +3668,19 @@ body.navigator-stage-modal-open {
 
 .catalog-entry-chips {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  padding-bottom: 4px;
+}
+
+.catalog-entry-chips > * {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
 }
 
 .catalog-entry-chip {
