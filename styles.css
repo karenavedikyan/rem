@@ -3666,6 +3666,13 @@ body.navigator-stage-modal-open {
   color: rgba(245, 245, 245, 0.92);
 }
 
+.catalog-entry-scroll-shell {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px;
+}
+
 .catalog-entry-chips {
   display: grid;
   grid-auto-flow: column;
@@ -3684,6 +3691,38 @@ body.navigator-stage-modal-open {
 .catalog-entry-chips > * {
   flex: 0 0 auto;
   scroll-snap-align: start;
+}
+
+.catalog-entry-nav {
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  border: 1px solid rgba(245, 245, 245, 0.18);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(245, 245, 245, 0.92);
+  font-size: 18px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.catalog-entry-nav:hover,
+.catalog-entry-nav:focus-visible {
+  border-color: rgba(229, 57, 53, 0.42);
+  background: rgba(229, 57, 53, 0.14);
+  outline: none;
+}
+
+.catalog-entry-nav[disabled] {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.catalog-entry-scroll-shell:not(.is-scrollable) .catalog-entry-nav {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .catalog-entry-chip {

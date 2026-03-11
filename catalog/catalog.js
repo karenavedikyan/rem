@@ -1177,6 +1177,63 @@
     );
   };
 
+  const setupEntryChipScrollControls = () => {
+    if (!entryPointsEl) return;
+    const rows = entryPointsEl.querySelectorAll(".catalog-entry-chips");
+    rows.forEach((row) => {
+      if (!(row instanceof HTMLElement)) return;
+      if (row.closest(".catalog-entry-scroll-shell")) return;
+
+      const shell = document.createElement("div");
+      shell.className = "catalog-entry-scroll-shell";
+
+      const prevBtn = document.createElement("button");
+      prevBtn.type = "button";
+      prevBtn.className = "catalog-entry-nav catalog-entry-nav-prev";
+      prevBtn.setAttribute("aria-label", t("Прокрутить влево", "Scroll left"));
+      prevBtn.textContent = "‹";
+
+      const nextBtn = document.createElement("button");
+      nextBtn.type = "button";
+      nextBtn.className = "catalog-entry-nav catalog-entry-nav-next";
+      nextBtn.setAttribute("aria-label", t("Прокрутить вправо", "Scroll right"));
+      nextBtn.textContent = "›";
+
+      const parent = row.parentElement;
+      if (!parent) return;
+      parent.insertBefore(shell, row);
+      shell.append(prevBtn, row, nextBtn);
+
+      const scrollStep = () => Math.max(120, Math.round(row.clientWidth * 0.72));
+
+      const updateNavState = () => {
+        const max = Math.max(0, row.scrollWidth - row.clientWidth);
+        const x = row.scrollLeft;
+        prevBtn.disabled = x <= 2;
+        nextBtn.disabled = x >= max - 2 || max <= 2;
+        shell.classList.toggle("is-scrollable", max > 2);
+      };
+
+      prevBtn.addEventListener("click", () => {
+        row.scrollBy({ left: -scrollStep(), behavior: "smooth" });
+      });
+      nextBtn.addEventListener("click", () => {
+        row.scrollBy({ left: scrollStep(), behavior: "smooth" });
+      });
+      row.addEventListener(
+        "scroll",
+        () => {
+          updateNavState();
+        },
+        { passive: true }
+      );
+      window.addEventListener("resize", updateNavState);
+      requestAnimationFrame(updateNavState);
+    });
+  };
+
+  setupEntryChipScrollControls();
+
   [focusChipsEl, quickKindEl, quickSortEl, activeFiltersEl]
     .filter(Boolean)
     .forEach((row) => enableHorizontalDragScroll(row));
