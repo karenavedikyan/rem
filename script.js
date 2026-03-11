@@ -1335,7 +1335,7 @@
     return data;
   };
 
-  const bindTelegramForm = ({ formId, resultId, buildMessage, successText }) => {
+  const bindTelegramForm = ({ formId, resultId, buildMessage, successText, successTitle, errorTitle, errorText }) => {
     const form = document.getElementById(formId);
     if (!form) return;
 
@@ -1378,7 +1378,7 @@
 
         setResult({
           type: "success",
-          title: t("Спасибо!", "Thank you!"),
+          title: successTitle || t("Заявка отправлена", "Request sent"),
           text: successText,
         });
 
@@ -1391,11 +1391,13 @@
       } catch (err) {
         setResult({
           type: "error",
-          title: t("Ошибка", "Error"),
-          text: t(
-            "Не удалось отправить заявку. Попробуйте позже или свяжитесь с нами напрямую.",
-            "Could not send the request. Please try again later or contact us directly."
-          ),
+          title: errorTitle || t("Ошибка отправки", "Submission error"),
+          text:
+            errorText ||
+            t(
+              "Не удалось отправить заявку. Попробуйте позже или свяжитесь с нами напрямую.",
+              "Could not send the request. Please try again later or contact us directly."
+            ),
         });
         // eslint-disable-next-line no-console
         console.error(`RemCard ${formId} error:`, err);
@@ -1409,6 +1411,7 @@
   bindTelegramForm({
     formId: "request-form",
     resultId: "request-result",
+    successTitle: t("Заявка отправлена", "Request sent"),
     successText: t(
       "Заявка отправлена в RemCard. Следующий шаг: мы уточним детали и подберём подходящие предложения.",
       "Your request was sent to RemCard. Next step: we will clarify details and prepare suitable options."
@@ -1450,6 +1453,7 @@
   bindTelegramForm({
     formId: "partner-form",
     resultId: "partner-result",
+    successTitle: t("Заявка отправлена", "Request sent"),
     successText: t(
       "Заявка партнёра отправлена. Мы свяжемся с вами в ближайшее время.",
       "Partner request sent. We will contact you shortly."
@@ -1468,6 +1472,7 @@
   bindTelegramForm({
     formId: "feedback-form",
     resultId: "feedback-result",
+    successTitle: t("Отзыв отправлен", "Feedback sent"),
     successText: t(
       "Отзыв отправлен. Мы ценим обратную связь и при необходимости свяжемся с вами.",
       "Feedback sent. We value your input and will contact you if needed."

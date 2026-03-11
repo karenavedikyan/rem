@@ -12,6 +12,12 @@
   --radius: 16px;
   --radius-sm: 12px;
   --container: 1100px;
+  --btn-h: 46px;
+  --btn-radius: 12px;
+  --control-h: 46px;
+  --chip-radius: 999px;
+  --card-pad: 16px;
+  --ring: 0 0 0 3px rgba(229, 57, 53, 0.2);
 
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
@@ -194,6 +200,11 @@ img {
   background: rgba(229, 57, 53, 0.12);
   color: var(--text);
   outline: none;
+}
+
+.nav-link[aria-current="page"] {
+  background: rgba(229, 57, 53, 0.2);
+  border: 1px solid rgba(229, 57, 53, 0.35);
 }
 
 .nav-toggle {
@@ -441,14 +452,16 @@ button.hero-kpi-card {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  border-radius: 14px;
-  padding: 12px 16px;
-  font-weight: 650;
+  min-height: var(--btn-h);
+  border-radius: var(--btn-radius);
+  padding: 10px 16px;
+  font-weight: 700;
   font-size: 14px;
+  line-height: 1.2;
   border: 1px solid transparent;
   color: rgba(245, 245, 245, 0.96);
   -webkit-text-fill-color: rgba(245, 245, 245, 0.96);
-  transition: transform 160ms var(--ease), background 160ms var(--ease), border-color 160ms var(--ease);
+  transition: transform 160ms var(--ease), background 160ms var(--ease), border-color 160ms var(--ease), box-shadow 160ms var(--ease);
   cursor: pointer;
 }
 
@@ -459,24 +472,44 @@ button.hero-kpi-card {
 .btn-primary {
   background: linear-gradient(145deg, #b03a34, #7e2622);
   border-color: rgba(229, 84, 74, 0.36);
-  box-shadow: 0 10px 22px rgba(116, 30, 27, 0.24);
+  box-shadow: 0 10px 22px rgba(116, 30, 27, 0.22);
 }
 
 .btn-primary:hover,
 .btn-primary:focus-visible {
   background: linear-gradient(145deg, #bf443c, #8a2a26);
   border-color: rgba(229, 84, 74, 0.5);
+  box-shadow: var(--ring), 0 10px 22px rgba(116, 30, 27, 0.22);
   outline: none;
 }
 
 .btn-ghost {
-  background: rgba(30, 30, 30, 0.72);
-  border-color: rgba(245, 245, 245, 0.14);
+  background: rgba(30, 30, 30, 0.68);
+  border-color: rgba(245, 245, 245, 0.16);
 }
 
 .btn-ghost:hover,
 .btn-ghost:focus-visible {
   border-color: rgba(229, 57, 53, 0.35);
+  box-shadow: var(--ring);
+  outline: none;
+}
+
+.btn-text {
+  min-height: 34px;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: rgba(245, 245, 245, 0.92);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.btn-text:hover,
+.btn-text:focus-visible {
+  background: rgba(245, 245, 245, 0.06);
+  color: rgba(245, 245, 245, 0.98);
   outline: none;
 }
 
@@ -702,10 +735,18 @@ button.hero-kpi-card {
   letter-spacing: -0.3px;
 }
 
+.section-header h1 {
+  margin: 0 0 8px;
+  font-size: clamp(30px, 3.2vw, 44px);
+  letter-spacing: -0.5px;
+  line-height: 1.15;
+}
+
 .section-subtitle {
   margin: 0;
   max-width: 72ch;
-  line-height: 1.42;
+  font-size: 15px;
+  line-height: 1.45;
   color: rgba(176, 190, 197, 0.95);
 }
 
@@ -781,16 +822,21 @@ button.hero-kpi-card {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 12px;
-  border-radius: 12px;
-  border: 1px solid rgba(245, 245, 245, 0.12);
-  background: rgba(30, 30, 30, 0.6);
-  transition: border-color 160ms var(--ease), transform 160ms var(--ease);
+  min-height: 34px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 0;
+  background: transparent;
+  color: rgba(245, 245, 245, 0.92);
+  font-size: 13px;
+  font-weight: 700;
+  transition: background 160ms var(--ease), color 160ms var(--ease), transform 160ms var(--ease);
   white-space: nowrap;
 }
 
 .section-link:hover {
-  border-color: rgba(229, 57, 53, 0.35);
+  background: rgba(245, 245, 245, 0.06);
+  color: rgba(245, 245, 245, 0.98);
 }
 
 .section-link:active {
@@ -798,11 +844,11 @@ button.hero-kpi-card {
 }
 
 .card {
-  border-radius: var(--radius);
+  border-radius: var(--radius-sm);
   border: 1px solid var(--border);
   background: linear-gradient(180deg, rgba(30, 30, 30, 0.88), rgba(30, 30, 30, 0.62));
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.2);
-  padding: 18px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+  padding: var(--card-pad);
   position: relative;
   overflow: hidden;
 }
@@ -822,14 +868,16 @@ button.hero-kpi-card {
 
 .card h3 {
   margin: 0 0 6px;
-  font-size: 18px;
+  font-size: 17px;
   letter-spacing: -0.2px;
+  line-height: 1.3;
 }
 
 .card h2 {
   margin: 0 0 8px;
-  font-size: 21px;
+  font-size: 20px;
   letter-spacing: -0.2px;
+  line-height: 1.28;
 }
 
 .card p {
@@ -1440,9 +1488,9 @@ button.hero-kpi-card {
 }
 
 .request-actions .btn {
-  min-height: 64px;
-  border-radius: 20px;
-  font-size: 16px;
+  min-height: 52px;
+  border-radius: 14px;
+  font-size: 15px;
   font-weight: 800;
   letter-spacing: -0.2px;
 }
@@ -1559,12 +1607,14 @@ button.hero-kpi-card {
 
 .fineprint {
   margin-top: 10px;
-  font-size: 12.5px;
+  font-size: 12px;
   color: rgba(176, 190, 197, 0.85);
+  line-height: 1.4;
 }
 
 .muted {
-  color: rgba(176, 190, 197, 0.95);
+  color: rgba(176, 190, 197, 0.94);
+  line-height: 1.45;
 }
 
 /* Offers / Promotions */
@@ -2067,12 +2117,55 @@ button.hero-kpi-card {
 .tag {
   display: inline-flex;
   align-items: center;
-  padding: 7px 10px;
-  border-radius: 999px;
-  font-size: 12.5px;
-  border: 1px solid rgba(245, 245, 245, 0.12);
-  background: rgba(18, 18, 18, 0.35);
+  padding: 6px 10px;
+  border-radius: var(--chip-radius);
+  font-size: 12px;
+  font-weight: 650;
+  border: 1px solid rgba(245, 245, 245, 0.16);
+  background: rgba(18, 18, 18, 0.42);
   color: rgba(245, 245, 245, 0.92);
+}
+
+:is(
+    .request-badge,
+    .partners-hero-chip,
+    .catalog-focus-chip,
+    .catalog-entry-chip,
+    .catalog-kind-chip,
+    .catalog-sort-chip,
+    .catalog-filter-chip,
+    .account-chip,
+    .navigator-tag-item
+  ) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 30px;
+  border-radius: var(--chip-radius);
+  padding: 6px 12px;
+  border: 1px solid rgba(245, 245, 245, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(245, 245, 245, 0.95);
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.2;
+}
+
+:is(
+    .catalog-entry-chip:hover,
+    .catalog-focus-chip:hover,
+    .catalog-kind-chip:hover,
+    .catalog-sort-chip:hover,
+    .catalog-filter-chip:hover,
+    .account-chip:hover
+  ) {
+  border-color: rgba(229, 57, 53, 0.42);
+  background: rgba(229, 57, 53, 0.14);
+}
+
+:is(.catalog-kind-chip.is-active, .catalog-sort-chip.is-active, .account-chip.is-active) {
+  border-color: rgba(229, 57, 53, 0.5);
+  background: rgba(229, 57, 53, 0.2);
 }
 
 .partner-note {
@@ -2104,9 +2197,10 @@ button.hero-kpi-card {
 }
 
 .field label {
-  font-size: 13px;
+  font-size: 12.5px;
   color: rgba(245, 245, 245, 0.92);
-  font-weight: 650;
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }
 
 .field-hint {
@@ -2121,11 +2215,12 @@ button.hero-kpi-card {
 
 .input {
   width: 100%;
-  border-radius: 14px;
+  min-height: var(--control-h);
+  border-radius: var(--btn-radius);
   border: 1px solid rgba(245, 245, 245, 0.14);
   background: rgba(18, 18, 18, 0.35);
   color: var(--text);
-  padding: 12px 12px;
+  padding: 10px 12px;
   font-size: 14px;
   outline: none;
   transition: border-color 160ms var(--ease), box-shadow 160ms var(--ease), transform 160ms var(--ease);
@@ -2137,7 +2232,11 @@ button.hero-kpi-card {
 
 .input:focus {
   border-color: rgba(229, 57, 53, 0.45);
-  box-shadow: 0 0 0 4px rgba(229, 57, 53, 0.12);
+  box-shadow: var(--ring);
+}
+
+.input:user-invalid:not(:focus) {
+  border-color: rgba(239, 83, 80, 0.45);
 }
 
 .input[readonly] {
@@ -2158,26 +2257,29 @@ button.hero-kpi-card {
 
 .form-result {
   margin-top: 14px;
-  border-radius: var(--radius);
+  border-radius: var(--radius-sm);
   border: 1px solid rgba(229, 57, 53, 0.22);
   background: linear-gradient(180deg, rgba(229, 57, 53, 0.11), rgba(18, 18, 18, 0.35));
   padding: 14px;
 }
 
 .form-result.is-error {
-  border-color: rgba(183, 28, 28, 0.35);
-  background: linear-gradient(180deg, rgba(183, 28, 28, 0.14), rgba(18, 18, 18, 0.35));
+  border-color: rgba(239, 83, 80, 0.38);
+  background: linear-gradient(180deg, rgba(239, 83, 80, 0.15), rgba(18, 18, 18, 0.35));
 }
 
 .btn[disabled] {
-  opacity: 0.75;
+  opacity: 0.58;
   cursor: not-allowed;
+  filter: grayscale(0.2);
   transform: none;
+  box-shadow: none;
 }
 
 .form-result-title {
   font-weight: 850;
   letter-spacing: -0.2px;
+  font-size: 15px;
 }
 
 .form-result-text {
@@ -3372,8 +3474,8 @@ body.navigator-stage-modal-open {
 }
 
 .section-compact {
-  padding-top: 10px;
-  padding-bottom: 24px;
+  padding-top: 16px;
+  padding-bottom: 26px;
 }
 
 .home-sticky-cta {
@@ -3415,11 +3517,15 @@ body.navigator-stage-modal-open {
 }
 
 .footer-link {
-  padding: 10px 12px;
-  border-radius: 12px;
-  border: 1px solid rgba(245, 245, 245, 0.12);
-  background: rgba(30, 30, 30, 0.6);
-  transition: border-color 160ms var(--ease), transform 160ms var(--ease);
+  min-height: 34px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 0;
+  background: transparent;
+  color: rgba(245, 245, 245, 0.92);
+  font-size: 13px;
+  font-weight: 700;
+  transition: background 160ms var(--ease), color 160ms var(--ease), transform 160ms var(--ease);
 }
 
 .footer-right {
@@ -3440,23 +3546,25 @@ body.navigator-stage-modal-open {
   align-items: center;
   justify-content: center;
   min-height: 30px;
-  padding: 6px 10px;
-  border-radius: 10px;
-  border: 1px solid rgba(245, 245, 245, 0.12);
-  background: rgba(30, 30, 30, 0.45);
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 0;
+  background: transparent;
   color: rgba(245, 245, 245, 0.9);
-  font-size: 12px;
-  transition: border-color 160ms var(--ease), background 160ms var(--ease);
+  font-size: 12.5px;
+  font-weight: 650;
+  transition: background 160ms var(--ease), color 160ms var(--ease);
 }
 
 .footer-mini-link:hover,
 .footer-mini-link:focus-visible {
-  border-color: rgba(229, 57, 53, 0.34);
-  background: rgba(40, 40, 40, 0.65);
+  background: rgba(245, 245, 245, 0.06);
+  color: rgba(245, 245, 245, 0.98);
 }
 
 .footer-link:hover {
-  border-color: rgba(229, 57, 53, 0.35);
+  background: rgba(245, 245, 245, 0.06);
+  color: rgba(245, 245, 245, 0.98);
 }
 
 .footer-link:active {
@@ -3466,7 +3574,7 @@ body.navigator-stage-modal-open {
 .form-selected-service {
   margin-top: 2px;
   margin-bottom: 10px;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   border: 1px solid rgba(229, 57, 53, 0.24);
   background: rgba(229, 57, 53, 0.1);
   padding: 10px 12px;
@@ -3477,7 +3585,7 @@ body.navigator-stage-modal-open {
 .form-selected-promo {
   margin-top: 2px;
   margin-bottom: 10px;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   border: 1px solid rgba(255, 193, 7, 0.25);
   background: rgba(255, 193, 7, 0.11);
   padding: 10px 12px;
@@ -3488,12 +3596,16 @@ body.navigator-stage-modal-open {
 .form-selected-context {
   margin-top: 2px;
   margin-bottom: 10px;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   border: 1px solid rgba(76, 175, 80, 0.24);
   background: rgba(76, 175, 80, 0.1);
   padding: 10px 12px;
   color: rgba(245, 245, 245, 0.95);
   font-size: 13px;
+}
+
+:is(.form-selected-service, .form-selected-promo, .form-selected-context) {
+  line-height: 1.35;
 }
 
 .catalog-layout {
@@ -3526,12 +3638,14 @@ body.navigator-stage-modal-open {
 }
 
 .catalog-focus-chip {
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.05);
+  min-height: 30px;
+  border: 1px solid rgba(245, 245, 245, 0.18);
+  background: rgba(255, 255, 255, 0.06);
   color: rgba(245, 245, 245, 0.94);
-  border-radius: 999px;
-  padding: 7px 12px;
+  border-radius: var(--chip-radius);
+  padding: 6px 12px;
   font-size: 12px;
+  font-weight: 650;
   cursor: pointer;
 }
 
@@ -3559,12 +3673,14 @@ body.navigator-stage-modal-open {
 }
 
 .catalog-entry-chip {
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  min-height: 30px;
+  border: 1px solid rgba(245, 245, 245, 0.18);
   background: rgba(255, 255, 255, 0.06);
   color: rgba(245, 245, 245, 0.95);
-  border-radius: 999px;
-  padding: 7px 12px;
+  border-radius: var(--chip-radius);
+  padding: 6px 12px;
   font-size: 12px;
+  font-weight: 650;
   line-height: 1.2;
   cursor: pointer;
 }
@@ -3591,19 +3707,22 @@ body.navigator-stage-modal-open {
 }
 
 .catalog-kind-chip {
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  min-height: 30px;
+  border: 1px solid rgba(245, 245, 245, 0.18);
   background: rgba(255, 255, 255, 0.06);
   color: rgba(245, 245, 245, 0.95);
-  border-radius: 999px;
+  border-radius: var(--chip-radius);
   padding: 6px 12px;
   font-size: 12px;
+  font-weight: 650;
   line-height: 1.2;
   cursor: pointer;
   white-space: nowrap;
 }
 
 .catalog-kind-chip:hover {
-  border-color: rgba(255, 255, 255, 0.35);
+  border-color: rgba(229, 57, 53, 0.42);
+  background: rgba(229, 57, 53, 0.14);
 }
 
 .catalog-kind-chip.is-active {
@@ -3659,18 +3778,21 @@ body.navigator-stage-modal-open {
 }
 
 .catalog-filter-chip {
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  min-height: 30px;
+  border: 1px solid rgba(245, 245, 245, 0.18);
   background: rgba(255, 255, 255, 0.08);
   color: rgba(245, 245, 245, 0.95);
-  border-radius: 999px;
+  border-radius: var(--chip-radius);
   padding: 6px 10px;
   font-size: 12px;
+  font-weight: 650;
   line-height: 1.2;
   cursor: pointer;
 }
 
 .catalog-filter-chip:hover {
-  border-color: rgba(255, 255, 255, 0.35);
+  border-color: rgba(229, 57, 53, 0.42);
+  background: rgba(229, 57, 53, 0.14);
 }
 
 .catalog-filter-chip.is-reset {
@@ -3686,19 +3808,22 @@ body.navigator-stage-modal-open {
 }
 
 .catalog-sort-chip {
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  min-height: 30px;
+  border: 1px solid rgba(245, 245, 245, 0.18);
   background: rgba(255, 255, 255, 0.06);
   color: rgba(245, 245, 245, 0.95);
-  border-radius: 999px;
+  border-radius: var(--chip-radius);
   padding: 6px 12px;
   font-size: 12px;
+  font-weight: 650;
   line-height: 1.2;
   cursor: pointer;
   white-space: nowrap;
 }
 
 .catalog-sort-chip:hover {
-  border-color: rgba(255, 255, 255, 0.35);
+  border-color: rgba(229, 57, 53, 0.42);
+  background: rgba(229, 57, 53, 0.14);
 }
 
 .catalog-sort-chip.is-active {
@@ -4397,6 +4522,21 @@ body.navigator-stage-modal-open {
   margin-top: 0;
 }
 
+:is(.catalog-empty, .account-empty-state) {
+  border-radius: var(--radius-sm);
+  border: 1px dashed rgba(245, 245, 245, 0.18);
+  background: linear-gradient(180deg, rgba(30, 30, 30, 0.86), rgba(18, 18, 18, 0.7));
+}
+
+:is(.catalog-empty, .account-empty-state) h3 {
+  margin: 0 0 6px;
+  font-size: 17px;
+}
+
+:is(.catalog-empty, .account-empty-state) .muted {
+  line-height: 1.42;
+}
+
 .catalog-empty-actions {
   margin-top: 12px;
   display: flex;
@@ -4405,8 +4545,9 @@ body.navigator-stage-modal-open {
 }
 
 .catalog-empty.is-error {
-  border-color: rgba(229, 57, 53, 0.3);
-  background: rgba(229, 57, 53, 0.08);
+  border-style: solid;
+  border-color: rgba(239, 83, 80, 0.34);
+  background: linear-gradient(180deg, rgba(239, 83, 80, 0.15), rgba(18, 18, 18, 0.7));
 }
 
 .catalog-pagination {
@@ -4577,8 +4718,8 @@ body.navigator-stage-modal-open {
   border: 1px solid rgba(245, 245, 245, 0.14);
   background: rgba(255, 255, 255, 0.04);
   color: rgba(245, 245, 245, 0.95);
-  border-radius: 12px;
-  min-height: 44px;
+  border-radius: var(--btn-radius);
+  min-height: var(--btn-h);
   padding: 10px 12px;
   text-align: left;
   font-size: 14px;
@@ -4586,9 +4727,16 @@ body.navigator-stage-modal-open {
   cursor: pointer;
 }
 
+.account-nav-btn:hover,
+.account-nav-btn:focus-visible {
+  border-color: rgba(229, 57, 53, 0.38);
+  box-shadow: var(--ring);
+  outline: none;
+}
+
 .account-nav-btn.is-active {
   border-color: rgba(229, 57, 53, 0.44);
-  background: rgba(229, 57, 53, 0.16);
+  background: rgba(229, 57, 53, 0.2);
 }
 
 .account-content {
@@ -4714,9 +4862,9 @@ body.navigator-stage-modal-open {
 
 .account-order-status {
   display: inline-flex;
-  border-radius: 999px;
-  border: 1px solid rgba(245, 245, 245, 0.14);
-  padding: 5px 10px;
+  border-radius: var(--chip-radius);
+  border: 1px solid rgba(245, 245, 245, 0.16);
+  padding: 6px 10px;
   font-size: 12px;
   font-weight: 700;
 }
@@ -4829,14 +4977,21 @@ body.navigator-stage-modal-open {
 }
 
 .account-chip {
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  min-height: 30px;
+  border: 1px solid rgba(245, 245, 245, 0.18);
   background: rgba(255, 255, 255, 0.06);
   color: rgba(245, 245, 245, 0.95);
-  border-radius: 999px;
+  border-radius: var(--chip-radius);
   padding: 6px 12px;
   font-size: 12px;
+  font-weight: 650;
   line-height: 1.2;
   cursor: pointer;
+}
+
+.account-chip:hover {
+  border-color: rgba(229, 57, 53, 0.42);
+  background: rgba(229, 57, 53, 0.14);
 }
 
 .account-chip.is-active {
@@ -5271,7 +5426,7 @@ body.navigator-stage-modal-open {
 
 @media (max-width: 560px) {
   .section {
-    padding: 26px 0;
+    padding: 24px 0;
   }
 
   .section-header {
@@ -5284,8 +5439,8 @@ body.navigator-stage-modal-open {
   }
 
   .request-actions .btn {
-    min-height: 58px;
-    font-size: 15px;
+    min-height: 50px;
+    font-size: 14px;
   }
 
   .contacts-actions {
@@ -5298,8 +5453,8 @@ body.navigator-stage-modal-open {
   }
 
   .hero {
-    padding-top: 52px;
-    padding-bottom: 12px;
+    padding-top: 48px;
+    padding-bottom: 10px;
   }
 
   .hero-kpis {
