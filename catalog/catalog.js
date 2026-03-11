@@ -807,6 +807,17 @@
     });
   };
 
+  const renderFocusChipsState = () => {
+    if (!focusChipsEl) return;
+    const chips = focusChipsEl.querySelectorAll("button[data-toggle-filter]");
+    chips.forEach((chip) => {
+      const filterName = String(chip.dataset.toggleFilter || "").trim();
+      const isActive = filterName ? getFieldChecked(filterName) : false;
+      chip.classList.toggle("is-active", isActive);
+      chip.setAttribute("aria-pressed", isActive ? "true" : "false");
+    });
+  };
+
   const renderQuickKindChips = () => {
     if (!quickKindEl) return;
     const activeKindRaw = String(getFieldValue("itemKind") || "").toLowerCase();
@@ -834,6 +845,7 @@
     if (submitBtn) submitBtn.disabled = loading;
     if (prevBtn) prevBtn.disabled = loading || state.page <= 1;
     if (nextBtn) nextBtn.disabled = loading || state.page >= state.totalPages;
+    renderFocusChipsState();
     renderQuickKindChips();
     renderQuickSortChips();
   };
@@ -847,6 +859,7 @@
     if (countEl) countEl.textContent = t("Ошибка загрузки каталога", "Catalog loading error");
     if (paginationEl) paginationEl.hidden = true;
     renderActiveFilterChips();
+    renderFocusChipsState();
     renderQuickKindChips();
     renderQuickSortChips();
     syncOpenFiltersBtnVisibility();
@@ -876,6 +889,7 @@
     if (prevBtn) prevBtn.disabled = state.page <= 1;
     if (nextBtn) nextBtn.disabled = state.page >= state.totalPages;
     renderActiveFilterChips();
+    renderFocusChipsState();
     renderQuickKindChips();
     renderQuickSortChips();
     syncOpenFiltersBtnVisibility();
@@ -1021,6 +1035,14 @@
 
   if (focusChipsEl) {
     focusChipsEl.addEventListener("click", (e) => {
+      const toggleBtn = e.target && e.target.closest ? e.target.closest("button[data-toggle-filter]") : null;
+      if (toggleBtn) {
+        const filterName = String(toggleBtn.dataset.toggleFilter || "").trim();
+        if (!filterName) return;
+        setFieldChecked(filterName, !getFieldChecked(filterName));
+        loadCatalog({ page: 1 });
+        return;
+      }
       const btn = e.target && e.target.closest ? e.target.closest("button[data-focus-field]") : null;
       if (!btn) return;
       const fieldName = String(btn.dataset.focusField || "");
@@ -1180,6 +1202,7 @@
 
   const initial = readCurrentParams();
   applyParamsToForm(initial);
+  renderFocusChipsState();
   loadCatalog({ page: initial.page || 1 });
   syncOpenFiltersBtnVisibility();
 })();

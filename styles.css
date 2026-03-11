@@ -2163,7 +2163,7 @@ button.hero-kpi-card {
   background: rgba(229, 57, 53, 0.14);
 }
 
-:is(.catalog-kind-chip.is-active, .catalog-sort-chip.is-active, .account-chip.is-active) {
+:is(.catalog-focus-chip.is-active, .catalog-kind-chip.is-active, .catalog-sort-chip.is-active, .account-chip.is-active) {
   border-color: rgba(229, 57, 53, 0.5);
   background: rgba(229, 57, 53, 0.2);
 }
