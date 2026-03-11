@@ -3807,6 +3807,11 @@ body.navigator-stage-modal-open {
   gap: 8px;
 }
 
+:is(.catalog-focus-chips, .catalog-entry-chips, .catalog-quick-kind, .catalog-active-filters, .catalog-quick-sort) {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(229, 57, 53, 0.45) transparent;
+}
+
 .catalog-sort-chip {
   min-height: 30px;
   border: 1px solid rgba(245, 245, 245, 0.18);
@@ -4473,11 +4478,26 @@ body.navigator-stage-modal-open {
   }
 
   .catalog-focus-chips,
-  .catalog-entry-chips {
+  .catalog-entry-chips,
+  .catalog-quick-kind,
+  .catalog-active-filters,
+  .catalog-quick-sort {
     flex-wrap: nowrap;
     overflow-x: auto;
     overflow-y: hidden;
-    padding-bottom: 2px;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    padding-bottom: 4px;
+  }
+
+  .catalog-focus-chips > *,
+  .catalog-entry-chips > *,
+  .catalog-quick-kind > *,
+  .catalog-active-filters > *,
+  .catalog-quick-sort > * {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
   }
 
   .catalog-entry-points {
@@ -4498,14 +4518,6 @@ body.navigator-stage-modal-open {
     border-radius: 10px;
     padding: 10px;
     backdrop-filter: blur(8px);
-  }
-
-  .catalog-active-filters,
-  .catalog-quick-sort {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding-bottom: 2px;
   }
 
   .catalog-pagination {
