@@ -1281,6 +1281,43 @@
 
   prefillClientRequestFromQuery();
 
+  const prefillPartnerFromQuery = () => {
+    const partnerForm = document.getElementById("partner-form");
+    if (!partnerForm) return;
+
+    const params = new URLSearchParams(window.location.search || "");
+    const type = String(params.get("type") || "").trim().toLowerCase();
+    if (!type) return;
+
+    const roleEl = partnerForm.querySelector("#hp-role");
+    const contextCard = document.getElementById("partner-context-card");
+    const contextBadge = document.getElementById("partner-context-badge");
+    if (!roleEl || !(roleEl instanceof HTMLSelectElement)) return;
+
+    const mapTypeToRoleLabel = (value) => {
+      if (value === "master" || value === "brigade" || value === "foreman") return "Мастер / бригада";
+      if (value === "company" || value === "service" || value === "business") return "Компания услуг";
+      if (value === "store" || value === "shop" || value === "goods") return "Магазин материалов / товаров";
+      if (value === "consulting" || value === "service_partner") return "Сервисный / консалтинговый партнёр";
+      return "";
+    };
+
+    const roleLabel = mapTypeToRoleLabel(type);
+    if (!roleLabel) return;
+
+    const option = Array.from(roleEl.options).find((opt) => String(opt.textContent || "").trim() === roleLabel);
+    if (option && !String(roleEl.value || "").trim()) {
+      roleEl.value = option.value;
+    }
+
+    ensureHiddenField(partnerForm, "partnerType").value = type;
+    upsertFormNote(partnerForm, "form-selected-context", `${t("Тип партнёра", "Partner type")}: ${roleLabel}`);
+    if (contextCard) contextCard.hidden = false;
+    if (contextBadge) contextBadge.textContent = `${t("Предзаполнение", "Prefill")}: ${roleLabel}`;
+  };
+
+  prefillPartnerFromQuery();
+
   const sendTelegram = async (text) => {
     if (!BOT_TOKEN || BOT_TOKEN.includes("ТУТ_Я_ПОДСТАВЛЮ_САМ")) throw new Error("BOT_TOKEN is not set");
     if (!CHAT_ID || CHAT_ID.includes("ТУТ_Я_ПОДСТАВЛЮ_САМ")) throw new Error("CHAT_ID is not set");

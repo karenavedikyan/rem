@@ -1096,6 +1096,66 @@ button.hero-kpi-card {
   flex-direction: column;
 }
 
+.partners-page-hero .section-header h1 {
+  margin: 0 0 8px;
+  font-size: clamp(30px, 3.2vw, 44px);
+  letter-spacing: -0.5px;
+  line-height: 1.12;
+}
+
+.partners-hero-chips {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.partners-hero-chip {
+  border-radius: 999px;
+  border: 1px solid rgba(245, 245, 245, 0.14);
+  background: rgba(18, 18, 18, 0.45);
+  padding: 6px 10px;
+  font-size: 12px;
+  color: rgba(245, 245, 245, 0.95);
+}
+
+.partners-hero-actions {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.partner-type-card .list {
+  margin-top: 8px;
+}
+
+.partners-benefits-grid {
+  margin-top: 6px;
+}
+
+.partner-benefit-card {
+  min-height: 128px;
+}
+
+.partner-benefit-card p {
+  margin: 8px 0 0;
+  color: rgba(176, 190, 197, 0.94);
+  font-size: 13px;
+}
+
+.partners-process-grid .card {
+  padding: 10px;
+}
+
+.partner-trust-list {
+  margin-top: 8px;
+}
+
+#partner-request .request-context-card {
+  margin-bottom: 10px;
+}
+
 .card-action {
   margin-top: 14px;
   align-self: flex-start;
@@ -3917,6 +3977,18 @@ body.navigator-stage-modal-open {
   .navigator-hero-actions {
     display: grid;
     grid-template-columns: 1fr;
+  }
+
+  .partners-hero-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .partners-hero-chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 2px;
   }
 
   .navigator-hero-route {
