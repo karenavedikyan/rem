@@ -25,22 +25,32 @@
 - Переходы в заявку:
   - `/request/?serviceId=...&serviceTitle=...&serviceStage=...&serviceTaskType=...#request`
   - `/request/?promoId=...&promoTitle=...&promoPartner=...&promoBenefit=...#request`
+  - `/request/?stage=...&source=navigator`
+  - `/request/?type=...&district=...&budget=...&source=catalog`
 
 ## 4) Партнёрский сценарий
 
 - `/partners/` — главная страница для партнёров
+- `/partners/?type=master|company|store` — предвыбор типа партнёра в форме подключения
 - `/partners/add/` — форма добавления партнёра (операционный сценарий)
 - `/partner/cabinet/` — кабинет партнёра (MVP)
 - `/partners-stores/` — витрина магазинов-партнёров (вынесена из primary-меню)
 
-## 5) Клиентский кабинет (архитектурная заготовка)
+## 5) Клиентский кабинет
 
-- `/cabinet/` — кабинет клиента (этап 1, заглушка структуры)
-  - Профиль
-  - Заказы
-  - Бонусы
-  - Избранное
-  - Настройки
+- `/cabinet/` — основной маршрут клиентского кабинета (dashboard + разделы)
+  - `?section=overview`
+  - `?section=profile`
+  - `?section=orders`
+  - `?section=bonuses`
+  - `?section=favorites`
+  - `?section=settings`
+- `/account/` — alias-маршрут на клиентский кабинет
+- `/account/profile/` → redirect на `/cabinet/?section=profile`
+- `/account/orders/` → redirect на `/cabinet/?section=orders`
+- `/account/bonuses/` → redirect на `/cabinet/?section=bonuses`
+- `/account/favorites/` → redirect на `/cabinet/?section=favorites`
+- `/account/settings/` → redirect на `/cabinet/?section=settings`
 
 ## 6) Примечание по архитектуре
 

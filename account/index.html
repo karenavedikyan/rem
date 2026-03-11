@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>RemCard — Личный кабинет клиента</title>
+    <meta name="description" content="Переадресация в личный кабинет клиента RemCard." />
+    <script>
+      (() => {
+        const target = new URL("../cabinet/", window.location.href);
+        target.search = window.location.search || "";
+        const next = `${target.pathname}${target.search}${window.location.hash || ""}`;
+        window.location.replace(next);
+      })();
+    </script>
+  </head>
+  <body>
+    <p>Переходим в личный кабинет… <a href="../cabinet/">Открыть кабинет</a></p>
+  </body>
+</html>

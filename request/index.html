@@ -37,34 +37,34 @@
     </header>
 
     <main id="main">
-      <section class="section" id="request">
+      <section class="section request-page" id="request">
         <div class="container">
-          <header class="section-header">
-            <h1>Заявка в RemCard</h1>
-            <p class="section-subtitle">Заполните короткую форму — ответим в течение 4 часов и подскажем следующий шаг по вашему этапу ремонта.</p>
+          <header class="section-header request-page-header">
+            <h1>Оставьте заявку на ремонт</h1>
+            <p class="section-subtitle">Заполните несколько полей — RemCard подберёт специалистов, компании, товары и услуги под ваш этап ремонта.</p>
+            <div class="request-badges" aria-label="Преимущества заявки">
+              <span class="request-badge">Всего несколько полей</span>
+              <span class="request-badge">Подбор под этап и бюджет</span>
+              <span class="request-badge">Ответ в удобный способ связи</span>
+            </div>
           </header>
 
-          <div class="grid two-col">
-            <article class="card">
-              <h2>Что будет после отправки</h2>
-              <ul class="list">
-                <li>Уточним детали задачи и этап ремонта.</li>
-                <li>Подберём релевантные услуги и товары в вашем районе.</li>
-                <li>Предложим подходящие варианты исполнителей и магазинов.</li>
-              </ul>
-              <p class="muted">Если нужно срочно — напишите в Telegram, мы ускорим обработку.</p>
-              <p class="contacts-line">
-                <span class="contacts-label">Telegram</span>
-                <a class="contacts-link" href="#" aria-label="Ссылка на Telegram-группу RemCard">RemCard заявки (группа)</a>
-              </p>
-              <p class="contacts-line">
-                <span class="contacts-label">Email</span>
-                <a class="contacts-link" href="mailto:kraavediks@gmail.com">kraavediks@gmail.com</a>
-              </p>
-            </article>
+          <article class="card request-context-card" id="request-context-card" hidden>
+            <p class="request-context-badge" id="request-context-badge">Контекст заявки</p>
+            <p class="muted request-context-hint">Параметры подставлены автоматически — при необходимости можно изменить их в форме ниже.</p>
+          </article>
 
-            <article class="card">
-              <h2>Оставить заявку</h2>
+          <div class="grid two-col request-page-layout">
+            <article class="card request-main-form-card">
+              <h2>Быстрая заявка в RemCard</h2>
+              <p class="muted">Оставьте ключевые данные, а детали уточним в удобном диалоге.</p>
+
+              <div class="request-badges request-form-badges" aria-label="Коротко о процессе">
+                <span class="request-badge">Работаем по Краснодару</span>
+                <span class="request-badge">Одна заявка — до 5 предложений</span>
+                <span class="request-badge">Телефон или Telegram</span>
+              </div>
+
               <form class="form" id="request-form" novalidate>
                 <div class="form-grid">
                   <div class="field">
@@ -75,7 +75,20 @@
                       <option>Ванная / санузел</option>
                       <option>Кухня</option>
                       <option>Ремонт под ключ</option>
+                      <option>Электрика / сантехника</option>
                       <option>Другое</option>
+                    </select>
+                  </div>
+
+                  <div class="field">
+                    <label for="req-stage">Этап ремонта</label>
+                    <select class="input" id="req-stage" name="stage" required>
+                      <option value="" selected disabled>Выберите этап</option>
+                      <option value="planning">План</option>
+                      <option value="rough">Черновые</option>
+                      <option value="engineering">Инженерия</option>
+                      <option value="finishing">Чистовые</option>
+                      <option value="furniture">Мебель</option>
                     </select>
                   </div>
 
@@ -107,7 +120,7 @@
 
                   <div class="field field-wide">
                     <label for="req-comment">Комментарий (опционально)</label>
-                    <textarea class="input textarea" id="req-comment" name="comment" rows="4" placeholder="Уточните детали: площадь, сроки, ограничения по времени работ"></textarea>
+                    <textarea class="input textarea" id="req-comment" name="comment" rows="4" placeholder="Площадь, сроки, ограничения по времени работ, важные детали"></textarea>
                   </div>
                 </div>
 
@@ -117,11 +130,53 @@
                 </div>
 
                 <div class="form-result" id="request-result" role="status" aria-live="polite" hidden>
-                  <div class="form-result-title">Спасибо!</div>
-                  <div class="form-result-text">Заявка отправлена. В ближайшее время команда RemCard свяжется с вами.</div>
+                  <div class="form-result-title">Заявка отправлена</div>
+                  <div class="form-result-text">Спасибо! Следующий шаг: мы уточним детали и подберём подходящие предложения.</div>
                 </div>
               </form>
             </article>
+
+            <div class="request-side-stack">
+              <article class="card">
+                <h2>Как это работает</h2>
+                <div class="request-flow">
+                  <div class="request-flow-step">
+                    <span class="request-flow-num">1</span>
+                    <p>Вы оставляете заявку с ключевыми параметрами.</p>
+                  </div>
+                  <div class="request-flow-step">
+                    <span class="request-flow-num">2</span>
+                    <p>Мы уточняем детали и подбираем релевантные варианты.</p>
+                  </div>
+                  <div class="request-flow-step">
+                    <span class="request-flow-num">3</span>
+                    <p>Вы получаете предложения от подходящих исполнителей и партнёров.</p>
+                  </div>
+                </div>
+              </article>
+
+              <article class="card">
+                <h2>Почему это удобно</h2>
+                <ul class="list">
+                  <li>Работаем в Краснодаре и учитываем район объекта.</li>
+                  <li>Подбираем решения под этап ремонта и бюджет.</li>
+                  <li>Помогаем и тем, кто только начинает, и тем, кто уже в процессе.</li>
+                </ul>
+                <p class="muted">Если хотите сначала пройти шаги ремонта, откройте Навигатор — этап подставится в заявку автоматически.</p>
+                <div class="form-actions">
+                  <a class="btn btn-ghost" href="../navigator/">Открыть навигатор ремонта</a>
+                  <a class="btn btn-ghost" href="../catalog/">Перейти в каталог</a>
+                </div>
+                <p class="contacts-line">
+                  <span class="contacts-label">Telegram</span>
+                  <a class="contacts-link" href="#" aria-label="Ссылка на Telegram-группу RemCard">RemCard заявки (группа)</a>
+                </p>
+                <p class="contacts-line">
+                  <span class="contacts-label">Email</span>
+                  <a class="contacts-link" href="mailto:kraavediks@gmail.com">kraavediks@gmail.com</a>
+                </p>
+              </article>
+            </div>
           </div>
         </div>
       </section>

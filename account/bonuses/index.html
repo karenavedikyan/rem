@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>RemCard — Бонусы клиента</title>
+    <meta name="description" content="Переадресация в раздел бонусов личного кабинета RemCard." />
+    <script>
+      (() => {
+        const target = new URL("../../cabinet/", window.location.href);
+        const params = new URLSearchParams(window.location.search || "");
+        params.set("section", "bonuses");
+        target.search = `?${params.toString()}`;
+        const next = `${target.pathname}${target.search}${window.location.hash || ""}`;
+        window.location.replace(next);
+      })();
+    </script>
+  </head>
+  <body>
+    <p>Переходим в бонусы… <a href="../../cabinet/?section=bonuses">Открыть бонусы</a></p>
+  </body>
+</html>

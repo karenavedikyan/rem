@@ -34,6 +34,8 @@ Secondary-разделы вынесены в footer:
 - `knowledge/knowledge-base.json` — единый источник знаний (для фронта и AI API)
 - `catalog/index.html` + `catalog/catalog.js` — клиентский каталог услуг с фильтрами
 - `catalog/service/index.html` + `catalog/service/service.js` — страница услуги с отзывами
+- `cabinet/index.html` + `cabinet/cabinet.js` — личный кабинет клиента (dashboard + профиль/заказы/бонусы/избранное/настройки)
+- `account/index.html` + `account/*/index.html` — alias-маршруты клиентского кабинета
 - `api/catalog/services.js` — публичный API каталога услуг (фильтры + пагинация)
 - `api/catalog/service-by-id.js` — API карточки услуги
 - `api/catalog/service-reviews.js` — API отзывов услуги
@@ -126,6 +128,24 @@ API:
 - `PATCH /api/partner/services/:id`
 
 В MVP текущий партнёр определяется по `partnerId` (query/header), с fallback demo-id.
+
+## Личный кабинет клиента (UI-каркас)
+
+Маршрут:
+
+- `/cabinet/` (основной)
+- alias: `/account/`
+
+Разделы (через `?section=`):
+
+- `overview` — обзор (дашборд)
+- `profile` — профиль клиента + редактирование
+- `orders` — заказы и статусы
+- `bonuses` — бонусный баланс и история
+- `favorites` — избранные мастера/компании/магазины/товары/услуги
+- `settings` — настройки аккаунта
+
+Текущая реализация не меняет backend/API и использует безопасные fallback-данные в `localStorage`.
 
 ## Публикация на GitHub Pages
 

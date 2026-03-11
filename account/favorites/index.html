@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>RemCard — Избранное клиента</title>
+    <meta name="description" content="Переадресация в раздел избранного личного кабинета RemCard." />
+    <script>
+      (() => {
+        const target = new URL("../../cabinet/", window.location.href);
+        const params = new URLSearchParams(window.location.search || "");
+        params.set("section", "favorites");
+        target.search = `?${params.toString()}`;
+        const next = `${target.pathname}${target.search}${window.location.hash || ""}`;
+        window.location.replace(next);
+      })();
+    </script>
+  </head>
+  <body>
+    <p>Переходим в избранное… <a href="../../cabinet/?section=favorites">Открыть избранное</a></p>
+  </body>
+</html>

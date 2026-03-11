@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>RemCard — Настройки клиента</title>
+    <meta name="description" content="Переадресация в раздел настроек личного кабинета RemCard." />
+    <script>
+      (() => {
+        const target = new URL("../../cabinet/", window.location.href);
+        const params = new URLSearchParams(window.location.search || "");
+        params.set("section", "settings");
+        target.search = `?${params.toString()}`;
+        const next = `${target.pathname}${target.search}${window.location.hash || ""}`;
+        window.location.replace(next);
+      })();
+    </script>
+  </head>
+  <body>
+    <p>Переходим в настройки… <a href="../../cabinet/?section=settings">Открыть настройки</a></p>
+  </body>
+</html>

@@ -47,23 +47,68 @@
           <header class="section-header">
             <h1>Навигатор ремонта RemCard</h1>
             <p class="section-subtitle">
-              Помогаем пройти ремонт по шагам — от планирования до мебели. Простые правила, ошибки и подсказки.
+              Навигатор помогает понять этап ремонта, следующий шаг, нужных специалистов, товары и примерный бюджет.
             </p>
             <div class="navigator-hero-actions">
-              <button class="btn btn-primary" id="navigator-start-btn" type="button">Начать с моего этапа</button>
+              <button class="btn btn-primary" id="navigator-start-btn" type="button">Выбрать этап</button>
+              <a class="btn btn-ghost" href="../request/">Оставить заявку</a>
             </div>
           </header>
+
+          <article class="card navigator-hero-route-card">
+            <div class="navigator-step-label">Маршрут ремонта</div>
+            <div class="navigator-hero-route" id="navigator-hero-route" aria-label="Этапы ремонта">
+              <button class="navigator-hero-route-step is-active" type="button" data-stage-id="planning">План</button>
+              <span class="navigator-hero-route-sep" aria-hidden="true">→</span>
+              <button class="navigator-hero-route-step" type="button" data-stage-id="rough">Черновые</button>
+              <span class="navigator-hero-route-sep" aria-hidden="true">→</span>
+              <button class="navigator-hero-route-step" type="button" data-stage-id="engineering">Инженерия</button>
+              <span class="navigator-hero-route-sep" aria-hidden="true">→</span>
+              <button class="navigator-hero-route-step" type="button" data-stage-id="finishing">Чистовые</button>
+              <span class="navigator-hero-route-sep" aria-hidden="true">→</span>
+              <button class="navigator-hero-route-step" type="button" data-stage-id="furniture">Мебель</button>
+            </div>
+          </article>
+
+          <div class="grid cards-4 navigator-value-grid" aria-label="Ценность навигатора">
+            <article class="card navigator-value-card">
+              <h3>Понимание этапа ремонта</h3>
+              <p>Сразу видно, где вы сейчас и что делать дальше.</p>
+            </article>
+            <article class="card navigator-value-card">
+              <h3>Список нужных работ</h3>
+              <p>Короткий чек-лист задач без перегруза.</p>
+            </article>
+            <article class="card navigator-value-card">
+              <h3>Подбор специалистов и товаров</h3>
+              <p>Переход в каталог уже с выбранным этапом.</p>
+            </article>
+            <article class="card navigator-value-card">
+              <h3>Ориентир по срокам и бюджету</h3>
+              <p>Понимание диапазона затрат и времени.</p>
+            </article>
+          </div>
+
+          <article class="card navigator-quick-entry" aria-label="Быстрые сценарии входа">
+            <div class="navigator-step-label">Быстрые точки входа</div>
+            <div class="navigator-quick-entry-row" id="navigator-quick-entry">
+              <button class="navigator-quick-chip" type="button" data-nav-preset="start">Я только начинаю</button>
+              <button class="navigator-quick-chip" type="button" data-nav-preset="rough">Я уже делаю черновые работы</button>
+              <button class="navigator-quick-chip" type="button" data-nav-preset="specialist">Мне нужен специалист</button>
+              <button class="navigator-quick-chip" type="button" data-nav-preset="budget">Хочу понять бюджет</button>
+            </div>
+          </article>
 
           <div class="grid two-col navigator-workspace">
             <article class="card navigator-timeline-card" id="navigator-map">
               <h2>Карта этапов ремонта</h2>
-              <p class="muted">Нажмите на этап или переход между этапами — справа сразу обновится маршрут и действия.</p>
+              <p class="muted">Нажмите на этап или переход между этапами — справа сразу обновятся задачи, специалисты, товары и действия.</p>
               <div class="navigator-timeline" id="navigator-timeline" role="tablist" aria-label="Этапы ремонта"></div>
               <div class="navigator-map-actions">
                 <p class="navigator-map-selected-stage" id="navigator-map-selected-stage">Выбран этап: Планирование</p>
                 <div class="navigator-map-actions-row">
-                  <a class="btn btn-primary" id="navigator-map-service-link" href="../catalog/?stage=PLANNING&itemKind=service">Найти услуги по этапу</a>
-                  <a class="btn btn-ghost" id="navigator-map-product-link" href="../catalog/?stage=PLANNING&itemKind=product">Найти товары по этапу</a>
+                  <a class="btn btn-primary" id="navigator-map-service-link" href="../catalog/?stage=PLANNING&itemKind=service">Специалисты и услуги</a>
+                  <a class="btn btn-ghost" id="navigator-map-product-link" href="../catalog/?stage=PLANNING&itemKind=product">Товары и материалы</a>
                 </div>
               </div>
             </article>
@@ -106,6 +151,25 @@
                 </div>
               </div>
 
+              <div class="navigator-stage-content-grid">
+                <div class="navigator-step-group">
+                  <div class="navigator-step-label">Что делается на этом этапе</div>
+                  <ul class="list navigator-step-list" id="stage-what-list-inline"></ul>
+                </div>
+                <div class="navigator-step-group">
+                  <div class="navigator-step-label">Какие специалисты нужны</div>
+                  <div class="navigator-tag-list" id="stage-specialists-chips"></div>
+                </div>
+                <div class="navigator-step-group">
+                  <div class="navigator-step-label">Какие товары и услуги могут понадобиться</div>
+                  <div class="navigator-tag-list" id="stage-goods-chips"></div>
+                </div>
+                <div class="navigator-step-group">
+                  <div class="navigator-step-label">Частые ошибки</div>
+                  <ul class="list navigator-step-list" id="stage-mistakes-list-inline"></ul>
+                </div>
+              </div>
+
               <div class="navigator-step-group navigator-estimate-group" id="stage-estimate-group">
                 <div class="navigator-step-label" id="stage-estimate-label">Сроки и бюджет перехода</div>
                 <div class="navigator-estimate-transition" id="stage-estimate-transition">Планирование → Черновые</div>
@@ -123,11 +187,25 @@
                 <p class="muted navigator-estimate-note" id="stage-estimate-note"></p>
               </div>
 
+              <div class="navigator-route-panel">
+                <div class="navigator-step-label">Логика маршрута</div>
+                <div class="navigator-route-meta">
+                  <span>Предыдущий: <strong id="stage-prev-label">—</strong></span>
+                  <span>Текущий: <strong id="stage-current-label">Планирование</strong></span>
+                  <span>Следующий: <strong id="stage-next-label">Черновые</strong></span>
+                </div>
+                <p class="muted navigator-route-hint" id="stage-next-hint">Обычно после этапа идёт переход к следующему шагу ремонта.</p>
+                <div class="navigator-route-actions">
+                  <button class="btn btn-ghost" id="stage-prev-btn" type="button">Предыдущий этап</button>
+                  <button class="btn btn-ghost" id="stage-next-btn" type="button">Следующий этап</button>
+                </div>
+              </div>
+
               <div class="form-actions">
-                <button class="btn btn-ghost" id="stage-next-btn" type="button">Следующий этап</button>
-                <a class="btn btn-primary" id="stage-apply-btn" href="#navigator-form-card">Оставить заявку в RemCard по этому этапу</a>
-                <a class="btn btn-ghost" id="stage-knowledge-link" href="#stage-details">Подробнее про этот этап</a>
-                <a class="btn btn-ghost" id="stage-services-link" href="../catalog/?stage=PLANNING">Посмотреть услуги и товары по этому этапу</a>
+                <a class="btn btn-primary" id="stage-services-link" href="../catalog/?stage=PLANNING">Посмотреть специалистов и товары для этого этапа</a>
+                <a class="btn btn-ghost" id="stage-request-link" href="../request/?stage=planning">Оставить заявку по этому этапу</a>
+                <a class="btn btn-ghost" id="stage-apply-btn" href="#navigator-form-card">Продолжить маршрут</a>
+                <a class="btn btn-ghost" id="stage-knowledge-link" href="#stage-details">Подробный чек-лист этапа</a>
               </div>
 
               <div class="navigator-next-stages" id="navigator-next-stages">
