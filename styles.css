@@ -6088,30 +6088,107 @@ body.navigator-stage-modal-open {
   }
 }
 
-.navigator-v1-route-title {
+.navigator-v1-routecard {
+  border-color: color-mix(in srgb, var(--red) 34%, var(--border));
+}
+
+.navigator-v1-routecard-head {
+  margin-bottom: 12px;
+}
+
+.navigator-v1-routecard-kicker {
+  margin: 0 0 6px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: color-mix(in srgb, var(--muted) 74%, #fff 26%);
+}
+
+.navigator-v1-routecard-grid {
+  display: grid;
+  gap: 9px;
+}
+
+.navigator-v1-routecard-item {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  padding: 11px 12px;
+}
+
+.navigator-v1-routecard-item h3 {
+  margin: 4px 0;
+  font-size: 16px;
+}
+
+.navigator-v1-routecard-item p {
   margin: 0;
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.navigator-v1-route-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 14px;
-  margin-top: 12px;
   color: var(--muted);
-  font-size: 14px;
+  font-size: 13px;
+  line-height: 1.35;
 }
 
-.navigator-v1-route-actions {
+.navigator-v1-routecard-item.is-current {
+  border-color: color-mix(in srgb, var(--red) 66%, var(--border));
+  background: linear-gradient(165deg, color-mix(in srgb, var(--surface) 78%, var(--red) 22%), color-mix(in srgb, var(--surface-2) 81%, var(--red) 19%));
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--red) 26%, transparent);
+}
+
+.navigator-v1-routecard-item.is-current p {
+  color: color-mix(in srgb, #f8fafc 78%, var(--muted) 22%);
+}
+
+.navigator-v1-routecard-item.is-secondary {
+  border-color: color-mix(in srgb, var(--border) 88%, #fff 12%);
+  background: color-mix(in srgb, var(--surface) 92%, #fff 8%);
+}
+
+.navigator-v1-routecard-label {
+  display: inline-flex;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--muted) 76%, #fff 24%);
+}
+
+.navigator-v1-routecard-hint {
+  margin: 11px 0 0;
+  color: var(--muted);
+}
+
+.navigator-v1-routecard-actions {
+  margin-top: 12px;
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 14px;
 }
 
 .navigator-v1-list {
   margin: 0;
+}
+
+.navigator-v1-actions-card {
+  border-color: color-mix(in srgb, var(--red) 24%, var(--border));
+}
+
+.navigator-v1-actions-head {
+  margin-bottom: 8px;
+}
+
+.navigator-v1-actions-list li {
+  margin-bottom: 6px;
+  line-height: 1.35;
+}
+
+.navigator-v1-actions-insight {
+  margin-top: 10px;
+  border: 1px solid color-mix(in srgb, var(--red) 32%, var(--border));
+  background: color-mix(in srgb, var(--surface-2) 85%, var(--red) 15%);
+  border-radius: 10px;
+  padding: 9px 10px;
+  font-size: 13px;
+  color: var(--text);
 }
 
 .navigator-v1-tabs {
@@ -6168,13 +6245,27 @@ body.navigator-stage-modal-open {
 }
 
 @media (max-width: 760px) {
-  .navigator-v1-route-actions .btn,
+  .navigator-v1-routecard-actions .btn,
   .navigator-v1-cta-actions .btn {
     width: 100%;
   }
 
+  .navigator-v1-routecard-item h3 {
+    font-size: 15px;
+  }
+
   .navigator-v1-metrics {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 900px) {
+  .navigator-v1-routecard-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .navigator-v1-routecard-item.is-current {
+    grid-column: 1 / -1;
   }
 }
 

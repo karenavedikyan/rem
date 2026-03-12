@@ -6,6 +6,7 @@
  * @property {string} slug
  * @property {string} title
  * @property {string} shortDescription
+ * @property {string} [keyInsight]
  * @property {string} mapLabel
  * @property {string} icon
  * @property {NavigatorStageId | null} previousStage
@@ -26,6 +27,7 @@ export const navigatorStages = [
     slug: "planning",
     title: "Планирование и замеры",
     shortDescription: "Фиксируем задачи ремонта, бюджетные рамки и последовательность шагов.",
+    keyInsight: "Чем точнее замеры и этапность, тем меньше переделок в середине ремонта.",
     mapLabel: "Планирование",
     icon: "📐",
     previousStage: null,
@@ -43,6 +45,7 @@ export const navigatorStages = [
     slug: "rough",
     title: "Черновые работы",
     shortDescription: "Готовим основание: демонтаж, выравнивание стен и пола, перегородки.",
+    keyInsight: "Качество черновой базы напрямую определяет итог чистовой отделки.",
     mapLabel: "Черновые",
     icon: "🧱",
     previousStage: "planning",
@@ -60,6 +63,7 @@ export const navigatorStages = [
     slug: "engineering",
     title: "Инженерные работы",
     shortDescription: "Прокладываем электрику, сантехнику и ключевые инженерные коммуникации.",
+    keyInsight: "Ошибки в инженерии самые дорогие после завершения отделки.",
     mapLabel: "Инженерия",
     icon: "⚡",
     previousStage: "rough",
@@ -77,6 +81,7 @@ export const navigatorStages = [
     slug: "finishing",
     title: "Чистовая отделка",
     shortDescription: "Формируем итоговый вид: стены, полы, потолки, плитка и двери.",
+    keyInsight: "Лучше потратить день на контроль образцов, чем неделю на переделки.",
     mapLabel: "Чистовая",
     icon: "🎨",
     previousStage: "engineering",
@@ -94,6 +99,7 @@ export const navigatorStages = [
     slug: "furnishing",
     title: "Мебель, свет и декор",
     shortDescription: "Финальная комплектация: мебель, свет, техника и подготовка к въезду.",
+    keyInsight: "Перед въездом проверьте доступ к сервисным узлам и все точки подключения.",
     mapLabel: "Мебель и декор",
     icon: "🛋️",
     previousStage: "finishing",

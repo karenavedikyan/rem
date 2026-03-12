@@ -130,6 +130,12 @@ root.addEventListener("click", (event) => {
     if (action === "next" && currentStage.nextStage) {
       setSelectedStage(currentStage.nextStage);
     }
+    if (action === "checklist") {
+      const actionsBlock = document.getElementById("navigator-actions");
+      if (actionsBlock) {
+        actionsBlock.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
     return;
   }
 
