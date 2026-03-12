@@ -6143,8 +6143,12 @@ body.navigator-stage-modal-open {
   border-color: color-mix(in srgb, var(--red) 20%, var(--border));
 }
 
+.navigator-v1-routecard-minimal {
+  border-color: color-mix(in srgb, var(--red) 14%, var(--border));
+}
+
 .navigator-v1-routecard-head {
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .navigator-v1-routecard-kicker {
@@ -6208,8 +6212,19 @@ body.navigator-stage-modal-open {
   color: var(--muted);
 }
 
+.navigator-v1-routecard-compact-stage {
+  margin: 0;
+  color: var(--muted);
+}
+
+.navigator-v1-routecard-next {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
 .navigator-v1-routecard-actions {
-  margin-top: 12px;
+  margin-top: 10px;
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
