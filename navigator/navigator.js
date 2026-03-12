@@ -17,9 +17,10 @@ if (!root) {
 const STORAGE_KEY = "remcard_navigator_stage_v1";
 const DEFAULT_STAGE_ID = "rough";
 const RESOURCE_TABS = new Set(["specialists", "materials"]);
+const DEFAULT_RESOURCE_PRESET_IDS = Object.freeze(["all"]);
 const DEFAULT_RESOURCE_PRESETS = Object.freeze({
-  specialists: "all",
-  materials: "all"
+  specialists: [...DEFAULT_RESOURCE_PRESET_IDS],
+  materials: [...DEFAULT_RESOURCE_PRESET_IDS]
 });
 
 const state = {
@@ -97,11 +98,30 @@ function setActiveResourceTab(tab) {
 
 function setActiveResourcePreset(tab, presetId) {
   if (!RESOURCE_TABS.has(tab)) return;
+  const current = Array.isArray(state.resourcePresets[tab]) ? state.resourcePresets[tab] : [...DEFAULT_RESOURCE_PRESET_IDS];
+  const next = toggleResourcePreset(current, String(presetId || "all"));
   state.resourcePresets = {
     ...state.resourcePresets,
-    [tab]: String(presetId || "all")
+    [tab]: next
   };
   render();
+}
+
+function toggleResourcePreset(currentPresetIds, presetId) {
+  const normalized = Array.from(new Set((Array.isArray(currentPresetIds) ? currentPresetIds : []).map((id) => String(id || "")))).filter(Boolean);
+  const hasPreset = normalized.includes(presetId);
+
+  if (presetId === "all") return [...DEFAULT_RESOURCE_PRESET_IDS];
+
+  if (presetId.startsWith("query-")) {
+    const withoutQuery = normalized.filter((id) => id !== "all" && !id.startsWith("query-"));
+    if (!hasPreset) withoutQuery.push(presetId);
+    return withoutQuery.length ? withoutQuery : [...DEFAULT_RESOURCE_PRESET_IDS];
+  }
+
+  const withoutTarget = normalized.filter((id) => id !== "all" && id !== presetId);
+  if (!hasPreset) withoutTarget.push(presetId);
+  return withoutTarget.length ? withoutTarget : [...DEFAULT_RESOURCE_PRESET_IDS];
 }
 
 function render() {
@@ -118,7 +138,7 @@ function render() {
       ${NavigatorResourcesTabs({
         stage,
         activeTab: state.activeResourceTab,
-        activePresetId: state.resourcePresets[state.activeResourceTab] || "all"
+        activePresetIds: state.resourcePresets[state.activeResourceTab] || [...DEFAULT_RESOURCE_PRESET_IDS]
       })}
       ${NavigatorBudgetBlock({ stage })}
       ${NavigatorAccordionDetails({ stage })}

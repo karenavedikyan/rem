@@ -4,24 +4,46 @@ const TAB_ITEMS = [
 ];
 
 const MAX_DYNAMIC_PRESETS = 4;
+const DEFAULT_PRESET_ID = "all";
 
 function buildPresetOptions(stage, tabId) {
   const source = tabId === "materials" ? stage.materials : stage.specialists;
   const dynamicPresets = (Array.isArray(source) ? source : []).slice(0, MAX_DYNAMIC_PRESETS).map((label, index) => ({
     id: `query-${index}`,
     label,
+    type: "query",
     params: { q: label }
   }));
 
   const modePreset =
     tabId === "materials"
-      ? { id: "bonus-only", label: "С бонусами", params: { bonus: "true" } }
-      : { id: "promo-only", label: "С акциями", params: { promo: "true" } };
+      ? { id: "bonus-only", label: "С бонусами", type: "mode", params: { bonus: "true" } }
+      : { id: "promo-only", label: "С акциями", type: "mode", params: { promo: "true" } };
 
-  return [{ id: "all", label: "Все предложения", params: null }, ...dynamicPresets, modePreset];
+  return [{ id: DEFAULT_PRESET_ID, label: "Все предложения", type: "all", params: null }, ...dynamicPresets, modePreset];
 }
 
-function buildCatalogParams(stageId, itemKind, preset) {
+function normalizeSelectedPresetIds(activePresetIds, presetOptions) {
+  const available = new Set(presetOptions.map((preset) => preset.id));
+  const raw = Array.isArray(activePresetIds) ? activePresetIds : [];
+  const normalized = [];
+
+  raw.forEach((id) => {
+    const value = String(id || "");
+    if (!value || !available.has(value)) return;
+    if (normalized.includes(value)) return;
+    normalized.push(value);
+  });
+
+  if (!normalized.length) return [DEFAULT_PRESET_ID];
+  if (normalized.length > 1 && normalized.includes(DEFAULT_PRESET_ID)) {
+    return normalized.filter((id) => id !== DEFAULT_PRESET_ID);
+  }
+
+  return normalized;
+}
+
+function buildCatalogParams(stageId, itemKind, selectedPresets) {
   const stageMap = {
     planning: "PLANNING",
     rough: "ROUGH",
@@ -35,22 +57,26 @@ function buildCatalogParams(stageId, itemKind, preset) {
     itemKind
   });
 
-  if (preset && preset.params) {
+  selectedPresets.forEach((preset) => {
+    if (!preset || !preset.params) return;
     Object.entries(preset.params).forEach(([key, value]) => {
-      if (value) params.set(key, value);
+      if (value) params.set(String(key), String(value));
     });
-  }
+  });
 
   return params;
 }
 
-export function NavigatorResourcesTabs({ stage, activeTab, activePresetId = "all" }) {
+export function NavigatorResourcesTabs({ stage, activeTab, activePresetIds = [DEFAULT_PRESET_ID] }) {
   const normalizedTab = TAB_ITEMS.some((tab) => tab.id === activeTab) ? activeTab : "specialists";
   const activeTabMeta = TAB_ITEMS.find((tab) => tab.id === normalizedTab) || TAB_ITEMS[0];
   const presetOptions = buildPresetOptions(stage, normalizedTab);
-  const normalizedPresetId = presetOptions.some((preset) => preset.id === activePresetId) ? activePresetId : "all";
-  const selectedPreset = presetOptions.find((preset) => preset.id === normalizedPresetId) || presetOptions[0];
-  const params = buildCatalogParams(stage.id, activeTabMeta.kind, selectedPreset);
+  const normalizedPresetIds = normalizeSelectedPresetIds(activePresetIds, presetOptions);
+  const selectedPresets = normalizedPresetIds
+    .map((presetId) => presetOptions.find((preset) => preset.id === presetId))
+    .filter(Boolean);
+  const params = buildCatalogParams(stage.id, activeTabMeta.kind, selectedPresets);
+  const selectedLabel = selectedPresets.map((preset) => preset.label).join(" + ");
 
   const tabs = TAB_ITEMS.map((tab) => {
     const isActive = tab.id === normalizedTab;
@@ -68,12 +94,13 @@ export function NavigatorResourcesTabs({ stage, activeTab, activePresetId = "all
 
   const filtersContent = presetOptions
     .map((preset) => {
-      const isActive = preset.id === normalizedPresetId;
+      const isActive = normalizedPresetIds.includes(preset.id);
       return `
         <button
           class="navigator-v1-resource-chip navigator-v1-resource-filter ${isActive ? "is-active" : ""}"
           type="button"
           data-resource-filter="${preset.id}"
+          data-resource-filter-type="${preset.type}"
           aria-pressed="${isActive ? "true" : "false"}"
         >
           ${preset.label}
@@ -90,13 +117,13 @@ export function NavigatorResourcesTabs({ stage, activeTab, activePresetId = "all
       <div class="navigator-v1-tabs" role="tablist" aria-label="Ресурсы этапа">
         ${tabs}
       </div>
-      <p class="navigator-v1-resource-filters-title">Выберите быстрый фильтр перед поиском</p>
+      <p class="navigator-v1-resource-filters-title">Выберите быстрые фильтры перед поиском</p>
       <div class="navigator-v1-resource-chips" role="group" aria-label="Предустановленные фильтры">
         ${filtersContent}
       </div>
       <div class="navigator-v1-resource-foot">
         <p class="navigator-v1-resource-selected">
-          Сейчас: <strong>${selectedPreset.label}</strong>
+          Сейчас: <strong>${selectedLabel}</strong>
         </p>
         <a class="navigator-v1-resource-link" href="../catalog/?${params.toString()}">${activeTabMeta.cta}</a>
       </div>
