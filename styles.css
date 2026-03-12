@@ -5829,6 +5829,206 @@ body.navigator-stage-modal-open {
   }
 }
 
+/* Navigator v1 foundation */
+.navigator-v1-section {
+  padding-top: 26px;
+}
+
+.navigator-v1-layout {
+  display: grid;
+  gap: 14px;
+}
+
+.navigator-v1-card {
+  border: 1px solid color-mix(in srgb, var(--red) 16%, var(--border));
+  background: linear-gradient(165deg, color-mix(in srgb, var(--surface) 94%, #ffffff 6%), var(--surface-2));
+}
+
+.navigator-v1-hero h1 {
+  margin-bottom: 8px;
+}
+
+.navigator-v1-eyebrow {
+  margin: 0 0 8px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--muted) 80%, #fff 20%);
+}
+
+.navigator-v1-current-stage {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  color: var(--muted);
+}
+
+.navigator-v1-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: var(--red);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--red) 15%, transparent);
+}
+
+.navigator-v1-block-head {
+  margin-bottom: 10px;
+}
+
+.navigator-v1-block-head h2 {
+  margin: 0 0 4px;
+  font-size: clamp(20px, 3vw, 26px);
+}
+
+.navigator-v1-map {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.navigator-v1-map-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.navigator-v1-map-node {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  min-width: 110px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.navigator-v1-map-node:hover {
+  border-color: color-mix(in srgb, var(--red) 45%, var(--border));
+  transform: translateY(-1px);
+}
+
+.navigator-v1-map-node.is-active {
+  border-color: color-mix(in srgb, var(--red) 65%, var(--border));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--red) 22%, transparent);
+  background: color-mix(in srgb, var(--surface) 82%, var(--red) 18%);
+}
+
+.navigator-v1-map-icon {
+  font-size: 18px;
+}
+
+.navigator-v1-map-label {
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.navigator-v1-map-connector {
+  width: 18px;
+  height: 2px;
+  background: color-mix(in srgb, var(--red) 28%, var(--border));
+  border-radius: 2px;
+}
+
+.navigator-v1-route-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.navigator-v1-route-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.navigator-v1-route-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.navigator-v1-list {
+  margin: 0;
+}
+
+.navigator-v1-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.navigator-v1-tab {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 7px 12px;
+  font-weight: 700;
+  font-size: 12px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.navigator-v1-tab.is-active {
+  border-color: color-mix(in srgb, var(--red) 60%, var(--border));
+  background: color-mix(in srgb, var(--surface) 84%, var(--red) 16%);
+}
+
+.navigator-v1-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.navigator-v1-metric {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  padding: 12px;
+  display: grid;
+  gap: 4px;
+}
+
+.navigator-v1-metric-label {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.navigator-v1-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+@media (max-width: 760px) {
+  .navigator-v1-route-actions .btn,
+  .navigator-v1-cta-actions .btn {
+    width: 100%;
+  }
+
+  .navigator-v1-metrics {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
