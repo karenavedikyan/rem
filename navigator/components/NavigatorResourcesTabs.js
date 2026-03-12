@@ -3,7 +3,25 @@ const TAB_ITEMS = [
   { id: "materials", label: "Товары и материалы", cta: "Найти материалы", kind: "product" }
 ];
 
-export function NavigatorResourcesTabs({ stage, activeTab }) {
+const MAX_DYNAMIC_PRESETS = 4;
+
+function buildPresetOptions(stage, tabId) {
+  const source = tabId === "materials" ? stage.materials : stage.specialists;
+  const dynamicPresets = (Array.isArray(source) ? source : []).slice(0, MAX_DYNAMIC_PRESETS).map((label, index) => ({
+    id: `query-${index}`,
+    label,
+    params: { q: label }
+  }));
+
+  const modePreset =
+    tabId === "materials"
+      ? { id: "bonus-only", label: "С бонусами", params: { bonus: "true" } }
+      : { id: "promo-only", label: "С акциями", params: { promo: "true" } };
+
+  return [{ id: "all", label: "Все предложения", params: null }, ...dynamicPresets, modePreset];
+}
+
+function buildCatalogParams(stageId, itemKind, preset) {
   const stageMap = {
     planning: "PLANNING",
     rough: "ROUGH",
@@ -12,12 +30,27 @@ export function NavigatorResourcesTabs({ stage, activeTab }) {
     furnishing: "FURNITURE"
   };
 
+  const params = new URLSearchParams({
+    stage: stageMap[stageId] || "ROUGH",
+    itemKind
+  });
+
+  if (preset && preset.params) {
+    Object.entries(preset.params).forEach(([key, value]) => {
+      if (value) params.set(key, value);
+    });
+  }
+
+  return params;
+}
+
+export function NavigatorResourcesTabs({ stage, activeTab, activePresetId = "all" }) {
   const normalizedTab = TAB_ITEMS.some((tab) => tab.id === activeTab) ? activeTab : "specialists";
   const activeTabMeta = TAB_ITEMS.find((tab) => tab.id === normalizedTab) || TAB_ITEMS[0];
-  const params = new URLSearchParams({
-    stage: stageMap[stage.id] || "ROUGH",
-    itemKind: activeTabMeta.kind
-  });
+  const presetOptions = buildPresetOptions(stage, normalizedTab);
+  const normalizedPresetId = presetOptions.some((preset) => preset.id === activePresetId) ? activePresetId : "all";
+  const selectedPreset = presetOptions.find((preset) => preset.id === normalizedPresetId) || presetOptions[0];
+  const params = buildCatalogParams(stage.id, activeTabMeta.kind, selectedPreset);
 
   const tabs = TAB_ITEMS.map((tab) => {
     const isActive = tab.id === normalizedTab;
@@ -33,15 +66,21 @@ export function NavigatorResourcesTabs({ stage, activeTab }) {
     `;
   }).join("");
 
-  const sourceMap = {
-    specialists: stage.specialists,
-    materials: stage.materials
-  };
-
-  const currentList = (sourceMap[normalizedTab] || sourceMap.specialists || []).slice(0, 6);
-  const content = currentList.length
-    ? currentList.map((item) => `<span class="navigator-v1-resource-chip">${item}</span>`).join("")
-    : '<span class="navigator-v1-resource-chip is-muted">Список скоро появится</span>';
+  const filtersContent = presetOptions
+    .map((preset) => {
+      const isActive = preset.id === normalizedPresetId;
+      return `
+        <button
+          class="navigator-v1-resource-chip navigator-v1-resource-filter ${isActive ? "is-active" : ""}"
+          type="button"
+          data-resource-filter="${preset.id}"
+          aria-pressed="${isActive ? "true" : "false"}"
+        >
+          ${preset.label}
+        </button>
+      `;
+    })
+    .join("");
 
   return `
     <section class="card navigator-v1-card navigator-v1-resources-card">
@@ -51,10 +90,14 @@ export function NavigatorResourcesTabs({ stage, activeTab }) {
       <div class="navigator-v1-tabs" role="tablist" aria-label="Ресурсы этапа">
         ${tabs}
       </div>
-      <div class="navigator-v1-resource-chips" aria-live="polite">
-        ${content}
+      <p class="navigator-v1-resource-filters-title">Выберите быстрый фильтр перед поиском</p>
+      <div class="navigator-v1-resource-chips" role="group" aria-label="Предустановленные фильтры">
+        ${filtersContent}
       </div>
       <div class="navigator-v1-resource-foot">
+        <p class="navigator-v1-resource-selected">
+          Сейчас: <strong>${selectedPreset.label}</strong>
+        </p>
         <a class="navigator-v1-resource-link" href="../catalog/?${params.toString()}">${activeTabMeta.cta}</a>
       </div>
     </section>

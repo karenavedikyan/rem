@@ -6360,6 +6360,13 @@ body.navigator-stage-modal-open {
   gap: 8px;
 }
 
+.navigator-v1-resource-filters-title {
+  margin: 0 0 9px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
 .navigator-v1-resource-chip {
   display: inline-flex;
   align-items: center;
@@ -6378,8 +6385,40 @@ body.navigator-stage-modal-open {
   color: var(--muted);
 }
 
+.navigator-v1-resource-filter {
+  appearance: none;
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.navigator-v1-resource-filter:hover,
+.navigator-v1-resource-filter:focus-visible {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--red) 36%, var(--border));
+}
+
+.navigator-v1-resource-filter.is-active {
+  border-color: color-mix(in srgb, var(--red) 52%, var(--border));
+  background: color-mix(in srgb, var(--surface-2) 86%, var(--red) 14%);
+}
+
 .navigator-v1-resource-foot {
+  display: grid;
+  gap: 8px;
   margin-top: 12px;
+}
+
+.navigator-v1-resource-selected {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.navigator-v1-resource-selected strong {
+  color: var(--text);
+  font-weight: 700;
 }
 
 .navigator-v1-resource-link {

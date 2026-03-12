@@ -17,10 +17,15 @@ if (!root) {
 const STORAGE_KEY = "remcard_navigator_stage_v1";
 const DEFAULT_STAGE_ID = "rough";
 const RESOURCE_TABS = new Set(["specialists", "materials"]);
+const DEFAULT_RESOURCE_PRESETS = Object.freeze({
+  specialists: "all",
+  materials: "all"
+});
 
 const state = {
   selectedStageId: getInitialStageId(),
-  activeResourceTab: "specialists"
+  activeResourceTab: "specialists",
+  resourcePresets: { ...DEFAULT_RESOURCE_PRESETS }
 };
 
 function normalizeStageId(rawValue) {
@@ -69,6 +74,7 @@ function getRequestHref(stage) {
 function setSelectedStage(stageId) {
   state.selectedStageId = normalizeStageId(stageId);
   state.activeResourceTab = "specialists";
+  state.resourcePresets = { ...DEFAULT_RESOURCE_PRESETS };
 
   try {
     localStorage.setItem(STORAGE_KEY, state.selectedStageId);
@@ -89,6 +95,15 @@ function setActiveResourceTab(tab) {
   render();
 }
 
+function setActiveResourcePreset(tab, presetId) {
+  if (!RESOURCE_TABS.has(tab)) return;
+  state.resourcePresets = {
+    ...state.resourcePresets,
+    [tab]: String(presetId || "all")
+  };
+  render();
+}
+
 function render() {
   const stage = getStageById(state.selectedStageId);
   const previousStage = stage.previousStage ? getStageById(stage.previousStage) : null;
@@ -100,7 +115,11 @@ function render() {
       ${NavigatorMap({ stages: navigatorStages, selectedStageId: stage.id })}
       ${NavigatorRouteCard({ stage, previousStage, nextStage })}
       ${NavigatorActions({ stage })}
-      ${NavigatorResourcesTabs({ stage, activeTab: state.activeResourceTab })}
+      ${NavigatorResourcesTabs({
+        stage,
+        activeTab: state.activeResourceTab,
+        activePresetId: state.resourcePresets[state.activeResourceTab] || "all"
+      })}
       ${NavigatorBudgetBlock({ stage })}
       ${NavigatorAccordionDetails({ stage })}
       ${NavigatorLeadCTA({
@@ -144,6 +163,12 @@ root.addEventListener("click", (event) => {
   const resourceTab = target.closest("[data-resource-tab]");
   if (resourceTab) {
     setActiveResourceTab(resourceTab.getAttribute("data-resource-tab"));
+    return;
+  }
+
+  const resourceFilter = target.closest("[data-resource-filter]");
+  if (resourceFilter) {
+    setActiveResourcePreset(state.activeResourceTab, resourceFilter.getAttribute("data-resource-filter"));
   }
 });
 
