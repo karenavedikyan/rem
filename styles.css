@@ -5906,25 +5906,17 @@ body.navigator-stage-modal-open {
 }
 
 .navigator-v1-map {
-  display: flex;
-  align-items: center;
+  display: grid;
   gap: 0;
-  overflow-x: auto;
-  overflow-y: hidden;
   list-style: none;
   margin: 0;
-  padding: 4px 2px 8px;
-  padding-bottom: 4px;
-  -webkit-overflow-scrolling: touch;
-  scroll-snap-type: x mandatory;
-  overscroll-behavior-x: contain;
+  padding: 2px 0 4px;
 }
 
 .navigator-v1-route-step {
-  display: inline-flex;
-  align-items: center;
-  flex: 0 0 auto;
-  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 }
 
 .navigator-v1-route-node {
@@ -5932,8 +5924,8 @@ body.navigator-stage-modal-open {
   flex-direction: column;
   align-items: stretch;
   gap: 8px;
-  width: min(70vw, 212px);
-  min-height: 100px;
+  width: 100%;
+  min-height: 94px;
   padding: 11px;
   border-radius: 12px;
   border: 1px solid color-mix(in srgb, var(--border) 88%, #fff 12%);
@@ -6061,27 +6053,29 @@ body.navigator-stage-modal-open {
 }
 
 .navigator-v1-route-link {
-  width: 32px;
-  margin: 0 6px;
-  height: 14px;
+  width: 100%;
+  margin: 4px 0;
+  height: 20px;
   position: relative;
-  flex: 0 0 auto;
+  padding-left: 20px;
 }
 
 .navigator-v1-route-link-line {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 6px;
-  height: 2px;
+  left: 23px;
+  right: auto;
+  top: 0;
+  width: 2px;
+  height: 100%;
   border-radius: 2px;
   background: color-mix(in srgb, var(--border) 90%, #fff 10%);
 }
 
 .navigator-v1-route-link-dot {
   position: absolute;
-  right: -1px;
-  top: 3px;
+  left: 20px;
+  top: auto;
+  bottom: -1px;
   width: 8px;
   height: 8px;
   border-radius: 999px;
@@ -6105,8 +6099,17 @@ body.navigator-stage-modal-open {
 
 @media (min-width: 1040px) {
   .navigator-v1-map {
+    display: flex;
+    align-items: center;
     overflow: visible;
     justify-content: space-between;
+  }
+
+  .navigator-v1-route-step {
+    display: inline-flex;
+    align-items: center;
+    flex-direction: row;
+    flex: 0 0 auto;
   }
 
   .navigator-v1-route-node {
@@ -6116,6 +6119,23 @@ body.navigator-stage-modal-open {
   .navigator-v1-route-link {
     width: 28px;
     margin: 0 5px;
+    height: 14px;
+    padding-left: 0;
+  }
+
+  .navigator-v1-route-link-line {
+    left: 0;
+    right: 0;
+    top: 6px;
+    width: auto;
+    height: 2px;
+  }
+
+  .navigator-v1-route-link-dot {
+    left: auto;
+    right: -1px;
+    top: 3px;
+    bottom: auto;
   }
 }
 
