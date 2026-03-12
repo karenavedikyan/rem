@@ -5831,26 +5831,27 @@ body.navigator-stage-modal-open {
 
 /* Navigator v1 foundation */
 .navigator-v1-section {
-  padding-top: 26px;
+  padding-top: 20px;
 }
 
 .navigator-v1-layout {
   display: grid;
-  gap: 14px;
+  gap: 12px;
 }
 
 .navigator-v1-card {
-  border: 1px solid color-mix(in srgb, var(--red) 16%, var(--border));
-  background: linear-gradient(165deg, color-mix(in srgb, var(--surface) 94%, #ffffff 6%), var(--surface-2));
+  border: 1px solid color-mix(in srgb, var(--border) 90%, #fff 10%);
+  background: color-mix(in srgb, var(--surface) 94%, #fff 6%);
+  box-shadow: none;
 }
 
 .navigator-v1-map-card {
-  border-color: color-mix(in srgb, var(--red) 36%, var(--border));
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.32);
+  border-color: color-mix(in srgb, var(--red) 26%, var(--border));
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
 }
 
 .navigator-v1-hero h1 {
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .navigator-v1-eyebrow {
@@ -5865,7 +5866,7 @@ body.navigator-stage-modal-open {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin-top: 12px;
+  margin-top: 8px;
   color: var(--muted);
 }
 
@@ -5883,11 +5884,11 @@ body.navigator-stage-modal-open {
 
 .navigator-v1-block-head h2 {
   margin: 0 0 4px;
-  font-size: clamp(20px, 3vw, 26px);
+  font-size: clamp(19px, 2.7vw, 24px);
 }
 
 .navigator-v1-map-head {
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
 
 .navigator-v1-map-kicker {
@@ -5896,11 +5897,11 @@ body.navigator-stage-modal-open {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--red) 75%, var(--text) 25%);
+  color: color-mix(in srgb, var(--muted) 74%, #fff 26%);
 }
 
 .navigator-v1-map-hint {
-  margin: 2px 0 0;
+  margin: 0;
   color: var(--muted);
 }
 
@@ -5931,32 +5932,31 @@ body.navigator-stage-modal-open {
   flex-direction: column;
   align-items: stretch;
   gap: 8px;
-  width: min(72vw, 220px);
-  min-height: 106px;
-  padding: 12px;
-  border-radius: 14px;
+  width: min(70vw, 212px);
+  min-height: 100px;
+  padding: 11px;
+  border-radius: 12px;
   border: 1px solid color-mix(in srgb, var(--border) 88%, #fff 12%);
-  background: linear-gradient(165deg, color-mix(in srgb, var(--surface) 90%, #fff 10%), color-mix(in srgb, var(--surface-2) 88%, #fff 12%));
+  background: color-mix(in srgb, var(--surface) 95%, #fff 5%);
   color: var(--text);
   cursor: pointer;
   text-align: left;
-  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 .navigator-v1-route-node:hover {
-  border-color: color-mix(in srgb, var(--red) 55%, var(--border));
-  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--red) 44%, var(--border));
 }
 
 .navigator-v1-route-node.is-completed {
-  border-color: color-mix(in srgb, #7e8b9d 48%, var(--border) 52%);
-  background: linear-gradient(165deg, color-mix(in srgb, var(--surface) 91%, #9aa5b6 9%), color-mix(in srgb, var(--surface-2) 93%, #9aa5b6 7%));
+  border-color: color-mix(in srgb, #7e8b9d 38%, var(--border) 62%);
+  background: color-mix(in srgb, var(--surface) 91%, #94a3b8 9%);
 }
 
 .navigator-v1-route-node.is-current {
-  border-color: color-mix(in srgb, var(--red) 72%, var(--border));
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--red) 35%, transparent), 0 14px 24px rgba(0, 0, 0, 0.26);
-  background: linear-gradient(165deg, color-mix(in srgb, var(--surface) 76%, var(--red) 24%), color-mix(in srgb, var(--surface-2) 80%, var(--red) 20%));
+  border-color: color-mix(in srgb, var(--red) 58%, var(--border));
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--red) 24%, transparent);
+  background: color-mix(in srgb, var(--surface) 86%, var(--red) 14%);
 }
 
 .navigator-v1-route-node.is-upcoming {
@@ -6014,9 +6014,9 @@ body.navigator-stage-modal-open {
 .navigator-v1-route-icon {
   width: 38px;
   height: 38px;
-  border-radius: 11px;
-  border: 1px solid color-mix(in srgb, var(--border) 80%, #fff 20%);
-  background: color-mix(in srgb, var(--surface) 84%, #fff 16%);
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--border) 88%, #fff 12%);
+  background: color-mix(in srgb, var(--surface) 92%, #fff 8%);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -6030,8 +6030,8 @@ body.navigator-stage-modal-open {
 }
 
 .navigator-v1-route-link {
-  width: 38px;
-  margin: 0 8px;
+  width: 32px;
+  margin: 0 6px;
   height: 14px;
   position: relative;
   flex: 0 0 auto;
@@ -6064,7 +6064,7 @@ body.navigator-stage-modal-open {
 
 .navigator-v1-route-link.is-active .navigator-v1-route-link-line,
 .navigator-v1-route-link.is-active .navigator-v1-route-link-dot {
-  background: color-mix(in srgb, var(--red) 72%, var(--border) 28%);
+  background: color-mix(in srgb, var(--red) 58%, var(--border) 42%);
 }
 
 .navigator-v1-route-link.is-upcoming .navigator-v1-route-link-line,
@@ -6089,7 +6089,7 @@ body.navigator-stage-modal-open {
 }
 
 .navigator-v1-routecard {
-  border-color: color-mix(in srgb, var(--red) 34%, var(--border));
+  border-color: color-mix(in srgb, var(--red) 20%, var(--border));
 }
 
 .navigator-v1-routecard-head {
@@ -6112,7 +6112,7 @@ body.navigator-stage-modal-open {
 .navigator-v1-routecard-item {
   border: 1px solid var(--border);
   border-radius: 12px;
-  background: var(--surface);
+  background: color-mix(in srgb, var(--surface) 96%, #fff 4%);
   padding: 11px 12px;
 }
 
@@ -6129,13 +6129,13 @@ body.navigator-stage-modal-open {
 }
 
 .navigator-v1-routecard-item.is-current {
-  border-color: color-mix(in srgb, var(--red) 66%, var(--border));
-  background: linear-gradient(165deg, color-mix(in srgb, var(--surface) 78%, var(--red) 22%), color-mix(in srgb, var(--surface-2) 81%, var(--red) 19%));
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--red) 26%, transparent);
+  border-color: color-mix(in srgb, var(--red) 48%, var(--border));
+  background: color-mix(in srgb, var(--surface) 89%, var(--red) 11%);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--red) 18%, transparent);
 }
 
 .navigator-v1-routecard-item.is-current p {
-  color: color-mix(in srgb, #f8fafc 78%, var(--muted) 22%);
+  color: color-mix(in srgb, var(--muted) 72%, #fff 28%);
 }
 
 .navigator-v1-routecard-item.is-secondary {
@@ -6164,6 +6164,13 @@ body.navigator-stage-modal-open {
   gap: 8px;
 }
 
+.navigator-v1-routecard-actions .btn-primary {
+  box-shadow: none;
+  border-color: color-mix(in srgb, var(--red) 34%, var(--border));
+  background: color-mix(in srgb, var(--surface-2) 88%, var(--red) 12%);
+  color: var(--text);
+}
+
 .navigator-v1-list {
   margin: 0;
 }
@@ -6182,12 +6189,12 @@ body.navigator-stage-modal-open {
 }
 
 .navigator-v1-details-card {
-  border-color: color-mix(in srgb, var(--red) 22%, var(--border));
+  border-color: color-mix(in srgb, var(--border) 92%, #fff 8%);
 }
 
 .navigator-v1-insight {
-  border: 1px solid color-mix(in srgb, var(--red) 35%, var(--border));
-  background: color-mix(in srgb, var(--surface-2) 84%, var(--red) 16%);
+  border: 1px solid color-mix(in srgb, var(--red) 24%, var(--border));
+  background: color-mix(in srgb, var(--surface-2) 92%, var(--red) 8%);
   border-radius: 11px;
   padding: 10px 11px;
 }
@@ -6271,12 +6278,12 @@ body.navigator-stage-modal-open {
 }
 
 .navigator-v1-tab.is-active {
-  border-color: color-mix(in srgb, var(--red) 60%, var(--border));
-  background: color-mix(in srgb, var(--surface) 84%, var(--red) 16%);
+  border-color: color-mix(in srgb, var(--red) 46%, var(--border));
+  background: color-mix(in srgb, var(--surface) 90%, var(--red) 10%);
 }
 
 .navigator-v1-resources-card {
-  border-color: color-mix(in srgb, var(--red) 26%, var(--border));
+  border-color: color-mix(in srgb, var(--border) 92%, #fff 8%);
 }
 
 .navigator-v1-resources-head {
@@ -6316,9 +6323,9 @@ body.navigator-stage-modal-open {
   align-items: center;
   min-height: 30px;
   border-radius: 10px;
-  border: 1px solid color-mix(in srgb, var(--red) 38%, var(--border));
-  background: color-mix(in srgb, var(--surface-2) 82%, var(--red) 18%);
-  color: var(--text);
+  border: 1px solid color-mix(in srgb, var(--border) 84%, #fff 16%);
+  background: color-mix(in srgb, var(--surface) 95%, #fff 5%);
+  color: var(--muted);
   padding: 6px 11px;
   font-size: 12px;
   font-weight: 700;
@@ -6326,7 +6333,7 @@ body.navigator-stage-modal-open {
 }
 
 .navigator-v1-budget-card {
-  border-color: color-mix(in srgb, var(--red) 24%, var(--border));
+  border-color: color-mix(in srgb, var(--border) 92%, #fff 8%);
 }
 
 .navigator-v1-budget-head {
@@ -6369,18 +6376,23 @@ body.navigator-stage-modal-open {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 12px;
+  margin-top: 10px;
+}
+
+.navigator-v1-cta {
+  border-color: color-mix(in srgb, var(--red) 26%, var(--border));
+  background: color-mix(in srgb, var(--surface-2) 90%, var(--red) 10%);
 }
 
 .navigator-v1-cta-head {
-  margin-bottom: 7px;
+  margin-bottom: 5px;
 }
 
 .navigator-v1-cta-secondary {
-  margin-top: 8px;
+  margin-top: 7px;
   display: inline-flex;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 12px;
   text-decoration: underline;
   text-underline-offset: 2px;
 }
@@ -6397,6 +6409,10 @@ body.navigator-stage-modal-open {
 
   .navigator-v1-budget-row {
     grid-template-columns: 1fr;
+  }
+
+  .navigator-v1-accordion-item > summary {
+    font-size: 13px;
   }
 }
 

@@ -4,14 +4,14 @@ export function NavigatorRouteCard({ stage, previousStage, nextStage }) {
   const nextLabel = nextStage ? nextStage.mapLabel : "—";
   const nextHint = nextStage ? "Следующий шаг маршрута" : "Это финальный этап маршрута";
   const routeHint = nextStage
-    ? `Что обычно идет дальше: ${nextStage.mapLabel}.`
+    ? `Дальше обычно: ${nextStage.mapLabel}.`
     : "Это финальный этап маршрута.";
 
   return `
     <section class="card navigator-v1-card navigator-v1-routecard" id="navigator-route-card">
       <div class="navigator-v1-block-head navigator-v1-routecard-head">
-        <p class="navigator-v1-routecard-kicker">Маршрут по вашему этапу</p>
-        <h2>Где вы сейчас и что дальше</h2>
+        <p class="navigator-v1-routecard-kicker">Шаг 2</p>
+        <h2>Маршрут этапа</h2>
       </div>
       <div class="navigator-v1-routecard-grid" aria-live="polite">
         <article class="navigator-v1-routecard-item is-current">
@@ -36,7 +36,7 @@ export function NavigatorRouteCard({ stage, previousStage, nextStage }) {
           ${nextStage ? "Следующий этап" : "Маршрут завершен"}
         </button>
         <button class="btn btn-ghost" type="button" data-nav-action="checklist">
-          Что делать на этом этапе
+          Чек-лист этапа
         </button>
       </div>
     </section>

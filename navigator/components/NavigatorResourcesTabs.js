@@ -1,6 +1,6 @@
 const TAB_ITEMS = [
-  { id: "specialists", label: "Специалисты и услуги", cta: "Посмотреть специалистов", kind: "service" },
-  { id: "materials", label: "Товары и материалы", cta: "Посмотреть материалы", kind: "product" }
+  { id: "specialists", label: "Специалисты и услуги", cta: "Открыть специалистов", kind: "service" },
+  { id: "materials", label: "Товары и материалы", cta: "Открыть материалы", kind: "product" }
 ];
 
 export function NavigatorResourcesTabs({ stage, activeTab }) {
@@ -46,8 +46,7 @@ export function NavigatorResourcesTabs({ stage, activeTab }) {
   return `
     <section class="card navigator-v1-card navigator-v1-resources-card">
       <div class="navigator-v1-block-head navigator-v1-resources-head">
-        <h2>Специалисты и материалы</h2>
-        <p class="muted">Короткий список по выбранному этапу без лишнего шума.</p>
+        <h2>Кто нужен и что подготовить</h2>
       </div>
       <div class="navigator-v1-tabs" role="tablist" aria-label="Ресурсы этапа">
         ${tabs}

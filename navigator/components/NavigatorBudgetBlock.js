@@ -6,11 +6,11 @@ export function NavigatorBudgetBlock({ stage }) {
   return `
     <section class="card navigator-v1-card navigator-v1-budget-card">
       <div class="navigator-v1-block-head navigator-v1-budget-head">
-        <h2>Срок и бюджет этапа</h2>
+        <h2>Ориентиры этапа</h2>
       </div>
       <div class="navigator-v1-budget-row" aria-live="polite">
         <div class="navigator-v1-budget-cell">
-          <span class="navigator-v1-budget-label">Срок</span>
+          <span class="navigator-v1-budget-label">Сроки</span>
           <strong>${stage.durationRange}</strong>
         </div>
         <div class="navigator-v1-budget-cell">

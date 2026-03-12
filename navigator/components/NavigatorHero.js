@@ -4,11 +4,11 @@ export function NavigatorHero({ stage }) {
       <p class="navigator-v1-eyebrow">RemCard Navigator</p>
       <h1>Навигатор ремонта</h1>
       <p class="section-subtitle">
-        Выберите текущий этап и получите следующий маршрут: что делать, кого подключать и на какой диапазон бюджета ориентироваться.
+        Выберите этап на карте — ниже сразу увидите маршрут и следующий шаг.
       </p>
       <div class="navigator-v1-current-stage">
         <span class="navigator-v1-dot" aria-hidden="true"></span>
-        Сейчас выбран этап: <strong>${stage.mapLabel}</strong>
+        Текущий этап: <strong>${stage.mapLabel}</strong>
       </div>
     </header>
   `;

@@ -48,9 +48,9 @@ export function NavigatorMap({ stages, selectedStageId }) {
   return `
     <section class="card navigator-v1-card navigator-v1-map-card">
       <div class="navigator-v1-block-head navigator-v1-map-head">
-        <p class="navigator-v1-map-kicker">Основной шаг в навигаторе</p>
-        <h2>Карта этапов ремонта</h2>
-        <p class="navigator-v1-map-hint">Выберите на карте этап, на котором вы сейчас находитесь.</p>
+        <p class="navigator-v1-map-kicker">Шаг 1</p>
+        <h2>Выберите свой этап ремонта</h2>
+        <p class="navigator-v1-map-hint">После выбора сразу обновим маршрут и действия.</p>
       </div>
       <ol class="navigator-v1-map" role="tablist" aria-label="Маршрут этапов ремонта">
         ${nodes}
