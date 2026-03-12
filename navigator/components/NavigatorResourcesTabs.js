@@ -1,6 +1,6 @@
 const TAB_ITEMS = [
-  { id: "specialists", label: "Специалисты и услуги", cta: "Открыть специалистов", kind: "service" },
-  { id: "materials", label: "Товары и материалы", cta: "Открыть материалы", kind: "product" }
+  { id: "specialists", label: "Специалисты и услуги", cta: "Найти специалистов", kind: "service" },
+  { id: "materials", label: "Товары и материалы", cta: "Найти материалы", kind: "product" }
 ];
 
 export function NavigatorResourcesTabs({ stage, activeTab }) {
