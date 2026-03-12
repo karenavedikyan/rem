@@ -5,7 +5,7 @@ export function NavigatorRouteCard({ stage, previousStage, nextStage }) {
   return `
     <section class="card navigator-v1-card navigator-v1-routecard navigator-v1-routecard-minimal" id="navigator-route-card">
       <div class="navigator-v1-block-head navigator-v1-routecard-head">
-        <p class="navigator-v1-routecard-kicker">Шаг 2</p>
+        <p class="navigator-v1-step-kicker navigator-v1-routecard-kicker">Шаг 2</p>
         <h2>Что делаем дальше</h2>
       </div>
       <p class="navigator-v1-routecard-compact-stage">Сейчас: <strong>${stage.mapLabel}</strong></p>

@@ -5891,8 +5891,8 @@ body.navigator-stage-modal-open {
   margin-bottom: 10px;
 }
 
-.navigator-v1-map-kicker {
-  margin: 0 0 6px;
+.navigator-v1-step-kicker {
+  margin: 0 0 5px;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -6151,14 +6151,6 @@ body.navigator-stage-modal-open {
   margin-bottom: 8px;
 }
 
-.navigator-v1-routecard-kicker {
-  margin: 0 0 6px;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: color-mix(in srgb, var(--muted) 74%, #fff 26%);
-}
-
 .navigator-v1-routecard-grid {
   display: grid;
   gap: 9px;
@@ -6246,7 +6238,13 @@ body.navigator-stage-modal-open {
 }
 
 .navigator-v1-actions-head {
-  margin-bottom: 8px;
+  margin-bottom: 7px;
+}
+
+.navigator-v1-actions-meta {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
 }
 
 .navigator-v1-actions-list li {

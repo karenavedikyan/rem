@@ -109,7 +109,7 @@ export function NavigatorMap({ stages, selectedStageId }) {
   return `
     <section class="card navigator-v1-card navigator-v1-map-card">
       <div class="navigator-v1-block-head navigator-v1-map-head">
-        <p class="navigator-v1-map-kicker">Шаг 1</p>
+        <p class="navigator-v1-step-kicker navigator-v1-map-kicker">Шаг 1</p>
         <h2>Выберите свой этап ремонта</h2>
         <p class="navigator-v1-map-hint">После выбора сразу обновим маршрут и действия.</p>
       </div>
