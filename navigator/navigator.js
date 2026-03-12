@@ -15,7 +15,7 @@ if (!root) {
 
 const STORAGE_KEY = "remcard_navigator_stage_v1";
 const DEFAULT_STAGE_ID = "rough";
-const RESOURCE_TABS = new Set(["specialists", "materials", "mistakes"]);
+const RESOURCE_TABS = new Set(["specialists", "materials"]);
 
 const state = {
   selectedStageId: getInitialStageId(),

@@ -6205,7 +6205,8 @@ body.navigator-stage-modal-open {
   background: var(--surface);
   color: var(--text);
   border-radius: 999px;
-  padding: 7px 12px;
+  min-height: 36px;
+  padding: 7px 13px;
   font-weight: 700;
   font-size: 12px;
   white-space: nowrap;
@@ -6217,24 +6218,94 @@ body.navigator-stage-modal-open {
   background: color-mix(in srgb, var(--surface) 84%, var(--red) 16%);
 }
 
-.navigator-v1-metrics {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+.navigator-v1-resources-card {
+  border-color: color-mix(in srgb, var(--red) 26%, var(--border));
 }
 
-.navigator-v1-metric {
+.navigator-v1-resources-head {
+  margin-bottom: 8px;
+}
+
+.navigator-v1-resource-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.navigator-v1-resource-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 6px 11px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--border) 84%, #fff 16%);
+  background: color-mix(in srgb, var(--surface) 92%, #fff 8%);
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.25;
+}
+
+.navigator-v1-resource-chip.is-muted {
+  color: var(--muted);
+}
+
+.navigator-v1-resource-foot {
+  margin-top: 10px;
+}
+
+.navigator-v1-resource-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--red) 38%, var(--border));
+  background: color-mix(in srgb, var(--surface-2) 82%, var(--red) 18%);
+  color: var(--text);
+  padding: 6px 11px;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.navigator-v1-budget-card {
+  border-color: color-mix(in srgb, var(--red) 24%, var(--border));
+}
+
+.navigator-v1-budget-head {
+  margin-bottom: 8px;
+}
+
+.navigator-v1-budget-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.navigator-v1-budget-cell {
   border: 1px solid var(--border);
   border-radius: 12px;
   background: var(--surface);
-  padding: 12px;
+  padding: 10px 11px;
   display: grid;
   gap: 4px;
 }
 
-.navigator-v1-metric-label {
+.navigator-v1-budget-cell strong {
+  font-size: 15px;
+  line-height: 1.25;
+}
+
+.navigator-v1-budget-label {
   color: var(--muted);
   font-size: 12px;
+}
+
+.navigator-v1-budget-note {
+  margin: 8px 0 0;
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--muted);
 }
 
 .navigator-v1-cta-actions {
@@ -6254,7 +6325,7 @@ body.navigator-stage-modal-open {
     font-size: 15px;
   }
 
-  .navigator-v1-metrics {
+  .navigator-v1-budget-row {
     grid-template-columns: 1fr;
   }
 }

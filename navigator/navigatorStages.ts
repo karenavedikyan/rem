@@ -6,6 +6,7 @@ export interface NavigatorStage {
   title: string;
   shortDescription: string;
   keyInsight?: string;
+  budgetNote?: string;
   mapLabel: string;
   icon: string;
   previousStage: NavigatorStageId | null;
@@ -36,6 +37,7 @@ export const navigatorStages: NavigatorStage[] = [
     commonMistakes: ["Старт без точных замеров", "Смета без разбивки по этапам", "Покупки до финального плана"],
     budgetRange: "3%–7% от общего бюджета ремонта",
     durationRange: "3–10 дней",
+    budgetNote: "Оценка ориентировочная: зависит от площади, точности замеров и выбранных материалов.",
     leadCtaLabel: "Оставить заявку на старт этапа"
   },
   {
@@ -54,6 +56,7 @@ export const navigatorStages: NavigatorStage[] = [
     commonMistakes: ["Спешка без технологических пауз", "Пропуск грунтования", "Неверный выбор материала перегородок"],
     budgetRange: "20%–35% от общего бюджета ремонта",
     durationRange: "2–5 недель",
+    budgetNote: "Диапазон меняется от площади, состояния основания и сложности черновых работ.",
     leadCtaLabel: "Подобрать бригаду на черновые работы"
   },
   {
@@ -72,6 +75,7 @@ export const navigatorStages: NavigatorStage[] = [
     commonMistakes: ["Случайная схема трасс", "Нет фотофиксации скрытых работ", "Недостаточная защита линий в мокрых зонах"],
     budgetRange: "18%–30% от общего бюджета ремонта",
     durationRange: "2–4 недели",
+    budgetNote: "Срок и бюджет зависят от объема точек, трасс и качества существующих коммуникаций.",
     leadCtaLabel: "Оставить заявку на инженерный этап"
   },
   {
@@ -90,6 +94,7 @@ export const navigatorStages: NavigatorStage[] = [
     commonMistakes: ["Чистовая на неподготовленном основании", "Нет запаса по материалам", "Игнор проверки образцов на объекте"],
     budgetRange: "25%–40% от общего бюджета ремонта",
     durationRange: "3–7 недель",
+    budgetNote: "Оценка зависит от выбранного уровня материалов и темпа поставок на объект.",
     leadCtaLabel: "Найти мастеров на чистовую отделку"
   },
   {
@@ -108,6 +113,7 @@ export const navigatorStages: NavigatorStage[] = [
     commonMistakes: ["Конфликт мебели с выводами", "Нет доступа к сервисным узлам", "Сдача без финальной проверки"],
     budgetRange: "15%–30% от общего бюджета ремонта",
     durationRange: "1–3 недели",
+    budgetNote: "Итог зависит от сложности мебели, света и объема финальной комплектации.",
     leadCtaLabel: "Оставить заявку на комплектацию"
   }
 ];
