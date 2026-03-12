@@ -1100,12 +1100,23 @@ button.hero-kpi-card {
 }
 
 .navigator-stage-mini {
-  min-height: 124px;
+  min-height: 112px;
+  padding: 14px;
+  border-color: rgba(245, 245, 245, 0.13);
+  background: linear-gradient(180deg, rgba(30, 30, 30, 0.88), rgba(22, 22, 22, 0.72));
+  box-shadow: inset 0 1px 0 rgba(245, 245, 245, 0.04), 0 10px 22px rgba(0, 0, 0, 0.2);
 }
 
 .navigator-stage-mini h3 {
-  margin-bottom: 6px;
-  font-size: 16px;
+  margin-bottom: 5px;
+  font-size: 15px;
+  letter-spacing: -0.15px;
+}
+
+.navigator-stage-mini p {
+  font-size: 13px;
+  line-height: 1.35;
+  color: rgba(176, 190, 197, 0.92);
 }
 
 .navigator-core-cta {
@@ -4391,7 +4402,31 @@ body.navigator-stage-modal-open {
   }
 
   .navigator-stage-cards {
-    grid-template-columns: 1fr;
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    padding-bottom: 4px;
+  }
+
+  .navigator-stage-cards .navigator-stage-mini {
+    flex: 0 0 min(78vw, 230px);
+    min-height: 96px;
+    padding: 12px;
+    scroll-snap-align: start;
+  }
+
+  .navigator-stage-cards .navigator-stage-mini h3 {
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+
+  .navigator-stage-cards .navigator-stage-mini p {
+    font-size: 12.5px;
+    line-height: 1.32;
   }
 
   .navigator-map-actions-row {
