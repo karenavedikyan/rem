@@ -27,6 +27,8 @@
   const searchInput = document.getElementById("catalog-main-query");
   const focusChipsEl = document.getElementById("catalog-focus-chips");
   const entryPointsEl = document.getElementById("catalog-entry-points");
+  const entryBodyEl = document.getElementById("catalog-entry-body");
+  const entryToggleBtn = document.getElementById("catalog-entry-toggle");
   const filtersCardEl = document.getElementById("catalog-filters-card");
   const sheetGrabberEl = document.getElementById("catalog-sheet-grabber");
   const openFiltersBtn = document.getElementById("catalog-open-filters");
@@ -1052,6 +1054,27 @@
     }
   };
 
+  const setEntryPointsExpanded = (expanded) => {
+    if (!entryPointsEl || !entryBodyEl || !entryToggleBtn) return;
+    const isExpanded = Boolean(expanded);
+    entryPointsEl.classList.toggle("is-collapsed", !isExpanded);
+    entryBodyEl.hidden = !isExpanded;
+    entryToggleBtn.setAttribute("aria-expanded", isExpanded ? "true" : "false");
+    entryToggleBtn.textContent = isExpanded ? t("Скрыть фильтры", "Hide filters") : t("Открыть фильтры", "Open filters");
+    if (isExpanded) {
+      window.requestAnimationFrame(() => {
+        window.dispatchEvent(new Event("resize"));
+      });
+    }
+  };
+
+  if (entryToggleBtn) {
+    entryToggleBtn.addEventListener("click", () => {
+      const expanded = entryToggleBtn.getAttribute("aria-expanded") === "true";
+      setEntryPointsExpanded(!expanded);
+    });
+  }
+
   const enableHorizontalDragScroll = (container) => {
     if (!container) return;
     let pointerId = null;
@@ -1416,6 +1439,7 @@
 
   const initial = readCurrentParams();
   applyParamsToForm(initial);
+  setEntryPointsExpanded(false);
   renderFocusChipsState();
   loadCatalog({ page: initial.page || 1 });
   syncOpenFiltersBtnVisibility();
