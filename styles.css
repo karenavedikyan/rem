@@ -6181,14 +6181,71 @@ body.navigator-stage-modal-open {
   line-height: 1.35;
 }
 
-.navigator-v1-actions-insight {
+.navigator-v1-details-card {
+  border-color: color-mix(in srgb, var(--red) 22%, var(--border));
+}
+
+.navigator-v1-insight {
+  border: 1px solid color-mix(in srgb, var(--red) 35%, var(--border));
+  background: color-mix(in srgb, var(--surface-2) 84%, var(--red) 16%);
+  border-radius: 11px;
+  padding: 10px 11px;
+}
+
+.navigator-v1-insight-label {
+  display: inline-flex;
+  margin-bottom: 5px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: color-mix(in srgb, var(--muted) 72%, #fff 28%);
+  font-weight: 700;
+}
+
+.navigator-v1-insight p {
+  margin: 0;
+  line-height: 1.35;
+}
+
+.navigator-v1-accordion-group {
   margin-top: 10px;
-  border: 1px solid color-mix(in srgb, var(--red) 32%, var(--border));
-  background: color-mix(in srgb, var(--surface-2) 85%, var(--red) 15%);
-  border-radius: 10px;
-  padding: 9px 10px;
+  display: grid;
+  gap: 8px;
+}
+
+.navigator-v1-accordion-item {
+  border: 1px solid color-mix(in srgb, var(--border) 90%, #fff 10%);
+  border-radius: 11px;
+  background: color-mix(in srgb, var(--surface) 93%, #fff 7%);
+  padding: 0 10px 9px;
+}
+
+.navigator-v1-accordion-item > summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 10px 0;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.3;
+}
+
+.navigator-v1-accordion-item > summary::-webkit-details-marker {
+  display: none;
+}
+
+.navigator-v1-accordion-list {
+  margin: 0;
+}
+
+.navigator-v1-accordion-list li {
+  line-height: 1.35;
+  margin-bottom: 6px;
+}
+
+.navigator-v1-accordion-empty {
+  margin: 0;
+  color: var(--muted);
   font-size: 13px;
-  color: var(--text);
 }
 
 .navigator-v1-tabs {
@@ -6313,6 +6370,19 @@ body.navigator-stage-modal-open {
   flex-wrap: wrap;
   gap: 8px;
   margin-top: 12px;
+}
+
+.navigator-v1-cta-head {
+  margin-bottom: 7px;
+}
+
+.navigator-v1-cta-secondary {
+  margin-top: 8px;
+  display: inline-flex;
+  color: var(--muted);
+  font-size: 13px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 @media (max-width: 760px) {

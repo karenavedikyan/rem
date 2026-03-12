@@ -5,6 +5,7 @@ import { NavigatorRouteCard } from "./components/NavigatorRouteCard.js";
 import { NavigatorActions } from "./components/NavigatorActions.js";
 import { NavigatorResourcesTabs } from "./components/NavigatorResourcesTabs.js";
 import { NavigatorBudgetBlock } from "./components/NavigatorBudgetBlock.js";
+import { NavigatorAccordionDetails } from "./components/NavigatorAccordionDetails.js";
 import { NavigatorLeadCTA } from "./components/NavigatorLeadCTA.js";
 
 const root = document.getElementById("navigator-root");
@@ -101,6 +102,7 @@ function render() {
       ${NavigatorActions({ stage })}
       ${NavigatorResourcesTabs({ stage, activeTab: state.activeResourceTab })}
       ${NavigatorBudgetBlock({ stage })}
+      ${NavigatorAccordionDetails({ stage })}
       ${NavigatorLeadCTA({
         stage,
         requestHref: getRequestHref(stage),
