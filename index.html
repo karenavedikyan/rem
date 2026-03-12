@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="RemCard — платформа для ремонта и обустройства: мастера, товары, акции и бонусы в одном сервисе." />
-    <title>RemCard — платформа для ремонта и обустройства</title>
+    <meta name="description" content="RemCard — навигатор ремонта: этапы, следующий шаг и одна заявка для подбора решений в Краснодаре." />
+    <title>RemCard — навигатор ремонта</title>
 
     <link rel="stylesheet" href="./styles.css" />
   </head>
@@ -124,27 +124,13 @@
               <span aria-hidden="true">→</span>
               <a class="hero-mini-step" href="./navigator/?stage=furniture">Мебель</a>
             </div>
-            <div class="hero-kpis" aria-label="Ключевые показатели">
-              <button class="hero-kpi-card is-clickable" id="hero-kpi-open-request" type="button" aria-label="Открыть форму заявки в RemCard">
-                <span class="hero-kpi-icon" aria-hidden="true"><svg class="icon-svg"><use href="#ic-doc" /></svg></span>
-                <span class="hero-kpi-value">1 заявка</span>
-                <span class="hero-kpi-sub">и до 5 предложений</span>
-              </button>
-              <a class="hero-kpi-card is-clickable" href="./navigator/" aria-label="Открыть Навигатор ремонта RemCard">
-                <span class="hero-kpi-icon" aria-hidden="true"><svg class="icon-svg"><use href="#ic-layers" /></svg></span>
-                <span class="hero-kpi-value">5 этапов</span>
-                <span class="hero-kpi-sub">от плана до мебели</span>
-              </a>
-              <a class="hero-kpi-card is-clickable" href="./catalog/" aria-label="Открыть каталог товаров и услуг RemCard">
-                <span class="hero-kpi-icon" aria-hidden="true"><svg class="icon-svg"><use href="#ic-specialist" /></svg></span>
-                <span class="hero-kpi-value">Товары и услуги</span>
-                <span class="hero-kpi-sub">под выбранный этап ремонта</span>
-              </a>
-            </div>
             <div class="hero-actions hero-actions-inline">
               <a class="btn btn-primary" href="./navigator/">Запустить навигатор ремонта</a>
-              <button class="btn btn-ghost hero-open-request-btn" id="hero-open-request-btn" type="button">Оставить заявку</button>
+              <a class="btn btn-ghost hero-open-request-btn" href="./request/">Оставить заявку</a>
             </div>
+            <button class="sr-only" id="hero-kpi-open-request" type="button" tabindex="-1" aria-hidden="true">
+              Открыть заявку
+            </button>
             <p class="fineprint hero-fineprint">Работаем пока в Краснодаре</p>
           </div>
         </div>
@@ -185,41 +171,11 @@
         </div>
       </section>
 
-      <section class="section section-compact" id="client-benefits">
-        <div class="container">
-          <header class="section-header">
-            <h2>Что получает клиент</h2>
-          </header>
-          <div class="grid cards-4">
-            <article class="card benefits-card">
-              <span class="card-icon" aria-hidden="true"><svg class="icon-svg"><use href="#ic-route" /></svg></span>
-              <h3>Понятный маршрут ремонта</h3>
-              <p>Видите шаги и последовательность работ без хаоса.</p>
-            </article>
-            <article class="card benefits-card">
-              <span class="card-icon" aria-hidden="true"><svg class="icon-svg"><use href="#ic-users" /></svg></span>
-              <h3>Подбор мастеров и компаний</h3>
-              <p>Решения под ваш район, этап и бюджет.</p>
-            </article>
-            <article class="card benefits-card">
-              <span class="card-icon" aria-hidden="true"><svg class="icon-svg"><use href="#ic-hub" /></svg></span>
-              <h3>Товары и услуги под этап</h3>
-              <p>На каждом шаге понятно, что покупать и заказывать.</p>
-            </article>
-            <article class="card benefits-card">
-              <span class="card-icon" aria-hidden="true"><svg class="icon-svg"><use href="#ic-gift" /></svg></span>
-              <h3>Бонусы за заказы и покупки</h3>
-              <p>Бонусный баланс копится в клиентском кабинете.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
       <section class="section" id="navigator-block">
         <div class="container">
           <header class="section-header">
             <h2>Навигатор ремонта</h2>
-            <p class="section-subtitle">Ключевой блок RemCard: этапы, задачи, специалисты, товары и ориентиры по срокам и бюджету.</p>
+            <p class="section-subtitle">Показывает маршрут ремонта и подсказывает, что делать дальше: задачи, специалисты, товары и ориентиры.</p>
           </header>
 
           <article class="card navigator-visual navigator-scenario">
@@ -239,32 +195,9 @@
             </div>
           </article>
 
-          <div class="grid cards-5 navigator-stage-cards">
-            <article class="card navigator-stage-mini">
-              <h3>План</h3>
-              <p>Замеры, сценарий работ, стартовый расчёт.</p>
-            </article>
-            <article class="card navigator-stage-mini">
-              <h3>Черновые</h3>
-              <p>Основание, подготовка, ключевые материалы.</p>
-            </article>
-            <article class="card navigator-stage-mini">
-              <h3>Инженерия</h3>
-              <p>Электрика, сантехника, коммуникации.</p>
-            </article>
-            <article class="card navigator-stage-mini">
-              <h3>Чистовые</h3>
-              <p>Финишные покрытия, отделка, узлы.</p>
-            </article>
-            <article class="card navigator-stage-mini">
-              <h3>Мебель</h3>
-              <p>Комплектация, монтаж, финальный запуск.</p>
-            </article>
-          </div>
-
           <div class="navigator-cta navigator-core-cta">
             <a class="btn btn-primary" href="./navigator/">Открыть навигатор</a>
-            <a class="btn btn-ghost" href="./catalog/">Перейти в каталог</a>
+            <a class="btn btn-ghost" href="./request/">Оставить заявку</a>
           </div>
         </div>
       </section>
@@ -273,132 +206,17 @@
         <div class="container">
           <header class="section-header">
             <h2>Быстрая заявка</h2>
-            <p class="section-subtitle">Одна заявка — и RemCard подберёт мастеров, компании и релевантные решения по вашему этапу ремонта.</p>
+            <p class="section-subtitle">Не хотите разбираться в деталях? Оставьте одну заявку — подберём решение под ваш этап ремонта.</p>
           </header>
-
-          <div class="card request-actions-card">
-            <div class="request-actions">
-              <button class="btn btn-primary request-open-btn" id="request-open-btn" type="button" aria-expanded="false" aria-controls="request-form-panel">
-                <span class="request-open-btn-text">Оставить заявку в RemCard</span>
-                <span class="request-open-btn-icon" aria-hidden="true">▾</span>
-              </button>
-              <a class="btn btn-ghost request-about-btn" href="./catalog/">Перейти в каталог</a>
-            </div>
-
-            <div class="request-form-panel" id="request-form-panel" hidden>
-              <div class="request-form-panel-head">
-                <h4>Заполнение заявки</h4>
-                <button class="request-form-close" id="request-form-close" type="button" aria-label="Закрыть форму заявки">✕</button>
-              </div>
-              <!-- TODO: Подключить реальный backend (телеграм‑бот / почта / API). -->
-              <form class="form" id="request-form" novalidate>
-                <div class="form-grid">
-                  <div class="field">
-                    <label for="req-type">Тип задачи</label>
-                    <select class="input" id="req-type" name="taskType" required>
-                      <option value="" selected disabled>Выберите вариант</option>
-                      <option>Косметический ремонт</option>
-                      <option>Ванная / санузел</option>
-                      <option>Кухня</option>
-                      <option>Ремонт под ключ</option>
-                      <option>Другое</option>
-                    </select>
-                    <p class="field-hint">Что нужно сделать в первую очередь.</p>
-                  </div>
-
-                  <div class="field">
-                    <label for="req-district">Район объекта</label>
-                    <input class="input" id="req-district" name="district" required placeholder="Например: Фестивальный, ЮМР, Гидрострой" />
-                  </div>
-
-                  <div class="field">
-                    <label for="req-budget">Бюджет / диапазон</label>
-                    <select class="input" id="req-budget" name="budget" required>
-                      <option value="" selected disabled>Выберите диапазон</option>
-                      <option>До 150 000 ₽</option>
-                      <option>150 000–400 000 ₽</option>
-                      <option>400 000–900 000 ₽</option>
-                      <option>900 000 ₽ и выше</option>
-                    </select>
-                  </div>
-
-                  <div class="field">
-                    <label for="req-name">Имя</label>
-                    <input class="input" id="req-name" name="name" autocomplete="name" required placeholder="Как к вам обращаться" />
-                  </div>
-
-                  <div class="field">
-                    <label for="req-contact">Телефон / Telegram</label>
-                    <input
-                      class="input"
-                      id="req-contact"
-                      name="contact"
-                      autocomplete="tel"
-                      required
-                      placeholder="+7 (...) ...-..-.. или @telegram"
-                    />
-                  </div>
-                </div>
-
-                <div class="form-actions">
-                  <button class="btn btn-primary" type="submit">Отправить заявку в RemCard</button>
-                  <p class="fineprint">Нажимая кнопку, вы соглашаетесь на обработку данных для связи по заявке.</p>
-                </div>
-
-                <div class="form-result" id="request-result" role="status" aria-live="polite" hidden>
-                  <div class="form-result-title">Спасибо!</div>
-                  <div class="form-result-text">Заявка отправлена. В ближайшее время команда RemCard свяжется с вами.</div>
-                </div>
-              </form>
-            </div>
+          <div class="request-badges" aria-label="Преимущества заявки">
+            <span class="request-badge">5 полей</span>
+            <span class="request-badge">Подбор по этапу</span>
+            <span class="request-badge">Удобная связь</span>
           </div>
-          <div class="request-form-backdrop" id="request-form-backdrop" hidden></div>
-        </div>
-      </section>
-
-      <section class="section section-compact" id="catalog-preview">
-        <div class="container">
-          <header class="section-header">
-            <h2>Каталог решений</h2>
-            <p class="section-subtitle">Находите товары, услуги, мастеров, компании и магазины по этапу ремонта и задаче.</p>
-          </header>
-          <div class="grid two-col">
-            <article class="card">
-              <h3>Поиск по этапу и задаче</h3>
-              <p>Фильтруйте каталог по этапу, району, бюджету и типу позиции.</p>
-              <div class="catalog-preview-tags">
-                <span class="tag">Мастер</span>
-                <span class="tag">Компания</span>
-                <span class="tag">Магазин</span>
-                <span class="tag">Товар</span>
-                <span class="tag">Услуга</span>
-              </div>
-              <div class="catalog-preview-links">
-                <a class="btn btn-primary" href="./catalog/">Перейти в каталог</a>
-                <a class="btn btn-ghost" href="./catalog/?stage=ENGINEERING">Открыть по этапу</a>
-              </div>
-            </article>
-            <article class="card">
-              <h3>Акции и бонусные предложения</h3>
-              <p>Акции встроены в каталог: включите фильтр «Только акции» и выбирайте выгодные предложения по нужному этапу.</p>
-              <div class="catalog-preview-links">
-                <a class="btn btn-ghost" href="./catalog/?itemKind=product">Смотреть товары</a>
-                <a class="btn btn-ghost" href="./catalog/?itemKind=service">Смотреть услуги</a>
-              </div>
-            </article>
+          <div class="navigator-cta">
+            <button class="btn btn-primary request-open-btn" id="request-open-btn" type="button" aria-expanded="false">Оставить заявку</button>
           </div>
-        </div>
-      </section>
-
-      <section class="section section-compact" id="bonus-preview">
-        <div class="container">
-          <article class="card bonus-preview-card">
-            <h2>Бонусы RemCard</h2>
-            <p>Бонусы начисляются за заказы и покупки у партнёров. Используйте их в следующих заказах и в партнёрской сети.</p>
-            <div class="navigator-cta">
-              <a class="btn btn-ghost" href="./cabinet/">Подробнее в личном кабинете</a>
-            </div>
-          </article>
+          <form id="request-form" hidden aria-hidden="true"></form>
         </div>
       </section>
     </main>

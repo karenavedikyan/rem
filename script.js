@@ -998,7 +998,10 @@
   const heroSectionEl = document.getElementById("hero");
   const footerEl = document.querySelector(".site-footer");
   const openRequestForm = ({ focusFirstField = true } = {}) => {
-    if (!requestOpenBtn) return;
+    if (!requestOpenBtn || !requestFormPanel) {
+      window.location.href = "./request/";
+      return;
+    }
     setRequestFormPanelOpen(true, { focusFirstField });
     if (isMobileRequestSheet() || !requestSectionEl) return;
     const headerH = header ? header.getBoundingClientRect().height : 0;
@@ -1011,6 +1014,12 @@
   }
   if (heroOpenRequestBtn) {
     heroOpenRequestBtn.addEventListener("click", () => openRequestForm({ focusFirstField: true }));
+  }
+
+  if (requestOpenBtn && !requestFormPanel) {
+    requestOpenBtn.addEventListener("click", () => {
+      window.location.href = "./request/";
+    });
   }
 
   const syncHomeStickyCtaVisibility = () => {
