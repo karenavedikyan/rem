@@ -6395,8 +6395,9 @@ body.navigator-stage-modal-open {
   }
 
   .navigator-v1-roadmap {
-    max-width: 760px;
+    max-width: 860px;
     margin: 0 auto;
+    padding: 18px 24px 14px;
   }
 
   .navigator-v1-road-title {
@@ -6404,8 +6405,8 @@ body.navigator-stage-modal-open {
   }
 
   .navigator-v1-road-step {
-    min-height: 90px;
-    height: 90px;
+    min-height: 92px;
+    height: 92px;
   }
 
   .navigator-v1-road-step:last-child {
@@ -6413,13 +6414,49 @@ body.navigator-stage-modal-open {
     height: 72px;
   }
 
+  .navigator-v1-road-node:hover,
+  .navigator-v1-road-node:focus-visible {
+    transform: none;
+  }
+
+  .navigator-v1-road-dot {
+    width: 30px;
+    height: 30px;
+  }
+
+  .navigator-v1-road-text {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: clamp(196px, 22vw, 250px);
+    max-width: none;
+    margin: 0;
+    min-height: 44px;
+    padding: 8px 13px;
+  }
+
+  .navigator-v1-road-step:nth-child(odd) .navigator-v1-road-text {
+    left: calc(50% + 24px);
+    right: auto;
+    text-align: left;
+  }
+
+  .navigator-v1-road-step:nth-child(even) .navigator-v1-road-text {
+    left: auto;
+    right: calc(50% + 24px);
+    margin-right: 0;
+    text-align: right;
+  }
+
   .navigator-v1-road-connector {
-    width: 64px;
-    height: 44px;
+    top: calc(50% + 16px);
+    width: 70px;
+    height: 42px;
     left: calc(50% + 1px);
   }
 
   .navigator-v1-road-step:nth-child(even) .navigator-v1-road-connector {
+    left: auto;
     right: calc(50% + 1px);
   }
 }
