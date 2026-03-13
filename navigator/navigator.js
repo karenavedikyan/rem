@@ -1,12 +1,14 @@
 import { navigatorStages, navigatorStagesById } from "./navigatorStages.js";
 import { NavigatorHero } from "./components/NavigatorHero.js";
 import { NavigatorMap } from "./components/NavigatorMap.js";
-import { NavigatorRouteCard } from "./components/NavigatorRouteCard.js";
-import { NavigatorActions } from "./components/NavigatorActions.js";
-import { NavigatorResourcesTabs } from "./components/NavigatorResourcesTabs.js";
+import { SelectedStageHeader } from "./components/SelectedStageHeader.js";
+import { CurrentActionsCard } from "./components/CurrentActionsCard.js";
+import { PreparationCard } from "./components/PreparationCard.js";
+import { SpecialistsCard } from "./components/SpecialistsCard.js";
 import { NavigatorBudgetBlock } from "./components/NavigatorBudgetBlock.js";
-import { NavigatorAccordionDetails } from "./components/NavigatorAccordionDetails.js";
-import { NavigatorLeadCTA } from "./components/NavigatorLeadCTA.js";
+import { CompletionChecklistCard } from "./components/CompletionChecklistCard.js";
+import { NextStageCard } from "./components/NextStageCard.js";
+import { StageActionsBar } from "./components/StageActionsBar.js";
 
 const root = document.getElementById("navigator-root");
 
@@ -16,20 +18,14 @@ if (!root) {
 
 const STORAGE_KEY = "remcard_navigator_stage_v1";
 const MAP_VIEW_STORAGE_KEY = "remcard_navigator_map_view_v1";
+const COMPLETED_STAGES_STORAGE_KEY = "remcard_navigator_completed_stages_v1";
 const DEFAULT_STAGE_ID = "rough";
-const RESOURCE_TABS = new Set(["specialists", "materials"]);
 const MAP_VIEWS = new Set(["cards", "road"]);
-const DEFAULT_RESOURCE_PRESET_IDS = Object.freeze(["all"]);
-const DEFAULT_RESOURCE_PRESETS = Object.freeze({
-  specialists: [...DEFAULT_RESOURCE_PRESET_IDS],
-  materials: [...DEFAULT_RESOURCE_PRESET_IDS]
-});
 
 const state = {
   selectedStageId: getInitialStageId(),
   mapView: getInitialMapView(),
-  activeResourceTab: "specialists",
-  resourcePresets: { ...DEFAULT_RESOURCE_PRESETS }
+  completedStageIds: getInitialCompletedStageIds()
 };
 
 function normalizeStageId(rawValue) {
@@ -72,32 +68,32 @@ function getInitialMapView() {
   return "cards";
 }
 
+function getInitialCompletedStageIds() {
+  try {
+    const raw = localStorage.getItem(COMPLETED_STAGES_STORAGE_KEY);
+    if (!raw) return new Set();
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return new Set();
+    return new Set(parsed.map((value) => normalizeStageId(value)));
+  } catch {
+    return new Set();
+  }
+}
+
 function getStageById(stageId) {
   return navigatorStagesById[normalizeStageId(stageId)] || navigatorStages[0];
 }
 
-function getCatalogHref(stageId) {
-  const map = {
-    planning: "PLANNING",
-    rough: "ROUGH",
-    engineering: "ENGINEERING",
-    finishing: "FINISHING",
-    furnishing: "FURNITURE"
-  };
-
-  const catalogStage = map[stageId] || "ROUGH";
-  const params = new URLSearchParams({ stage: catalogStage });
-  return `../catalog/?${params.toString()}`;
-}
-
-function getRequestHref(stage) {
-  return `../request/?stage=${encodeURIComponent(stage.slug)}`;
+function persistCompletedStageIds() {
+  try {
+    localStorage.setItem(COMPLETED_STAGES_STORAGE_KEY, JSON.stringify(Array.from(state.completedStageIds)));
+  } catch {
+    // ignore storage errors
+  }
 }
 
 function setSelectedStage(stageId) {
   state.selectedStageId = normalizeStageId(stageId);
-  state.activeResourceTab = "specialists";
-  state.resourcePresets = { ...DEFAULT_RESOURCE_PRESETS };
 
   try {
     localStorage.setItem(STORAGE_KEY, state.selectedStageId);
@@ -109,23 +105,6 @@ function setSelectedStage(stageId) {
   nextURL.searchParams.set("stage", state.selectedStageId);
   window.history.replaceState({}, "", nextURL.toString());
 
-  render();
-}
-
-function setActiveResourceTab(tab) {
-  if (!RESOURCE_TABS.has(tab)) return;
-  state.activeResourceTab = tab;
-  render();
-}
-
-function setActiveResourcePreset(tab, presetId) {
-  if (!RESOURCE_TABS.has(tab)) return;
-  const current = Array.isArray(state.resourcePresets[tab]) ? state.resourcePresets[tab] : [...DEFAULT_RESOURCE_PRESET_IDS];
-  const next = toggleResourcePreset(current, String(presetId || "all"));
-  state.resourcePresets = {
-    ...state.resourcePresets,
-    [tab]: next
-  };
   render();
 }
 
@@ -145,46 +124,34 @@ function setMapView(viewMode) {
   render();
 }
 
-function toggleResourcePreset(currentPresetIds, presetId) {
-  const normalized = Array.from(new Set((Array.isArray(currentPresetIds) ? currentPresetIds : []).map((id) => String(id || "")))).filter(Boolean);
-  const hasPreset = normalized.includes(presetId);
-
-  if (presetId === "all") return [...DEFAULT_RESOURCE_PRESET_IDS];
-
-  if (presetId.startsWith("query-")) {
-    const withoutQuery = normalized.filter((id) => id !== "all" && !id.startsWith("query-"));
-    if (!hasPreset) withoutQuery.push(presetId);
-    return withoutQuery.length ? withoutQuery : [...DEFAULT_RESOURCE_PRESET_IDS];
-  }
-
-  const withoutTarget = normalized.filter((id) => id !== "all" && id !== presetId);
-  if (!hasPreset) withoutTarget.push(presetId);
-  return withoutTarget.length ? withoutTarget : [...DEFAULT_RESOURCE_PRESET_IDS];
+function toggleStageCompleted(stageId) {
+  const normalized = normalizeStageId(stageId);
+  if (state.completedStageIds.has(normalized)) state.completedStageIds.delete(normalized);
+  else state.completedStageIds.add(normalized);
+  persistCompletedStageIds();
+  render();
 }
 
 function render() {
   const stage = getStageById(state.selectedStageId);
-  const previousStage = stage.previousStage ? getStageById(stage.previousStage) : null;
-  const nextStage = stage.nextStage ? getStageById(stage.nextStage) : null;
+  const nextStageId = stage.nextStageId || stage.nextStage || null;
+  const nextStage = nextStageId ? getStageById(nextStageId) : null;
+  const isCompleted = state.completedStageIds.has(stage.id);
 
   root.innerHTML = `
     <div class="navigator-v1-layout">
       ${NavigatorHero({ stage })}
       ${NavigatorMap({ stages: navigatorStages, selectedStageId: stage.id, viewMode: state.mapView })}
-      ${NavigatorRouteCard({ stage, previousStage, nextStage })}
-      ${NavigatorActions({ stage })}
-      ${NavigatorResourcesTabs({
-        stage,
-        activeTab: state.activeResourceTab,
-        activePresetIds: state.resourcePresets[state.activeResourceTab] || [...DEFAULT_RESOURCE_PRESET_IDS]
-      })}
+      ${SelectedStageHeader({ stage, isCompleted })}
+      ${CurrentActionsCard({ stage })}
+      <div class="navigator-v1-support-grid">
+        ${PreparationCard({ stage })}
+        ${SpecialistsCard({ stage })}
+      </div>
       ${NavigatorBudgetBlock({ stage })}
-      ${NavigatorAccordionDetails({ stage })}
-      ${NavigatorLeadCTA({
-        stage,
-        requestHref: getRequestHref(stage),
-        catalogHref: getCatalogHref(stage.id)
-      })}
+      ${CompletionChecklistCard({ stage, isCompleted })}
+      ${NextStageCard({ stage, nextStage })}
+      ${StageActionsBar({ stage, nextStage, isCompleted })}
     </div>
   `;
 }
@@ -199,40 +166,24 @@ root.addEventListener("click", (event) => {
     return;
   }
 
-  const navButton = target.closest("[data-nav-action]");
-  if (navButton) {
-    const currentStage = getStageById(state.selectedStageId);
-    const action = navButton.getAttribute("data-nav-action");
-    if (action === "prev" && currentStage.previousStage) {
-      setSelectedStage(currentStage.previousStage);
-    }
-    if (action === "next" && currentStage.nextStage) {
-      setSelectedStage(currentStage.nextStage);
-    }
-    if (action === "checklist") {
-      const actionsBlock = document.getElementById("navigator-actions");
-      if (actionsBlock) {
-        actionsBlock.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }
-    return;
-  }
-
-  const resourceTab = target.closest("[data-resource-tab]");
-  if (resourceTab) {
-    setActiveResourceTab(resourceTab.getAttribute("data-resource-tab"));
-    return;
-  }
-
-  const resourceFilter = target.closest("[data-resource-filter]");
-  if (resourceFilter) {
-    setActiveResourcePreset(state.activeResourceTab, resourceFilter.getAttribute("data-resource-filter"));
-    return;
-  }
-
   const mapViewToggle = target.closest("[data-map-view]");
   if (mapViewToggle) {
     setMapView(mapViewToggle.getAttribute("data-map-view"));
+    return;
+  }
+
+  const stageActionButton = target.closest("[data-stage-action]");
+  if (stageActionButton) {
+    const currentStage = getStageById(state.selectedStageId);
+    const action = stageActionButton.getAttribute("data-stage-action");
+    const nextStageId = currentStage.nextStageId || currentStage.nextStage || null;
+    if (action === "complete") {
+      toggleStageCompleted(currentStage.id);
+      return;
+    }
+    if (action === "next-stage" && nextStageId && state.completedStageIds.has(currentStage.id)) {
+      setSelectedStage(nextStageId);
+    }
   }
 });
 
