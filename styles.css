@@ -6113,12 +6113,14 @@ body.navigator-stage-modal-open {
   }
 
   .navigator-v1-route-node {
-    width: min(18.8vw, 220px);
+    width: clamp(128px, 15vw, 176px);
+    min-height: 88px;
+    padding: 10px;
   }
 
   .navigator-v1-route-link {
-    width: 28px;
-    margin: 0 5px;
+    width: 16px;
+    margin: 0 2px;
     height: 14px;
     padding-left: 0;
   }
