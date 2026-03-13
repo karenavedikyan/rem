@@ -1022,17 +1022,14 @@ button.hero-kpi-card {
   transform: none;
 }
 
-.how-block-cta {
+.how-block-note {
   margin-top: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
+  font-size: 12.5px;
+  line-height: 1.38;
 }
 
-.how-block-cta .muted {
-  margin: 0;
-  font-size: 13px;
+.how-block-note.muted {
+  margin-bottom: 0;
 }
 
 .navigator-scenario {
@@ -1208,13 +1205,31 @@ button.hero-kpi-card {
 .navigator-core-cta {
   margin-top: 12px;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 380px);
   gap: 8px;
-  justify-items: stretch;
+  justify-items: start;
 }
 
 .navigator-core-cta .btn {
   width: 100%;
+}
+
+.navigator-core-secondary-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  color: color-mix(in srgb, var(--muted) 88%, #fff 12%);
+  font-size: 13px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-color: color-mix(in srgb, var(--red) 46%, transparent);
+  transition: color 160ms var(--ease), text-decoration-color 160ms var(--ease);
+}
+
+.navigator-core-secondary-link:hover,
+.navigator-core-secondary-link:focus-visible {
+  color: color-mix(in srgb, var(--text) 90%, #fff 10%);
+  text-decoration-color: color-mix(in srgb, var(--red) 70%, transparent);
 }
 
 .catalog-preview-tags {
@@ -5826,18 +5841,8 @@ body.navigator-stage-modal-open {
     line-height: 1.3;
   }
 
-  .how-block-cta {
-    display: grid;
-    justify-items: stretch;
-    gap: 8px;
-  }
-
-  .how-block-cta .btn {
-    width: 100%;
-  }
-
-  .how-block-cta .muted {
-    font-size: 12.5px;
+  .how-block-note {
+    font-size: 12px;
   }
 
   .navigator-stage-strip {
