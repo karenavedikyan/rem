@@ -285,10 +285,20 @@ img {
 }
 
 .hero-copy h1 {
-  margin: 8px 0 10px;
+  margin: 8px 0 8px;
   font-size: clamp(30px, 3.2vw, 52px);
   line-height: 1.08;
   letter-spacing: -0.6px;
+}
+
+.hero-offer {
+  margin: 0;
+  max-width: 30ch;
+  font-size: clamp(20px, 2.25vw, 31px);
+  line-height: 1.16;
+  letter-spacing: -0.35px;
+  font-weight: 800;
+  color: color-mix(in srgb, #ffffff 90%, var(--red) 10%);
 }
 
 .icon-sprite {
@@ -326,8 +336,16 @@ img {
   margin: 0;
   max-width: 62ch;
   font-size: clamp(14px, 1.15vw, 16px);
-  line-height: 1.38;
+  line-height: 1.42;
   color: rgba(176, 190, 197, 0.95);
+}
+
+.hero-route-label {
+  margin: 11px 0 0;
+  font-size: 11px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--muted) 80%, #fff 20%);
 }
 
 .hero-kpis {
@@ -437,7 +455,7 @@ button.hero-kpi-card {
 }
 
 .hero-actions-inline {
-  margin-top: 10px;
+  margin-top: 12px;
 }
 
 .hero-open-request-btn {
@@ -445,7 +463,13 @@ button.hero-kpi-card {
 }
 
 .hero-fineprint {
-  margin-top: 4px;
+  margin-top: 6px;
+}
+
+.hero-post-cta {
+  margin-top: 10px;
+  max-width: 70ch;
+  color: color-mix(in srgb, var(--muted) 90%, #fff 10%);
 }
 
 .hero-note {
@@ -5680,9 +5704,20 @@ body.navigator-stage-modal-open {
     line-height: 1.08;
   }
 
+  .hero-offer {
+    font-size: clamp(18px, 6.1vw, 25px);
+    line-height: 1.2;
+    max-width: 24ch;
+  }
+
   .lead {
     font-size: 14px;
     line-height: 1.34;
+  }
+
+  .hero-route-label {
+    margin-top: 10px;
+    font-size: 10px;
   }
 
   .hero-kpis {
@@ -5698,6 +5733,12 @@ body.navigator-stage-modal-open {
     padding-bottom: 2px;
     font-size: 11.5px;
     gap: 4px;
+  }
+
+  .hero-post-cta {
+    margin-top: 9px;
+    font-size: 13.5px;
+    line-height: 1.38;
   }
 
   .hero-kpi-card {
