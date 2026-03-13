@@ -5984,14 +5984,20 @@ body.navigator-stage-modal-open {
   z-index: 1;
   display: grid;
   align-items: center;
-  min-height: 64px;
+  min-height: 88px;
+  height: 88px;
+}
+
+.navigator-v1-road-step:last-child {
+  min-height: 68px;
+  height: 68px;
 }
 
 .navigator-v1-road-node {
   position: relative;
   display: block;
   width: 100%;
-  min-height: 52px;
+  min-height: 100%;
   padding: 0;
   border: none;
   background: transparent;
@@ -6058,10 +6064,11 @@ body.navigator-stage-modal-open {
   display: inline-grid;
   gap: 2px;
   margin-left: calc(50% + 17px);
+  width: min(44vw, 186px);
   max-width: calc(50% - 22px);
-  min-height: 36px;
+  min-height: 42px;
   align-content: center;
-  padding: 7px 11px;
+  padding: 8px 12px;
   border-radius: 999px;
   border: 1px solid color-mix(in srgb, var(--border) 84%, #fff 16%);
   background: color-mix(in srgb, var(--surface) 92%, #fff 8%);
@@ -6104,9 +6111,12 @@ body.navigator-stage-modal-open {
 }
 
 .navigator-v1-road-connector {
+  position: absolute;
+  top: calc(50% + 14px);
+  left: calc(50% + 1px);
   width: 56px;
-  height: 34px;
-  margin: -2px 0 0 calc(50% + 1px);
+  height: 42px;
+  margin: 0;
   border: 2px solid color-mix(in srgb, var(--border) 90%, #fff 10%);
   border-top: 0;
   border-left: 0;
@@ -6114,7 +6124,8 @@ body.navigator-stage-modal-open {
 }
 
 .navigator-v1-road-step:nth-child(even) .navigator-v1-road-connector {
-  margin-left: calc(50% - 57px);
+  left: auto;
+  right: calc(50% + 1px);
   border-left: 2px solid color-mix(in srgb, var(--border) 90%, #fff 10%);
   border-right: 0;
   border-radius: 0 0 0 20px;
@@ -6150,6 +6161,10 @@ body.navigator-stage-modal-open {
 
 .navigator-v1-road-step:nth-child(even) .navigator-v1-road-connector.is-upcoming {
   border-right-color: transparent;
+}
+
+.navigator-v1-road-step:last-child .navigator-v1-road-connector {
+  display: none;
 }
 
 .navigator-v1-route-step {
@@ -6389,16 +6404,23 @@ body.navigator-stage-modal-open {
   }
 
   .navigator-v1-road-step {
-    min-height: 70px;
+    min-height: 90px;
+    height: 90px;
+  }
+
+  .navigator-v1-road-step:last-child {
+    min-height: 72px;
+    height: 72px;
   }
 
   .navigator-v1-road-connector {
-    width: 62px;
-    margin-left: calc(50% + 1px);
+    width: 64px;
+    height: 44px;
+    left: calc(50% + 1px);
   }
 
   .navigator-v1-road-step:nth-child(even) .navigator-v1-road-connector {
-    margin-left: calc(50% - 63px);
+    right: calc(50% + 1px);
   }
 }
 
