@@ -16,7 +16,7 @@ export function NavigatorRoutePathMap({ stageStates }) {
           >
             <span class="navigator-v1-road-dot" aria-hidden="true">${index + 1}</span>
             <span class="navigator-v1-road-text">
-              <span class="navigator-v1-road-title">${stage.icon} ${stage.mapLabel}</span>
+              <span class="navigator-v1-road-title">${stage.mapLabel}</span>
               <span class="navigator-v1-road-state">${stateLabel}</span>
             </span>
           </button>

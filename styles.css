@@ -5946,56 +5946,71 @@ body.navigator-stage-modal-open {
 }
 
 .navigator-v1-roadmap {
+  position: relative;
   display: grid;
   gap: 0;
   list-style: none;
   margin: 0;
-  padding: 2px 0 4px;
+  padding: 14px 10px 10px;
+  border: 1px solid color-mix(in srgb, var(--red) 18%, var(--border));
+  border-radius: 14px;
+  background:
+    radial-gradient(80% 42% at 50% 52%, color-mix(in srgb, var(--red) 14%, transparent), transparent 70%),
+    repeating-linear-gradient(0deg, color-mix(in srgb, #8fa2bf 10%, transparent) 0 1px, transparent 1px 30px),
+    repeating-linear-gradient(90deg, color-mix(in srgb, #8fa2bf 10%, transparent) 0 1px, transparent 1px 30px),
+    linear-gradient(180deg, color-mix(in srgb, var(--surface-2) 95%, #fff 5%), color-mix(in srgb, var(--surface) 97%, #fff 3%));
+  overflow: hidden;
+}
+
+.navigator-v1-roadmap::before {
+  content: "";
+  position: absolute;
+  left: calc(50% - 1px);
+  top: 20px;
+  bottom: 18px;
+  width: 2px;
+  border-radius: 2px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--red) 24%, var(--border)) 0%,
+    color-mix(in srgb, var(--red) 36%, var(--border)) 46%,
+    color-mix(in srgb, var(--red) 20%, var(--border)) 100%
+  );
+  opacity: 0.9;
 }
 
 .navigator-v1-road-step {
-  display: flex;
-  flex-direction: column;
+  position: relative;
+  z-index: 1;
+  display: grid;
+  align-items: center;
+  min-height: 64px;
 }
 
 .navigator-v1-road-node {
-  display: grid;
-  grid-template-columns: 28px minmax(0, 1fr);
-  align-items: center;
-  gap: 10px;
+  position: relative;
+  display: block;
   width: 100%;
-  min-height: 58px;
-  padding: 9px 10px;
-  border-radius: 12px;
-  border: 1px solid color-mix(in srgb, var(--border) 88%, #fff 12%);
-  background: color-mix(in srgb, var(--surface) 95%, #fff 5%);
-  color: var(--text);
+  min-height: 52px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
   cursor: pointer;
   text-align: left;
-  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
 }
 
 .navigator-v1-road-node:hover,
 .navigator-v1-road-node:focus-visible {
-  border-color: color-mix(in srgb, var(--red) 42%, var(--border));
-}
-
-.navigator-v1-road-node.is-current {
-  border-color: color-mix(in srgb, var(--red) 58%, var(--border));
-  background: color-mix(in srgb, var(--surface) 86%, var(--red) 14%);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--red) 22%, transparent);
-}
-
-.navigator-v1-road-node.is-completed {
-  border-color: color-mix(in srgb, #7e8b9d 38%, var(--border) 62%);
-  background: color-mix(in srgb, var(--surface) 91%, #94a3b8 9%);
-}
-
-.navigator-v1-road-node.is-upcoming {
-  border-color: color-mix(in srgb, var(--border) 92%, #fff 8%);
+  transform: translateY(-1px);
 }
 
 .navigator-v1-road-dot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   width: 28px;
   height: 28px;
   border-radius: 999px;
@@ -6005,52 +6020,136 @@ body.navigator-stage-modal-open {
   font-size: 12px;
   font-weight: 800;
   border: 1px solid color-mix(in srgb, var(--border) 84%, #fff 16%);
-  background: color-mix(in srgb, var(--surface-2) 90%, #fff 10%);
+  background: color-mix(in srgb, var(--surface-2) 94%, #fff 6%);
   color: color-mix(in srgb, var(--text) 82%, #fff 18%);
+  box-shadow: 0 0 0 2px color-mix(in srgb, #0b0f16 85%, transparent);
+  z-index: 2;
+}
+
+.navigator-v1-road-dot::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border-radius: inherit;
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  opacity: 0.45;
 }
 
 .navigator-v1-road-node.is-current .navigator-v1-road-dot {
-  border-color: color-mix(in srgb, var(--red) 56%, var(--border));
-  background: color-mix(in srgb, var(--red) 28%, var(--surface-2) 72%);
+  border-color: color-mix(in srgb, var(--red) 70%, var(--border));
+  background: color-mix(in srgb, var(--red) 34%, var(--surface-2) 66%);
   color: color-mix(in srgb, #fff 92%, var(--red) 8%);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--red) 18%, transparent), 0 0 22px color-mix(in srgb, var(--red) 32%, transparent);
+}
+
+.navigator-v1-road-node.is-current .navigator-v1-road-dot::after {
+  border-color: color-mix(in srgb, var(--red) 48%, transparent);
+  opacity: 0.8;
+}
+
+.navigator-v1-road-node.is-completed .navigator-v1-road-dot {
+  border-color: color-mix(in srgb, #8ea0b8 46%, var(--border));
+  background: color-mix(in srgb, #8ea0b8 20%, var(--surface-2) 80%);
+  color: color-mix(in srgb, #d8e1ed 90%, #111 10%);
 }
 
 .navigator-v1-road-text {
-  min-width: 0;
-  display: grid;
+  position: relative;
+  display: inline-grid;
   gap: 2px;
+  margin-left: calc(50% + 17px);
+  max-width: calc(50% - 22px);
+  min-height: 36px;
+  align-content: center;
+  padding: 7px 11px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--border) 84%, #fff 16%);
+  background: color-mix(in srgb, var(--surface) 92%, #fff 8%);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  min-width: 0;
+}
+
+.navigator-v1-road-step:nth-child(even) .navigator-v1-road-text {
+  margin-left: 0;
+  margin-right: calc(50% + 17px);
+  text-align: right;
 }
 
 .navigator-v1-road-title {
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1.2;
-  font-weight: 700;
+  font-weight: 760;
 }
 
 .navigator-v1-road-state {
-  font-size: 11px;
-  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--muted) 82%, #fff 18%);
   line-height: 1.2;
 }
 
 .navigator-v1-road-node.is-current .navigator-v1-road-state {
-  color: color-mix(in srgb, #fff 86%, var(--red) 14%);
+  color: color-mix(in srgb, var(--red) 70%, #fff 30%);
+}
+
+.navigator-v1-road-node.is-current .navigator-v1-road-text {
+  border-color: color-mix(in srgb, var(--red) 56%, var(--border));
+  background: color-mix(in srgb, var(--surface-2) 84%, var(--red) 16%);
+}
+
+.navigator-v1-road-node.is-completed .navigator-v1-road-text {
+  border-color: color-mix(in srgb, #8ea0b8 40%, var(--border));
+  background: color-mix(in srgb, var(--surface) 88%, #8ea0b8 12%);
 }
 
 .navigator-v1-road-connector {
-  width: 2px;
-  height: 18px;
-  margin: 4px 0 4px 13px;
-  border-radius: 2px;
-  background: color-mix(in srgb, var(--border) 90%, #fff 10%);
+  width: 56px;
+  height: 34px;
+  margin: -2px 0 0 calc(50% + 1px);
+  border: 2px solid color-mix(in srgb, var(--border) 90%, #fff 10%);
+  border-top: 0;
+  border-left: 0;
+  border-radius: 0 0 20px 0;
+}
+
+.navigator-v1-road-step:nth-child(even) .navigator-v1-road-connector {
+  margin-left: calc(50% - 57px);
+  border-left: 2px solid color-mix(in srgb, var(--border) 90%, #fff 10%);
+  border-right: 0;
+  border-radius: 0 0 0 20px;
 }
 
 .navigator-v1-road-connector.is-completed {
-  background: color-mix(in srgb, #9aa5b6 72%, var(--border) 28%);
+  border-color: color-mix(in srgb, #9aa5b6 72%, var(--border) 28%);
+}
+
+.navigator-v1-road-step:nth-child(odd) .navigator-v1-road-connector.is-completed {
+  border-left-color: transparent;
+}
+
+.navigator-v1-road-step:nth-child(even) .navigator-v1-road-connector.is-completed {
+  border-right-color: transparent;
 }
 
 .navigator-v1-road-connector.is-active {
-  background: color-mix(in srgb, var(--red) 58%, var(--border) 42%);
+  border-color: color-mix(in srgb, var(--red) 62%, var(--border) 38%);
+}
+
+.navigator-v1-road-step:nth-child(odd) .navigator-v1-road-connector.is-active {
+  border-left-color: transparent;
+}
+
+.navigator-v1-road-step:nth-child(even) .navigator-v1-road-connector.is-active {
+  border-right-color: transparent;
+}
+
+.navigator-v1-road-step:nth-child(odd) .navigator-v1-road-connector.is-upcoming {
+  border-left-color: transparent;
+}
+
+.navigator-v1-road-step:nth-child(even) .navigator-v1-road-connector.is-upcoming {
+  border-right-color: transparent;
 }
 
 .navigator-v1-route-step {
@@ -6281,32 +6380,25 @@ body.navigator-stage-modal-open {
   }
 
   .navigator-v1-roadmap {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .navigator-v1-road-step {
-    display: inline-flex;
-    align-items: center;
-    flex-direction: row;
-    flex: 1 1 0;
-    min-width: 0;
-  }
-
-  .navigator-v1-road-node {
-    width: 100%;
-    min-height: 64px;
+    max-width: 760px;
+    margin: 0 auto;
   }
 
   .navigator-v1-road-title {
-    font-size: 13px;
+    font-size: 14px;
+  }
+
+  .navigator-v1-road-step {
+    min-height: 70px;
   }
 
   .navigator-v1-road-connector {
-    width: 16px;
-    height: 2px;
-    margin: 0 2px;
+    width: 62px;
+    margin-left: calc(50% + 1px);
+  }
+
+  .navigator-v1-road-step:nth-child(even) .navigator-v1-road-connector {
+    margin-left: calc(50% - 63px);
   }
 }
 
