@@ -954,42 +954,85 @@ button.hero-kpi-card {
 
 .how-cards {
   margin-top: 8px;
-  gap: 8px;
+  gap: 10px;
+}
+
+.how-subtitle {
+  max-width: 64ch;
 }
 
 .how-card {
-  padding: 13px;
+  padding: 12px;
+  border-color: color-mix(in srgb, var(--border) 90%, #fff 10%);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 90%, #fff 10%), color-mix(in srgb, var(--surface) 95%, #fff 5%));
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.16);
+  cursor: default;
 }
 
 .how-card h3 {
-  margin-bottom: 4px;
-  font-size: 17px;
+  margin-bottom: 3px;
+  font-size: 16px;
+  line-height: 1.25;
 }
 
 .how-card p {
-  font-size: 13px;
-  line-height: 1.35;
+  font-size: 12.5px;
+  line-height: 1.34;
+  color: color-mix(in srgb, var(--muted) 96%, #fff 4%);
 }
 
 .how-card-top {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  margin-bottom: 7px;
 }
 
 .how-card-icon {
-  width: 34px;
-  height: 34px;
-  border-radius: 12px;
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(245, 245, 245, 0.16);
-  background: linear-gradient(145deg, rgba(245, 245, 245, 0.09), rgba(18, 18, 18, 0.38));
-  box-shadow: inset 0 1px 0 rgba(245, 245, 245, 0.16), 0 10px 20px rgba(0, 0, 0, 0.2);
+  border: 1px solid color-mix(in srgb, var(--border) 88%, #fff 12%);
+  background: color-mix(in srgb, var(--surface-2) 88%, #fff 12%);
+  box-shadow: none;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  color: rgba(245, 245, 245, 0.94);
+  color: color-mix(in srgb, var(--text) 90%, #fff 10%);
   transition: border-color 180ms var(--ease), background 180ms var(--ease), box-shadow 180ms var(--ease), color 180ms var(--ease);
+}
+
+.how-cards .how-card:hover,
+.how-cards .how-card:focus-within {
+  border-color: color-mix(in srgb, var(--border) 90%, #fff 10%);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.16);
+}
+
+.how-cards .how-card:hover .how-card-icon,
+.how-cards .how-card:focus-within .how-card-icon {
+  color: color-mix(in srgb, var(--text) 90%, #fff 10%);
+  border-color: color-mix(in srgb, var(--border) 88%, #fff 12%);
+  background: color-mix(in srgb, var(--surface-2) 88%, #fff 12%);
+  box-shadow: none;
+}
+
+.how-cards .how-card:hover .icon-svg,
+.how-cards .how-card:focus-within .icon-svg {
+  transform: none;
+}
+
+.how-block-cta {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.how-block-cta .muted {
+  margin: 0;
+  font-size: 13px;
 }
 
 .navigator-scenario {
@@ -1338,15 +1381,17 @@ button.hero-kpi-card {
 }
 
 .step-number {
-  width: 34px;
-  height: 34px;
-  border-radius: 12px;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
   display: grid;
   place-items: center;
-  background: linear-gradient(145deg, rgba(229, 57, 53, 0.95), rgba(183, 28, 28, 0.95));
-  box-shadow: 0 12px 28px rgba(229, 57, 53, 0.22);
+  background: linear-gradient(145deg, color-mix(in srgb, var(--red) 78%, #111 22%), color-mix(in srgb, var(--red-dark) 88%, #111 12%));
+  border: 1px solid color-mix(in srgb, var(--red) 38%, var(--border));
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--red) 16%, transparent);
   font-weight: 850;
-  margin-bottom: 10px;
+  margin-bottom: 0;
+  font-size: 12px;
 }
 
 .tiles {
@@ -5779,6 +5824,20 @@ body.navigator-stage-modal-open {
   .how-card p {
     font-size: 12.5px;
     line-height: 1.3;
+  }
+
+  .how-block-cta {
+    display: grid;
+    justify-items: stretch;
+    gap: 8px;
+  }
+
+  .how-block-cta .btn {
+    width: 100%;
+  }
+
+  .how-block-cta .muted {
+    font-size: 12.5px;
   }
 
   .navigator-stage-strip {
