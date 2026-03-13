@@ -39,13 +39,13 @@ function getInitialConcept() {
   } catch {
     // ignore storage errors
   }
-  return "metro";
+  return "route";
 }
 
 function syncUrl() {
   const nextURL = new URL(window.location.href);
   nextURL.searchParams.set("stage", state.selectedStageId);
-  if (state.selectedConceptId === "metro") nextURL.searchParams.delete("concept");
+  if (state.selectedConceptId === "route") nextURL.searchParams.delete("concept");
   else nextURL.searchParams.set("concept", state.selectedConceptId);
   window.history.replaceState({}, "", nextURL.toString());
 }

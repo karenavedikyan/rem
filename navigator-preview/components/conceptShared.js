@@ -1,6 +1,6 @@
 export const CONCEPTS = [
+  { id: "route", title: "Route Map", description: "Маршрутная карта движения (RemCard)." },
   { id: "metro", title: "Metro Map", description: "Маршрут как схема метро." },
-  { id: "route", title: "Route Path", description: "Путь A → B с ощущением движения." },
   { id: "cards", title: "Card Flow", description: "Карточки этапов в едином потоке." }
 ];
 
@@ -14,7 +14,7 @@ export const STAGE_CODE_BY_ID = {
 
 export function normalizeConcept(rawValue) {
   const value = String(rawValue || "").trim().toLowerCase();
-  return CONCEPTS.some((concept) => concept.id === value) ? value : "metro";
+  return CONCEPTS.some((concept) => concept.id === value) ? value : "route";
 }
 
 export function normalizeStageId(stages, rawValue) {

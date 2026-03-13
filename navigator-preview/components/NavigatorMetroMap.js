@@ -23,7 +23,7 @@ export function NavigatorMetroMap({ stageStates }) {
   return `
     <section class="card navigator-concepts-card concept-map-card">
       <div class="navigator-concepts-map-head">
-        <p class="navigator-concepts-map-kicker">Concept 1</p>
+        <p class="navigator-concepts-map-kicker">Concept 2</p>
         <h3>Metro Map</h3>
       </div>
       <ol class="concept-metro-map" role="tablist" aria-label="Metro Map этапов ремонта">
