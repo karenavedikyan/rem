@@ -1,23 +1,25 @@
 :root {
-  --red: #e53935;
-  --red-dark: #b71c1c;
-  --bg: #121212;
-  --surface: #1e1e1e;
-  --surface-2: #222222;
-  --text: #f5f5f5;
-  --muted: #b0bec5;
-  --border: rgba(245, 245, 245, 0.08);
-  --shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+  --red: #ef4444;
+  --red-dark: #b91c1c;
+  --bg: #0f131a;
+  --surface: #171d27;
+  --surface-2: #1f2734;
+  --text: #f3f6fb;
+  --muted: #a8b4c5;
+  --border: rgba(243, 246, 251, 0.12);
+  --shadow: 0 20px 42px rgba(0, 0, 0, 0.4);
+  --surface-soft: rgba(255, 255, 255, 0.05);
+  --surface-elev: rgba(255, 255, 255, 0.08);
 
-  --radius: 16px;
-  --radius-sm: 12px;
-  --container: 1100px;
+  --radius: 18px;
+  --radius-sm: 14px;
+  --container: 1120px;
   --btn-h: 46px;
-  --btn-radius: 12px;
+  --btn-radius: 13px;
   --control-h: 46px;
   --chip-radius: 999px;
-  --card-pad: 16px;
-  --ring: 0 0 0 3px rgba(229, 57, 53, 0.2);
+  --card-pad: 17px;
+  --ring: 0 0 0 3px rgba(239, 68, 68, 0.22);
 
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
@@ -37,9 +39,11 @@ body {
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji",
     "Segoe UI Emoji";
   color: var(--text);
-  background: radial-gradient(1000px 700px at 20% -10%, rgba(229, 57, 53, 0.18), transparent 60%),
-    radial-gradient(900px 650px at 90% 15%, rgba(183, 28, 28, 0.16), transparent 55%), var(--bg);
+  background: radial-gradient(1050px 700px at 16% -12%, rgba(239, 68, 68, 0.18), transparent 58%),
+    radial-gradient(920px 680px at 92% 12%, rgba(185, 28, 28, 0.14), transparent 54%),
+    linear-gradient(180deg, #10151d 0%, #0f131a 100%);
   line-height: 1.55;
+  text-rendering: optimizeLegibility;
 }
 
 a {
@@ -96,8 +100,8 @@ img {
   z-index: 50;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  background: rgba(18, 18, 18, 0.72);
-  border-bottom: 1px solid rgba(245, 245, 245, 0.06);
+  background: linear-gradient(180deg, rgba(15, 19, 26, 0.86), rgba(15, 19, 26, 0.66));
+  border-bottom: 1px solid color-mix(in srgb, var(--red) 18%, var(--border));
 }
 
 .header-inner {
@@ -189,22 +193,24 @@ img {
 
 .nav-link {
   padding: 10px 10px;
-  border-radius: 12px;
-  color: rgba(245, 245, 245, 0.92);
+  border-radius: 11px;
+  color: color-mix(in srgb, var(--text) 92%, #fff 8%);
   font-size: 14px;
-  transition: background 160ms var(--ease), color 160ms var(--ease);
+  transition: background 160ms var(--ease), color 160ms var(--ease), border-color 160ms var(--ease);
+  border: 1px solid transparent;
 }
 
 .nav-link:hover,
 .nav-link:focus-visible {
-  background: rgba(229, 57, 53, 0.12);
+  background: color-mix(in srgb, var(--red) 14%, transparent);
+  border-color: color-mix(in srgb, var(--red) 30%, transparent);
   color: var(--text);
   outline: none;
 }
 
 .nav-link[aria-current="page"] {
-  background: rgba(229, 57, 53, 0.2);
-  border: 1px solid rgba(229, 57, 53, 0.35);
+  background: color-mix(in srgb, var(--red) 20%, transparent);
+  border: 1px solid color-mix(in srgb, var(--red) 40%, var(--border));
 }
 
 .nav-toggle {
@@ -460,9 +466,10 @@ button.hero-kpi-card {
   font-size: 14px;
   line-height: 1.2;
   border: 1px solid transparent;
-  color: rgba(245, 245, 245, 0.96);
-  -webkit-text-fill-color: rgba(245, 245, 245, 0.96);
-  transition: transform 160ms var(--ease), background 160ms var(--ease), border-color 160ms var(--ease), box-shadow 160ms var(--ease);
+  color: color-mix(in srgb, var(--text) 96%, #fff 4%);
+  -webkit-text-fill-color: color-mix(in srgb, var(--text) 96%, #fff 4%);
+  letter-spacing: 0.01em;
+  transition: transform 170ms var(--ease), background 170ms var(--ease), border-color 170ms var(--ease), box-shadow 170ms var(--ease);
   cursor: pointer;
 }
 
@@ -471,28 +478,31 @@ button.hero-kpi-card {
 }
 
 .btn-primary {
-  background: linear-gradient(145deg, #b03a34, #7e2622);
-  border-color: rgba(229, 84, 74, 0.36);
-  box-shadow: 0 10px 22px rgba(116, 30, 27, 0.22);
+  background: linear-gradient(145deg, color-mix(in srgb, var(--red) 72%, #111 28%), color-mix(in srgb, var(--red-dark) 86%, #111 14%));
+  border-color: color-mix(in srgb, var(--red) 44%, var(--border));
+  box-shadow: 0 12px 28px rgba(132, 34, 32, 0.28);
 }
 
 .btn-primary:hover,
 .btn-primary:focus-visible {
-  background: linear-gradient(145deg, #bf443c, #8a2a26);
-  border-color: rgba(229, 84, 74, 0.5);
-  box-shadow: var(--ring), 0 10px 22px rgba(116, 30, 27, 0.22);
+  background: linear-gradient(145deg, color-mix(in srgb, var(--red) 80%, #111 20%), color-mix(in srgb, var(--red-dark) 90%, #111 10%));
+  border-color: color-mix(in srgb, var(--red) 58%, var(--border));
+  box-shadow: var(--ring), 0 14px 30px rgba(132, 34, 32, 0.32);
+  transform: translateY(-1px);
   outline: none;
 }
 
 .btn-ghost {
-  background: rgba(30, 30, 30, 0.68);
-  border-color: rgba(245, 245, 245, 0.16);
+  background: color-mix(in srgb, var(--surface) 84%, transparent);
+  border-color: color-mix(in srgb, var(--border) 84%, #fff 16%);
 }
 
 .btn-ghost:hover,
 .btn-ghost:focus-visible {
-  border-color: rgba(229, 57, 53, 0.35);
+  border-color: color-mix(in srgb, var(--red) 42%, var(--border));
+  background: color-mix(in srgb, var(--surface-2) 88%, var(--red) 12%);
   box-shadow: var(--ring);
+  transform: translateY(-1px);
   outline: none;
 }
 
@@ -723,32 +733,33 @@ button.hero-kpi-card {
 
 /* Sections */
 .section {
-  padding: 40px 0;
+  padding: 44px 0;
 }
 
 .section-header {
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
 .section-header h2 {
   margin: 0 0 8px;
-  font-size: clamp(22px, 2.1vw, 32px);
-  letter-spacing: -0.3px;
+  font-size: clamp(22px, 2.2vw, 34px);
+  letter-spacing: -0.35px;
+  line-height: 1.2;
 }
 
 .section-header h1 {
   margin: 0 0 8px;
-  font-size: clamp(30px, 3.2vw, 44px);
-  letter-spacing: -0.5px;
+  font-size: clamp(30px, 3.3vw, 46px);
+  letter-spacing: -0.55px;
   line-height: 1.15;
 }
 
 .section-subtitle {
   margin: 0;
   max-width: 72ch;
-  font-size: 15px;
-  line-height: 1.45;
-  color: rgba(176, 190, 197, 0.95);
+  font-size: 15.5px;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--muted) 94%, #fff 6%);
 }
 
 .about-toc {
@@ -846,25 +857,32 @@ button.hero-kpi-card {
 
 .card {
   border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  background: linear-gradient(180deg, rgba(30, 30, 30, 0.88), rgba(30, 30, 30, 0.62));
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+  border: 1px solid color-mix(in srgb, var(--border) 84%, #fff 16%);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--surface-2) 82%, #fff 18%), color-mix(in srgb, var(--surface) 88%, #fff 12%));
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.24);
   padding: var(--card-pad);
   position: relative;
   overflow: hidden;
+  transition: border-color 180ms var(--ease), box-shadow 180ms var(--ease), transform 180ms var(--ease);
 }
 
 .card::after {
   content: "";
   position: absolute;
   inset: -1px;
-  background: radial-gradient(600px 240px at 0% 0%, rgba(229, 57, 53, 0.16), transparent 55%);
-  opacity: 0.5;
+  background: radial-gradient(620px 250px at 0% 0%, color-mix(in srgb, var(--red) 15%, transparent), transparent 58%);
+  opacity: 0.42;
   pointer-events: none;
 }
 
 .card > * {
   position: relative;
+}
+
+.card:hover,
+.card:focus-within {
+  border-color: color-mix(in srgb, var(--red) 28%, var(--border));
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.28);
 }
 
 .card h3 {
@@ -1625,7 +1643,7 @@ button.hero-kpi-card {
 }
 
 .muted {
-  color: rgba(176, 190, 197, 0.94);
+  color: color-mix(in srgb, var(--muted) 94%, #fff 6%);
   line-height: 1.45;
 }
 
@@ -2133,9 +2151,9 @@ button.hero-kpi-card {
   border-radius: var(--chip-radius);
   font-size: 12px;
   font-weight: 650;
-  border: 1px solid rgba(245, 245, 245, 0.16);
-  background: rgba(18, 18, 18, 0.42);
-  color: rgba(245, 245, 245, 0.92);
+  border: 1px solid color-mix(in srgb, var(--border) 82%, #fff 18%);
+  background: color-mix(in srgb, var(--surface) 82%, #fff 18%);
+  color: color-mix(in srgb, var(--text) 93%, #fff 7%);
 }
 
 :is(
@@ -2155,9 +2173,9 @@ button.hero-kpi-card {
   min-height: 30px;
   border-radius: var(--chip-radius);
   padding: 6px 12px;
-  border: 1px solid rgba(245, 245, 245, 0.18);
-  background: rgba(255, 255, 255, 0.06);
-  color: rgba(245, 245, 245, 0.95);
+  border: 1px solid color-mix(in srgb, var(--border) 80%, #fff 20%);
+  background: color-mix(in srgb, var(--surface-soft) 84%, #fff 16%);
+  color: color-mix(in srgb, var(--text) 95%, #fff 5%);
   font-size: 12px;
   font-weight: 650;
   line-height: 1.2;
@@ -2171,13 +2189,13 @@ button.hero-kpi-card {
     .catalog-filter-chip:hover,
     .account-chip:hover
   ) {
-  border-color: rgba(229, 57, 53, 0.42);
-  background: rgba(229, 57, 53, 0.14);
+  border-color: color-mix(in srgb, var(--red) 44%, var(--border));
+  background: color-mix(in srgb, var(--surface-2) 86%, var(--red) 14%);
 }
 
 :is(.catalog-focus-chip.is-active, .catalog-kind-chip.is-active, .catalog-sort-chip.is-active, .account-chip.is-active) {
-  border-color: rgba(229, 57, 53, 0.5);
-  background: rgba(229, 57, 53, 0.2);
+  border-color: color-mix(in srgb, var(--red) 56%, var(--border));
+  background: color-mix(in srgb, var(--surface-2) 80%, var(--red) 20%);
 }
 
 .partner-note {
@@ -2210,7 +2228,7 @@ button.hero-kpi-card {
 
 .field label {
   font-size: 12.5px;
-  color: rgba(245, 245, 245, 0.92);
+  color: color-mix(in srgb, var(--text) 92%, #fff 8%);
   font-weight: 700;
   letter-spacing: 0.02em;
 }
@@ -2229,13 +2247,13 @@ button.hero-kpi-card {
   width: 100%;
   min-height: var(--control-h);
   border-radius: var(--btn-radius);
-  border: 1px solid rgba(245, 245, 245, 0.14);
-  background: rgba(18, 18, 18, 0.35);
+  border: 1px solid color-mix(in srgb, var(--border) 82%, #fff 18%);
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
   color: var(--text);
-  padding: 10px 12px;
+  padding: 10px 13px;
   font-size: 14px;
   outline: none;
-  transition: border-color 160ms var(--ease), box-shadow 160ms var(--ease), transform 160ms var(--ease);
+  transition: border-color 170ms var(--ease), box-shadow 170ms var(--ease), background 170ms var(--ease);
 }
 
 .input::placeholder {
@@ -2243,7 +2261,8 @@ button.hero-kpi-card {
 }
 
 .input:focus {
-  border-color: rgba(229, 57, 53, 0.45);
+  border-color: color-mix(in srgb, var(--red) 52%, var(--border));
+  background: color-mix(in srgb, var(--surface-2) 86%, transparent);
   box-shadow: var(--ring);
 }
 
@@ -3480,9 +3499,9 @@ body.navigator-stage-modal-open {
 
 /* Footer */
 .site-footer {
-  border-top: 1px solid rgba(245, 245, 245, 0.06);
+  border-top: 1px solid color-mix(in srgb, var(--red) 16%, var(--border));
   padding: 28px 0;
-  background: rgba(18, 18, 18, 0.65);
+  background: linear-gradient(180deg, rgba(15, 19, 26, 0.54), rgba(15, 19, 26, 0.78));
 }
 
 .section-compact {
@@ -3570,12 +3589,12 @@ body.navigator-stage-modal-open {
 
 .footer-mini-link:hover,
 .footer-mini-link:focus-visible {
-  background: rgba(245, 245, 245, 0.06);
+  background: color-mix(in srgb, var(--surface-soft) 80%, var(--red) 20%);
   color: rgba(245, 245, 245, 0.98);
 }
 
 .footer-link:hover {
-  background: rgba(245, 245, 245, 0.06);
+  background: color-mix(in srgb, var(--surface-soft) 80%, var(--red) 20%);
   color: rgba(245, 245, 245, 0.98);
 }
 
