@@ -1,0 +1,416 @@
+.navigator-preview-section {
+  padding-top: 18px;
+}
+
+.navigator-preview-section .container {
+  display: flex;
+  justify-content: center;
+}
+
+.navigator-concepts-layout {
+  width: min(100%, 430px);
+  display: grid;
+  gap: 12px;
+}
+
+.navigator-concepts-card {
+  border: 1px solid color-mix(in srgb, var(--border) 86%, #fff 14%);
+  background: color-mix(in srgb, var(--surface) 95%, #fff 5%);
+}
+
+.navigator-concepts-hero h1 {
+  margin: 0 0 8px;
+  font-size: clamp(22px, 6vw, 30px);
+  line-height: 1.2;
+}
+
+.navigator-concepts-kicker {
+  margin: 0 0 6px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--muted) 76%, #fff 24%);
+}
+
+.navigator-concepts-headline {
+  margin-bottom: 8px;
+}
+
+.navigator-concepts-headline h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.navigator-concepts-switch-grid {
+  display: grid;
+  gap: 8px;
+}
+
+.navigator-concepts-switch-btn {
+  border: 1px solid color-mix(in srgb, var(--border) 88%, #fff 12%);
+  background: color-mix(in srgb, var(--surface) 95%, #fff 5%);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 10px 11px;
+  text-align: left;
+  display: grid;
+  gap: 4px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.navigator-concepts-switch-btn:hover,
+.navigator-concepts-switch-btn:focus-visible {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--red) 42%, var(--border));
+}
+
+.navigator-concepts-switch-btn.is-active {
+  border-color: color-mix(in srgb, var(--red) 58%, var(--border));
+  background: color-mix(in srgb, var(--surface-2) 85%, var(--red) 15%);
+}
+
+.navigator-concepts-switch-title {
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.navigator-concepts-switch-sub {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.navigator-concepts-list {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 6px;
+}
+
+.navigator-concepts-map-head {
+  margin-bottom: 10px;
+}
+
+.navigator-concepts-map-head h3 {
+  margin: 0;
+  font-size: 19px;
+}
+
+.navigator-concepts-map-kicker {
+  margin: 0 0 4px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--muted) 74%, #fff 26%);
+}
+
+/* Concept 1 — Metro Map */
+.concept-metro-map {
+  list-style: none;
+  margin: 0;
+  padding: 10px 0 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 4px;
+  position: relative;
+}
+
+.concept-metro-map::before {
+  content: "";
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  top: 31px;
+  height: 2px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--border) 90%, #fff 10%);
+}
+
+.concept-metro-stop {
+  position: relative;
+  z-index: 1;
+}
+
+.concept-metro-node {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.concept-metro-badge {
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--border) 84%, #fff 16%);
+  background: color-mix(in srgb, var(--surface) 94%, #fff 6%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.concept-metro-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.concept-metro-label {
+  font-size: 11px;
+  line-height: 1.2;
+  text-align: center;
+  font-weight: 700;
+}
+
+.concept-metro-node.is-current .concept-metro-badge {
+  border-color: color-mix(in srgb, var(--red) 62%, var(--border));
+  background: color-mix(in srgb, var(--red) 28%, var(--surface-2) 72%);
+  color: color-mix(in srgb, #fff 92%, var(--red) 8%);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--red) 20%, transparent);
+}
+
+.concept-metro-node.is-completed .concept-metro-badge {
+  border-color: color-mix(in srgb, #8e9bac 44%, var(--border));
+  background: color-mix(in srgb, #8e9bac 24%, var(--surface-2) 76%);
+}
+
+/* Concept 2 — Route Path */
+.concept-route-map {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.concept-route-step {
+  display: grid;
+  justify-items: center;
+}
+
+.concept-route-node {
+  width: 100%;
+  border: 1px solid color-mix(in srgb, var(--border) 88%, #fff 12%);
+  background: color-mix(in srgb, var(--surface) 95%, #fff 5%);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 9px 10px;
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 9px;
+  align-items: center;
+  text-align: left;
+  cursor: pointer;
+}
+
+.concept-route-node.is-current {
+  border-color: color-mix(in srgb, var(--red) 58%, var(--border));
+  background: color-mix(in srgb, var(--surface-2) 84%, var(--red) 16%);
+}
+
+.concept-route-node.is-completed {
+  border-color: color-mix(in srgb, #8e9bac 44%, var(--border));
+  background: color-mix(in srgb, #8e9bac 12%, var(--surface) 88%);
+}
+
+.concept-route-point {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--border) 84%, #fff 16%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.concept-route-node.is-current .concept-route-point {
+  border-color: color-mix(in srgb, var(--red) 62%, var(--border));
+  background: color-mix(in srgb, var(--red) 28%, var(--surface-2) 72%);
+}
+
+.concept-route-main {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.concept-route-name {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.concept-route-meta {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.2;
+}
+
+.concept-route-connector {
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  color: color-mix(in srgb, var(--red) 54%, var(--muted));
+  font-size: 14px;
+}
+
+/* Concept 3 — Card Flow */
+.concept-flow-map {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 2px;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(170px, 1fr);
+  gap: 8px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+}
+
+.concept-flow-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  scroll-snap-align: start;
+}
+
+.concept-flow-node {
+  width: 100%;
+  min-height: 106px;
+  border: 1px solid color-mix(in srgb, var(--border) 88%, #fff 12%);
+  background: color-mix(in srgb, var(--surface) 95%, #fff 5%);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 9px 10px;
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.concept-flow-node.is-current {
+  border-color: color-mix(in srgb, var(--red) 58%, var(--border));
+  background: color-mix(in srgb, var(--surface-2) 84%, var(--red) 16%);
+}
+
+.concept-flow-node.is-completed {
+  border-color: color-mix(in srgb, #8e9bac 44%, var(--border));
+}
+
+.concept-flow-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.concept-flow-index {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--muted) 78%, #fff 22%);
+  font-weight: 700;
+}
+
+.concept-flow-status {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: color-mix(in srgb, var(--red) 58%, #fff 42%);
+  font-weight: 700;
+}
+
+.concept-flow-title {
+  font-size: 15px;
+  line-height: 1.2;
+  font-weight: 800;
+}
+
+.concept-flow-desc {
+  font-size: 11px;
+  line-height: 1.25;
+  color: var(--muted);
+}
+
+.concept-flow-connector {
+  color: color-mix(in srgb, var(--red) 54%, var(--muted));
+}
+
+/* Shared info panel */
+.navigator-concepts-info-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-bottom: 8px;
+}
+
+.navigator-concepts-info-row {
+  margin-bottom: 8px;
+}
+
+.navigator-concepts-info-cell {
+  border: 1px solid color-mix(in srgb, var(--border) 88%, #fff 12%);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--surface) 95%, #fff 5%);
+  padding: 9px 10px;
+}
+
+.navigator-concepts-info-cell strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 14px;
+}
+
+.navigator-concepts-label {
+  margin: 0 0 4px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: color-mix(in srgb, var(--muted) 78%, #fff 22%);
+}
+
+.navigator-concepts-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.navigator-concepts-chip {
+  display: inline-flex;
+  min-height: 28px;
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--border) 84%, #fff 16%);
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  background: color-mix(in srgb, var(--surface-2) 93%, #fff 7%);
+}
+
+.navigator-concepts-actions {
+  display: grid;
+  gap: 8px;
+}
+
+.navigator-concepts-actions .btn {
+  width: 100%;
+}
+
+@media (max-width: 390px) {
+  .concept-metro-label {
+    font-size: 10px;
+  }
+
+  .concept-route-meta {
+    display: none;
+  }
+}
