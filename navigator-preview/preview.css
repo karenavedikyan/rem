@@ -105,6 +105,117 @@
   color: color-mix(in srgb, var(--muted) 74%, #fff 26%);
 }
 
+/* Route Map skin switch */
+.navigator-concepts-route-skin-switch {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 2px 0 8px;
+}
+
+.navigator-concepts-route-skin-btn {
+  border: 1px solid color-mix(in srgb, var(--border) 86%, #fff 14%);
+  background: color-mix(in srgb, var(--surface) 95%, #fff 5%);
+  color: var(--text);
+  border-radius: 999px;
+  min-height: 30px;
+  padding: 5px 11px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.navigator-concepts-route-skin-btn:hover,
+.navigator-concepts-route-skin-btn:focus-visible {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--red) 44%, var(--border));
+}
+
+.navigator-concepts-route-skin-btn.is-active {
+  border-color: color-mix(in srgb, var(--red) 58%, var(--border));
+  background: color-mix(in srgb, var(--surface-2) 84%, var(--red) 16%);
+}
+
+/* Skin: Luxury Soft */
+.navigator-concepts-route-reuse.is-skin-luxury .navigator-v1-roadmap {
+  border-color: color-mix(in srgb, var(--red) 20%, var(--border));
+  background:
+    radial-gradient(76% 48% at 50% 50%, color-mix(in srgb, var(--red) 16%, transparent), transparent 70%),
+    repeating-linear-gradient(0deg, color-mix(in srgb, #93a5bc 11%, transparent) 0 1px, transparent 1px 30px),
+    repeating-linear-gradient(90deg, color-mix(in srgb, #93a5bc 11%, transparent) 0 1px, transparent 1px 30px),
+    linear-gradient(180deg, color-mix(in srgb, #252b35 78%, var(--surface-2) 22%), color-mix(in srgb, #202630 82%, var(--surface) 18%));
+}
+
+.navigator-concepts-route-reuse.is-skin-luxury .navigator-v1-road-text {
+  border-color: color-mix(in srgb, #8f9db0 36%, var(--border));
+  background: color-mix(in srgb, #2c3440 80%, var(--surface) 20%);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24);
+}
+
+.navigator-concepts-route-reuse.is-skin-luxury .navigator-v1-road-node.is-current .navigator-v1-road-text {
+  border-color: color-mix(in srgb, var(--red) 54%, var(--border));
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--surface-2) 84%, var(--red) 16%),
+    color-mix(in srgb, var(--surface) 82%, var(--red) 18%)
+  );
+}
+
+/* Skin: Tech Dark */
+.navigator-concepts-route-reuse.is-skin-tech .navigator-v1-roadmap {
+  border-color: color-mix(in srgb, var(--red) 30%, var(--border));
+  background:
+    radial-gradient(90% 56% at 50% 48%, color-mix(in srgb, var(--red) 22%, transparent), transparent 72%),
+    repeating-linear-gradient(0deg, color-mix(in srgb, #7c92b4 14%, transparent) 0 1px, transparent 1px 28px),
+    repeating-linear-gradient(90deg, color-mix(in srgb, #7c92b4 14%, transparent) 0 1px, transparent 1px 28px),
+    linear-gradient(180deg, #181d25, #121722);
+}
+
+.navigator-concepts-route-reuse.is-skin-tech .navigator-v1-roadmap::before {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--red) 32%, #283548 68%),
+    color-mix(in srgb, var(--red) 54%, #1c2635 46%),
+    color-mix(in srgb, var(--red) 30%, #283548 70%)
+  );
+}
+
+.navigator-concepts-route-reuse.is-skin-tech .navigator-v1-road-dot {
+  border-color: color-mix(in srgb, #7f95b6 40%, var(--border));
+  background: color-mix(in srgb, #263246 82%, var(--surface-2) 18%);
+  box-shadow: 0 0 0 2px rgba(10, 14, 20, 0.9);
+}
+
+.navigator-concepts-route-reuse.is-skin-tech .navigator-v1-road-node.is-current .navigator-v1-road-dot {
+  border-color: color-mix(in srgb, var(--red) 74%, var(--border));
+  background: color-mix(in srgb, var(--red) 46%, #1f2530 54%);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--red) 20%, transparent), 0 0 26px color-mix(in srgb, var(--red) 40%, transparent);
+}
+
+.navigator-concepts-route-reuse.is-skin-tech .navigator-v1-road-text {
+  border-color: color-mix(in srgb, #7f95b6 34%, var(--border));
+  background: color-mix(in srgb, #232b38 86%, var(--surface) 14%);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.32);
+}
+
+.navigator-concepts-route-reuse.is-skin-tech .navigator-v1-road-node.is-current .navigator-v1-road-text {
+  border-color: color-mix(in srgb, var(--red) 66%, var(--border));
+  background: linear-gradient(140deg, color-mix(in srgb, #2a3240 54%, var(--red) 46%), color-mix(in srgb, #1e2530 74%, var(--red) 26%));
+}
+
+.navigator-concepts-route-reuse.is-skin-tech .navigator-v1-road-title {
+  color: color-mix(in srgb, #ffffff 90%, #d6e0f0 10%);
+}
+
+.navigator-concepts-route-reuse.is-skin-tech .navigator-v1-road-state {
+  color: color-mix(in srgb, #9eb1cc 86%, #fff 14%);
+}
+
+.navigator-concepts-route-reuse.is-skin-tech .navigator-v1-road-node.is-current .navigator-v1-road-state {
+  color: color-mix(in srgb, var(--red) 72%, #fff 28%);
+}
+
 /* Concept 1 — Metro Map */
 .concept-metro-map {
   list-style: none;

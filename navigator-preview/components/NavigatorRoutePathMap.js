@@ -1,4 +1,21 @@
-export function NavigatorRoutePathMap({ stageStates }) {
+import { ROUTE_SKINS } from "./conceptShared.js";
+
+export function NavigatorRoutePathMap({ stageStates, routeSkin = "luxury" }) {
+  const normalizedSkin = routeSkin === "tech" ? "tech" : "luxury";
+  const skinSwitch = ROUTE_SKINS.map((skin) => {
+    const isActive = skin.id === normalizedSkin;
+    return `
+      <button
+        class="navigator-concepts-route-skin-btn ${isActive ? "is-active" : ""}"
+        type="button"
+        data-route-skin="${skin.id}"
+        aria-pressed="${isActive ? "true" : "false"}"
+      >
+        ${skin.title}
+      </button>
+    `;
+  }).join("");
+
   const rows = stageStates
     .map(({ stage, index, isCompleted, isCurrent }) => {
       const state = isCompleted ? "completed" : isCurrent ? "current" : "upcoming";
@@ -27,10 +44,13 @@ export function NavigatorRoutePathMap({ stageStates }) {
     .join("");
 
   return `
-    <section class="card navigator-v1-card navigator-v1-map-card navigator-concepts-route-reuse">
+    <section class="card navigator-v1-card navigator-v1-map-card navigator-concepts-route-reuse is-skin-${normalizedSkin}">
       <div class="navigator-v1-block-head navigator-v1-map-head">
         <p class="navigator-concepts-map-kicker">Concept 1</p>
         <h3>Route Map (как в основном навигаторе)</h3>
+        <div class="navigator-concepts-route-skin-switch" role="group" aria-label="Стиль дорожной карты">
+          ${skinSwitch}
+        </div>
         <p class="navigator-v1-map-hint">Кликните по этапу — ниже обновится маршрут и действия.</p>
       </div>
       <ol class="navigator-v1-roadmap" role="tablist" aria-label="Route Map этапов ремонта">

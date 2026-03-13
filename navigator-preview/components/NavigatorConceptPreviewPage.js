@@ -5,8 +5,8 @@ import { NavigatorCardFlowMap } from "./NavigatorCardFlowMap.js";
 import { NavigatorConceptInfoPanel } from "./NavigatorConceptInfoPanel.js";
 import { getStageContext } from "./conceptShared.js";
 
-function renderActiveMap({ conceptId, stageStates }) {
-  if (conceptId === "route") return NavigatorRoutePathMap({ stageStates });
+function renderActiveMap({ conceptId, stageStates, routeSkin }) {
+  if (conceptId === "route") return NavigatorRoutePathMap({ stageStates, routeSkin });
   if (conceptId === "cards") return NavigatorCardFlowMap({ stageStates });
   return NavigatorMetroMap({ stageStates });
 }
@@ -32,7 +32,7 @@ function renderCriteriaBlock() {
   `;
 }
 
-export function NavigatorConceptPreviewPage({ stages, selectedStageId, selectedConceptId }) {
+export function NavigatorConceptPreviewPage({ stages, selectedStageId, selectedConceptId, routeSkin }) {
   const { selectedStage, nextStage, states } = getStageContext(stages, selectedStageId);
 
   return `
@@ -47,7 +47,7 @@ export function NavigatorConceptPreviewPage({ stages, selectedStageId, selectedC
 
       ${NavigatorConceptSwitcher({ activeConceptId: selectedConceptId })}
       ${renderCriteriaBlock()}
-      ${renderActiveMap({ conceptId: selectedConceptId, stageStates: states })}
+      ${renderActiveMap({ conceptId: selectedConceptId, stageStates: states, routeSkin })}
       ${NavigatorConceptInfoPanel({ stage: selectedStage, nextStage })}
     </div>
   `;

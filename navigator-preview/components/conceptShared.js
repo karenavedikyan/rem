@@ -4,6 +4,11 @@ export const CONCEPTS = [
   { id: "cards", title: "Card Flow", description: "Карточки этапов в едином потоке." }
 ];
 
+export const ROUTE_SKINS = [
+  { id: "luxury", title: "Luxury Soft" },
+  { id: "tech", title: "Tech Dark" }
+];
+
 export const STAGE_CODE_BY_ID = {
   planning: "PLANNING",
   rough: "ROUGH",
@@ -15,6 +20,11 @@ export const STAGE_CODE_BY_ID = {
 export function normalizeConcept(rawValue) {
   const value = String(rawValue || "").trim().toLowerCase();
   return CONCEPTS.some((concept) => concept.id === value) ? value : "route";
+}
+
+export function normalizeRouteSkin(rawValue) {
+  const value = String(rawValue || "").trim().toLowerCase();
+  return ROUTE_SKINS.some((skin) => skin.id === value) ? value : "luxury";
 }
 
 export function normalizeStageId(stages, rawValue) {
