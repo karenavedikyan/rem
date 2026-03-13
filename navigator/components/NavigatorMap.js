@@ -59,13 +59,8 @@ const getStageIconMarkup = (stage) => {
   return `<span class="navigator-v1-route-icon-fallback">${stage.icon || "•"}</span>`;
 };
 
-export function NavigatorMap({ stages, selectedStageId }) {
-  const selectedIndex = Math.max(
-    0,
-    stages.findIndex((stage) => stage.id === selectedStageId)
-  );
-
-  const nodes = stages
+function renderCardsMap(stages, selectedIndex) {
+  return stages
     .map((stage, index) => {
       const isCompleted = index < selectedIndex;
       const isCurrent = index === selectedIndex;
@@ -105,17 +100,85 @@ export function NavigatorMap({ stages, selectedStageId }) {
       `;
     })
     .join("");
+}
+
+function renderRoadMap(stages, selectedIndex) {
+  return stages
+    .map((stage, index) => {
+      const isCompleted = index < selectedIndex;
+      const isCurrent = index === selectedIndex;
+      const state = isCompleted ? "completed" : isCurrent ? "current" : "upcoming";
+      const stateLabel = isCompleted ? "Пройдено" : isCurrent ? "Вы здесь" : "Впереди";
+      const connectorState = index < selectedIndex ? "completed" : index === selectedIndex ? "active" : "upcoming";
+      const connector =
+        index < stages.length - 1
+          ? `<span class="navigator-v1-road-connector is-${connectorState}" aria-hidden="true"></span>`
+          : "";
+
+      return `
+        <li class="navigator-v1-road-step is-${state}">
+          <button
+            class="navigator-v1-road-node is-${state}"
+            type="button"
+            data-stage-id="${stage.id}"
+            aria-pressed="${isCurrent ? "true" : "false"}"
+            ${isCurrent ? 'aria-current="step"' : ""}
+          >
+            <span class="navigator-v1-road-dot" aria-hidden="true">${index + 1}</span>
+            <span class="navigator-v1-road-text">
+              <span class="navigator-v1-road-title">${stage.mapLabel}</span>
+              <span class="navigator-v1-road-state">${stateLabel}</span>
+            </span>
+          </button>
+          ${connector}
+        </li>
+      `;
+    })
+    .join("");
+}
+
+export function NavigatorMap({ stages, selectedStageId, viewMode = "cards" }) {
+  const selectedIndex = Math.max(
+    0,
+    stages.findIndex((stage) => stage.id === selectedStageId)
+  );
+  const normalizedViewMode = viewMode === "road" ? "road" : "cards";
+  const cardsMap = renderCardsMap(stages, selectedIndex);
+  const roadMap = renderRoadMap(stages, selectedIndex);
+  const mapMarkup =
+    normalizedViewMode === "road"
+      ? `<ol class="navigator-v1-roadmap" role="tablist" aria-label="Дорожная карта этапов ремонта">${roadMap}</ol>`
+      : `<ol class="navigator-v1-map" role="tablist" aria-label="Маршрут этапов ремонта">${cardsMap}</ol>`;
+  const switchButtons = `
+    <div class="navigator-v1-map-view-switch" role="group" aria-label="Вариант отображения этапов">
+      <button
+        class="navigator-v1-map-view-btn ${normalizedViewMode === "cards" ? "is-active" : ""}"
+        type="button"
+        data-map-view="cards"
+        aria-pressed="${normalizedViewMode === "cards" ? "true" : "false"}"
+      >
+        Карточки
+      </button>
+      <button
+        class="navigator-v1-map-view-btn ${normalizedViewMode === "road" ? "is-active" : ""}"
+        type="button"
+        data-map-view="road"
+        aria-pressed="${normalizedViewMode === "road" ? "true" : "false"}"
+      >
+        Дорожная карта
+      </button>
+    </div>
+  `;
 
   return `
     <section class="card navigator-v1-card navigator-v1-map-card">
       <div class="navigator-v1-block-head navigator-v1-map-head">
         <p class="navigator-v1-step-kicker navigator-v1-map-kicker">Шаг 1</p>
         <h2>Выберите свой этап ремонта</h2>
-        <p class="navigator-v1-map-hint">После выбора сразу обновим маршрут и действия.</p>
+        ${switchButtons}
+        <p class="navigator-v1-map-hint">Выберите вид карты и отметьте этап, на котором вы сейчас находитесь.</p>
       </div>
-      <ol class="navigator-v1-map" role="tablist" aria-label="Маршрут этапов ремонта">
-        ${nodes}
-      </ol>
+      ${mapMarkup}
     </section>
   `;
 }

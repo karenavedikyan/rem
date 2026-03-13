@@ -15,8 +15,10 @@ if (!root) {
 }
 
 const STORAGE_KEY = "remcard_navigator_stage_v1";
+const MAP_VIEW_STORAGE_KEY = "remcard_navigator_map_view_v1";
 const DEFAULT_STAGE_ID = "rough";
 const RESOURCE_TABS = new Set(["specialists", "materials"]);
+const MAP_VIEWS = new Set(["cards", "road"]);
 const DEFAULT_RESOURCE_PRESET_IDS = Object.freeze(["all"]);
 const DEFAULT_RESOURCE_PRESETS = Object.freeze({
   specialists: [...DEFAULT_RESOURCE_PRESET_IDS],
@@ -25,6 +27,7 @@ const DEFAULT_RESOURCE_PRESETS = Object.freeze({
 
 const state = {
   selectedStageId: getInitialStageId(),
+  mapView: getInitialMapView(),
   activeResourceTab: "specialists",
   resourcePresets: { ...DEFAULT_RESOURCE_PRESETS }
 };
@@ -48,6 +51,25 @@ function getInitialStageId() {
   }
 
   return DEFAULT_STAGE_ID;
+}
+
+function normalizeMapView(rawValue) {
+  const value = String(rawValue || "").trim().toLowerCase();
+  return MAP_VIEWS.has(value) ? value : "cards";
+}
+
+function getInitialMapView() {
+  const fromQuery = new URLSearchParams(window.location.search).get("mapView");
+  if (fromQuery) return normalizeMapView(fromQuery);
+
+  try {
+    const fromStorage = localStorage.getItem(MAP_VIEW_STORAGE_KEY);
+    if (fromStorage) return normalizeMapView(fromStorage);
+  } catch {
+    // ignore storage errors
+  }
+
+  return "cards";
 }
 
 function getStageById(stageId) {
@@ -107,6 +129,22 @@ function setActiveResourcePreset(tab, presetId) {
   render();
 }
 
+function setMapView(viewMode) {
+  const normalized = normalizeMapView(viewMode);
+  if (state.mapView === normalized) return;
+  state.mapView = normalized;
+  try {
+    localStorage.setItem(MAP_VIEW_STORAGE_KEY, normalized);
+  } catch {
+    // ignore storage errors
+  }
+  const nextURL = new URL(window.location.href);
+  if (normalized === "cards") nextURL.searchParams.delete("mapView");
+  else nextURL.searchParams.set("mapView", normalized);
+  window.history.replaceState({}, "", nextURL.toString());
+  render();
+}
+
 function toggleResourcePreset(currentPresetIds, presetId) {
   const normalized = Array.from(new Set((Array.isArray(currentPresetIds) ? currentPresetIds : []).map((id) => String(id || "")))).filter(Boolean);
   const hasPreset = normalized.includes(presetId);
@@ -132,7 +170,7 @@ function render() {
   root.innerHTML = `
     <div class="navigator-v1-layout">
       ${NavigatorHero({ stage })}
-      ${NavigatorMap({ stages: navigatorStages, selectedStageId: stage.id })}
+      ${NavigatorMap({ stages: navigatorStages, selectedStageId: stage.id, viewMode: state.mapView })}
       ${NavigatorRouteCard({ stage, previousStage, nextStage })}
       ${NavigatorActions({ stage })}
       ${NavigatorResourcesTabs({
@@ -189,6 +227,12 @@ root.addEventListener("click", (event) => {
   const resourceFilter = target.closest("[data-resource-filter]");
   if (resourceFilter) {
     setActiveResourcePreset(state.activeResourceTab, resourceFilter.getAttribute("data-resource-filter"));
+    return;
+  }
+
+  const mapViewToggle = target.closest("[data-map-view]");
+  if (mapViewToggle) {
+    setMapView(mapViewToggle.getAttribute("data-map-view"));
   }
 });
 
