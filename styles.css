@@ -963,7 +963,7 @@ button.hero-kpi-card {
 }
 
 .home-section-head {
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .home-section-head h2 {
@@ -977,14 +977,15 @@ button.hero-kpi-card {
 .home-how-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 12px;
+  gap: 0;
 }
 
 .home-step-card {
-  border-radius: 14px;
-  border: 1px solid rgba(245, 245, 245, 0.1);
+  border: 0;
+  border-top: 1px solid rgba(245, 245, 245, 0.1);
   background: transparent;
-  padding: 14px;
+  border-radius: 0;
+  padding: 14px 0;
   box-shadow: none;
 }
 
@@ -1032,6 +1033,10 @@ button.hero-kpi-card {
   color: rgba(172, 185, 193, 0.92);
 }
 
+.home-step-card:last-child {
+  border-bottom: 1px solid rgba(245, 245, 245, 0.1);
+}
+
 .home-benefits-list {
   margin: 0;
   padding: 0;
@@ -1071,11 +1076,13 @@ button.hero-kpi-card {
 
 .home-partners-card {
   margin: 0 auto;
-  max-width: 740px;
-  border-radius: 16px;
-  border: 1px solid rgba(245, 245, 245, 0.1);
+  max-width: 860px;
+  border-radius: 0;
+  border: 0;
+  border-top: 1px solid rgba(245, 245, 245, 0.12);
+  border-bottom: 1px solid rgba(245, 245, 245, 0.12);
   background: transparent;
-  padding: 22px;
+  padding: 24px 0;
   text-align: center;
 }
 
@@ -1159,10 +1166,25 @@ button.hero-kpi-card {
 
   .home-how-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: start;
+  }
+
+  .home-step-card {
+    border-bottom: 1px solid rgba(245, 245, 245, 0.1);
+    padding: 16px 14px 14px 0;
+  }
+
+  .home-step-card + .home-step-card {
+    border-left: 1px solid rgba(245, 245, 245, 0.08);
+    padding-left: 14px;
   }
 
   .home-benefits-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .home-partners-card {
+    max-width: 960px;
   }
 }
 
@@ -6245,7 +6267,7 @@ body.navigator-stage-modal-open {
   }
 
   .home-step-card {
-    padding: 14px;
+    padding: 12px 0;
   }
 
   .home-step-card h3 {
@@ -6254,11 +6276,11 @@ body.navigator-stage-modal-open {
 
   .home-benefits-list li {
     font-size: 13.5px;
-    padding: 10px;
+    padding: 10px 0;
   }
 
   .home-partners-card {
-    padding: 18px;
+    padding: 16px 0;
   }
 
   .home-partners-card p {
