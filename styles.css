@@ -815,9 +815,9 @@ button.hero-kpi-card {
   min-height: 28px;
   padding: 6px 12px;
   border-radius: 999px;
-  border: 1px solid rgba(239, 68, 68, 0.5);
-  background: rgba(239, 68, 68, 0.15);
-  color: #fee2e2;
+  border: 1px solid rgba(239, 68, 68, 0.34);
+  background: rgba(239, 68, 68, 0.1);
+  color: rgba(255, 229, 229, 0.9);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -895,7 +895,7 @@ button.hero-kpi-card {
   right: 42px;
   top: 21px;
   height: 2px;
-  background: linear-gradient(90deg, rgba(239, 68, 68, 0.55), rgba(239, 68, 68, 0.18));
+  background: linear-gradient(90deg, rgba(239, 68, 68, 0.34), rgba(239, 68, 68, 0.1));
   pointer-events: none;
 }
 
@@ -952,8 +952,8 @@ button.hero-kpi-card {
 
 .home-stage-link:hover .home-stage-icon,
 .home-stage-link:focus-visible .home-stage-icon {
-  border-color: rgba(239, 68, 68, 0.56);
-  background: rgba(239, 68, 68, 0.18);
+  border-color: rgba(239, 68, 68, 0.42);
+  background: rgba(239, 68, 68, 0.12);
 }
 
 .home-section {
@@ -1004,20 +1004,20 @@ button.hero-kpi-card {
   place-items: center;
   font-size: 12px;
   font-weight: 800;
-  border: 1px solid rgba(239, 68, 68, 0.62);
-  background: rgba(239, 68, 68, 0.14);
-  color: rgba(255, 233, 233, 0.98);
+  border: 1px solid rgba(245, 245, 245, 0.28);
+  background: rgba(245, 245, 245, 0.04);
+  color: rgba(224, 232, 240, 0.95);
 }
 
 .home-step-icon {
   width: 24px;
   height: 24px;
   border-radius: 999px;
-  border: 1px solid rgba(239, 68, 68, 0.35);
+  border: 1px solid rgba(245, 245, 245, 0.24);
   background: transparent;
   display: grid;
   place-items: center;
-  color: rgba(255, 224, 224, 0.95);
+  color: rgba(226, 232, 240, 0.9);
 }
 
 .home-step-card h3 {
@@ -1066,7 +1066,7 @@ button.hero-kpi-card {
   height: 20px;
   display: grid;
   place-items: center;
-  color: rgba(239, 68, 68, 0.95);
+  color: rgba(203, 213, 225, 0.9);
 }
 
 .home-benefit-icon .icon-svg {
