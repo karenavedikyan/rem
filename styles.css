@@ -6817,6 +6817,17 @@ body.navigator-stage-modal-open {
   font-size: 13px;
 }
 
+.navigator-clean-mini-actions {
+  margin-top: 12px;
+  display: grid;
+}
+
+.navigator-clean-mini-actions .btn {
+  width: 100%;
+  min-height: 42px;
+  font-size: 13px;
+}
+
 @media (min-width: 980px) {
   .navigator-clean-section {
     padding-top: 36px;
@@ -6841,6 +6852,11 @@ body.navigator-stage-modal-open {
 
   .navigator-clean-resources-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .navigator-clean-mini-actions .btn {
+    width: fit-content;
+    min-width: 240px;
   }
 }
 
