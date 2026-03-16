@@ -109,40 +109,42 @@
       </div>
     </header>
 
-    <main id="main">
-      <section class="hero" id="hero">
-        <div class="container hero-inner hero-layout-main">
-          <div class="hero-copy">
+    <main id="main" class="home-main">
+      <section class="hero home-hero" id="hero">
+        <div class="container hero-inner home-hero-grid">
+          <div class="hero-copy home-hero-copy">
             <p class="eyebrow">RemCard • навигатор ремонта</p>
-            <h1>RemCard — навигатор ремонта</h1>
-            <div class="hero-offer-wrap">
-              <p class="hero-offer-label">Идея RemCard</p>
-              <p class="hero-offer">Сделать ремонт так же легко, как вызвать такси</p>
-            </div>
-            <p class="hero-route-label">Маршрут ремонта в 5 этапов:</p>
-            <div class="hero-mini-route" aria-label="Мини-маршрут этапов ремонта">
-              <a class="hero-mini-step" href="./navigator/?stage=planning">План</a>
-              <span aria-hidden="true">→</span>
-              <a class="hero-mini-step" href="./navigator/?stage=rough">Черновые</a>
-              <span aria-hidden="true">→</span>
-              <a class="hero-mini-step" href="./navigator/?stage=engineering">Инженерия</a>
-              <span aria-hidden="true">→</span>
-              <a class="hero-mini-step" href="./navigator/?stage=finishing">Чистовые</a>
-              <span aria-hidden="true">→</span>
-              <a class="hero-mini-step" href="./navigator/?stage=furniture">Мебель</a>
-            </div>
-            <div class="hero-actions hero-actions-inline">
-              <a class="btn btn-primary" href="./navigator/">Открыть навигатор</a>
-              <a class="btn btn-ghost hero-open-request-btn" href="./request/">Оставить заявку</a>
-            </div>
-            <p class="lead hero-post-cta">
-              Выберите этап ремонта и получите понятный маршрут: что делать дальше, кто нужен, сколько это может занять и на какой бюджет ориентироваться.
+            <h1>Пройдите ремонт по шагам и понимайте, что делать дальше.</h1>
+            <p class="lead home-hero-lead">
+              RemCard — это навигатор ремонта: показывает этап, следующий шаг, нужных специалистов и ориентиры по срокам и бюджету.
             </p>
+            <div class="hero-actions hero-actions-inline home-hero-actions">
+              <a class="btn btn-primary" href="./navigator/">Открыть навигатор</a>
+              <a class="btn btn-ghost hero-open-request-btn" id="hero-open-request-btn" href="./request/">Оставить заявку</a>
+            </div>
             <button class="sr-only" id="hero-kpi-open-request" type="button" tabindex="-1" aria-hidden="true">
               Открыть заявку
             </button>
             <p class="fineprint hero-fineprint">Пока работаем в Краснодаре.</p>
           </div>
+
+          <article class="card home-hero-preview" aria-label="Превью маршрута ремонта">
+            <p class="home-preview-label">Превью навигатора</p>
+            <h2>Маршрут ремонта в 5 этапов</h2>
+            <div class="home-preview-route" aria-label="Маршрут этапов ремонта">
+              <a class="home-preview-step" href="./navigator/?stage=planning">План</a>
+              <a class="home-preview-step" href="./navigator/?stage=rough">Черновые</a>
+              <a class="home-preview-step is-active" href="./navigator/?stage=engineering">Инженерия</a>
+              <a class="home-preview-step" href="./navigator/?stage=finishing">Чистовые</a>
+              <a class="home-preview-step" href="./navigator/?stage=furniture">Мебель</a>
+            </div>
+            <div class="home-preview-meta">
+              <span>Что делать сейчас</span>
+              <span>Кого подключить</span>
+              <span>Сроки и бюджет</span>
+            </div>
+            <a class="home-preview-link" href="./navigator/">Открыть полный маршрут</a>
+          </article>
         </div>
         <div class="hero-glow" aria-hidden="true"></div>
       </section>
@@ -150,49 +152,48 @@
       <section class="section section-compact" id="how-it-works">
         <div class="container">
           <header class="section-header">
-            <h2>Как работает RemCard</h2>
-            <p class="section-subtitle how-subtitle">Три шага внутри навигатора: выберите этап, получите план и переходите к следующему действию.</p>
+            <h2>Как это работает</h2>
+            <p class="section-subtitle how-subtitle">Три шага, чтобы не теряться в ремонте.</p>
           </header>
-          <div class="grid cards-3 how-cards">
+          <div class="grid cards-3 how-cards home-how-cards">
             <article class="card how-card">
               <div class="how-card-top">
                 <div class="step-number" aria-hidden="true">1</div>
                 <span class="how-card-icon" aria-hidden="true"><svg class="icon-svg"><use href="#ic-stage" /></svg></span>
               </div>
               <h3>Выберите этап</h3>
-              <p>Определяем, где вы сейчас.</p>
+              <p>Поймите, где вы находитесь сейчас.</p>
             </article>
             <article class="card how-card">
               <div class="how-card-top">
                 <div class="step-number" aria-hidden="true">2</div>
-                <span class="how-card-icon" aria-hidden="true"><svg class="icon-svg"><use href="#ic-stats" /></svg></span>
+                <span class="how-card-icon" aria-hidden="true"><svg class="icon-svg"><use href="#ic-route" /></svg></span>
               </div>
-              <h3>Получите план и ориентиры</h3>
-              <p>Шаги, сроки, бюджет и нужные роли.</p>
+              <h3>Получите следующий шаг</h3>
+              <p>Навигатор подскажет действия, роли и ориентиры.</p>
             </article>
             <article class="card how-card">
               <div class="how-card-top">
                 <div class="step-number" aria-hidden="true">3</div>
-                <span class="how-card-icon" aria-hidden="true"><svg class="icon-svg"><use href="#ic-route" /></svg></span>
+                <span class="how-card-icon" aria-hidden="true"><svg class="icon-svg"><use href="#ic-doc" /></svg></span>
               </div>
-              <h3>Выберите действие</h3>
-              <p>Оставьте заявку или откройте каталог.</p>
+              <h3>Действуйте</h3>
+              <p>Откройте навигатор или оставьте заявку в RemCard.</p>
             </article>
           </div>
-          <p class="how-block-note muted">Дальше в навигаторе вы увидите свой маршрут и следующий шаг по этапу.</p>
         </div>
       </section>
 
-      <section class="section" id="navigator-block">
+      <section class="section home-product-block" id="navigator-block">
         <div class="container">
           <header class="section-header">
-            <h2>Навигатор ремонта</h2>
-            <p class="section-subtitle">Показывает маршрут ремонта и подсказывает, что делать дальше: задачи, специалисты, товары и ориентиры.</p>
+            <h2>Главный продукт — навигатор ремонта</h2>
+            <p class="section-subtitle">Один экран, где сразу понятно: что делать на этом этапе и какой следующий шаг.</p>
           </header>
 
-          <article class="card navigator-visual navigator-scenario">
-            <h3>Маршрут ремонта на одном экране</h3>
-            <div class="navigator-scenario-track" aria-label="Связанный сценарий этапов">
+          <article class="card navigator-visual navigator-scenario home-navigator-card">
+            <h3>Сценарий ремонта по этапам</h3>
+            <div class="navigator-scenario-track" aria-label="Сценарий этапов ремонта">
               <a class="navigator-scenario-step" href="./navigator/?stage=planning">План</a>
               <a class="navigator-scenario-step" href="./navigator/?stage=rough">Черновые</a>
               <a class="navigator-scenario-step is-active" href="./navigator/?stage=engineering">Инженерия</a>
@@ -200,10 +201,10 @@
               <a class="navigator-scenario-step" href="./navigator/?stage=furniture">Мебель</a>
             </div>
             <div class="navigator-visual-meta navigator-visual-meta-muted">
-              <span>Задачи</span>
+              <span>Задачи этапа</span>
               <span>Специалисты</span>
-              <span>Товары/услуги</span>
-              <span>Сроки и бюджет</span>
+              <span>Материалы и услуги</span>
+              <span>Ориентиры по срокам</span>
             </div>
           </article>
 
@@ -214,19 +215,43 @@
         </div>
       </section>
 
-      <section class="section section-compact" id="request">
+      <section class="section section-compact home-secondary" id="catalog-preview">
         <div class="container">
           <header class="section-header">
-            <h2>Быстрая заявка</h2>
-            <p class="section-subtitle">Не хотите разбираться в деталях? Оставьте одну заявку — подберём решение под ваш этап ремонта.</p>
+            <h2>Каталог и акции — как дополнение</h2>
+            <p class="section-subtitle">Когда нужен подрядчик или выгодное предложение, переходите в каталог и акции.</p>
+          </header>
+          <div class="grid cards-3 home-secondary-grid">
+            <a class="card home-mini-card" href="./catalog/">
+              <h3>Каталог</h3>
+              <p>Услуги и предложения по этапам ремонта.</p>
+            </a>
+            <a class="card home-mini-card" href="./offers/">
+              <h3>Акции</h3>
+              <p>Актуальные скидки и спецпредложения партнёров.</p>
+            </a>
+            <a class="card home-mini-card" href="./partners/">
+              <h3>Партнёры</h3>
+              <p>Проверенные исполнители и магазины RemCard.</p>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-compact home-final-cta" id="request">
+        <div class="container">
+          <header class="section-header">
+            <h2>Нужна помощь с ремонтом?</h2>
+            <p class="section-subtitle">Оставьте короткую заявку — поможем по вашему этапу и подскажем, что делать в первую очередь.</p>
           </header>
           <div class="request-badges" aria-label="Преимущества заявки">
-            <span class="request-badge">5 полей</span>
+            <span class="request-badge">1 минута</span>
             <span class="request-badge">Подбор по этапу</span>
-            <span class="request-badge">Удобная связь</span>
+            <span class="request-badge">Без лишних звонков</span>
           </div>
-          <div class="navigator-cta">
-            <button class="btn btn-primary request-open-btn" id="request-open-btn" type="button" aria-expanded="false">Оставить заявку за 1 минуту</button>
+          <div class="navigator-cta home-final-cta-actions">
+            <button class="btn btn-primary request-open-btn" id="request-open-btn" type="button" aria-expanded="false">Оставить заявку</button>
+            <a class="btn btn-ghost" href="./navigator/">Сначала открыть навигатор</a>
           </div>
           <form id="request-form" hidden aria-hidden="true"></form>
         </div>
