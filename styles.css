@@ -9178,7 +9178,6 @@ body.catalog-filters-open {
 }
 
 .partners-v2-form-section {
-  scroll-margin-top: 96px;
   padding-top: clamp(54px, 8vw, 88px);
   padding-bottom: clamp(64px, 9vw, 104px);
 }
@@ -9214,8 +9213,14 @@ body.catalog-filters-open {
 }
 
 .partners-v2-form-card {
+  display: grid;
+  gap: 18px;
   padding: 24px;
   border-radius: 24px;
+}
+
+#partner-form {
+  scroll-margin-top: 96px;
 }
 
 .partners-v2-form-grid {

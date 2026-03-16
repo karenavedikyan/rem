@@ -2,7 +2,7 @@
   const I18N = window.REMCARD_I18N || { t: (ru, en) => ru, isEn: false };
   const t = (ru, en) => (I18N && typeof I18N.t === "function" ? I18N.t(ru, en) : ru);
 
-  const form = document.getElementById("partner-ecosystem-form");
+  const form = document.getElementById("partner-form");
   if (!form) return;
 
   const roleEl = document.getElementById("hp-role");
