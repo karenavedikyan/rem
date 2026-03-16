@@ -37,40 +37,107 @@
     </header>
 
     <main id="main">
-      <section class="section request-page" id="request">
+      <section class="section request-v2-page" id="request">
         <div class="container">
-          <header class="section-header request-page-header">
-            <h1>Оставьте заявку на ремонт</h1>
-            <p class="section-subtitle">Заполните несколько полей — RemCard подберёт специалистов, компании, товары и услуги под ваш этап ремонта.</p>
-            <div class="request-badges" aria-label="Преимущества заявки">
-              <span class="request-badge">Всего несколько полей</span>
-              <span class="request-badge">Подбор под этап и бюджет</span>
-              <span class="request-badge">Ответ в удобный способ связи</span>
-            </div>
+          <header class="section-header request-v2-header">
+            <span class="request-v2-badge">Быстро и просто</span>
+            <h1>Заявка на ремонт</h1>
+            <p class="section-subtitle">Расскажите о вашем проекте, и мы поможем найти решение</p>
           </header>
 
-          <article class="card request-context-card" id="request-context-card" hidden>
-            <p class="request-context-badge" id="request-context-badge">Контекст заявки</p>
-            <p class="muted request-context-hint">Параметры подставлены автоматически — при необходимости можно изменить их в форме ниже.</p>
-          </article>
-
-          <div class="grid two-col request-page-layout">
-            <article class="card request-main-form-card">
-              <h2>Быстрая заявка в RemCard</h2>
-              <p class="muted">Оставьте ключевые данные, а детали уточним в удобном диалоге.</p>
-
-              <div class="request-badges request-form-badges" aria-label="Коротко о процессе">
-                <span class="request-badge">Работаем по Краснодару</span>
-                <span class="request-badge">Одна заявка — до 5 предложений</span>
-                <span class="request-badge">Телефон или Telegram</span>
+          <div class="request-v2-shell">
+            <article class="card request-v2-form-card">
+              <div class="request-context-card request-v2-context-card" id="request-context-card" hidden>
+                <p class="request-context-badge" id="request-context-badge">Контекст заявки</p>
+                <p class="muted request-context-hint">Параметры подставлены автоматически — при необходимости можно изменить их перед отправкой.</p>
               </div>
 
-              <form class="form" id="request-form" novalidate>
-                <div class="form-grid">
+              <form class="form request-v2-form" id="request-form" novalidate>
+                <div class="form-grid request-v2-form-grid">
+                  <div class="field">
+                    <label class="request-v2-label" for="req-name">
+                      <span class="request-v2-label-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false">
+                          <path d="M12 4a4 4 0 1 1 0 8 4 4 0 0 1 0-8Zm0 10c4.418 0 8 2.239 8 5v1H4v-1c0-2.761 3.582-5 8-5Z" fill="currentColor" />
+                        </svg>
+                      </span>
+                      <span>Имя</span>
+                    </label>
+                    <input class="input" id="req-name" name="name" autocomplete="name" required placeholder="Введите ваше имя" />
+                  </div>
+
+                  <div class="field">
+                    <label class="request-v2-label" for="req-contact">
+                      <span class="request-v2-label-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false">
+                          <path d="M6.6 10.8a15.4 15.4 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.3.56 3.5.56a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.61 21 3 13.39 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.2.19 2.38.56 3.5a1 1 0 0 1-.24 1.02l-2.22 2.28Z" fill="currentColor" />
+                        </svg>
+                      </span>
+                      <span>Телефон</span>
+                    </label>
+                    <input class="input" id="req-contact" name="contact" type="tel" autocomplete="tel" required placeholder="+7 (___) ___-__-__" />
+                  </div>
+
+                  <div class="field">
+                    <label class="request-v2-label" for="req-stage">
+                      <span class="request-v2-label-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false">
+                          <path d="M6 4h12a2 2 0 0 1 2 2v12l-4-3-4 3-4-3-4 3V6a2 2 0 0 1 2-2Zm2 4v2h8V8H8Zm0 4v2h5v-2H8Z" fill="currentColor" />
+                        </svg>
+                      </span>
+                      <span>Этап ремонта</span>
+                    </label>
+                    <select class="input" id="req-stage" name="stage" required>
+                      <option value="" selected disabled>Выберите этап</option>
+                      <option value="planning">Планирование</option>
+                      <option value="rough">Черновые работы</option>
+                      <option value="engineering">Инженерные работы</option>
+                      <option value="finishing">Чистовая отделка</option>
+                      <option value="furniture">Мебель и декор</option>
+                    </select>
+                  </div>
+
+                  <div class="field">
+                    <label class="request-v2-label" for="req-object-type">
+                      <span class="request-v2-label-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false">
+                          <path d="M4 19h16v2H4v-2Zm2-1V9l6-5 6 5v9h-4v-5H10v5H6Z" fill="currentColor" />
+                        </svg>
+                      </span>
+                      <span>Тип объекта</span>
+                    </label>
+                    <select class="input" id="req-object-type" name="jobType" required>
+                      <option value="" selected disabled>Выберите тип объекта</option>
+                      <option>Квартира</option>
+                      <option>Дом</option>
+                      <option>Коммерческое помещение</option>
+                    </select>
+                  </div>
+
+                  <div class="field field-wide">
+                    <label class="request-v2-label" for="req-comment">
+                      <span class="request-v2-label-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false">
+                          <path d="M5 4h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-4 3v-3H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm3 4v2h8V8H8Zm0 4v2h5v-2H8Z" fill="currentColor" />
+                        </svg>
+                      </span>
+                      <span>Комментарий</span>
+                    </label>
+                    <textarea
+                      class="input textarea"
+                      id="req-comment"
+                      name="comment"
+                      rows="5"
+                      placeholder="Расскажите подробнее о вашем проекте..."
+                    ></textarea>
+                  </div>
+                </div>
+
+                <div class="request-v2-legacy-fields" aria-hidden="true">
                   <div class="field">
                     <label for="req-type">Тип задачи</label>
-                    <select class="input" id="req-type" name="taskType" required>
-                      <option value="" selected disabled>Выберите вариант</option>
+                    <select class="input" id="req-type" name="taskType" tabindex="-1">
+                      <option value="" selected>Выберите вариант</option>
                       <option>Косметический ремонт</option>
                       <option>Ванная / санузел</option>
                       <option>Кухня</option>
@@ -79,53 +146,24 @@
                       <option>Другое</option>
                     </select>
                   </div>
-
-                  <div class="field">
-                    <label for="req-stage">Этап ремонта</label>
-                    <select class="input" id="req-stage" name="stage" required>
-                      <option value="" selected disabled>Выберите этап</option>
-                      <option value="planning">План</option>
-                      <option value="rough">Черновые</option>
-                      <option value="engineering">Инженерия</option>
-                      <option value="finishing">Чистовые</option>
-                      <option value="furniture">Мебель</option>
-                    </select>
-                  </div>
-
                   <div class="field">
                     <label for="req-district">Район объекта</label>
-                    <input class="input" id="req-district" name="district" required placeholder="Например: Фестивальный, ЮМР, Гидрострой" />
+                    <input class="input" id="req-district" name="district" tabindex="-1" />
                   </div>
-
                   <div class="field">
                     <label for="req-budget">Бюджет / диапазон</label>
-                    <select class="input" id="req-budget" name="budget" required>
-                      <option value="" selected disabled>Выберите диапазон</option>
+                    <select class="input" id="req-budget" name="budget" tabindex="-1">
+                      <option value="" selected>Выберите диапазон</option>
                       <option>До 150 000 ₽</option>
                       <option>150 000–400 000 ₽</option>
                       <option>400 000–900 000 ₽</option>
                       <option>900 000 ₽ и выше</option>
                     </select>
                   </div>
-
-                  <div class="field">
-                    <label for="req-name">Имя</label>
-                    <input class="input" id="req-name" name="name" autocomplete="name" required placeholder="Как к вам обращаться" />
-                  </div>
-
-                  <div class="field">
-                    <label for="req-contact">Телефон / Telegram</label>
-                    <input class="input" id="req-contact" name="contact" autocomplete="tel" required placeholder="+7 (...) ...-..-.. или @telegram" />
-                  </div>
-
-                  <div class="field field-wide">
-                    <label for="req-comment">Комментарий (опционально)</label>
-                    <textarea class="input textarea" id="req-comment" name="comment" rows="4" placeholder="Площадь, сроки, ограничения по времени работ, важные детали"></textarea>
-                  </div>
                 </div>
 
-                <div class="form-actions">
-                  <button class="btn btn-primary" type="submit">Отправить заявку в RemCard</button>
+                <div class="form-actions request-v2-form-actions">
+                  <button class="btn btn-primary request-v2-submit" type="submit">Отправить заявку ✈</button>
                   <p class="fineprint">Нажимая кнопку, вы соглашаетесь на обработку данных для связи по заявке.</p>
                 </div>
 
@@ -136,47 +174,24 @@
               </form>
             </article>
 
-            <div class="request-side-stack">
-              <article class="card">
-                <h2>Как это работает</h2>
-                <div class="request-flow">
-                  <div class="request-flow-step">
-                    <span class="request-flow-num">1</span>
-                    <p>Вы оставляете заявку с ключевыми параметрами.</p>
-                  </div>
-                  <div class="request-flow-step">
-                    <span class="request-flow-num">2</span>
-                    <p>Мы уточняем детали и подбираем релевантные варианты.</p>
-                  </div>
-                  <div class="request-flow-step">
-                    <span class="request-flow-num">3</span>
-                    <p>Вы получаете предложения от подходящих исполнителей и партнёров.</p>
-                  </div>
-                </div>
-              </article>
-
-              <article class="card">
-                <h2>Почему это удобно</h2>
-                <ul class="list">
-                  <li>Работаем в Краснодаре и учитываем район объекта.</li>
-                  <li>Подбираем решения под этап ремонта и бюджет.</li>
-                  <li>Помогаем и тем, кто только начинает, и тем, кто уже в процессе.</li>
-                </ul>
-                <p class="muted">Если хотите сначала пройти шаги ремонта, откройте Навигатор — этап подставится в заявку автоматически.</p>
-                <div class="form-actions">
-                  <a class="btn btn-ghost" href="../navigator/">Открыть навигатор ремонта</a>
-                  <a class="btn btn-ghost" href="../catalog/">Перейти в каталог</a>
-                </div>
-                <p class="contacts-line">
-                  <span class="contacts-label">Telegram</span>
-                  <a class="contacts-link" href="#" aria-label="Ссылка на Telegram-группу RemCard">RemCard заявки (группа)</a>
-                </p>
-                <p class="contacts-line">
-                  <span class="contacts-label">Email</span>
-                  <a class="contacts-link" href="mailto:kraavediks@gmail.com">kraavediks@gmail.com</a>
-                </p>
-              </article>
-            </div>
+            <section class="request-v2-flow" aria-label="Как это работает">
+              <h2 class="request-v2-flow-title">Как это работает</h2>
+              <div class="request-v2-flow-row">
+                <article class="request-v2-flow-step">
+                  <span class="request-v2-flow-num">1</span>
+                  <p>Оставляете заявку</p>
+                </article>
+                <article class="request-v2-flow-step">
+                  <span class="request-v2-flow-num">2</span>
+                  <p>Мы подбираем варианты</p>
+                </article>
+                <article class="request-v2-flow-step">
+                  <span class="request-v2-flow-num">3</span>
+                  <p>Получаете предложения</p>
+                </article>
+              </div>
+              <p class="request-v2-footnote">Работаем в Краснодаре · Одна заявка — до 5 предложений</p>
+            </section>
           </div>
         </div>
       </section>
@@ -209,5 +224,6 @@
 
     <script src="../i18n.js" defer></script>
     <script src="../script.js" defer></script>
+    <script src="./request.js" defer></script>
   </body>
 </html>
