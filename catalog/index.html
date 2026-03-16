@@ -44,160 +44,70 @@
     <main id="main">
       <section class="section catalog-section">
         <div class="container">
-          <header class="section-header catalog-hero-header">
-            <h1>Каталог решений для ремонта</h1>
-            <p class="section-subtitle">
-              Исполнители, товары и услуги под конкретный этап ремонта и задачу клиента.
-              <span class="catalog-current-stage" id="catalog-current-stage" hidden></span>
-            </p>
-
-            <form class="catalog-main-search" id="catalog-search-form" role="search" novalidate>
-              <label class="sr-only" for="catalog-main-query">Поиск по каталогу</label>
-              <input
-                class="input catalog-main-query"
-                id="catalog-main-query"
-                name="q"
-                placeholder="Что вам нужно: электрик, стяжка, плитка, двери, кухня…"
-                autocomplete="off"
-              />
-              <button class="btn btn-primary" type="submit">Найти</button>
-            </form>
-
-            <div class="catalog-focus-chips" id="catalog-focus-chips" role="group" aria-label="Быстрые фильтры">
-              <button class="catalog-focus-chip" type="button" data-focus-field="stage">Этап</button>
-              <button class="catalog-focus-chip" type="button" data-focus-field="taskType">Задача</button>
-              <button class="catalog-focus-chip" type="button" data-focus-field="area">Район</button>
-              <button class="catalog-focus-chip" type="button" data-focus-field="minPrice">Бюджет</button>
-              <button class="catalog-focus-chip" type="button" data-focus-field="type">Тип</button>
-            </div>
-          </header>
-
-          <div class="catalog-layout">
-            <aside class="card catalog-filters-card" id="catalog-filters-card">
-              <button class="catalog-sheet-grabber" id="catalog-sheet-grabber" type="button" aria-label="Развернуть фильтры"></button>
-              <div class="catalog-filters-head">
-                <h2>Фильтры каталога</h2>
-                <button class="btn btn-ghost catalog-filters-close" id="catalog-filters-close" type="button">Закрыть фильтры</button>
+          <div class="catalog-shell">
+            <header class="section-header catalog-hero-header">
+              <div class="catalog-hero-copy">
+                <h1>Каталог</h1>
+                <p class="section-subtitle">Найдите товары и услуги от проверенных партнёров</p>
               </div>
-              <form class="form" id="catalog-filter-form" novalidate>
-                <div class="form-grid">
-                  <div class="field">
-                    <label for="catalog-type">Тип</label>
-                    <select class="input" id="catalog-type" name="type">
-                      <option value="">Все типы</option>
-                      <option value="masters">Мастера</option>
-                      <option value="companies">Компании</option>
-                      <option value="stores">Магазины</option>
-                      <option value="products">Товары</option>
-                      <option value="services">Услуги</option>
-                    </select>
-                    <input id="catalog-item-kind" name="itemKind" type="hidden" value="" />
+
+              <div class="catalog-discovery-panel">
+                <form class="catalog-main-search" id="catalog-search-form" role="search" novalidate>
+                  <label class="sr-only" for="catalog-main-query">Поиск по каталогу</label>
+                  <span class="catalog-search-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" focusable="false">
+                      <path
+                        d="M10.5 4a6.5 6.5 0 1 0 4.173 11.484l4.421 4.422 1.414-1.414-4.422-4.421A6.5 6.5 0 0 0 10.5 4Zm0 2a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                  <input
+                    class="input catalog-main-query"
+                    id="catalog-main-query"
+                    name="q"
+                    placeholder="Поиск по названию, категории или партнёру..."
+                    autocomplete="off"
+                  />
+                </form>
+
+                <div class="catalog-toolbar">
+                  <div class="catalog-tabs" id="catalog-tabs" role="tablist" aria-label="Разделы каталога">
+                    <button class="catalog-tab is-active" type="button" role="tab" aria-selected="true" data-type="">Все</button>
+                    <button class="catalog-tab" type="button" role="tab" aria-selected="false" data-type="masters">Мастера</button>
+                    <button class="catalog-tab" type="button" role="tab" aria-selected="false" data-type="companies">Компании</button>
+                    <button class="catalog-tab" type="button" role="tab" aria-selected="false" data-type="products">Товары</button>
+                    <button class="catalog-tab" type="button" role="tab" aria-selected="false" data-type="services">Услуги</button>
                   </div>
 
-                  <div class="field">
-                    <label for="catalog-stage">Этап ремонта</label>
-                    <select class="input" id="catalog-stage" name="stage" data-stage-filter="true">
-                      <option value="">Все этапы</option>
-                      <option value="PLANNING">Планирование</option>
-                      <option value="ROUGH">Черновые работы</option>
-                      <option value="ENGINEERING">Инженерные работы</option>
-                      <option value="FINISHING">Чистовая отделка</option>
-                      <option value="FURNITURE">Мебель и комплектация</option>
-                    </select>
-                  </div>
-
-                  <div class="field">
-                    <label for="catalog-task-type">Тип задачи</label>
-                    <select class="input" id="catalog-task-type" name="taskType">
-                      <option value="">Все задачи</option>
-                      <option value="SANUZEL">Санузел</option>
-                      <option value="KITCHEN">Кухня</option>
-                      <option value="ELECTRICAL">Электрика</option>
-                      <option value="PLUMBING">Сантехника</option>
-                      <option value="TILING">Плитка</option>
-                      <option value="PAINTING">Покраска / обои</option>
-                      <option value="FLOORING">Полы</option>
-                      <option value="WINDOWS">Окна</option>
-                      <option value="DESIGN">Дизайн / проект</option>
-                      <option value="GENERAL">Другое</option>
-                    </select>
-                  </div>
-
-                  <div class="field">
-                    <label for="catalog-sort">Сортировка</label>
-                    <select class="input" id="catalog-sort" name="sort">
-                      <option value="rating">По рейтингу</option>
-                      <option value="price_asc">По цене: сначала дешевле</option>
-                      <option value="price_desc">По цене: сначала дороже</option>
-                      <option value="newest">Сначала новые</option>
-                    </select>
-                  </div>
-
-                  <div class="field">
-                    <label for="catalog-city">Город</label>
-                    <input class="input" id="catalog-city" name="city" placeholder="Например: Краснодар (можно оставить пустым)" />
-                  </div>
-
-                  <div class="field">
-                    <label for="catalog-area">Район</label>
-                    <input class="input" id="catalog-area" name="area" placeholder="Например: ФМР, ЮМР, Гидрострой" />
-                  </div>
-
-                  <div class="field">
-                    <label for="catalog-min-price">Цена от (₽)</label>
-                    <input class="input" id="catalog-min-price" name="minPrice" type="number" min="0" step="1000" />
-                  </div>
-
-                  <div class="field">
-                    <label for="catalog-max-price">Цена до (₽)</label>
-                    <input class="input" id="catalog-max-price" name="maxPrice" type="number" min="0" step="1000" />
-                  </div>
+                  <button class="catalog-filters-trigger" id="catalog-open-filters" type="button" aria-expanded="false" aria-controls="catalog-filters-card">
+                    <span class="catalog-filters-trigger-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" focusable="false">
+                        <path
+                          d="M4 6.5A1.5 1.5 0 0 1 5.5 5h13a1.5 1.5 0 1 1 0 3h-13A1.5 1.5 0 0 1 4 6.5Zm3 5A1.5 1.5 0 0 1 8.5 10h7a1.5 1.5 0 1 1 0 3h-7A1.5 1.5 0 0 1 7 11.5Zm4.5 5A1.5 1.5 0 0 0 10 18h4a1.5 1.5 0 1 0 0-3h-4a1.5 1.5 0 0 0 0 3Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </span>
+                    <span>Фильтры</span>
+                    <span class="catalog-filters-badge" id="catalog-filters-badge" hidden>0</span>
+                  </button>
                 </div>
+              </div>
 
-                <div class="catalog-switches">
-                  <label class="catalog-switch">
-                    <input type="checkbox" name="promo" id="catalog-promo-only" value="true" />
-                    <span>Только акции</span>
-                  </label>
-                  <label class="catalog-switch">
-                    <input type="checkbox" name="bonus" id="catalog-bonus-only" value="true" />
-                    <span>Бонусы доступны</span>
-                  </label>
-                </div>
-
-                <div class="form-actions">
-                  <button class="btn btn-primary" type="submit">Применить фильтры</button>
-                  <button class="btn btn-ghost" type="button" id="catalog-reset-filters">Сбросить фильтры</button>
-                </div>
-              </form>
-            </aside>
+              <div class="catalog-results-head">
+                <p class="catalog-results-count" id="catalog-results-count">Загружаем каталог...</p>
+                <p class="catalog-results-summary muted" id="catalog-results-summary" hidden></p>
+              </div>
+            </header>
 
             <section class="catalog-results">
-              <div class="catalog-results-head">
-                <p class="muted" id="catalog-results-count">Загружаем решения...</p>
-                <div class="catalog-active-filters" id="catalog-active-filters" hidden></div>
-                <div class="catalog-quick-kind" id="catalog-quick-kind" role="group" aria-label="Быстрый тип выдачи">
-                  <button class="catalog-kind-chip is-active" type="button" data-kind="">Все</button>
-                  <button class="catalog-kind-chip" type="button" data-kind="service">Услуги</button>
-                  <button class="catalog-kind-chip" type="button" data-kind="product">Товары</button>
-                  <button class="catalog-kind-chip" id="catalog-kind-promo" type="button" data-toggle-filter="promo" aria-pressed="false">Акции</button>
-                </div>
-                <div class="catalog-quick-sort" id="catalog-quick-sort" role="group" aria-label="Быстрая сортировка">
-                  <button class="catalog-sort-chip is-active" type="button" data-sort="rating">Рейтинг</button>
-                  <button class="catalog-sort-chip" type="button" data-sort="price_asc">Дешевле</button>
-                  <button class="catalog-sort-chip" type="button" data-sort="price_desc">Дороже</button>
-                  <button class="catalog-sort-chip" type="button" data-sort="newest">Новые</button>
-                </div>
-              </div>
-              <button class="btn btn-primary catalog-open-filters-btn" id="catalog-open-filters" type="button">Открыть фильтры</button>
-
               <div class="catalog-list" id="catalog-list" aria-live="polite"></div>
 
               <div class="card catalog-empty" id="catalog-empty" hidden>
-                <h3>По этим параметрам пока нет подходящих предложений</h3>
-                <p class="muted">Сбросьте часть фильтров или оставьте заявку — RemCard поможет подобрать решение вручную.</p>
+                <h3>По выбранным параметрам пока нет подходящих предложений</h3>
+                <p class="muted">Измените запрос или оставьте заявку — RemCard поможет подобрать решение вручную.</p>
                 <div class="catalog-empty-actions">
-                  <button class="btn btn-ghost" id="catalog-empty-reset" type="button">Сбросить фильтры</button>
                   <a class="btn btn-primary" href="../request/">Оставить заявку</a>
                 </div>
               </div>
@@ -219,6 +129,105 @@
     </main>
 
     <div class="catalog-filters-backdrop" id="catalog-filters-backdrop" hidden></div>
+
+    <aside class="card catalog-filters-card" id="catalog-filters-card" aria-hidden="true">
+      <div class="catalog-filters-head">
+        <div>
+          <p class="catalog-filters-label">Фильтры каталога</p>
+          <h2>Настройте выдачу</h2>
+          <p class="catalog-filters-note">Изменения применяются автоматически по мере выбора параметров.</p>
+        </div>
+        <button class="catalog-filters-close" id="catalog-filters-close" type="button" aria-label="Закрыть фильтры">×</button>
+      </div>
+
+      <form class="form catalog-filter-form" id="catalog-filter-form" novalidate>
+        <input id="catalog-item-kind" name="itemKind" type="hidden" value="" />
+
+        <div class="form-grid catalog-filter-grid">
+          <div class="field">
+            <label for="catalog-type">Тип</label>
+            <select class="input" id="catalog-type" name="type">
+              <option value="">Все типы</option>
+              <option value="masters">Мастера</option>
+              <option value="companies">Компании</option>
+              <option value="stores">Магазины</option>
+              <option value="products">Товары</option>
+              <option value="services">Услуги</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="catalog-stage">Этап ремонта</label>
+            <select class="input" id="catalog-stage" name="stage">
+              <option value="">Все этапы</option>
+              <option value="PLANNING">Планирование</option>
+              <option value="ROUGH">Черновые работы</option>
+              <option value="ENGINEERING">Инженерные работы</option>
+              <option value="FINISHING">Чистовая отделка</option>
+              <option value="FURNITURE">Мебель и комплектация</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="catalog-task-type">Тип задачи</label>
+            <select class="input" id="catalog-task-type" name="taskType">
+              <option value="">Все задачи</option>
+              <option value="SANUZEL">Санузел</option>
+              <option value="KITCHEN">Кухня</option>
+              <option value="ELECTRICAL">Электрика</option>
+              <option value="PLUMBING">Сантехника</option>
+              <option value="TILING">Плитка</option>
+              <option value="PAINTING">Покраска / обои</option>
+              <option value="FLOORING">Полы</option>
+              <option value="WINDOWS">Окна</option>
+              <option value="DESIGN">Дизайн / проект</option>
+              <option value="GENERAL">Другое</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="catalog-sort">Сортировка</label>
+            <select class="input" id="catalog-sort" name="sort">
+              <option value="rating">По рейтингу</option>
+              <option value="price_asc">Сначала дешевле</option>
+              <option value="price_desc">Сначала дороже</option>
+              <option value="newest">Сначала новые</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="catalog-city">Город</label>
+            <input class="input" id="catalog-city" name="city" placeholder="Например: Краснодар" />
+          </div>
+
+          <div class="field">
+            <label for="catalog-area">Район</label>
+            <input class="input" id="catalog-area" name="area" placeholder="Например: ФМР, ЮМР, Гидрострой" />
+          </div>
+
+          <div class="field">
+            <label for="catalog-min-price">Цена от (₽)</label>
+            <input class="input" id="catalog-min-price" name="minPrice" type="number" min="0" step="1000" />
+          </div>
+
+          <div class="field">
+            <label for="catalog-max-price">Цена до (₽)</label>
+            <input class="input" id="catalog-max-price" name="maxPrice" type="number" min="0" step="1000" />
+          </div>
+        </div>
+
+        <div class="catalog-switches">
+          <label class="catalog-switch" for="catalog-promo-only">
+            <input type="checkbox" name="promo" id="catalog-promo-only" value="true" />
+            <span>Только акции</span>
+          </label>
+          <label class="catalog-switch" for="catalog-bonus-only">
+            <input type="checkbox" name="bonus" id="catalog-bonus-only" value="true" />
+            <span>Бонусы доступны</span>
+          </label>
+        </div>
+      </form>
+    </aside>
 
     <footer class="site-footer">
       <div class="container footer-inner">
