@@ -8207,12 +8207,15 @@ body.navigator-stage-modal-open {
   position: relative;
   margin-top: 0;
   display: block;
+  min-width: 0;
 }
 
 .catalog-discovery-panel {
   display: grid;
   gap: 14px;
   padding: 14px;
+  min-width: 0;
+  max-width: 100%;
   border: 1px solid rgba(245, 245, 245, 0.08);
   border-radius: 26px;
   background:
@@ -8243,6 +8246,8 @@ body.navigator-stage-modal-open {
 
 .catalog-main-query {
   min-height: 60px;
+  width: 100%;
+  max-width: 100%;
   padding-left: 54px;
   padding-right: 18px;
   border-radius: 20px;
@@ -8272,6 +8277,7 @@ body.navigator-stage-modal-open {
   gap: 12px;
   flex-wrap: nowrap;
   padding: 4px 2px 0;
+  min-width: 0;
 }
 
 .catalog-tabs {
@@ -8330,6 +8336,7 @@ body.navigator-stage-modal-open {
   flex: 0 0 auto;
   margin-left: auto;
   min-height: 44px;
+  max-width: 100%;
   padding: 0 16px;
   border-radius: 999px;
   border: 1px solid rgba(245, 245, 245, 0.1);
@@ -8337,6 +8344,7 @@ body.navigator-stage-modal-open {
   color: rgba(245, 245, 245, 0.94);
   font-size: 13px;
   font-weight: 700;
+  white-space: nowrap;
   cursor: pointer;
   transition:
     transform 160ms var(--ease),
@@ -8399,6 +8407,7 @@ body.navigator-stage-modal-open {
 
 .catalog-results-count {
   margin: 0;
+  max-width: 100%;
   color: rgba(245, 245, 245, 0.96);
   font-size: 16px;
   font-weight: 750;
@@ -8410,6 +8419,7 @@ body.navigator-stage-modal-open {
   display: inline-flex;
   align-items: center;
   min-height: 32px;
+  max-width: 100%;
   padding: 0 12px;
   border-radius: 999px;
   border: 1px solid rgba(245, 245, 245, 0.08);
@@ -8851,6 +8861,7 @@ body.catalog-filters-open {
 
   .catalog-toolbar {
     padding: 2px 0 0;
+    gap: 8px;
   }
 
   .catalog-discovery-panel {
@@ -8865,6 +8876,10 @@ body.catalog-filters-open {
 
   .catalog-filters-trigger {
     min-width: max-content;
+  }
+
+  .catalog-results-summary {
+    white-space: normal;
   }
 
   .catalog-results-head {
