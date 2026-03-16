@@ -42,6 +42,17 @@ function toQueryStageId(stageId) {
   return stageId === "furnishing" ? "furniture" : stageId;
 }
 
+function toCatalogStageCode(stageId) {
+  const map = {
+    planning: "PLANNING",
+    rough: "ROUGH",
+    engineering: "ENGINEERING",
+    finishing: "FINISHING",
+    furnishing: "FURNITURE"
+  };
+  return map[normalizeStageId(stageId)] || "PLANNING";
+}
+
 function escapeHtml(value) {
   return String(value || "")
     .replace(/&/g, "&amp;")
@@ -235,6 +246,9 @@ function render() {
   const stage = getStageById(state.selectedStageId);
   const stageNumber = getStageNumber(stage.id);
   const nextStageId = getNextStageId(stage);
+  const catalogStage = toCatalogStageCode(stage.id);
+  const specialistsCatalogHref = `../catalog/?type=services&stage=${encodeURIComponent(catalogStage)}&source=navigator`;
+  const materialsCatalogHref = `../catalog/?type=products&stage=${encodeURIComponent(catalogStage)}&source=navigator`;
   const checklist = buildChecklist(stage, state.routeStep);
   const specialists = getSpecialists(stage, state.routeStep);
   const materials = getMaterials(stage, state.routeStep);
@@ -322,10 +336,16 @@ function render() {
         <article class="navigator-clean-mini-card">
           <h3>Кто нужен</h3>
           ${renderList(specialists)}
+          <div class="navigator-clean-mini-actions">
+            <a class="btn btn-ghost" href="${specialistsCatalogHref}">Смотреть специалистов в каталоге</a>
+          </div>
         </article>
         <article class="navigator-clean-mini-card">
           <h3>Материалы</h3>
           ${renderList(materials)}
+          <div class="navigator-clean-mini-actions">
+            <a class="btn btn-ghost" href="${materialsCatalogHref}">Смотреть материалы в каталоге</a>
+          </div>
         </article>
       </section>
     </div>
