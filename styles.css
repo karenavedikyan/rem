@@ -8182,6 +8182,7 @@ body.navigator-stage-modal-open {
 .catalog-shell {
   display: grid;
   gap: 28px;
+  min-width: 0;
 }
 
 .catalog-hero-header {
@@ -8420,6 +8421,7 @@ body.navigator-stage-modal-open {
 .catalog-results {
   display: grid;
   gap: 22px;
+  min-width: 0;
 }
 
 .catalog-list {
@@ -8427,6 +8429,7 @@ body.navigator-stage-modal-open {
   grid-template-columns: 1fr;
   gap: 28px;
   align-items: stretch;
+  min-width: 0;
 }
 
 .catalog-item-card {
@@ -8435,6 +8438,8 @@ body.navigator-stage-modal-open {
   flex-direction: column;
   height: 100%;
   overflow: hidden;
+  min-width: 0;
+  max-width: 100%;
   border: 1px solid rgba(245, 245, 245, 0.1);
   border-radius: 22px;
   background:
@@ -8506,6 +8511,7 @@ body.navigator-stage-modal-open {
   flex-direction: column;
   gap: 11px;
   padding: 20px;
+  min-width: 0;
 }
 
 .catalog-item-category,
@@ -8520,6 +8526,7 @@ body.navigator-stage-modal-open {
   align-items: center;
   justify-content: space-between;
   gap: 10px;
+  min-width: 0;
 }
 
 .catalog-item-category {
@@ -8534,6 +8541,7 @@ body.navigator-stage-modal-open {
   font-size: 19px;
   line-height: 1.34;
   min-height: 2.6em;
+  min-width: 0;
 }
 
 .catalog-item-title-link {
@@ -8543,6 +8551,7 @@ body.navigator-stage-modal-open {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
+  min-width: 0;
 }
 
 .catalog-item-title-link:hover,
@@ -8554,6 +8563,7 @@ body.navigator-stage-modal-open {
 
 .catalog-item-partner {
   flex: 1 1 auto;
+  min-width: 0;
   color: rgba(176, 190, 197, 0.92);
   font-size: 14px;
   line-height: 1.5;
@@ -8565,6 +8575,7 @@ body.navigator-stage-modal-open {
   align-items: center;
   gap: 6px;
   min-height: 24px;
+  max-width: 100%;
   padding: 0 9px;
   border-radius: 999px;
   border: 1px solid rgba(245, 245, 245, 0.08);
@@ -8598,6 +8609,7 @@ body.navigator-stage-modal-open {
   -webkit-line-clamp: 2;
   overflow: hidden;
   min-height: 3.2em;
+  min-width: 0;
 }
 
 .catalog-item-footer {
@@ -8608,6 +8620,7 @@ body.navigator-stage-modal-open {
   justify-content: space-between;
   gap: 12px;
   border-top: 1px solid rgba(245, 245, 245, 0.07);
+  min-width: 0;
 }
 
 .catalog-item-price {
@@ -8615,6 +8628,7 @@ body.navigator-stage-modal-open {
   font-size: 21px;
   font-weight: 800;
   letter-spacing: -0.02em;
+  min-width: 0;
 }
 
 .catalog-item-link {
@@ -8873,6 +8887,20 @@ body.catalog-filters-open {
   .catalog-item-partner-row {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .catalog-item-footer {
+    flex-wrap: wrap;
+    align-items: flex-end;
+  }
+
+  .catalog-item-price {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .catalog-item-link {
+    margin-left: auto;
   }
 
   .catalog-filters-card {
