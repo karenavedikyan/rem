@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="RemCard для партнёров в Краснодаре: заявки, витрина услуг, акции и бонусная программа." />
-    <title>RemCard — Для партнёров</title>
+    <meta name="description" content="Страница для бизнеса RemCard: подключение мастеров, компаний, магазинов и сервисных партнёров к экосистеме." />
+    <title>RemCard — Стать партнёром</title>
 
     <link rel="stylesheet" href="../styles.css" />
   </head>
@@ -39,199 +39,244 @@
     </header>
 
     <main id="main">
-      <section class="section partners-page-hero" id="partners">
-        <div class="container">
-          <header class="section-header">
-            <h1>Подключайтесь к RemCard</h1>
-            <p class="section-subtitle">
-              RemCard для мастеров, компаний и магазинов: целевые заявки, размещение в каталоге, участие в навигаторе и бонусной программе.
-            </p>
-          </header>
-
-          <div class="partners-hero-chips" aria-label="Ключевые преимущества">
-            <span class="partners-hero-chip">Целевые заявки</span>
-            <span class="partners-hero-chip">Размещение в каталоге</span>
-            <span class="partners-hero-chip">Бонусная программа</span>
-            <span class="partners-hero-chip">Работает в Краснодаре</span>
-          </div>
-
-          <div class="partners-hero-actions">
-            <a class="btn btn-primary" href="#partner-request">Стать партнёром</a>
-            <a class="btn btn-ghost" href="#partner-request">Оставить заявку</a>
-          </div>
+      <section class="section partners-v2-hero" id="partners">
+        <div class="container partners-v2-hero-inner">
+          <span class="partners-v2-badge">Для бизнеса</span>
+          <h1 class="partners-v2-title">
+            Станьте партнёром
+            <span>RemCard</span>
+          </h1>
+          <p class="partners-v2-subtitle">
+            Подключитесь к экосистеме и получайте поток целевых клиентов на каждом этапе ремонта
+          </p>
+          <a class="btn btn-primary partners-v2-cta" href="#partner-form">
+            Подключиться <span aria-hidden="true">→</span>
+          </a>
         </div>
       </section>
 
-      <section class="section section-compact" id="partner-types">
+      <section class="section partners-v2-section" id="partner-types">
         <div class="container">
-          <header class="section-header">
-            <h2>Кому подходит RemCard</h2>
-            <p class="section-subtitle">Отдельные сценарии для мастеров, сервисных компаний и магазинов.</p>
+          <header class="section-header partners-v2-section-head">
+            <h2>Кто может стать партнёром</h2>
+            <p class="section-subtitle">Присоединяйтесь к экосистеме независимо от масштаба вашего бизнеса</p>
           </header>
 
-          <div class="grid cards-3">
-            <article class="card partner-type-card" id="masters">
-              <h3>Мастерам и бригадам</h3>
-              <ul class="list">
-                <li>Получайте целевые заявки под конкретные задачи.</li>
-                <li>Показывайте услуги клиентам по этапам ремонта.</li>
-                <li>Подключайтесь к маршрутам навигатора RemCard.</li>
+          <div class="partners-v2-role-grid">
+            <article class="card partners-v2-role-card">
+              <div class="card-icon partners-v2-card-icon" aria-hidden="true">
+                <svg class="icon-svg" viewBox="0 0 24 24" focusable="false">
+                  <path d="M12 4a4 4 0 1 1 0 8 4 4 0 0 1 0-8Zm0 10c4.418 0 8 2.239 8 5v1H4v-1c0-2.761 3.582-5 8-5Z" fill="currentColor" />
+                </svg>
+              </div>
+              <h3>Мастерам</h3>
+              <p class="partners-v2-card-lead">Частные мастера и специалисты.</p>
+              <ul class="partners-v2-list">
+                <li>Поток целевых заказов</li>
+                <li>Рейтинговая система</li>
+                <li>Прямой контакт с клиентами</li>
+                <li>Рост дохода</li>
               </ul>
-              <a class="btn btn-ghost card-action" href="?type=master#partner-request">Подключиться как мастер</a>
             </article>
 
-            <article class="card partner-type-card" id="companies">
+            <article class="card partners-v2-role-card">
+              <div class="card-icon partners-v2-card-icon" aria-hidden="true">
+                <svg class="icon-svg" viewBox="0 0 24 24" focusable="false">
+                  <path
+                    d="M4 6a2 2 0 0 1 2-2h4v4H4V6Zm6-2h4v4h-4V4Zm6 0h2a2 2 0 0 1 2 2v2h-4V4ZM4 10h16v8a2 2 0 0 1-2 2h-3v-5H9v5H6a2 2 0 0 1-2-2v-8Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </div>
               <h3>Компаниям</h3>
-              <ul class="list">
-                <li>Получайте клиентов под конкретный этап ремонта.</li>
-                <li>Размещайте услуги в каталоге решений RemCard.</li>
-                <li>Участвуйте в экосистеме ремонта и обустройства.</li>
+              <p class="partners-v2-card-lead">Ремонтные компании и бригады.</p>
+              <ul class="partners-v2-list">
+                <li>Крупные проекты</li>
+                <li>Долгосрочные контракты</li>
+                <li>Репутация в каталоге</li>
+                <li>Масштабирование бизнеса</li>
               </ul>
-              <a class="btn btn-ghost card-action" href="?type=company#partner-request">Подключиться как компания</a>
             </article>
 
-            <article class="card partner-type-card" id="stores">
+            <article class="card partners-v2-role-card">
+              <div class="card-icon partners-v2-card-icon" aria-hidden="true">
+                <svg class="icon-svg" viewBox="0 0 24 24" focusable="false">
+                  <path
+                    d="M5 5h14l-1 5H6L5 5Zm0 7h14v6a2 2 0 0 1-2 2h-3v-5H10v5H7a2 2 0 0 1-2-2v-6Zm4-7h6v3H9V5Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </div>
               <h3>Магазинам</h3>
-              <ul class="list">
-                <li>Показывайте товары по этапам ремонта.</li>
-                <li>Участвуйте в акциях и бонусной программе.</li>
-                <li>Получайте трафик из навигатора и каталога.</li>
+              <p class="partners-v2-card-lead">Магазины строительных материалов.</p>
+              <ul class="partners-v2-list">
+                <li>Онлайн-витрина</li>
+                <li>Прямые продажи</li>
+                <li>Акции и промо</li>
+                <li>Рост выручки</li>
               </ul>
-              <a class="btn btn-ghost card-action" href="?type=store#partner-request">Подключиться как магазин</a>
+            </article>
+
+            <article class="card partners-v2-role-card">
+              <div class="card-icon partners-v2-card-icon" aria-hidden="true">
+                <svg class="icon-svg" viewBox="0 0 24 24" focusable="false">
+                  <path
+                    d="M12 3 4 7v5c0 5.25 3.438 9.813 8 11 4.563-1.187 8-5.75 8-11V7l-8-4Zm-1 13-3-3 1.4-1.4 1.6 1.6 3.6-3.6L16 11l-5 5Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </div>
+              <h3>Сервисным партнёрам</h3>
+              <p class="partners-v2-card-lead">Финансовые, логистические, страховые услуги.</p>
+              <ul class="partners-v2-list">
+                <li>Новый канал продаж</li>
+                <li>Интеграция в экосистему</li>
+                <li>Целевая аудитория</li>
+                <li>Партнёрская программа</li>
+              </ul>
             </article>
           </div>
         </div>
       </section>
 
-      <section class="section section-compact" id="partner-benefits">
+      <section class="section partners-v2-section" id="partner-benefits">
         <div class="container">
-          <header class="section-header">
-            <h2>Что даёт RemCard партнёру</h2>
+          <header class="section-header partners-v2-section-head">
+            <h2>Преимущества партнёрства</h2>
+            <p class="section-subtitle">Что вы получаете, становясь партнёром RemCard</p>
           </header>
-          <div class="grid cards-3 partners-benefits-grid">
-            <article class="card partner-benefit-card"><h3>Целевые заявки</h3><p>Обращения от клиентов с понятной задачей и контекстом.</p></article>
-            <article class="card partner-benefit-card"><h3>Видимость в каталоге</h3><p>Ваши услуги и товары доступны в клиентском поиске.</p></article>
-            <article class="card partner-benefit-card"><h3>Привязка к этапам</h3><p>Клиенты находят вас в нужный момент ремонта.</p></article>
-            <article class="card partner-benefit-card"><h3>Акции и бонусы</h3><p>Дополнительный спрос через промо и лояльность.</p></article>
-            <article class="card partner-benefit-card"><h3>Канал продаж</h3><p>Новый поток заявок и заказов из экосистемы RemCard.</p></article>
-            <article class="card partner-benefit-card"><h3>Простой вход</h3><p>Подключение без сложной интеграции на старте.</p></article>
+
+          <div class="partners-v2-benefits-grid">
+            <article class="card partners-v2-benefit-card">
+              <div class="card-icon partners-v2-card-icon" aria-hidden="true">
+                <svg class="icon-svg" viewBox="0 0 24 24" focusable="false">
+                  <path d="M5 18h2v-7H5v7Zm6 0h2V6h-2v12Zm6 0h2V10h-2v8ZM4 20h16v1H4z" fill="currentColor" />
+                </svg>
+              </div>
+              <h3>Поток клиентов</h3>
+              <p>Получайте заявки от пользователей на конкретных этапах ремонта</p>
+            </article>
+
+            <article class="card partners-v2-benefit-card">
+              <div class="card-icon partners-v2-card-icon" aria-hidden="true">
+                <svg class="icon-svg" viewBox="0 0 24 24" focusable="false">
+                  <path d="M5 4h14a2 2 0 0 1 2 2v11H3V6a2 2 0 0 1 2-2Zm1 3v2h12V7H6Zm0 4v3h7v-3H6Z" fill="currentColor" />
+                </svg>
+              </div>
+              <h3>Размещение в каталоге</h3>
+              <p>Ваша компания или услуги в общем каталоге RemCard</p>
+            </article>
+
+            <article class="card partners-v2-benefit-card">
+              <div class="card-icon partners-v2-card-icon" aria-hidden="true">
+                <svg class="icon-svg" viewBox="0 0 24 24" focusable="false">
+                  <path d="M4 12h5l2-3 3 6 2-3h4v2h-5l-1 2-3-6-2 3H4v-1Z" fill="currentColor" />
+                </svg>
+              </div>
+              <h3>Участие в навигаторе</h3>
+              <p>Появляетесь в рекомендациях на соответствующих этапах</p>
+            </article>
+
+            <article class="card partners-v2-benefit-card">
+              <div class="card-icon partners-v2-card-icon" aria-hidden="true">
+                <svg class="icon-svg" viewBox="0 0 24 24" focusable="false">
+                  <path
+                    d="M12 4a8 8 0 1 1 0 16 8 8 0 0 1 0-16Zm-.75 4v4.5l3.25 1.95.75-1.23-2.5-1.47V8h-1.5Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </div>
+              <h3>Заявки по этапам</h3>
+              <p>Клиенты оставляют заявки именно на ваши услуги</p>
+            </article>
+
+            <article class="card partners-v2-benefit-card">
+              <div class="card-icon partners-v2-card-icon" aria-hidden="true">
+                <svg class="icon-svg" viewBox="0 0 24 24" focusable="false">
+                  <path d="M6 5h12l1 5-7 9-7-9 1-5Zm3 3-.4 2h6.8L15 8H9Z" fill="currentColor" />
+                </svg>
+              </div>
+              <h3>Продвижение акций</h3>
+              <p>Размещайте специальные предложения и скидки</p>
+            </article>
+
+            <article class="card partners-v2-benefit-card">
+              <div class="card-icon partners-v2-card-icon" aria-hidden="true">
+                <svg class="icon-svg" viewBox="0 0 24 24" focusable="false">
+                  <path
+                    d="M12 3 3 7v5c0 5.523 3.84 10.74 9 12 5.16-1.26 9-6.477 9-12V7l-9-4Zm-1 14-3-3 1.4-1.4 1.6 1.6 4.6-4.6L17 11l-6 6Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </div>
+              <h3>Рост доверия</h3>
+              <p>Рейтинги и отзывы повышают вашу репутацию</p>
+            </article>
           </div>
         </div>
       </section>
 
-      <section class="section section-compact partner-flow" id="partner-flow">
+      <section class="section partners-v2-form-section" id="partner-request">
         <div class="container">
-          <header class="section-header">
-            <h2>Как это работает</h2>
-          </header>
-          <div class="grid cards-3 partners-process-grid">
-            <article class="card">
-              <div class="request-flow-step"><span class="request-flow-num">1</span><p>Оставляете заявку на подключение.</p></div>
-            </article>
-            <article class="card">
-              <div class="request-flow-step"><span class="request-flow-num">2</span><p>Уточняем формат сотрудничества и профиль.</p></div>
-            </article>
-            <article class="card">
-              <div class="request-flow-step"><span class="request-flow-num">3</span><p>Подключаем к RemCard и запускаем размещение.</p></div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="partner-request">
-        <div class="container">
-          <header class="section-header">
-            <h2>Заявка партнёра в RemCard</h2>
-            <p class="section-subtitle">Короткая форма подключения для мастеров, компаний и магазинов.</p>
+          <header class="section-header partners-v2-section-head">
+            <h2>Подключиться к экосистеме</h2>
+            <p class="section-subtitle">Заполните форму, и мы свяжемся с вами</p>
           </header>
 
-          <article class="card request-context-card" id="partner-context-card" hidden>
-            <p class="request-context-badge" id="partner-context-badge">Контекст подключения</p>
-            <p class="muted request-context-hint">Тип партнёра выбран заранее — при необходимости можно изменить в форме.</p>
-          </article>
+          <div class="partners-v2-form-shell">
+            <div class="card partners-v2-form-card">
+              <article class="partners-v2-prefill" id="partner-prefill-card" hidden>
+                <p class="partners-v2-prefill-badge" id="partner-prefill-badge">Предвыбран тип партнёра</p>
+                <p class="muted">Тип можно изменить перед отправкой заявки.</p>
+              </article>
 
-          <div class="grid two-col">
-            <div class="card">
-              <h3>Форма подключения партнёра</h3>
-              <p class="muted">Оставьте основные данные — свяжемся и согласуем следующий шаг.</p>
+              <form class="form partners-v2-form" id="partner-form" novalidate>
+                <input type="hidden" name="partnerType" id="partner-type-hidden" value="" />
 
-              <form class="form" id="partner-form" novalidate>
-                <div class="form-grid">
+                <div class="form-grid partners-v2-form-grid">
+                  <div class="field">
+                    <label for="hp-name">Имя / компания</label>
+                    <input class="input" id="hp-name" name="name" required placeholder="Например: Иван Петров / ООО РемСервис" />
+                  </div>
+
                   <div class="field">
                     <label for="hp-role">Тип партнёра</label>
                     <select class="input" id="hp-role" name="role" required>
-                      <option value="" selected disabled>Выберите роль</option>
-                      <option>Мастер / бригада</option>
-                      <option>Компания услуг</option>
-                      <option>Магазин материалов / товаров</option>
-                      <option>Сервисный / консалтинговый партнёр</option>
+                      <option value="" selected disabled>Выберите тип</option>
+                      <option value="master">Мастер</option>
+                      <option value="company">Компания</option>
+                      <option value="store">Магазин</option>
+                      <option value="service_partner">Сервисный партнёр</option>
                     </select>
                   </div>
 
-                  <div class="field">
-                    <label for="hp-name">Название / имя</label>
-                    <input class="input" id="hp-name" name="name" placeholder="Например: Иван Петров / ООО РемСервис" />
-                  </div>
-
-                  <div class="field">
-                    <label for="hp-spec">Услуги или категория</label>
-                    <input
-                      class="input"
-                      id="hp-spec"
-                      name="specialization"
-                      required
-                      placeholder="Например: электрика, сантехника, плитка, двери, сантехника/отделка"
-                    />
-                  </div>
-
-                  <div class="field">
-                    <label for="hp-location">Город / район работы</label>
-                    <input class="input" id="hp-location" name="location" required placeholder="Например: Краснодар, ФМР и ЮМР" />
-                  </div>
-
-                  <div class="field">
-                    <label for="hp-contact">Телефон / Telegram / email</label>
-                    <input class="input" id="hp-contact" name="contact" required placeholder="+7 (...) ...-..-.., @telegram или email" />
+                  <div class="field field-wide">
+                    <label for="hp-contact">Телефон</label>
+                    <input class="input" id="hp-contact" name="contact" type="tel" autocomplete="tel" required placeholder="+7 (___) ___-__-__" />
                   </div>
 
                   <div class="field field-wide">
-                    <label for="hp-comment">Комментарий (опционально)</label>
-                    <textarea class="input textarea" id="hp-comment" name="comment" rows="4" placeholder="Кратко: опыт, район, объём, что хотите подключить в первую очередь"></textarea>
+                    <label for="hp-comment">Комментарий</label>
+                    <textarea
+                      class="input textarea"
+                      id="hp-comment"
+                      name="comment"
+                      rows="5"
+                      placeholder="Коротко расскажите о вашем бизнесе, специализации и формате сотрудничества"
+                    ></textarea>
                   </div>
                 </div>
 
-                <div class="form-actions">
-                  <button class="btn btn-primary" type="submit">Отправить заявку в RemCard</button>
+                <div class="form-actions partners-v2-form-actions">
+                  <button class="btn btn-primary partners-v2-submit" type="submit">Отправить заявку</button>
                   <p class="fineprint">Нажимая кнопку, вы соглашаетесь на обработку данных для связи по заявке.</p>
                 </div>
 
                 <div class="form-result" id="partner-result" role="status" aria-live="polite" hidden>
                   <div class="form-result-title">Заявка отправлена</div>
-                  <div class="form-result-text">Спасибо! Мы свяжемся с вами, уточним детали и перейдём к подключению в RemCard.</div>
+                  <div class="form-result-text">Спасибо! Мы свяжемся с вами и обсудим формат подключения к RemCard.</div>
                 </div>
               </form>
-            </div>
-
-            <div class="card">
-              <h3>Что будет после заявки</h3>
-              <ul class="list partner-trust-list">
-                <li>Связываемся и уточняем профиль, специализацию и район работы.</li>
-                <li>Согласуем формат размещения в каталоге и навигаторе.</li>
-                <li>Подключаем к платформе и запускаем первые сценарии заявок/промо.</li>
-              </ul>
-
-              <h3>Партнёрский путь в экосистеме</h3>
-              <ul class="list partner-trust-list">
-                <li>Каталог: клиенты находят ваши товары и услуги.</li>
-                <li>Навигатор: вы участвуете в этапных сценариях ремонта.</li>
-                <li>Бонусы и акции: дополнительные точки роста продаж.</li>
-              </ul>
-
-              <div class="form-actions">
-                <a class="btn btn-ghost" href="../catalog/">Как вы видны в каталоге</a>
-                <a class="btn btn-ghost" href="../navigator/">Как клиенты находят вас через навигатор</a>
-                <a class="btn btn-ghost" href="../partner/cabinet/">Личный кабинет партнёра</a>
-              </div>
             </div>
           </div>
         </div>
@@ -265,5 +310,6 @@
 
     <script src="../i18n.js" defer></script>
     <script src="../script.js" defer></script>
+    <script src="./partners.js" defer></script>
   </body>
 </html>
