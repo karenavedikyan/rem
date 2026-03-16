@@ -8945,6 +8945,7 @@ body.catalog-filters-open {
 .partners-v2-hero-inner {
   position: relative;
   z-index: 1;
+  max-width: 920px;
   min-height: inherit;
   display: flex;
   flex-direction: column;
@@ -8980,6 +8981,7 @@ body.catalog-filters-open {
 .partners-v2-title span {
   display: block;
   color: rgba(239, 83, 80, 0.98);
+  text-shadow: 0 10px 26px rgba(229, 57, 53, 0.22);
 }
 
 .partners-v2-subtitle {
@@ -8994,13 +8996,21 @@ body.catalog-filters-open {
   min-height: 54px;
   padding-inline: 22px;
   font-size: 15px;
+  box-shadow: 0 16px 30px rgba(229, 57, 53, 0.18);
 }
 
 .partners-v2-cta span {
   margin-left: 2px;
+  transition: transform 160ms var(--ease);
+}
+
+.partners-v2-cta:hover span,
+.partners-v2-cta:focus-visible span {
+  transform: translateX(2px);
 }
 
 .partners-v2-section {
+  position: relative;
   padding-top: clamp(60px, 8vw, 92px);
   padding-bottom: clamp(60px, 8vw, 92px);
 }
@@ -9008,6 +9018,11 @@ body.catalog-filters-open {
 .partners-v2-section-head {
   text-align: center;
   margin-bottom: 26px;
+}
+
+.partners-v2-section-head .section-subtitle {
+  max-width: 720px;
+  margin-inline: auto;
 }
 
 .partners-v2-section-head h2 {
@@ -9033,11 +9048,32 @@ body.catalog-filters-open {
 
 .partners-v2-role-card,
 .partners-v2-benefit-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 12px;
   padding: 22px;
   border-radius: 22px;
+  height: 100%;
+}
+
+.partners-v2-role-card::before,
+.partners-v2-benefit-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 22px;
+  right: 22px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(239, 83, 80, 0.45), transparent 78%);
+}
+
+.partners-v2-role-card:hover,
+.partners-v2-benefit-card:hover,
+.partners-v2-form-card:hover,
+.partners-v2-prefill:hover {
+  border-color: rgba(239, 83, 80, 0.16);
+  box-shadow: 0 22px 46px rgba(0, 0, 0, 0.2);
 }
 
 .partners-v2-role-card h3,
@@ -9064,6 +9100,10 @@ body.catalog-filters-open {
   color: rgba(176, 190, 197, 0.94);
   font-size: 14px;
   line-height: 1.55;
+}
+
+.partners-v2-benefit-card p {
+  max-width: 30ch;
 }
 
 .partners-v2-list {
@@ -9095,12 +9135,13 @@ body.catalog-filters-open {
 }
 
 .partners-v2-form-section {
+  scroll-margin-top: 96px;
   padding-top: clamp(54px, 8vw, 88px);
   padding-bottom: clamp(64px, 9vw, 104px);
 }
 
 .partners-v2-form-shell {
-  max-width: 760px;
+  max-width: 720px;
   margin: 0 auto;
   display: grid;
   gap: 16px;
@@ -9112,9 +9153,16 @@ body.catalog-filters-open {
 }
 
 .partners-v2-prefill-badge {
-  margin: 0 0 4px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  margin: 0 0 10px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(239, 83, 80, 0.22);
+  background: rgba(229, 57, 53, 0.12);
   color: rgba(255, 240, 240, 0.96);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 800;
 }
 
@@ -9160,8 +9208,13 @@ body.catalog-filters-open {
 }
 
 @media (min-width: 700px) {
+  .partners-v2-role-grid {
+    gap: 20px;
+  }
+
   .partners-v2-benefits-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
   }
 
   .partners-v2-form-grid {
@@ -9207,6 +9260,12 @@ body.catalog-filters-open {
   .partners-v2-role-card,
   .partners-v2-benefit-card {
     padding: 20px;
+  }
+
+  .partners-v2-role-card::before,
+  .partners-v2-benefit-card::before {
+    left: 20px;
+    right: 20px;
   }
 
   .partners-v2-form-card {
