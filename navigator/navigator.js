@@ -60,6 +60,17 @@ function uniqueStrings(values, max = 5) {
   ).slice(0, max);
 }
 
+function compactText(value, max = 96) {
+  const text = String(value || "").replace(/\s+/g, " ").trim();
+  if (!text) return "";
+  const firstSentenceMatch = text.match(/^(.+?[.!?])(\s|$)/);
+  const firstSentence = firstSentenceMatch ? firstSentenceMatch[1].trim() : text;
+  if (firstSentence.length <= max) return firstSentence;
+  const short = firstSentence.slice(0, max);
+  const splitAt = short.lastIndexOf(" ");
+  return `${(splitAt > 30 ? short.slice(0, splitAt) : short).trim()}…`;
+}
+
 function getInitialStageId() {
   const fromQuery = new URLSearchParams(window.location.search || "").get("stage");
   if (fromQuery) return normalizeStageId(fromQuery);
@@ -154,28 +165,32 @@ function pickRouteStep(steps, stageId) {
 
 function buildChecklist(stage, routeStep) {
   const items = [];
-  for (const item of uniqueStrings(routeStep && routeStep.tips, 5)) items.push(item);
+  for (const item of uniqueStrings(routeStep && routeStep.tips, 5)) items.push(compactText(item, 92));
   for (const item of uniqueStrings(stage.currentActions, 5)) {
-    if (!items.includes(item)) items.push(item);
-    if (items.length >= 5) break;
+    const compact = compactText(item, 92);
+    if (!compact || items.includes(compact)) continue;
+    items.push(compact);
+    if (items.length >= 4) break;
   }
   for (const item of uniqueStrings(stage.preparation, 5)) {
-    if (!items.includes(item)) items.push(item);
-    if (items.length >= 5) break;
+    const compact = compactText(item, 92);
+    if (!compact || items.includes(compact)) continue;
+    items.push(compact);
+    if (items.length >= 4) break;
   }
-  return items.slice(0, 5);
+  return items.slice(0, 4);
 }
 
 function getSpecialists(stage, routeStep) {
-  const fromRoute = uniqueStrings(routeStep && routeStep.recommended_professionals, 5);
+  const fromRoute = uniqueStrings(routeStep && routeStep.recommended_professionals, 4);
   if (fromRoute.length) return fromRoute;
-  return uniqueStrings(stage.specialists, 5);
+  return uniqueStrings(stage.specialists, 4);
 }
 
 function getMaterials(stage, routeStep) {
-  const fromRoute = uniqueStrings(routeStep && routeStep.recommended_categories, 6);
+  const fromRoute = uniqueStrings(routeStep && routeStep.recommended_categories, 4).map((item) => compactText(item, 70));
   if (fromRoute.length) return fromRoute;
-  return uniqueStrings(stage.materials, 6);
+  return uniqueStrings(stage.materials, 4).map((item) => compactText(item, 70));
 }
 
 function renderTabs(selectedStageId) {
@@ -213,7 +228,7 @@ function renderChecklist(items) {
 
 function renderList(items) {
   if (!items.length) return `<p class="navigator-clean-list-empty">Пока нет данных для этого этапа.</p>`;
-  return `<ul class="navigator-clean-list">${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
+  return `<ul class="navigator-clean-list">${items.map((item) => `<li>${escapeHtml(compactText(item, 88))}</li>`).join("")}</ul>`;
 }
 
 function render() {
@@ -224,23 +239,24 @@ function render() {
   const specialists = getSpecialists(stage, state.routeStep);
   const materials = getMaterials(stage, state.routeStep);
   const routeInfoText = state.routeLoading
-    ? "Формируем персональный план этапа…"
+    ? "Формируем план этапа…"
     : state.routeError
-      ? "Персональный план временно недоступен, показываем базовую версию этапа."
+      ? "Временный сбой, показываем базовый план этапа."
       : state.routeSource === "ai"
-        ? "План этапа персонализирован на основе выбранных данных."
-        : "План этапа подготовлен по базовому маршруту RemCard.";
+        ? "Персональный план готов."
+        : "Базовый план этапа готов.";
+  const stageDescription = compactText((state.routeStep && state.routeStep.description) || stage.shortDescription, 130);
 
   root.innerHTML = `
     <div class="navigator-clean-root">
       <section class="navigator-clean-head">
         <p class="navigator-clean-badge">Интерактивный инструмент</p>
         <h1>Навигатор ремонта</h1>
-        <p class="navigator-clean-subtitle">Выберите этап, на котором находитесь, и получите персональный план действий</p>
+        <p class="navigator-clean-subtitle">Выберите этап и получите персональный план действий</p>
       </section>
 
       <section class="navigator-clean-picker">
-        <p class="navigator-clean-picker-label">Выберите текущий этап ремонта</p>
+        <p class="navigator-clean-picker-label">Выберите текущий этап</p>
         <div class="navigator-clean-tabs" role="tablist" aria-label="Этапы ремонта">
           ${renderTabs(stage.id)}
         </div>
@@ -254,7 +270,7 @@ function render() {
             <span class="navigator-clean-stage-now">Вы сейчас здесь</span>
           </div>
           <h2>${escapeHtml(stage.title)}</h2>
-          <p>${escapeHtml(stage.shortDescription || "")}</p>
+          <p>${escapeHtml(stageDescription || "")}</p>
         </div>
         <div class="navigator-clean-stage-metrics">
           <div class="navigator-clean-metric">
@@ -304,7 +320,7 @@ function render() {
 
       <section class="navigator-clean-resources-grid">
         <article class="navigator-clean-mini-card">
-          <h3>Специалисты этапа</h3>
+          <h3>Кто нужен</h3>
           ${renderList(specialists)}
         </article>
         <article class="navigator-clean-mini-card">
