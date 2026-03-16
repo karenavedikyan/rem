@@ -8244,6 +8244,13 @@ body.navigator-stage-modal-open {
   justify-content: space-between;
   gap: 12px;
   flex-wrap: nowrap;
+  padding: 10px;
+  border: 1px solid rgba(245, 245, 245, 0.08);
+  border-radius: 22px;
+  background:
+    radial-gradient(110% 180% at 0% 0%, rgba(229, 57, 53, 0.08), transparent 40%),
+    rgba(255, 255, 255, 0.03);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
 .catalog-tabs {
@@ -8267,8 +8274,8 @@ body.navigator-stage-modal-open {
   min-height: 44px;
   padding: 0 15px;
   border-radius: 999px;
-  border: 1px solid rgba(245, 245, 245, 0.14);
-  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(245, 245, 245, 0.1);
+  background: rgba(255, 255, 255, 0.04);
   color: rgba(245, 245, 245, 0.92);
   font-size: 13px;
   font-weight: 700;
@@ -8304,8 +8311,8 @@ body.navigator-stage-modal-open {
   min-height: 44px;
   padding: 0 16px;
   border-radius: 999px;
-  border: 1px solid rgba(245, 245, 245, 0.14);
-  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(245, 245, 245, 0.1);
+  background: rgba(255, 255, 255, 0.045);
   color: rgba(245, 245, 245, 0.94);
   font-size: 13px;
   font-weight: 700;
@@ -8374,6 +8381,7 @@ body.navigator-stage-modal-open {
   color: rgba(245, 245, 245, 0.96);
   font-size: 15px;
   font-weight: 750;
+  letter-spacing: -0.01em;
 }
 
 .catalog-results-summary {
@@ -8480,6 +8488,13 @@ body.navigator-stage-modal-open {
   margin: 0;
 }
 
+.catalog-item-partner-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
 .catalog-item-category {
   font-size: 12.5px;
   font-weight: 600;
@@ -8516,6 +8531,20 @@ body.navigator-stage-modal-open {
   line-height: 1.5;
 }
 
+.catalog-item-verified {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(245, 245, 245, 0.08);
+  background: rgba(255, 255, 255, 0.045);
+  color: rgba(245, 245, 245, 0.78);
+  font-size: 11px;
+  font-weight: 700;
+}
+
 .catalog-item-rating {
   color: rgba(245, 245, 245, 0.94);
   font-size: 13.5px;
@@ -8540,6 +8569,7 @@ body.navigator-stage-modal-open {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  border-top: 1px solid rgba(245, 245, 245, 0.07);
 }
 
 .catalog-item-price {
@@ -8755,6 +8785,10 @@ body.catalog-filters-open {
     font-size: clamp(34px, 12vw, 44px);
   }
 
+  .catalog-toolbar {
+    padding: 8px;
+  }
+
   .catalog-tabs {
     width: auto;
     gap: 8px;
@@ -8779,6 +8813,11 @@ body.catalog-filters-open {
 
   .catalog-item-body {
     padding: 18px;
+  }
+
+  .catalog-item-partner-row {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .catalog-filters-card {

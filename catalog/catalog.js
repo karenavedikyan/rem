@@ -558,6 +558,7 @@
     const title = item.title || itemKindLabel(itemKind);
     const city = item.partner?.city || item.city || "-";
     const partnerLine = `${item.partner?.name || t("Партнер", "Partner")} · ${city}`;
+    const ratingText = formatRating(item);
 
     article.innerHTML = `
       <a class="catalog-item-media" href="${detailsHref}" aria-label="${escapeHtml(title)}">
@@ -569,8 +570,11 @@
         <h3 class="catalog-item-title">
           <a class="catalog-item-title-link" href="${detailsHref}">${escapeHtml(title)}</a>
         </h3>
-        <p class="catalog-item-partner">${escapeHtml(partnerLine)}</p>
-        <p class="catalog-item-rating">${escapeHtml(formatRating(item))}</p>
+        <div class="catalog-item-partner-row">
+          <p class="catalog-item-partner">${escapeHtml(partnerLine)}</p>
+          <span class="catalog-item-verified">${escapeHtml(t("Проверен", "Verified"))}</span>
+        </div>
+        <p class="catalog-item-rating">${escapeHtml(ratingText)}</p>
         <p class="catalog-item-description">${escapeHtml(item.description || t("Описание появится скоро.", "Description will be available soon."))}</p>
         <div class="catalog-item-footer">
           <span class="catalog-item-price">${escapeHtml(formatCardPrice(item.minPrice, item.maxPrice))}</span>
