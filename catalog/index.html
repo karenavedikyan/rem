@@ -51,46 +51,48 @@
                 <p class="section-subtitle">Найдите товары и услуги от проверенных партнёров</p>
               </div>
 
-              <form class="catalog-main-search" id="catalog-search-form" role="search" novalidate>
-                <label class="sr-only" for="catalog-main-query">Поиск по каталогу</label>
-                <span class="catalog-search-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" focusable="false">
-                    <path
-                      d="M10.5 4a6.5 6.5 0 1 0 4.173 11.484l4.421 4.422 1.414-1.414-4.422-4.421A6.5 6.5 0 0 0 10.5 4Zm0 2a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9Z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </span>
-                <input
-                  class="input catalog-main-query"
-                  id="catalog-main-query"
-                  name="q"
-                  placeholder="Поиск по названию, категории или партнёру..."
-                  autocomplete="off"
-                />
-              </form>
-
-              <div class="catalog-toolbar">
-                <div class="catalog-tabs" id="catalog-tabs" role="tablist" aria-label="Разделы каталога">
-                  <button class="catalog-tab is-active" type="button" role="tab" aria-selected="true" data-type="">Все</button>
-                  <button class="catalog-tab" type="button" role="tab" aria-selected="false" data-type="masters">Мастера</button>
-                  <button class="catalog-tab" type="button" role="tab" aria-selected="false" data-type="companies">Компании</button>
-                  <button class="catalog-tab" type="button" role="tab" aria-selected="false" data-type="products">Товары</button>
-                  <button class="catalog-tab" type="button" role="tab" aria-selected="false" data-type="services">Услуги</button>
-                </div>
-
-                <button class="catalog-filters-trigger" id="catalog-open-filters" type="button" aria-expanded="false" aria-controls="catalog-filters-card">
-                  <span class="catalog-filters-trigger-icon" aria-hidden="true">
+              <div class="catalog-discovery-panel">
+                <form class="catalog-main-search" id="catalog-search-form" role="search" novalidate>
+                  <label class="sr-only" for="catalog-main-query">Поиск по каталогу</label>
+                  <span class="catalog-search-icon" aria-hidden="true">
                     <svg viewBox="0 0 24 24" focusable="false">
                       <path
-                        d="M4 6.5A1.5 1.5 0 0 1 5.5 5h13a1.5 1.5 0 1 1 0 3h-13A1.5 1.5 0 0 1 4 6.5Zm3 5A1.5 1.5 0 0 1 8.5 10h7a1.5 1.5 0 1 1 0 3h-7A1.5 1.5 0 0 1 7 11.5Zm4.5 5A1.5 1.5 0 0 0 10 18h4a1.5 1.5 0 1 0 0-3h-4a1.5 1.5 0 0 0 0 3Z"
+                        d="M10.5 4a6.5 6.5 0 1 0 4.173 11.484l4.421 4.422 1.414-1.414-4.422-4.421A6.5 6.5 0 0 0 10.5 4Zm0 2a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9Z"
                         fill="currentColor"
                       />
                     </svg>
                   </span>
-                  <span>Фильтры</span>
-                  <span class="catalog-filters-badge" id="catalog-filters-badge" hidden>0</span>
-                </button>
+                  <input
+                    class="input catalog-main-query"
+                    id="catalog-main-query"
+                    name="q"
+                    placeholder="Поиск по названию, категории или партнёру..."
+                    autocomplete="off"
+                  />
+                </form>
+
+                <div class="catalog-toolbar">
+                  <div class="catalog-tabs" id="catalog-tabs" role="tablist" aria-label="Разделы каталога">
+                    <button class="catalog-tab is-active" type="button" role="tab" aria-selected="true" data-type="">Все</button>
+                    <button class="catalog-tab" type="button" role="tab" aria-selected="false" data-type="masters">Мастера</button>
+                    <button class="catalog-tab" type="button" role="tab" aria-selected="false" data-type="companies">Компании</button>
+                    <button class="catalog-tab" type="button" role="tab" aria-selected="false" data-type="products">Товары</button>
+                    <button class="catalog-tab" type="button" role="tab" aria-selected="false" data-type="services">Услуги</button>
+                  </div>
+
+                  <button class="catalog-filters-trigger" id="catalog-open-filters" type="button" aria-expanded="false" aria-controls="catalog-filters-card">
+                    <span class="catalog-filters-trigger-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" focusable="false">
+                        <path
+                          d="M4 6.5A1.5 1.5 0 0 1 5.5 5h13a1.5 1.5 0 1 1 0 3h-13A1.5 1.5 0 0 1 4 6.5Zm3 5A1.5 1.5 0 0 1 8.5 10h7a1.5 1.5 0 1 1 0 3h-7A1.5 1.5 0 0 1 7 11.5Zm4.5 5A1.5 1.5 0 0 0 10 18h4a1.5 1.5 0 1 0 0-3h-4a1.5 1.5 0 0 0 0 3Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </span>
+                    <span>Фильтры</span>
+                    <span class="catalog-filters-badge" id="catalog-filters-badge" hidden>0</span>
+                  </button>
+                </div>
               </div>
 
               <div class="catalog-results-head">
@@ -133,6 +135,7 @@
         <div>
           <p class="catalog-filters-label">Фильтры каталога</p>
           <h2>Настройте выдачу</h2>
+          <p class="catalog-filters-note">Изменения применяются автоматически по мере выбора параметров.</p>
         </div>
         <button class="catalog-filters-close" id="catalog-filters-close" type="button" aria-label="Закрыть фильтры">×</button>
       </div>
