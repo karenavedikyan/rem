@@ -543,8 +543,8 @@
   };
 
   const getCardCategory = (item) => {
-    if (item && item.stage) return stageLabel(item.stage);
     if (item && item.taskType) return taskTypeLabel(item.taskType);
+    if (item && item.stage) return stageLabel(item.stage);
     return t("Проверенный партнер", "Verified partner");
   };
 
