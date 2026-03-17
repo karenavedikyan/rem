@@ -100,3 +100,18 @@ model ServiceReview {
 
   @@index([serviceId, createdAt])
 }
+
+model Request {
+  id           String   @id @default(uuid()) @db.Uuid
+  name         String
+  phone        String
+  stage        String?
+  objectType   String?
+  comment      String?
+  serviceId    String?
+  serviceTitle String?
+  source       String   @default("direct")
+  createdAt    DateTime @default(now())
+
+  @@index([createdAt])
+}
