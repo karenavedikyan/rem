@@ -307,25 +307,6 @@ function render() {
             ${renderChecklist(checklist)}
           </ul>
         </article>
-
-        <aside class="navigator-clean-cta-card">
-          <button
-            class="btn btn-primary"
-            type="button"
-            data-nav-action="next-stage"
-            ${nextStageId ? "" : "disabled"}
-          >
-            ${nextStageId ? "Перейти к следующему →" : "Маршрут завершён"}
-          </button>
-          <button
-            class="btn btn-ghost"
-            type="button"
-            data-nav-action="request"
-            ${state.submitting ? "disabled" : ""}
-          >
-            ${state.submitting ? "Отправляем..." : "Оставить заявку"}
-          </button>
-        </aside>
       </section>
 
       <section class="navigator-clean-resources-grid">
@@ -344,6 +325,25 @@ function render() {
           </div>
         </article>
       </section>
+
+      <aside class="navigator-clean-cta-card">
+        <button
+          class="btn btn-primary"
+          type="button"
+          data-nav-action="next-stage"
+          ${nextStageId ? "" : "disabled"}
+        >
+          ${nextStageId ? "Перейти к следующему →" : "Маршрут завершён"}
+        </button>
+        <button
+          class="btn btn-ghost"
+          type="button"
+          data-nav-action="request"
+          ${state.submitting ? "disabled" : ""}
+        >
+          ${state.submitting ? "Отправляем..." : "Оставить заявку"}
+        </button>
+      </aside>
     </div>
   `;
 }
