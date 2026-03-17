@@ -850,11 +850,11 @@ button.hero-kpi-card {
 }
 
 .home-slogan {
-  margin: -2px 0 2px;
-  color: rgba(196, 207, 214, 0.74);
-  font-size: clamp(13px, 2.1vw, 16px);
-  line-height: 1.4;
-  font-style: italic;
+  margin: 4px 0 6px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: clamp(16px, 2.7vw, 22px);
+  line-height: 1.45;
+  font-style: normal;
   font-weight: 400;
 }
 
@@ -9860,7 +9860,7 @@ body.catalog-filters-open {
 
 @media (max-width: 560px) {
   .home-slogan {
-    font-size: 12.5px;
+    font-size: clamp(16px, 4.8vw, 18px);
   }
 
   .home-section-head-split {
