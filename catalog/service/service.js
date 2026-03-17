@@ -213,6 +213,15 @@
 
   const renderGallery = (service) => {
     if (!mainImageEl) return;
+    mainImageEl.referrerPolicy = "no-referrer";
+    mainImageEl.addEventListener(
+      "error",
+      () => {
+        if (mainImageEl.getAttribute("src") === PLACEHOLDER_IMAGE) return;
+        mainImageEl.src = PLACEHOLDER_IMAGE;
+      },
+      { once: true }
+    );
     const sources = [];
     const primary = normalizeImageUrl(service.imageUrl);
     sources.push(primary);
@@ -244,7 +253,18 @@
       btn.className = "catalog-service-thumb";
       btn.setAttribute("data-src", src);
       btn.setAttribute("aria-label", `${t("Фото", "Photo")} ${idx + 1}`);
-      btn.innerHTML = `<img src="${escapeHtml(src)}" alt="" loading="lazy" />`;
+      btn.innerHTML = `<img src="${escapeHtml(src)}" alt="" loading="lazy" referrerpolicy="no-referrer" />`;
+      const imgEl = btn.querySelector("img");
+      if (imgEl) {
+        imgEl.addEventListener(
+          "error",
+          () => {
+            if (imgEl.getAttribute("src") === PLACEHOLDER_IMAGE) return;
+            imgEl.src = PLACEHOLDER_IMAGE;
+          },
+          { once: true }
+        );
+      }
       btn.addEventListener("click", () => setActive(src));
       thumbsEl.appendChild(btn);
     });
