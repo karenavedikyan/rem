@@ -3058,6 +3058,8 @@ button.hero-kpi-card {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.form-grid[hidden] { display: none; }
+
 .field {
   display: grid;
   gap: 8px;
