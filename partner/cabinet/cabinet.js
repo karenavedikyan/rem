@@ -204,7 +204,6 @@
 
   const apiUrl = (path) => {
     const url = new URL(path, window.location.origin);
-    url.searchParams.set("partnerId", state.partnerId);
     return url.href;
   };
 
@@ -213,7 +212,6 @@
       ...options,
       headers: {
         "Content-Type": "application/json",
-        "X-Partner-Id": state.partnerId,
         ...(options.headers || {})
       }
     });
