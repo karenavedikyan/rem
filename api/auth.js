@@ -78,7 +78,9 @@ async function getPrismaClientCtor() {
 }
 
 async function getPrisma() {
-  if (!process.env.DATABASE_URL) return null;
+  const dbUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL;
+  if (!dbUrl) return null;
+  if (!process.env.DATABASE_URL) process.env.DATABASE_URL = dbUrl;
   const PrismaClient = await getPrismaClientCtor();
   if (!PrismaClient) return null;
   return new PrismaClient();
