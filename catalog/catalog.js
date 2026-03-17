@@ -568,7 +568,7 @@
 
     article.innerHTML = `
       <a class="catalog-item-media" href="${detailsHref}" aria-label="${escapeHtml(title)}">
-        <img class="catalog-item-image" src="${escapeHtml(normalizeImageUrl(item.imageUrl))}" alt="${escapeHtml(title)}" loading="lazy" />
+        <img class="catalog-item-image" src="${escapeHtml(normalizeImageUrl(item.imageUrl))}" alt="${escapeHtml(title)}" loading="lazy" referrerpolicy="no-referrer" />
         <span class="catalog-item-badge">${escapeHtml(itemKindLabel(itemKind))}</span>
       </a>
       <div class="catalog-item-body">
@@ -588,6 +588,14 @@
         </div>
       </div>
     `;
+
+    const imageEl = article.querySelector(".catalog-item-image");
+    if (imageEl) {
+      imageEl.addEventListener("error", () => {
+        if (imageEl.getAttribute("src") === DEFAULT_PLACEHOLDER_IMAGE) return;
+        imageEl.src = DEFAULT_PLACEHOLDER_IMAGE;
+      }, { once: true });
+    }
 
     return article;
   };
