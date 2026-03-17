@@ -19,12 +19,11 @@ const TAB_LABELS = {
 
 const state = {
   selectedStageId: getInitialStageId(),
-  routeLoading: false,
-  routeError: "",
   routeSource: "stage-data",
   routeSteps: [],
   routeStep: null,
-  submitting: false
+  submitting: false,
+  routeRequestStageId: ""
 };
 
 function normalizeStageId(rawValue) {
@@ -252,14 +251,11 @@ function render() {
   const checklist = buildChecklist(stage, state.routeStep);
   const specialists = getSpecialists(stage, state.routeStep);
   const materials = getMaterials(stage, state.routeStep);
-  const routeInfoText = state.routeLoading
-    ? "Формируем план этапа…"
-    : state.routeError
-      ? "Временный сбой, показываем базовый план этапа."
-      : state.routeSource === "ai"
-        ? "Персональный план готов."
-        : "Базовый план этапа готов.";
+  const routeInfoText = state.routeSource !== "stage-data" ? "Персональный план готов" : "";
   const stageDescription = compactText((state.routeStep && state.routeStep.description) || stage.shortDescription, 130);
+  const routeInfoMarkup = routeInfoText
+    ? `<p class="navigator-clean-route-meta">${escapeHtml(routeInfoText)}</p>`
+    : "";
 
   root.innerHTML = `
     <div class="navigator-clean-root">
@@ -274,7 +270,7 @@ function render() {
         <div class="navigator-clean-tabs" role="tablist" aria-label="Этапы ремонта">
           ${renderTabs(stage.id)}
         </div>
-        <p class="navigator-clean-route-meta${state.routeError ? " is-warning" : ""}">${escapeHtml(routeInfoText)}</p>
+        ${routeInfoMarkup}
       </section>
 
       <section class="navigator-clean-stage-card" aria-live="polite">
@@ -409,25 +405,22 @@ async function handleRequestAction() {
 
 async function loadRouteForSelectedStage() {
   const stage = getStageById(state.selectedStageId);
-  state.routeLoading = true;
-  state.routeError = "";
+  state.routeRequestStageId = stage.id;
+  state.routeSteps = [];
+  state.routeStep = null;
+  state.routeSource = "stage-data";
   render();
 
   try {
     const data = await fetchRouteForStage(stage);
+    if (state.selectedStageId !== stage.id || state.routeRequestStageId !== stage.id) return;
     state.routeSteps = Array.isArray(data.steps) ? data.steps : [];
     state.routeStep = pickRouteStep(state.routeSteps, stage.id);
     state.routeSource = String(data.source || "template");
+    render();
   } catch (error) {
-    state.routeSteps = [];
-    state.routeStep = null;
-    state.routeSource = "stage-data";
-    state.routeError = error && error.message ? error.message : "route_error";
     // eslint-disable-next-line no-console
     console.warn("navigator-route warning:", error);
-  } finally {
-    state.routeLoading = false;
-    render();
   }
 }
 
