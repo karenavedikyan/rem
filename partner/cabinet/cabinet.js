@@ -279,7 +279,7 @@
     card.innerHTML = `
       <div class="partner-service-head">
         <h3>${escapeHtml(service.title || t("Услуга", "Service"))}</h3>
-        <span class="tag">${escapeHtml(isActiveText)}</span>
+        <span class="tag ${service.isActive ? "tag-active" : "tag-disabled"}">${escapeHtml(isActiveText)}</span>
       </div>
       <p class="muted">${escapeHtml(service.description || t("Краткое описание не заполнено.", "Short description is not filled."))}</p>
       <div class="partner-meta">
@@ -289,10 +289,16 @@
       </div>
       <p class="partner-service-info">${escapeHtml(`${t("Районы", "Areas")}: ${areasText}`)}</p>
       <div class="partner-service-actions">
-        <button class="btn btn-ghost" type="button" data-action="edit">${t("Редактировать", "Edit")}</button>
-        <button class="btn btn-ghost" type="button" data-action="toggle">${
+        <button class="btn btn-ghost" type="button" data-action="edit">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          ${t("Редактировать", "Edit")}
+        </button>
+        <button class="btn btn-ghost" type="button" data-action="toggle">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
+          ${
           service.isActive ? t("Отключить", "Disable") : t("Включить", "Enable")
-        }</button>
+        }
+        </button>
       </div>
       <form class="form partner-service-edit-form" hidden>
         <div class="form-grid">

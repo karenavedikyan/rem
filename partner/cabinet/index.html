@@ -43,7 +43,8 @@
     <main id="main">
       <section class="section partner-cabinet-section">
         <div class="container">
-          <header class="section-header">
+          <header class="section-header" style="text-align:center;">
+            <span class="section-badge">ПАРТНЁРАМ</span>
             <h1>Личный кабинет партнёра</h1>
             <p class="section-subtitle">
               Управляйте профилем и услугами, которые отображаются в каталоге RemCard. Стартовый MVP без сложных настроек.
@@ -53,8 +54,10 @@
           <div class="partner-cabinet-stack">
             <article class="card partner-cabinet-profile-view">
               <div class="partner-cabinet-card-title-row">
-                <h2>Профиль партнёра</h2>
-                <span class="tag" id="cabinet-partner-id-badge">partnerId: —</span>
+                <h2>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  Профиль партнёра
+                </h2>
               </div>
 
               <div class="partner-cabinet-profile-grid">
@@ -87,18 +90,29 @@
                   <div class="partner-cabinet-v" id="cabinet-partner-promo-ids">—</div>
                 </div>
               </div>
+
+              <span class="tag" id="cabinet-partner-id-badge" style="margin-top:14px; display:inline-block; font-size:11px; opacity:0.4; font-family:monospace;">partnerId: —</span>
             </article>
 
-            <article class="card">
-              <h2>Редактирование профиля</h2>
+            <article class="card partner-cabinet-section">
+              <h2>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                Редактирование профиля
+              </h2>
               <form class="form" id="partner-profile-form" novalidate>
                 <div class="form-grid">
                   <div class="field">
-                    <label for="partner-profile-name">Имя / название</label>
+                    <label for="partner-profile-name">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                      Имя / название
+                    </label>
                     <input class="input" id="partner-profile-name" name="name" required />
                   </div>
                   <div class="field">
-                    <label for="partner-profile-type">Тип партнёра</label>
+                    <label for="partner-profile-type">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                      Тип партнёра
+                    </label>
                     <select class="input" id="partner-profile-type" name="type" required>
                       <option value="MASTER">Мастер</option>
                       <option value="COMPANY">Компания</option>
@@ -106,15 +120,24 @@
                     </select>
                   </div>
                   <div class="field">
-                    <label for="partner-profile-city">Город</label>
+                    <label for="partner-profile-city">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                      Город
+                    </label>
                     <input class="input" id="partner-profile-city" name="city" value="Краснодар" required />
                   </div>
                   <div class="field field-wide">
-                    <label for="partner-profile-description">Описание</label>
+                    <label for="partner-profile-description">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                      Описание
+                    </label>
                     <textarea class="input textarea" id="partner-profile-description" name="description" rows="4"></textarea>
                   </div>
                   <div class="field">
-                    <label for="partner-profile-specializations">Специализации</label>
+                    <label for="partner-profile-specializations">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                      Специализации
+                    </label>
                     <input
                       class="input"
                       id="partner-profile-specializations"
@@ -123,11 +146,17 @@
                     />
                   </div>
                   <div class="field">
-                    <label for="partner-profile-areas">Районы работы</label>
+                    <label for="partner-profile-areas">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+                      Районы работы
+                    </label>
                     <input class="input" id="partner-profile-areas" name="areas" placeholder="Через запятую: ФМР, ЮМР, ЦМР" />
                   </div>
                   <div class="field field-wide">
-                    <label for="partner-profile-promo-banner">URL баннера акции</label>
+                    <label for="partner-profile-promo-banner">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                      URL баннера акции
+                    </label>
                     <input
                       class="input"
                       id="partner-profile-promo-banner"
@@ -138,7 +167,10 @@
                     <small class="muted">Ссылка на изображение для баннерной части ваших акций (http/https).</small>
                   </div>
                   <div class="field field-wide">
-                    <label>Выбор акций для баннера</label>
+                    <label>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                      Выбор акций для баннера
+                    </label>
                     <div class="promo-checklist-toolbar">
                       <label class="promo-check-toggle">
                         <input type="checkbox" id="partner-profile-promo-only-mine" checked />
@@ -161,9 +193,12 @@
               </form>
             </article>
 
-            <article class="card">
+            <article class="card partner-cabinet-section">
               <div class="partner-cabinet-card-title-row">
-                <h2>Мои услуги</h2>
+                <h2>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 3H8l-2 4h12l-2-4z"/></svg>
+                  Мои услуги
+                </h2>
                 <span class="muted" id="partner-services-count">0 услуг</span>
               </div>
               <div class="partner-services-list" id="partner-services-list"></div>
@@ -173,20 +208,32 @@
               </div>
             </article>
 
-            <article class="card">
-              <h2>Добавить услугу</h2>
+            <article class="card partner-cabinet-section partner-cabinet-add-card">
+              <h2>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                Добавить услугу
+              </h2>
               <form class="form" id="partner-add-service-form" novalidate>
                 <div class="form-grid">
                   <div class="field field-wide">
-                    <label for="service-title">Название услуги</label>
+                    <label for="service-title">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+                      Название услуги
+                    </label>
                     <input class="input" id="service-title" name="title" required />
                   </div>
                   <div class="field field-wide">
-                    <label for="service-description">Описание</label>
+                    <label for="service-description">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                      Описание
+                    </label>
                     <textarea class="input textarea" id="service-description" name="description" rows="3"></textarea>
                   </div>
                   <div class="field">
-                    <label for="service-stage">Этап</label>
+                    <label for="service-stage">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                      Этап
+                    </label>
                     <select class="input" id="service-stage" name="stage" required>
                       <option value="PLANNING">Планирование</option>
                       <option value="ROUGH">Черновые работы</option>
@@ -196,7 +243,10 @@
                     </select>
                   </div>
                   <div class="field">
-                    <label for="service-task-type">Тип задачи</label>
+                    <label for="service-task-type">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                      Тип задачи
+                    </label>
                     <select class="input" id="service-task-type" name="taskType" required>
                       <option value="SANUZEL">Санузел</option>
                       <option value="KITCHEN">Кухня</option>
@@ -211,23 +261,38 @@
                     </select>
                   </div>
                   <div class="field">
-                    <label for="service-min-price">Цена от (₽)</label>
+                    <label for="service-min-price">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                      Цена от (₽)
+                    </label>
                     <input class="input" id="service-min-price" name="minPrice" type="number" min="0" step="1000" />
                   </div>
                   <div class="field">
-                    <label for="service-max-price">Цена до (₽)</label>
+                    <label for="service-max-price">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                      Цена до (₽)
+                    </label>
                     <input class="input" id="service-max-price" name="maxPrice" type="number" min="0" step="1000" />
                   </div>
                   <div class="field">
-                    <label for="service-city">Город</label>
+                    <label for="service-city">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                      Город
+                    </label>
                     <input class="input" id="service-city" name="city" value="Краснодар" />
                   </div>
                   <div class="field">
-                    <label for="service-areas">Районы</label>
+                    <label for="service-areas">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+                      Районы
+                    </label>
                     <input class="input" id="service-areas" name="areas" placeholder="Через запятую: ФМР, ЮМР" />
                   </div>
                   <div class="field">
-                    <label for="service-is-active">Статус</label>
+                    <label for="service-is-active">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
+                      Статус
+                    </label>
                     <select class="input" id="service-is-active" name="isActive">
                       <option value="true">Активна</option>
                       <option value="false">Отключена</option>
