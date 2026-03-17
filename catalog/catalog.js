@@ -500,10 +500,16 @@
   const renderTabs = () => {
     if (!tabsEl) return;
     const activeType = normalizeType(getFieldValue("type"));
+    const isPromoActive = getFieldChecked("promo");
     const tabButtons = tabsEl.querySelectorAll("button[data-type]");
     tabButtons.forEach((button) => {
-      const value = normalizeType(button.dataset.type || "");
-      const active = value === activeType || (!value && !activeType);
+      const value = button.dataset.type || "";
+      let active = false;
+      if (value === "promo") {
+        active = isPromoActive;
+      } else {
+        active = !isPromoActive && (normalizeType(value) === activeType || (!value && !activeType));
+      }
       button.classList.toggle("is-active", active);
       button.setAttribute("aria-selected", active ? "true" : "false");
     });
@@ -810,9 +816,16 @@
     tabsEl.addEventListener("click", (event) => {
       const button = event.target && event.target.closest ? event.target.closest("button[data-type]") : null;
       if (!button) return;
-      const nextType = normalizeType(button.dataset.type || "");
-      if (normalizeType(getFieldValue("type")) === nextType) return;
-      setFieldValue("type", nextType);
+
+      const nextType = button.dataset.type || "";
+
+      if (nextType === "promo") {
+        setFieldValue("type", "");
+        setFieldChecked("promo", true);
+      } else {
+        setFieldValue("type", normalizeType(nextType));
+        setFieldChecked("promo", false);
+      }
       renderUiState();
       loadCatalog({ page: 1 });
     });
