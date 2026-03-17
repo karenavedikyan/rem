@@ -1373,6 +1373,16 @@
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
+      if (formId === "request-form" && typeof window.__remcardPhoneValid === "function" && !window.__remcardPhoneValid()) {
+        if (typeof window.__remcardShowPhoneError === "function") {
+          window.__remcardShowPhoneError(true);
+        }
+        const contactField = form.querySelector("#req-contact");
+        if (contactField && typeof contactField.focus === "function") {
+          contactField.focus({ preventScroll: false });
+        }
+        return;
+      }
       if (!form.checkValidity()) {
         form.reportValidity();
         return;
@@ -1395,6 +1405,9 @@
         const cityValue = city ? city.value : "Краснодар";
         form.reset();
         if (city) city.value = cityValue;
+        if (formId === "request-form" && typeof window.__remcardShowPhoneError === "function") {
+          window.__remcardShowPhoneError(false);
+        }
 
         if (result) result.scrollIntoView({ behavior: "smooth", block: "nearest" });
       } catch (err) {

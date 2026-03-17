@@ -23,6 +23,34 @@
     return out;
   };
 
+  const phoneError = (() => {
+    const el = document.createElement("p");
+    el.className = "field-error";
+    el.textContent = "Введите полный номер телефона";
+    el.hidden = true;
+    el.style.margin = "6px 0 0";
+    el.style.color = "rgba(239, 83, 80, 0.95)";
+    el.style.fontSize = "12px";
+    el.style.lineHeight = "1.4";
+    if (contactEl.parentElement) {
+      contactEl.parentElement.appendChild(el);
+    }
+    return el;
+  })();
+
+  const isPhoneValid = () => {
+    const digits = String(contactEl.value || "").replace(/\D/g, "");
+    return digits.length === 11;
+  };
+
+  const showPhoneError = (show) => {
+    phoneError.hidden = !show;
+    contactEl.classList.toggle("input-error", show);
+    contactEl.setAttribute("aria-invalid", show ? "true" : "false");
+    contactEl.style.borderColor = show ? "rgba(239, 83, 80, 0.92)" : "";
+    contactEl.style.boxShadow = show ? "0 0 0 1px rgba(239, 83, 80, 0.24)" : "";
+  };
+
   contactEl.addEventListener("input", () => {
     const start = contactEl.selectionStart || 0;
     const prevLength = contactEl.value.length;
@@ -33,5 +61,15 @@
     if (typeof contactEl.setSelectionRange === "function") {
       contactEl.setSelectionRange(nextPos, nextPos);
     }
+    const digits = String(contactEl.value || "").replace(/\D/g, "");
+    if (digits.length === 0 || isPhoneValid()) showPhoneError(false);
   });
+
+  contactEl.addEventListener("blur", () => {
+    const digits = String(contactEl.value || "").replace(/\D/g, "");
+    if (digits.length > 0 && digits.length < 11) showPhoneError(true);
+  });
+
+  window.__remcardPhoneValid = isPhoneValid;
+  window.__remcardShowPhoneError = showPhoneError;
 })();
