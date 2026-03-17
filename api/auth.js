@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { PrismaClient } from "@prisma/client";
 
 // ── helpers ────────────────────────────────────────────────────
 const ALLOWED_ORIGINS = [
@@ -16,7 +17,7 @@ const COOKIE_NAME = "remcard_token";
 const MAX_AGE = 30 * 24 * 60 * 60;
 const PARTNER_TYPES = new Set(["MASTER", "COMPANY", "STORE"]);
 
-let prismaCtorPromise = null;
+
 
 function getOrigin(req) {
   const origin = req.headers.origin;
@@ -64,25 +65,10 @@ export { getTokenFromRequest, verifyToken };
 function asString(v) { return v == null ? "" : String(v).trim(); }
 function normalizePartnerType(v) { const n = asString(v).toUpperCase(); return PARTNER_TYPES.has(n) ? n : null; }
 
-async function getPrismaClientCtor() {
-  if (!prismaCtorPromise) {
-    prismaCtorPromise = (async () => {
-      const specs = ["@prisma/client", new URL("../backend/node_modules/@prisma/client/index.js", import.meta.url).href];
-      for (const spec of specs) {
-        try { const mod = await import(spec); if (mod?.PrismaClient) return mod.PrismaClient; if (mod?.default?.PrismaClient) return mod.default.PrismaClient; } catch {}
-      }
-      return null;
-    })();
-  }
-  return prismaCtorPromise;
-}
-
 async function getPrisma() {
   const dbUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL;
   if (!dbUrl) return null;
   if (!process.env.DATABASE_URL) process.env.DATABASE_URL = dbUrl;
-  const PrismaClient = await getPrismaClientCtor();
-  if (!PrismaClient) return null;
   return new PrismaClient();
 }
 
