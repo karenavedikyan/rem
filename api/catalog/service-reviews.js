@@ -5,7 +5,7 @@ import {
   normalizePagination,
   parseJsonBody,
   setCatalogCors
-} from "./store.js";
+} from "../../lib/catalog-store.js";
 
 function mapReviewError(code) {
   const map = {

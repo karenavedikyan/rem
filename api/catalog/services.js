@@ -1,4 +1,4 @@
-import { handleOptions, listCatalogServices, normalizeCatalogFilter, normalizePagination, setCatalogCors } from "./store.js";
+import { handleOptions, listCatalogServices, normalizeCatalogFilter, normalizePagination, setCatalogCors } from "../../lib/catalog-store.js";
 
 export default async function handler(req, res) {
   if (handleOptions(req, res, "OPTIONS, GET")) return;

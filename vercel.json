@@ -19,6 +19,7 @@
     }
   ],
   "rewrites": [
+    { "source": "/api/auth/:action", "destination": "/api/auth" },
     {
       "source": "/api/catalog/services/:id/reviews",
       "destination": "/api/catalog/service-reviews?serviceId=:id"
