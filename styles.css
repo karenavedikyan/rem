@@ -6247,6 +6247,142 @@ body.navigator-stage-modal-open {
   padding-top: 12px;
 }
 
+/* ===== Cabinet Redesign ===== */
+.partner-cabinet-section .section-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(245, 245, 245, 0.7);
+  border: 1px solid rgba(245, 245, 245, 0.18);
+  border-radius: 20px;
+  padding: 6px 16px;
+  margin-bottom: 16px;
+}
+
+.partner-cabinet-profile-view {
+  padding: var(--card-pad) !important;
+}
+
+.partner-cabinet-profile-view .partner-cabinet-card-title-row {
+  margin-bottom: 16px;
+}
+
+#cabinet-partner-name {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+#cabinet-partner-type {
+  display: inline-block;
+}
+
+#cabinet-partner-specializations,
+#cabinet-partner-areas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+#cabinet-partner-id-badge {
+  font-size: 11px;
+  opacity: 0.4;
+  font-family: monospace;
+}
+
+.partner-cabinet-stack {
+  gap: 20px;
+}
+
+.partner-service-card {
+  border-radius: 12px;
+  padding: 16px 18px;
+  transition: border-color 180ms ease;
+}
+
+.partner-service-card:hover {
+  border-color: color-mix(in srgb, var(--red) 28%, var(--border));
+}
+
+.partner-service-head {
+  margin-bottom: 8px;
+}
+
+.partner-meta {
+  margin-top: 10px;
+  margin-bottom: 8px;
+}
+
+.partner-service-actions {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(245, 245, 245, 0.06);
+}
+
+.partner-cabinet-stack > article.card {
+  padding: 24px 28px;
+}
+
+.partner-cabinet-stack h2 {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.partner-cabinet-stack h2 svg {
+  color: var(--red);
+  opacity: 0.8;
+  flex-shrink: 0;
+}
+
+.partner-cabinet-section .field label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.partner-cabinet-section .field label svg {
+  flex-shrink: 0;
+  color: var(--red);
+  opacity: 0.85;
+}
+
+.partner-service-actions .btn {
+  font-size: 13px;
+  padding: 6px 14px;
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.partner-service-actions .btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.tag-active {
+  background: rgba(76, 175, 80, 0.15) !important;
+  color: #81c784 !important;
+  border-color: rgba(76, 175, 80, 0.3) !important;
+}
+
+.tag-disabled {
+  background: rgba(211, 47, 47, 0.15) !important;
+  color: #ef5350 !important;
+  border-color: rgba(211, 47, 47, 0.3) !important;
+}
+
+.partner-meta .tag {
+  background: rgba(211, 47, 47, 0.12);
+}
+
+.partner-cabinet-add-card {
+  border-left: 3px solid var(--red);
+}
+
 /* Responsive */
 @media (max-width: 980px) {
   .home-hero {
