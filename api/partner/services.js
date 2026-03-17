@@ -35,7 +35,7 @@ export default async function handler(req, res) {
     return;
   }
 
-  const partnerId = readCurrentPartnerId(req);
+  const partnerId = await readCurrentPartnerId(req);
   if (!partnerId) {
     res.status(400).json({ error: "partnerId is required" });
     return;

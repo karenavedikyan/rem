@@ -19,7 +19,7 @@ export default async function handler(req, res) {
   if (handleOptions(req, res, "OPTIONS, PATCH")) return;
   setCors(req, res, "OPTIONS, PATCH");
 
-  const partnerId = readCurrentPartnerId(req);
+  const partnerId = await readCurrentPartnerId(req);
   const rawId = req.query && req.query.id;
   const serviceId = Array.isArray(rawId) ? String(rawId[0] || "") : String(rawId || "");
 

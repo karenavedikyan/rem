@@ -16,7 +16,7 @@ export default async function handler(req, res) {
   if (handleOptions(req, res, "OPTIONS, GET, PATCH")) return;
   setCors(req, res, "OPTIONS, GET, PATCH");
 
-  const partnerId = readCurrentPartnerId(req);
+  const partnerId = await readCurrentPartnerId(req);
   if (!partnerId) {
     res.status(400).json({ error: "partnerId is required" });
     return;
