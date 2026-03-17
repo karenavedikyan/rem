@@ -1226,6 +1226,9 @@ button.hero-kpi-card {
 }
 
 .home-offer-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   overflow: hidden;
   border-radius: 22px;
   border: 1px solid rgba(245, 245, 245, 0.1);
