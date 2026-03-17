@@ -1,4 +1,4 @@
-import { getPartnerById, handleOptions, parseJsonBody, readCurrentPartnerId, setCors, updatePartnerById } from "./store.js";
+import { getPartnerById, handleOptions, parseJsonBody, readCurrentPartnerId, setCors, updatePartnerById } from "../../lib/partner-store.js";
 
 function mapErrorMessage(code) {
   const map = {

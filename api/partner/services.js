@@ -8,7 +8,7 @@ import {
   readCurrentPartnerId,
   setCors,
   validateNewServicePayload
-} from "./store.js";
+} from "../../lib/partner-store.js";
 
 function mapErrorMessage(code) {
   const map = {

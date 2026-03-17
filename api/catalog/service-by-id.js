@@ -1,4 +1,4 @@
-import { getCatalogServiceById, handleOptions, setCatalogCors } from "./store.js";
+import { getCatalogServiceById, handleOptions, setCatalogCors } from "../../lib/catalog-store.js";
 
 export default async function handler(req, res) {
   if (handleOptions(req, res, "OPTIONS, GET")) return;

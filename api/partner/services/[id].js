@@ -1,4 +1,4 @@
-import { handleOptions, parseJsonBody, patchPartnerService, readCurrentPartnerId, setCors, validateServicePatchPayload } from "../store.js";
+import { handleOptions, parseJsonBody, patchPartnerService, readCurrentPartnerId, setCors, validateServicePatchPayload } from "../../../lib/partner-store.js";
 
 function mapErrorMessage(code) {
   const map = {
