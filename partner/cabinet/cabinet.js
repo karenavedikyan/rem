@@ -585,7 +585,20 @@
   });
 
   const bootstrap = async () => {
-    state.partnerId = getPartnerId();
+    // === ПРОВЕРКА АВТОРИЗАЦИИ ===
+    try {
+      const authRes = await fetch("/api/auth/me");
+      const authData = await authRes.json();
+      if (!authData.authenticated) {
+        window.location.href = "/partner/login/";
+        return;
+      }
+      state.partnerId = authData.partnerId;
+    } catch {
+      window.location.href = "/partner/login/";
+      return;
+    }
+    // === КОНЕЦ ПРОВЕРКИ ===
     if (partnerIdBadge) partnerIdBadge.textContent = `partnerId: ${state.partnerId}`;
     if (promoOnlyMineEl) promoOnlyMineEl.checked = state.promoShowOnlyMine;
     loadPromotionsForChecklist();
@@ -605,4 +618,16 @@
   };
 
   bootstrap();
+
+  const logoutBtn = document.getElementById("logout-btn");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", async () => {
+      try {
+        await fetch("/api/auth/logout", { method: "POST" });
+      } catch {
+        // ignore logout transport errors
+      }
+      window.location.href = "/partner/login/";
+    });
+  }
 })();

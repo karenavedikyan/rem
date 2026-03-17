@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Вход и регистрация партнёров RemCard." />
+    <title>RemCard — Вход в кабинет партнёра</title>
+    <link rel="stylesheet" href="../../styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Перейти к содержимому</a>
+
+    <header class="site-header" id="top">
+      <div class="container header-inner">
+        <a class="brand" href="../../index.html" aria-label="RemCard — на главную">
+          <img class="brand-mark-img" src="../../assets/img/remcard-mark.svg" alt="" aria-hidden="true" />
+          <span class="brand-wrap">
+            <span class="brand-text">RemCard</span>
+            <span class="brand-tagline">навигатор ремонта</span>
+          </span>
+        </a>
+
+        <nav class="nav" aria-label="Основная навигация">
+          <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
+            <span class="nav-toggle-lines" aria-hidden="true"></span>
+            <span class="sr-only">Открыть меню</span>
+          </button>
+
+          <div class="nav-menu" id="nav-menu">
+            <a class="nav-link" href="../../index.html">Главная</a>
+            <a class="nav-link" href="../../navigator/">Навигатор</a>
+            <a class="nav-link" href="../../request/">Заявка</a>
+            <a class="nav-link" href="../../catalog/">Каталог</a>
+            <a class="nav-link" href="../../partners/" aria-current="page">Партнёрам</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="section partner-auth-page">
+        <div class="container">
+          <div class="partner-auth-shell">
+            <header class="section-header" style="text-align:center;">
+              <span class="section-badge">ПАРТНЁРАМ</span>
+              <h1>Вход в кабинет</h1>
+              <p class="section-subtitle">Войдите или создайте аккаунт партнёра RemCard</p>
+            </header>
+
+            <article class="card partner-auth-card">
+              <div class="auth-tabs">
+                <button class="auth-tab active" id="tab-login" type="button">Вход</button>
+                <button class="auth-tab" id="tab-register" type="button">Регистрация</button>
+              </div>
+
+              <form class="form" id="login-form" novalidate>
+                <div class="form-grid" style="grid-template-columns: 1fr;">
+                  <div class="field">
+                    <label for="login-email">Email</label>
+                    <input class="input" id="login-email" name="email" type="email" autocomplete="email" required />
+                  </div>
+                  <div class="field">
+                    <label for="login-password">Пароль</label>
+                    <input class="input" id="login-password" name="password" type="password" autocomplete="current-password" required />
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <button class="btn btn-primary" style="width:100%;" type="submit">Войти</button>
+                </div>
+                <div class="form-result" id="login-result" role="status" aria-live="polite" hidden>
+                  <div class="form-result-title"></div>
+                  <div class="form-result-text"></div>
+                </div>
+              </form>
+
+              <form class="form" id="register-form" novalidate hidden>
+                <div class="form-grid" style="grid-template-columns: 1fr;">
+                  <div class="field">
+                    <label for="register-email">Email</label>
+                    <input class="input" id="register-email" name="email" type="email" autocomplete="email" required />
+                  </div>
+                  <div class="field">
+                    <label for="register-password">Пароль</label>
+                    <input class="input" id="register-password" name="password" type="password" autocomplete="new-password" required />
+                  </div>
+                  <div class="field">
+                    <label for="register-name">Название компании / ФИО</label>
+                    <input class="input" id="register-name" name="name" required />
+                  </div>
+                  <div class="field">
+                    <label for="register-type">Тип партнёра</label>
+                    <select class="input" id="register-type" name="type" required>
+                      <option value="COMPANY">Компания</option>
+                      <option value="MASTER">Мастер</option>
+                      <option value="STORE">Магазин</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="register-city">Город</label>
+                    <input class="input" id="register-city" name="city" value="Краснодар" />
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <button class="btn btn-primary" style="width:100%;" type="submit">Создать аккаунт</button>
+                </div>
+                <div class="form-result" id="register-result" role="status" aria-live="polite" hidden>
+                  <div class="form-result-title"></div>
+                  <div class="form-result-text"></div>
+                </div>
+              </form>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer home-footer">
+      <div class="container">
+        <div class="home-footer-grid">
+          <div class="home-footer-col home-footer-brand-col">
+            <div class="brand footer-brand">
+              <img class="brand-mark-img" src="../../assets/img/remcard-mark.svg" alt="" aria-hidden="true" />
+              <span class="brand-wrap">
+                <span class="brand-text">RemCard</span>
+                <span class="brand-tagline">навигатор ремонта</span>
+              </span>
+            </div>
+            <p class="home-footer-description">Навигатор ремонта и экосистема для клиентов, мастеров, компаний и магазинов</p>
+          </div>
+
+          <div class="home-footer-col">
+            <h3>Клиентам</h3>
+            <div class="home-footer-links">
+              <a class="footer-mini-link" href="../../navigator/">Навигатор</a>
+              <a class="footer-mini-link" href="../../catalog/">Каталог</a>
+              <a class="footer-mini-link" href="../../catalog/?promo=true">Акции</a>
+              <a class="footer-mini-link" href="../../request/">Оставить заявку</a>
+            </div>
+          </div>
+
+          <div class="home-footer-col">
+            <h3>Партнёрам</h3>
+            <div class="home-footer-links">
+              <a class="footer-mini-link" href="../../partners/">Подключиться</a>
+              <a class="footer-mini-link" href="../../partner/login/">Личный кабинет</a>
+            </div>
+          </div>
+
+          <div class="home-footer-col">
+            <h3>Контакты</h3>
+            <div class="home-footer-links">
+              <a class="footer-mini-link" href="tel:+78610000000">+7 (861) XXX-XX-XX</a>
+              <a class="footer-mini-link" href="mailto:info@remcard.ru">info@remcard.ru</a>
+              <span class="home-footer-contact">Краснодар</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="home-footer-bottom">
+          <p>© <span id="year">2026</span> RemCard</p>
+          <div class="home-footer-bottom-links">
+            <a class="footer-mini-link" href="../../privacy/">Политика конфиденциальности</a>
+            <a class="footer-mini-link" href="../../terms/">Условия использования</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../../i18n.js" defer></script>
+    <script src="../../script.js" defer></script>
+    <script src="./login.js" defer></script>
+  </body>
+</html>

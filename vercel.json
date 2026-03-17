@@ -7,6 +7,11 @@
       "permanent": false
     },
     {
+      "source": "/partner/login",
+      "destination": "/partner/login/",
+      "permanent": false
+    },
+    {
       "source": "/catalog/service",
       "destination": "/catalog/service/",
       "permanent": false
