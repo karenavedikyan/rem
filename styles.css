@@ -10068,3 +10068,9 @@ body.catalog-filters-open {
     padding: 22px 18px;
   }
 }
+
+/* Auth tabs */
+.auth-tabs { display: flex; gap: 0; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid rgba(245,245,245,0.12); margin-bottom: 24px; }
+.auth-tab { flex: 1; border-radius: 0; border: none; background: rgba(18,18,18,0.35); color: rgba(245,245,245,0.6); font-weight: 600; padding: 12px 16px; cursor: pointer; transition: background 180ms ease, color 180ms ease; }
+.auth-tab.active { background: linear-gradient(145deg, color-mix(in srgb, var(--red) 72%, #111 28%), color-mix(in srgb, var(--red-dark) 86%, #111 14%)); color: rgba(245,245,245,0.95); }
+.auth-tab:hover:not(.active) { background: rgba(245,245,245,0.06); color: rgba(245,245,245,0.85); }

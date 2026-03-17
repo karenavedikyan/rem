@@ -1,6 +1,7 @@
 {
   "version": 2,
   "redirects": [
+    { "source": "/partner/login", "destination": "/partner/login/", "permanent": false },
     {
       "source": "/partner/cabinet",
       "destination": "/partner/cabinet/",
