@@ -3,12 +3,15 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "postinstall": "prisma generate --schema=backend/prisma/schema.prisma",
     "audit:efficiency": "node tools/efficiency-audit.mjs",
     "audit:conversion": "node tools/conversion-funnel-audit.mjs",
     "validate:knowledge": "node validate-knowledge-base.mjs"
   },
   "dependencies": {
+    "@prisma/client": "^6.16.2",
     "bcryptjs": "^3.0.3",
-    "jsonwebtoken": "^9.0.3"
+    "jsonwebtoken": "^9.0.3",
+    "prisma": "^6.16.2"
   }
 }
