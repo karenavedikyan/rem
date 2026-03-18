@@ -58,11 +58,18 @@
   border-color: var(--border);
 }
 
-/* Навигация — бургер-линии */
+/* Навигация — бургер-кнопка */
+[data-theme="light"] .nav-toggle {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.12);
+}
+[data-theme="light"] .nav-toggle:hover {
+  border-color: rgba(239, 68, 68, 0.35);
+}
 [data-theme="light"] .nav-toggle-lines,
 [data-theme="light"] .nav-toggle-lines::before,
 [data-theme="light"] .nav-toggle-lines::after {
-  background: var(--text);
+  background: #1a1a2e;
 }
 
 /* Футер */
