@@ -24,6 +24,95 @@
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
+/* ══════════════ LIGHT THEME ══════════════ */
+[data-theme="light"] {
+  --bg: #f5f5f7;
+  --surface: #ffffff;
+  --surface-2: #f0f0f2;
+  --text: #1a1a2e;
+  --muted: #5a6275;
+  --border: rgba(0, 0, 0, 0.10);
+  --shadow: 0 20px 42px rgba(0, 0, 0, 0.08);
+  --surface-soft: rgba(0, 0, 0, 0.03);
+  --surface-elev: rgba(0, 0, 0, 0.05);
+  --ring: 0 0 0 3px rgba(239, 68, 68, 0.18);
+}
+
+[data-theme="light"] body {
+  background: radial-gradient(1050px 700px at 16% -12%, rgba(239, 68, 68, 0.08), transparent 58%),
+    radial-gradient(920px 680px at 92% 12%, rgba(185, 28, 28, 0.06), transparent 54%),
+    linear-gradient(180deg, #f5f5f7 0%, #eeeef0 100%);
+}
+
+/* Хедер */
+[data-theme="light"] .site-header {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+}
+
+/* Карточки */
+[data-theme="light"] .card {
+  background: var(--surface);
+  border-color: var(--border);
+}
+
+/* Навигация — бургер-линии */
+[data-theme="light"] .nav-toggle-lines,
+[data-theme="light"] .nav-toggle-lines::before,
+[data-theme="light"] .nav-toggle-lines::after {
+  background: var(--text);
+}
+
+/* Футер */
+[data-theme="light"] .site-footer {
+  background: #1a1a2e;
+  color: #f3f6fb;
+}
+[data-theme="light"] .site-footer a {
+  color: #f3f6fb;
+}
+
+/* Кнопки outline */
+[data-theme="light"] .btn-outline {
+  border-color: rgba(0, 0, 0, 0.15);
+  color: var(--text);
+}
+[data-theme="light"] .btn-outline:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+/* Навигатор карта — ноды */
+[data-theme="light"] .nav2-map {
+  background: var(--surface);
+}
+
+/* Каталог — медиа (фото карточек) */
+[data-theme="light"] .catalog-item-media {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+/* Input-поля */
+[data-theme="light"] input,
+[data-theme="light"] select,
+[data-theme="light"] textarea {
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+/* Мобильное меню */
+[data-theme="light"] .nav-menu {
+  background: rgba(255, 255, 255, 0.95);
+}
+[data-theme="light"] .nav-link {
+  color: var(--text);
+}
+[data-theme="light"] .brand-tagline {
+  color: rgba(26, 26, 46, 0.65);
+}
+
 *,
 *::before,
 *::after {
@@ -110,6 +199,31 @@ img {
   justify-content: space-between;
   min-height: 72px;
   gap: 16px;
+}
+
+/* ══════════════ THEME SWITCH ══════════════ */
+.theme-switch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-soft);
+  color: var(--text);
+  font-size: 18px;
+  cursor: pointer;
+  transition: background 200ms var(--ease), border-color 200ms var(--ease);
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+.theme-switch:hover {
+  background: var(--surface-elev);
+  border-color: color-mix(in srgb, var(--red) 30%, var(--border));
+}
+.theme-switch-icon {
+  line-height: 1;
 }
 
 .brand {
