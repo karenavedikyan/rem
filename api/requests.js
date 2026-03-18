@@ -1,23 +1,6 @@
-let prismaCtorPromise = null;
+import { PrismaClient } from "@prisma/client";
 
-async function getPrisma() {
-  if (!process.env.DATABASE_URL) return null;
-  if (!prismaCtorPromise) {
-    prismaCtorPromise = (async () => {
-      const specs = ["@prisma/client", new URL("../backend/node_modules/@prisma/client/index.js", import.meta.url).href];
-      for (const spec of specs) {
-        try {
-          const mod = await import(spec);
-          if (mod?.PrismaClient) return mod.PrismaClient;
-          if (mod?.default?.PrismaClient) return mod.default.PrismaClient;
-        } catch {}
-      }
-      return null;
-    })();
-  }
-  const PrismaClient = await prismaCtorPromise;
-  return PrismaClient ? new PrismaClient() : null;
-}
+const prisma = new PrismaClient();
 
 const ALLOWED_ORIGINS = [
   "https://rem-navy.vercel.app",
@@ -150,12 +133,11 @@ export default async function handler(req, res) {
   };
 
   try {
-    const prisma = await getPrisma();
+    const dbUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL;
     let savedRequest = null;
 
-    if (prisma) {
+    if (dbUrl) {
       savedRequest = await prisma.request.create({ data });
-      await prisma.$disconnect().catch(() => {});
     }
 
     // Telegram notification (non-blocking — don't fail request if TG fails)
