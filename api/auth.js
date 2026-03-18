@@ -172,7 +172,8 @@ async function handleRegister(req, res) {
     const token = createToken({ partnerId: created.id, email });
     setAuthCookie(res, token);
 
-    sendTelegramNotification(created, email).catch(() => {});
+    // Отправляем Telegram ДО ответа, чтобы Vercel не убил функцию
+    await sendTelegramNotification(created, email).catch((err) => console.error("TG notify error:", err));
 
     res.status(200).json({
       success: true,
