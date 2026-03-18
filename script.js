@@ -1137,6 +1137,8 @@
     const serviceTitle = String(params.get("serviceTitle") || "").trim();
     const serviceStage = String(params.get("serviceStage") || "").trim();
     const serviceTaskType = String(params.get("serviceTaskType") || "").trim();
+    const partnerId = String(params.get("partnerId") || "").trim();
+    const partnerName = String(params.get("partnerName") || "").trim();
     const promoId = String(params.get("promoId") || "").trim();
     const promoTitle = String(params.get("promoTitle") || "").trim();
     const promoPartner = String(params.get("promoPartner") || "").trim();
@@ -1183,8 +1185,9 @@
 
     const hasService = Boolean(serviceId || serviceTitle);
     const hasPromo = Boolean(promoId || promoTitle);
+    const hasPartner = Boolean(partnerId || partnerName);
     const effectiveSource = source || (hasService || hasPromo ? "catalog" : "");
-    const hasExtraContext = Boolean(normalizedStage || typeFromQuery || districtFromQuery || budgetFromQuery || source);
+    const hasExtraContext = Boolean(normalizedStage || typeFromQuery || districtFromQuery || budgetFromQuery || source || hasPartner);
     if (!hasService && !hasPromo && !hasExtraContext) return;
 
     ensureHiddenField(requestForm, "serviceId").value = serviceId;
@@ -1196,6 +1199,8 @@
     ensureHiddenField(requestForm, "promoPartner").value = promoPartner;
     ensureHiddenField(requestForm, "promoBenefit").value = promoBenefit;
     ensureHiddenField(requestForm, "requestSource").value = effectiveSource;
+    ensureHiddenField(requestForm, "partnerId").value = partnerId;
+    ensureHiddenField(requestForm, "partnerName").value = partnerName;
     ensureHiddenField(requestForm, "requestTypeContext").value = typeFromQuery;
     ensureHiddenField(requestForm, "stageLabel").value = stageLabelById(normalizedStage);
     ensureHiddenField(requestForm, "stageContext").value = normalizedStage;
@@ -1277,6 +1282,7 @@
     } else if (normalizedStage) {
       contextParts.push(t(`Этап: ${stageLabelById(normalizedStage)}`, `Stage: ${stageLabelById(normalizedStage)}`));
     }
+    if (partnerName) contextParts.push(t(`Партнёр: ${partnerName}`, `Partner: ${partnerName}`));
     if (typeFromQuery) contextParts.push(t(`Запрос: ${typeFromQuery}`, `Request: ${typeFromQuery}`));
     if (districtFromQuery) contextParts.push(t(`Район: ${districtFromQuery}`, `District: ${districtFromQuery}`));
     if (contextParts.length) {
@@ -1404,6 +1410,8 @@
             comment: getValue("comment"),
             serviceId: getValue("serviceId") || null,
             serviceTitle: getValue("serviceTitle") || null,
+            partnerId: getValue("partnerId") || null,
+            partnerName: getValue("partnerName") || null,
             source: getValue("requestSource") || "direct",
           };
 

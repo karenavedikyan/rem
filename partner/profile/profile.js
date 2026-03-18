@@ -136,7 +136,13 @@
       }
     }
 
-    if (requestLink) requestLink.href = `../../request/?partnerId=${encodeURIComponent(partnerId)}`;
+    if (requestLink && partnerInfo) {
+      const rp = new URLSearchParams();
+      rp.set("partnerId", partnerId);
+      rp.set("partnerName", partnerInfo.name || "");
+      rp.set("source", "partner_profile");
+      requestLink.href = `../../request/?${rp.toString()}`;
+    }
   };
 
   const createItemCard = (item) => {

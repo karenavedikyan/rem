@@ -47,6 +47,8 @@
     params.set("serviceTitle", service.title || "");
     if (service.stage) params.set("serviceStage", service.stage);
     if (service.taskType) params.set("serviceTaskType", service.taskType);
+    if (service.partner?.id) params.set("partnerId", service.partner.id);
+    if (service.partner?.name) params.set("partnerName", service.partner.name);
     return `../../request/?${params.toString()}#request`;
   };
 
