@@ -230,6 +230,19 @@
                     </label>
                     <textarea class="input textarea" id="service-description" name="description" rows="3"></textarea>
                   </div>
+                  <div class="field field-wide">
+                    <label for="service-image">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                      Фото услуги
+                    </label>
+                    <div class="service-image-upload" id="service-image-upload">
+                      <input type="file" id="service-image" name="image" accept="image/jpeg,image/png,image/webp" class="input" />
+                      <p class="muted" style="margin:6px 0 0;font-size:12px;">JPEG, PNG или WebP, до 4 МБ</p>
+                      <div id="service-image-preview" hidden style="margin-top:8px;">
+                        <img id="service-image-preview-img" src="" alt="Предпросмотр" style="max-width:200px;max-height:150px;border-radius:8px;object-fit:cover;" />
+                      </div>
+                    </div>
+                  </div>
                   <div class="field">
                     <label for="service-stage">
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
