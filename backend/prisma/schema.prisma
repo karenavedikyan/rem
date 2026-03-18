@@ -119,8 +119,11 @@ model Request {
   comment      String?
   serviceId    String?
   serviceTitle String?
+  partnerId    String?  @db.Uuid
+  partnerName  String?
   source       String   @default("direct")
   createdAt    DateTime @default(now())
 
   @@index([createdAt])
+  @@index([partnerId, createdAt])
 }

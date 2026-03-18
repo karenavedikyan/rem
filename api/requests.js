@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { readCurrentPartnerId } from "../lib/partner-store.js";
 
 const prisma = new PrismaClient();
 
@@ -29,10 +30,17 @@ function corsHeaders(origin) {
       : null;
   return {
     "Access-Control-Allow-Origin": allowed || "*",
-    "Access-Control-Allow-Methods": "OPTIONS, POST",
-    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Methods": "OPTIONS, GET, POST",
+    "Access-Control-Allow-Headers": "Content-Type, Cookie",
+    "Access-Control-Allow-Credentials": "true",
     "Access-Control-Max-Age": "86400",
   };
+}
+
+function setCors(req, res) {
+  const origin = getOrigin(req);
+  const cors = corsHeaders(origin);
+  Object.entries(cors).forEach(([k, v]) => res.setHeader(k, v));
 }
 
 function truncate(value, max = 500) {
@@ -69,6 +77,9 @@ function buildTelegramMessage(data) {
     `Этап: ${stageLabels[data.stage] || data.stage || "-"}`,
     `Тип объекта: ${truncate(data.objectType, 80) || "-"}`,
   ];
+  if (data.partnerName) {
+    lines.push(`Партнёр: ${truncate(data.partnerName, 120)}`);
+  }
   if (data.serviceId) {
     lines.push(`Услуга: ${truncate(data.serviceTitle, 120) || "-"} (${data.serviceId})`);
   }
@@ -91,25 +102,30 @@ async function sendToTelegram(text, botToken, chatId) {
   }
 }
 
-export default async function handler(req, res) {
-  const origin = getOrigin(req);
-  const cors = corsHeaders(origin);
-
-  if (req.method === "OPTIONS") {
-    Object.entries(cors).forEach(([k, v]) => res.setHeader(k, v));
-    return res.status(204).end();
+async function handleGet(req, res) {
+  const partnerId = await readCurrentPartnerId(req);
+  if (!partnerId) {
+    return res.status(401).json({ error: "Требуется авторизация" });
   }
 
-  if (req.method !== "POST") {
-    res.setHeader("Access-Control-Allow-Origin", cors["Access-Control-Allow-Origin"]);
-    return res.status(405).json({ error: "Method not allowed" });
+  try {
+    const requests = await prisma.request.findMany({
+      where: { partnerId },
+      orderBy: { createdAt: "desc" },
+      take: 50,
+    });
+    return res.status(200).json({ items: requests });
+  } catch (err) {
+    console.error("Requests GET error:", err);
+    return res.status(500).json({ error: "Ошибка загрузки заявок" });
   }
+}
 
+async function handlePost(req, res) {
   let body;
   try {
     body = typeof req.body === "string" ? JSON.parse(req.body) : req.body || {};
   } catch {
-    res.setHeader("Access-Control-Allow-Origin", cors["Access-Control-Allow-Origin"]);
     return res.status(400).json({ error: "Неверный JSON" });
   }
 
@@ -117,7 +133,6 @@ export default async function handler(req, res) {
   const phone = String(body.phone || "").trim();
 
   if (!name || !phone) {
-    res.setHeader("Access-Control-Allow-Origin", cors["Access-Control-Allow-Origin"]);
     return res.status(400).json({ error: "Имя и телефон обязательны" });
   }
 
@@ -129,18 +144,18 @@ export default async function handler(req, res) {
     comment: String(body.comment || "").trim() || null,
     serviceId: String(body.serviceId || "").trim() || null,
     serviceTitle: String(body.serviceTitle || "").trim() || null,
+    partnerId: String(body.partnerId || "").trim() || null,
+    partnerName: String(body.partnerName || "").trim() || null,
     source: String(body.source || "direct").trim(),
   };
 
   try {
-    const dbUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL;
     let savedRequest = null;
-
+    const dbUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL;
     if (dbUrl) {
       savedRequest = await prisma.request.create({ data });
     }
 
-    // Telegram notification (non-blocking — don't fail request if TG fails)
     const tg = getTelegramConfig();
     if (tg.botToken && tg.chatId) {
       try {
@@ -151,7 +166,6 @@ export default async function handler(req, res) {
       }
     }
 
-    res.setHeader("Access-Control-Allow-Origin", cors["Access-Control-Allow-Origin"]);
     return res.status(200).json({
       success: true,
       requestId: savedRequest?.id || null,
@@ -159,7 +173,24 @@ export default async function handler(req, res) {
     });
   } catch (err) {
     console.error("Request create error:", err);
-    res.setHeader("Access-Control-Allow-Origin", cors["Access-Control-Allow-Origin"]);
     return res.status(500).json({ error: "Не удалось сохранить заявку" });
   }
+}
+
+export default async function handler(req, res) {
+  setCors(req, res);
+
+  if (req.method === "OPTIONS") {
+    return res.status(204).end();
+  }
+
+  if (req.method === "GET") {
+    return handleGet(req, res);
+  }
+
+  if (req.method === "POST") {
+    return handlePost(req, res);
+  }
+
+  return res.status(405).json({ error: "Method not allowed" });
 }

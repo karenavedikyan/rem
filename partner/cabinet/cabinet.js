@@ -472,6 +472,75 @@
     renderServices();
   };
 
+  const requestsListEl = document.getElementById("cabinet-requests-list");
+  const requestsEmptyEl = document.getElementById("cabinet-requests-empty");
+  const requestsLoadingEl = document.getElementById("cabinet-requests-loading");
+  const requestsCountBadge = document.getElementById("requests-count-badge");
+
+  const requestStageLabel = (v) => {
+    const map = {
+      planning: t("Планирование", "Planning"),
+      rough: t("Черновые работы", "Rough works"),
+      engineering: t("Инженерные работы", "Engineering"),
+      finishing: t("Чистовая отделка", "Finishing"),
+      furniture: t("Мебель и декор", "Furniture & decor")
+    };
+    return map[v] || v || "—";
+  };
+
+  const formatRequestDate = (iso) => {
+    if (!iso) return "";
+    const d = new Date(iso);
+    return d.toLocaleDateString("ru-RU", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
+  };
+
+  const renderRequests = (items) => {
+    if (!requestsListEl) return;
+    if (requestsLoadingEl) requestsLoadingEl.hidden = true;
+
+    if (!items || items.length === 0) {
+      requestsListEl.innerHTML = "";
+      if (requestsEmptyEl) requestsEmptyEl.hidden = false;
+      return;
+    }
+
+    if (requestsEmptyEl) requestsEmptyEl.hidden = true;
+    if (requestsCountBadge) {
+      requestsCountBadge.textContent = String(items.length);
+      requestsCountBadge.hidden = false;
+    }
+
+    requestsListEl.innerHTML = items
+      .map(
+        (r) => `
+    <div class="card partner-request-card">
+      <div class="partner-request-header">
+        <strong>${escapeHtml(r.name || "Без имени")}</strong>
+        <span class="muted">${formatRequestDate(r.createdAt)}</span>
+      </div>
+      <div class="partner-request-details">
+        <p><span class="muted">Телефон:</span> <a href="tel:${escapeHtml(r.phone)}">${escapeHtml(r.phone)}</a></p>
+        ${r.serviceTitle ? `<p><span class="muted">Услуга:</span> ${escapeHtml(r.serviceTitle)}</p>` : ""}
+        ${r.stage ? `<p><span class="muted">Этап:</span> ${requestStageLabel(r.stage)}</p>` : ""}
+        ${r.objectType ? `<p><span class="muted">Тип объекта:</span> ${escapeHtml(r.objectType)}</p>` : ""}
+        ${r.comment ? `<p><span class="muted">Комментарий:</span> ${escapeHtml(r.comment)}</p>` : ""}
+        ${r.source && r.source !== "direct" ? `<p><span class="muted">Источник:</span> ${escapeHtml(r.source)}</p>` : ""}
+      </div>
+    </div>
+  `
+      )
+      .join("");
+  };
+
+  const loadRequests = async () => {
+    try {
+      const data = await request("/api/requests", { method: "GET" });
+      renderRequests(Array.isArray(data.items) ? data.items : []);
+    } catch (err) {
+      if (requestsLoadingEl) requestsLoadingEl.textContent = t("Не удалось загрузить заявки", "Could not load requests");
+    }
+  };
+
   document.getElementById("onb-submit-btn")?.addEventListener("click", async () => {
     const btn = document.getElementById("onb-submit-btn");
     const hint = document.getElementById("onb-submit-hint");
@@ -796,6 +865,7 @@
     try {
       await loadPartner();
       await loadServices();
+      await loadRequests();
       updateOnboarding(state.partner, state.services);
       if (addServiceForm.city) addServiceForm.city.value = state.partner && state.partner.city ? state.partner.city : "Краснодар";
       if (I18N && I18N.isEn && typeof I18N.applyTo === "function") I18N.applyTo(document);
