@@ -1539,31 +1539,62 @@
       `Контакт: ${get("contact") || "-"}`,
   });
 
-  // ── Theme switcher ──
+  // ── Theme switcher (dropdown) ──
   (function() {
-    var MODES = ['auto', 'light', 'dark'];
     var ICONS = { auto: '◑', light: '☀', dark: '🌙' };
 
+    function updateDropdownState() {
+      var t = window.__REMCARD_THEME;
+      if (!t) return;
+      // Обновить иконку кнопки
+      document.querySelectorAll('.theme-switch-icon').forEach(function(el) {
+        el.textContent = ICONS[t.current] || '◑';
+      });
+      // Обновить active-состояние в dropdown
+      document.querySelectorAll('.theme-dropdown-item').forEach(function(el) {
+        var mode = el.getAttribute('data-theme-mode');
+        el.classList.toggle('is-active', mode === t.current);
+      });
+    }
+
+    // Клик по кнопке — открыть/закрыть dropdown
     document.addEventListener('click', function(e) {
       var btn = e.target.closest('.theme-switch');
-      if (!btn || !window.__REMCARD_THEME) return;
+      if (btn) {
+        var wrap = btn.closest('.theme-switch-wrap');
+        if (!wrap) return;
+        var dd = wrap.querySelector('.theme-dropdown');
+        if (!dd) return;
+        var isOpen = !dd.hidden;
+        // Закрыть все dropdown
+        document.querySelectorAll('.theme-dropdown').forEach(function(d) { d.hidden = true; });
+        if (!isOpen) {
+          dd.hidden = false;
+          updateDropdownState();
+        }
+        return;
+      }
 
-      var currentIdx = MODES.indexOf(window.__REMCARD_THEME.current);
-      var nextIdx = (currentIdx + 1) % MODES.length;
-      var next = MODES[nextIdx];
+      // Клик по пункту dropdown
+      var item = e.target.closest('.theme-dropdown-item');
+      if (item && window.__REMCARD_THEME) {
+        var mode = item.getAttribute('data-theme-mode');
+        if (mode) {
+          window.__REMCARD_THEME.apply(mode);
+          updateDropdownState();
+        }
+        // Закрыть dropdown
+        document.querySelectorAll('.theme-dropdown').forEach(function(d) { d.hidden = true; });
+        return;
+      }
 
-      window.__REMCARD_THEME.apply(next);
-
-      var iconEl = btn.querySelector('.theme-switch-icon');
-      if (iconEl) iconEl.textContent = ICONS[next];
+      // Клик вне dropdown — закрыть
+      if (!e.target.closest('.theme-switch-wrap')) {
+        document.querySelectorAll('.theme-dropdown').forEach(function(d) { d.hidden = true; });
+      }
     });
 
-    // Установить начальную иконку при загрузке
-    var t = window.__REMCARD_THEME;
-    if (t) {
-      var btns = document.querySelectorAll('.theme-switch-icon');
-      var icon = t.current === 'auto' ? '◑' : (t.resolved === 'light' ? '☀' : '🌙');
-      btns.forEach(function(el) { el.textContent = icon; });
-    }
+    // Начальное состояние иконки
+    updateDropdownState();
   })();
 })();

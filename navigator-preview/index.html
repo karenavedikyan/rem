@@ -39,9 +39,28 @@
             <a class="nav-link" href="../partners/">Партнёрам</a>
           </div>
         </nav>
-        <button class="theme-switch" type="button" aria-label="Переключить тему" title="Тема оформления">
-          <span class="theme-switch-icon">◑</span>
-        </button>
+        <div class="theme-switch-wrap">
+          <button class="theme-switch" type="button" aria-label="Переключить тему" title="Тема оформления">
+            <span class="theme-switch-icon">◑</span>
+          </button>
+          <div class="theme-dropdown" hidden>
+            <button class="theme-dropdown-item" data-theme-mode="auto">
+              <span class="theme-dropdown-icon">◑</span>
+              <span>Авто</span>
+              <span class="theme-dropdown-check">✓</span>
+            </button>
+            <button class="theme-dropdown-item" data-theme-mode="light">
+              <span class="theme-dropdown-icon">☀</span>
+              <span>Светлая</span>
+              <span class="theme-dropdown-check">✓</span>
+            </button>
+            <button class="theme-dropdown-item" data-theme-mode="dark">
+              <span class="theme-dropdown-icon">🌙</span>
+              <span>Тёмная</span>
+              <span class="theme-dropdown-check">✓</span>
+            </button>
+          </div>
+        </div>
       </div>
     </header>
 
