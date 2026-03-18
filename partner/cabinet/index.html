@@ -42,8 +42,63 @@
     </header>
 
     <main id="main">
-      <div id="moderation-banner" style="display:none; background:#b8860b; color:#fff; padding:14px 24px; text-align:center; font-size:15px; font-weight:500;">
-        ⏳ Ваш профиль на модерации. После проверки вы появитесь в каталоге RemCard. Пока можете заполнить услуги и товары.
+      <!-- Онбординг + статус модерации -->
+      <div id="onboarding-block" style="display:none;">
+        <style>
+          .onb-wrap { max-width:720px; margin:0 auto; padding:32px 24px; }
+          .onb-status { padding:16px 24px; text-align:center; font-size:15px; font-weight:500; border-radius:0; }
+          .onb-status.pending { background:#b8860b; color:#fff; }
+          .onb-status.review  { background:#2563eb; color:#fff; }
+          .onb-status.approved { background:#16a34a; color:#fff; }
+          .onb-steps { list-style:none; padding:0; margin:24px 0 0; counter-reset:step; }
+          .onb-steps li { position:relative; padding:12px 0 12px 48px; border-bottom:1px solid rgba(255,255,255,0.08); font-size:14px; line-height:1.5; }
+          .onb-steps li::before { counter-increment:step; content:counter(step); position:absolute; left:0; top:10px; width:32px; height:32px; border-radius:50%; background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.5); display:flex; align-items:center; justify-content:center; font-weight:600; font-size:13px; }
+          .onb-steps li.done::before { background:#16a34a; color:#fff; content:"✓"; }
+          .onb-steps li.done { opacity:0.6; }
+          .onb-steps li strong { color:#fff; }
+          .onb-hint { font-size:13px; color:rgba(255,255,255,0.5); margin-top:4px; }
+          .onb-submit-wrap { text-align:center; margin:28px 0 0; }
+          .onb-submit-btn { padding:14px 40px; font-size:16px; font-weight:600; }
+          .onb-submit-btn:disabled { opacity:0.4; cursor:not-allowed; }
+        </style>
+
+        <!-- Статус-бар (текст управляется из JS) -->
+        <div class="onb-status pending" id="onb-status-bar"></div>
+
+        <!-- Инструкция (видна только если НЕ одобрен) -->
+        <div class="onb-wrap" id="onb-instructions">
+          <h2 style="margin:0 0 8px; font-size:20px;">Добро пожаловать в RemCard!</h2>
+          <p style="margin:0 0 20px; font-size:14px; opacity:0.7;">
+            Заполните профиль по шагам ниже. Когда всё будет готово — отправьте на проверку.
+            После одобрения ваши услуги и товары появятся в каталоге для клиентов.
+          </p>
+
+          <ol class="onb-steps" id="onb-steps">
+            <li id="onb-step-profile">
+              <strong>Заполните профиль</strong>
+              <div class="onb-hint">Название, город, описание, специализации, районы работы</div>
+            </li>
+            <li id="onb-step-services">
+              <strong>Добавьте услуги и/или товары</strong>
+              <div class="onb-hint">Минимум 1 позиция с названием, описанием и ценой</div>
+            </li>
+            <li id="onb-step-photos">
+              <strong>Загрузите фотографии</strong>
+              <div class="onb-hint">Хотя бы одна фото у каждой услуги/товара. Качественные фото повышают доверие</div>
+            </li>
+            <li id="onb-step-review">
+              <strong>Отправьте на проверку</strong>
+              <div class="onb-hint">Команда RemCard проверит профиль и опубликует в каталоге</div>
+            </li>
+          </ol>
+
+          <div class="onb-submit-wrap">
+            <button class="btn btn-primary onb-submit-btn" id="onb-submit-btn" type="button" disabled>
+              Отправить на проверку
+            </button>
+            <p id="onb-submit-hint" class="onb-hint" style="margin-top:8px;"></p>
+          </div>
+        </div>
       </div>
       <section class="section partner-cabinet-section">
         <div class="container">
