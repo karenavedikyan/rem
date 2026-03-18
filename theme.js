@@ -23,11 +23,7 @@
       this.current = pref;
       this.resolved = resolveTheme(pref);
       document.documentElement.setAttribute('data-theme', this.resolved);
-      // Обновить иконку если переключатель уже в DOM
-      var iconEl = document.querySelector('.theme-switch-icon');
-      if (iconEl) {
-        iconEl.textContent = pref === 'auto' ? '◑' : (this.resolved === 'light' ? '☀' : '🌙');
-      }
+      // Иконка обновляется в script.js через updateUI() (SVG use href)
       var labelEl = document.querySelector('.theme-switch-label');
       if (labelEl) {
         labelEl.textContent = pref === 'auto' ? 'Авто' : (this.resolved === 'light' ? 'День' : 'Ночь');

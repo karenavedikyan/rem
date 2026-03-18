@@ -173,11 +173,30 @@
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
 }
 [data-theme="light"] .catalog-tab {
-  color: #5a6275;
+  border-color: rgba(0, 0, 0, 0.12);
+  background: rgba(0, 0, 0, 0.04);
+  color: #1a1a2e;
+}
+[data-theme="light"] .catalog-tab:hover,
+[data-theme="light"] .catalog-tab:focus-visible {
+  border-color: rgba(239, 68, 68, 0.45);
+  background: rgba(239, 68, 68, 0.1);
 }
 [data-theme="light"] .catalog-tab.is-active {
-  background: var(--red);
-  color: #ffffff;
+  border-color: rgba(239, 68, 68, 0.5);
+  background: linear-gradient(180deg, rgba(229, 57, 53, 0.94), rgba(198, 40, 40, 0.9));
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(229, 57, 53, 0.22);
+}
+[data-theme="light"] .catalog-filters-trigger {
+  border-color: rgba(0, 0, 0, 0.12);
+  background: rgba(0, 0, 0, 0.04);
+  color: #1a1a2e;
+}
+[data-theme="light"] .catalog-filters-trigger:hover,
+[data-theme="light"] .catalog-filters-trigger:focus-visible {
+  border-color: rgba(239, 68, 68, 0.45);
+  background: rgba(239, 68, 68, 0.1);
 }
 [data-theme="light"] .catalog-filters-badge {
   background: var(--red);
@@ -232,6 +251,137 @@
   color: #1a1a2e;
 }
 [data-theme="light"] .home-partners-card p {
+  color: #5a6275;
+}
+
+/* ── Главная: hero, этапы, карточки ── */
+[data-theme="light"] .home-badge {
+  border-color: rgba(239, 68, 68, 0.35);
+  background: rgba(239, 68, 68, 0.08);
+  color: #b91c1c;
+}
+[data-theme="light"] .home-title-brand {
+  color: #1a1a2e;
+}
+[data-theme="light"] .home-title-sub {
+  color: #1a1a2e;
+}
+[data-theme="light"] .home-slogan {
+  color: #5a6275;
+}
+[data-theme="light"] .home-section-link:hover,
+[data-theme="light"] .home-section-link:focus-visible {
+  color: var(--red);
+}
+[data-theme="light"] .home-stage-line::before {
+  background: linear-gradient(90deg, rgba(239, 68, 68, 0.35), rgba(239, 68, 68, 0.12));
+}
+[data-theme="light"] .home-stage-icon {
+  border-color: rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.9);
+  color: #1a1a2e;
+}
+[data-theme="light"] .home-stage-label {
+  color: #5a6275;
+}
+[data-theme="light"] .home-stage-link:hover .home-stage-icon,
+[data-theme="light"] .home-stage-link:focus-visible .home-stage-icon {
+  border-color: rgba(239, 68, 68, 0.35);
+  background: rgba(239, 68, 68, 0.08);
+  color: var(--red);
+}
+[data-theme="light"] .home-section {
+  border-top-color: rgba(0, 0, 0, 0.06);
+}
+[data-theme="light"] .home-step-card {
+  border-top-color: rgba(0, 0, 0, 0.08);
+}
+[data-theme="light"] .home-step-card:last-child {
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+}
+[data-theme="light"] .home-step-num {
+  border-color: rgba(0, 0, 0, 0.12);
+  background: rgba(0, 0, 0, 0.03);
+  color: #1a1a2e;
+}
+[data-theme="light"] .home-step-icon {
+  border-color: rgba(0, 0, 0, 0.12);
+  color: #1a1a2e;
+}
+[data-theme="light"] .home-step-card h3 {
+  color: #1a1a2e;
+}
+[data-theme="light"] .home-step-card p {
+  color: #5a6275;
+}
+[data-theme="light"] .home-benefits-list li {
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+  color: #1a1a2e;
+}
+[data-theme="light"] .home-benefits-list li:first-child {
+  border-top-color: rgba(0, 0, 0, 0.08);
+}
+[data-theme="light"] .home-benefit-icon {
+  color: #5a6275;
+}
+[data-theme="light"] .home-value-card {
+  border-color: rgba(0, 0, 0, 0.08);
+  background: #ffffff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+[data-theme="light"] .home-value-card p {
+  color: #1a1a2e;
+}
+[data-theme="light"] .home-value-check {
+  background: rgba(22, 163, 74, 0.12);
+  border-color: rgba(34, 197, 94, 0.25);
+  color: #16a34a;
+}
+[data-theme="light"] .home-catalog-card .catalog-item-footer {
+  border-top-color: rgba(0, 0, 0, 0.06);
+}
+[data-theme="light"] .home-offer-card {
+  border-color: rgba(0, 0, 0, 0.08);
+  background: #ffffff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+[data-theme="light"] .home-offer-card:hover {
+  border-color: rgba(239, 68, 68, 0.25);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+[data-theme="light"] .home-offer-media::after {
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.15));
+}
+[data-theme="light"] .home-offer-footer {
+  border-top-color: rgba(0, 0, 0, 0.06);
+  color: #5a6275;
+}
+[data-theme="light"] .home-final-card {
+  border-color: rgba(239, 68, 68, 0.2);
+  background:
+    radial-gradient(120% 200% at 0% 0%, rgba(239, 68, 68, 0.08), transparent 42%),
+    linear-gradient(135deg, #ffffff 0%, #f8f8fa 100%);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+}
+[data-theme="light"] .home-final-card h2 {
+  color: #1a1a2e;
+}
+[data-theme="light"] .home-final-card p {
+  color: #5a6275;
+}
+[data-theme="light"] .home-main {
+  background: transparent;
+}
+[data-theme="light"] .home-hero {
+  background:
+    radial-gradient(820px 520px at 20% 0%, rgba(239, 68, 68, 0.06), transparent 62%),
+    radial-gradient(680px 420px at 84% 16%, rgba(185, 28, 28, 0.05), transparent 60%),
+    transparent;
+}
+[data-theme="light"] .home-main .card p {
+  color: #5a6275;
+}
+[data-theme="light"] .home-main .section-subtitle {
   color: #5a6275;
 }
 
