@@ -34,22 +34,27 @@
           </div>
         </nav>
         <div class="theme-switch-wrap">
+          <svg class="theme-icons-sprite" aria-hidden="true">
+            <symbol id="ic-theme-auto" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M12 3a9 9 0 0 1 0 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+            <symbol id="ic-theme-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+            <symbol id="ic-theme-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+          </svg>
           <button class="theme-switch" type="button" aria-label="Переключить тему" title="Тема оформления">
-            <span class="theme-switch-icon">◑</span>
+            <svg class="theme-switch-icon" aria-hidden="true" width="20" height="20"><use href="#ic-theme-auto"/></svg>
           </button>
           <div class="theme-dropdown" hidden>
             <button class="theme-dropdown-item" data-theme-mode="auto">
-              <span class="theme-dropdown-icon">◑</span>
+              <svg class="theme-dropdown-icon" aria-hidden="true" width="20" height="20"><use href="#ic-theme-auto"/></svg>
               <span>Авто</span>
               <span class="theme-dropdown-check">✓</span>
             </button>
             <button class="theme-dropdown-item" data-theme-mode="light">
-              <span class="theme-dropdown-icon">☀️</span>
+              <svg class="theme-dropdown-icon" aria-hidden="true" width="20" height="20"><use href="#ic-theme-sun"/></svg>
               <span>Светлая</span>
               <span class="theme-dropdown-check">✓</span>
             </button>
             <button class="theme-dropdown-item" data-theme-mode="dark">
-              <span class="theme-dropdown-icon">🌙</span>
+              <svg class="theme-dropdown-icon" aria-hidden="true" width="20" height="20"><use href="#ic-theme-moon"/></svg>
               <span>Тёмная</span>
               <span class="theme-dropdown-check">✓</span>
             </button>

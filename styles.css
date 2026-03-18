@@ -516,6 +516,13 @@ img {
 }
 
 /* ══════════════ THEME SWITCH ══════════════ */
+.theme-icons-sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
 .theme-switch-wrap {
   position: relative;
   flex-shrink: 0;
@@ -531,7 +538,6 @@ img {
   border-radius: 12px;
   background: var(--surface-soft);
   color: var(--text);
-  font-size: 18px;
   cursor: pointer;
   transition: all 220ms var(--ease);
 }
@@ -544,8 +550,12 @@ img {
   transform: scale(0.96);
 }
 .theme-switch-icon {
-  line-height: 1;
-  filter: drop-shadow(0 0 4px rgba(239, 68, 68, 0.2));
+  display: block;
+  flex-shrink: 0;
+  color: inherit;
+}
+.theme-switch-icon use {
+  color: inherit;
 }
 
 /* Dropdown */
@@ -595,10 +605,15 @@ img {
   color: var(--red);
 }
 .theme-dropdown-icon {
-  font-size: 18px;
-  width: 26px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
   flex-shrink: 0;
+  color: inherit;
+}
+.theme-dropdown-icon use {
+  color: inherit;
 }
 .theme-dropdown-check {
   margin-left: auto;
@@ -612,14 +627,37 @@ img {
   opacity: 1;
 }
 
+/* Светлая тема: кнопка и иконки */
+[data-theme="light"] .theme-switch {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.12);
+  color: #1a1a2e;
+}
+[data-theme="light"] .theme-switch:hover {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: color-mix(in srgb, var(--red) 40%, rgba(0, 0, 0, 0.12));
+}
+[data-theme="light"] .theme-switch-icon {
+  color: #1a1a2e;
+}
+
 /* Dropdown для светлой темы */
 [data-theme="light"] .theme-dropdown {
   background: #ffffff;
   border-color: rgba(0, 0, 0, 0.08);
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.10), 0 0 0 1px rgba(0,0,0,0.04);
 }
+[data-theme="light"] .theme-dropdown-item {
+  color: #1a1a2e;
+}
 [data-theme="light"] .theme-dropdown-item:hover {
   background: rgba(0, 0, 0, 0.04);
+}
+[data-theme="light"] .theme-dropdown-item .theme-dropdown-icon {
+  color: #1a1a2e;
+}
+[data-theme="light"] .theme-dropdown-item.is-active .theme-dropdown-icon {
+  color: var(--red);
 }
 
 .brand {

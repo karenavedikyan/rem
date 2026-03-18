@@ -1549,13 +1549,14 @@
 
   // ── Theme switcher (dropdown) ──
   (function() {
-    var ICONS = { auto: '◑', light: '☀️', dark: '🌙' };
+    var ICON_IDS = { auto: '#ic-theme-auto', light: '#ic-theme-sun', dark: '#ic-theme-moon' };
 
     function updateUI() {
       var t = window.__REMCARD_THEME;
       if (!t) return;
-      document.querySelectorAll('.theme-switch-icon').forEach(function(el) {
-        el.textContent = ICONS[t.current] || '◑';
+      var href = ICON_IDS[t.current] || ICON_IDS.auto;
+      document.querySelectorAll('.theme-switch-icon use').forEach(function(useEl) {
+        useEl.setAttribute('href', href);
       });
       document.querySelectorAll('.theme-dropdown-item').forEach(function(el) {
         el.classList.toggle('is-active', el.getAttribute('data-theme-mode') === t.current);
