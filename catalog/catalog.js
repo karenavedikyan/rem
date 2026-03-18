@@ -210,10 +210,13 @@
       : null;
 
   const formatCardPrice = (minPrice, maxPrice) => {
-    const min = formatPrice(minPrice);
-    const max = formatPrice(maxPrice);
-    if (min) return `${t("от", "from")} ${min} ₽`;
-    if (max) return `${t("до", "up to")} ${max} ₽`;
+    const hasMin = typeof minPrice === "number" && minPrice > 0;
+    const hasMax = typeof maxPrice === "number" && maxPrice > 0;
+    if (!hasMin && !hasMax && typeof minPrice === "number" && minPrice === 0) {
+      return t("Бесплатно", "Free");
+    }
+    if (hasMin) return `${t("от", "from")} ${formatPrice(minPrice)} ₽`;
+    if (hasMax) return `${t("до", "up to")} ${formatPrice(maxPrice)} ₽`;
     return t("Цена по запросу", "Price on request");
   };
 

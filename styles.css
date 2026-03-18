@@ -8590,7 +8590,16 @@ body.navigator-stage-modal-open {
   aspect-ratio: 16 / 11;
   min-height: 232px;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.04);
+  background:
+    linear-gradient(110deg, rgba(255,255,255,0.03) 30%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 70%)
+    rgba(30, 30, 30, 1);
+  background-size: 200% 100%;
+  animation: catalog-shimmer 1.6s ease-in-out infinite;
+}
+
+@keyframes catalog-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 
 .catalog-item-media::after {
