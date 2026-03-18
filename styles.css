@@ -58,7 +58,7 @@
   border-color: var(--border);
 }
 
-/* Навигация — бургер-кнопка */
+/* Навигация — бургер-кнопка (как на макете: белый фон, две чёрные полоски) */
 [data-theme="light"] .nav-toggle {
   background: #ffffff;
   border-color: rgba(0, 0, 0, 0.12);
@@ -66,10 +66,24 @@
 [data-theme="light"] .nav-toggle:hover {
   border-color: rgba(239, 68, 68, 0.35);
 }
-[data-theme="light"] .nav-toggle-lines,
-[data-theme="light"] .nav-toggle-lines::before,
-[data-theme="light"] .nav-toggle-lines::after {
+[data-theme="light"] .nav-toggle-lines {
+  width: 20px;
+}
+[data-theme="light"] .nav-toggle-lines::before {
+  width: 20px;
+  height: 2.5px;
   background: #1a1a2e;
+  top: 0;
+  left: 0;
+  border-radius: 2px;
+}
+[data-theme="light"] .nav-toggle-lines::after {
+  width: 14px;
+  height: 2px;
+  background: #1a1a2e;
+  top: 10px;
+  left: 0;
+  border-radius: 2px;
 }
 
 /* Футер */
