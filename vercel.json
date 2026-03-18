@@ -8,6 +8,11 @@
       "permanent": false
     },
     {
+      "source": "/partner/profile",
+      "destination": "/partner/profile/",
+      "permanent": false
+    },
+    {
       "source": "/catalog/service",
       "destination": "/catalog/service/",
       "permanent": false

@@ -577,7 +577,7 @@
           <a class="catalog-item-title-link" href="${detailsHref}">${escapeHtml(title)}</a>
         </h3>
         <div class="catalog-item-partner-row">
-          <p class="catalog-item-partner">${escapeHtml(partnerLine)}</p>
+          <p class="catalog-item-partner"><a href="../partner/profile/?id=${encodeURIComponent(item.partner?.id || "")}" class="catalog-item-partner-link">${escapeHtml(partnerLine)}</a></p>
           <span class="catalog-item-verified">${escapeHtml(t("Проверен", "Verified"))}</span>
         </div>
         <p class="catalog-item-rating">${escapeHtml(ratingText)}</p>
