@@ -10202,6 +10202,11 @@ body.catalog-filters-open {
   flex-direction: column;
   gap: 0.5rem;
 }
+.nav2-checklist[hidden],
+.nav2-mistakes-list[hidden],
+.nav2-tips-list[hidden] {
+  display: none !important;
+}
 .nav2-checklist li label {
   display: flex;
   align-items: center;
