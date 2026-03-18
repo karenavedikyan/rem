@@ -58,7 +58,7 @@
   border-color: var(--border);
 }
 
-/* Навигация — бургер-кнопка */
+/* Навигация — бургер-кнопка (как на макете: белый фон, две чёрные полоски) */
 [data-theme="light"] .nav-toggle {
   background: #ffffff;
   border-color: rgba(0, 0, 0, 0.12);
@@ -66,10 +66,24 @@
 [data-theme="light"] .nav-toggle:hover {
   border-color: rgba(239, 68, 68, 0.35);
 }
-[data-theme="light"] .nav-toggle-lines,
-[data-theme="light"] .nav-toggle-lines::before,
-[data-theme="light"] .nav-toggle-lines::after {
+[data-theme="light"] .nav-toggle-lines {
+  width: 20px;
+}
+[data-theme="light"] .nav-toggle-lines::before {
+  width: 20px;
+  height: 2.5px;
   background: #1a1a2e;
+  top: 0;
+  left: 0;
+  border-radius: 2px;
+}
+[data-theme="light"] .nav-toggle-lines::after {
+  width: 14px;
+  height: 2px;
+  background: #1a1a2e;
+  top: 10px;
+  left: 0;
+  border-radius: 2px;
 }
 
 /* Футер */
@@ -586,6 +600,93 @@
 }
 [data-theme="light"] .partners-type-card li {
   color: #5a6275;
+}
+
+/* Partners v2 — светлая тема, премиальный стиль */
+[data-theme="light"] .partners-v2-hero::before {
+  background: radial-gradient(circle, rgba(239, 68, 68, 0.08), transparent 70%);
+}
+[data-theme="light"] .partners-v2-hero::after {
+  background: radial-gradient(circle, rgba(185, 28, 28, 0.06), transparent 70%);
+}
+[data-theme="light"] .partners-v2-badge {
+  border-color: rgba(239, 68, 68, 0.35);
+  background: rgba(239, 68, 68, 0.08);
+  color: #b91c1c;
+  font-weight: 800;
+}
+[data-theme="light"] .partners-v2-title {
+  color: #0d0d12;
+  font-weight: 860;
+}
+[data-theme="light"] .partners-v2-title span {
+  color: var(--red);
+  text-shadow: none;
+}
+[data-theme="light"] .partners-v2-subtitle {
+  color: #3d4452;
+  font-size: clamp(17px, 3vw, 20px);
+  line-height: 1.6;
+  font-weight: 500;
+}
+[data-theme="light"] .partners-v2-cta {
+  box-shadow: 0 12px 28px rgba(229, 57, 53, 0.28);
+}
+[data-theme="light"] .partners-v2-section-head h2 {
+  color: #0d0d12;
+  font-weight: 800;
+}
+[data-theme="light"] .partners-v2-section-head .section-subtitle {
+  color: #4a5164;
+  font-weight: 500;
+}
+[data-theme="light"] .partners-v2-role-card,
+[data-theme="light"] .partners-v2-benefit-card,
+[data-theme="light"] .partners-v2-form-card,
+[data-theme="light"] .partners-v2-prefill {
+  border-color: rgba(0, 0, 0, 0.06);
+  background: #ffffff;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.03);
+}
+[data-theme="light"] .partners-v2-role-card::before,
+[data-theme="light"] .partners-v2-benefit-card::before {
+  background: linear-gradient(90deg, rgba(239, 68, 68, 0.5), transparent 78%);
+}
+[data-theme="light"] .partners-v2-role-card:hover,
+[data-theme="light"] .partners-v2-benefit-card:hover,
+[data-theme="light"] .partners-v2-form-card:hover,
+[data-theme="light"] .partners-v2-prefill:hover {
+  border-color: rgba(239, 68, 68, 0.2);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(239, 68, 68, 0.08);
+}
+[data-theme="light"] .partners-v2-role-card h3,
+[data-theme="light"] .partners-v2-benefit-card h3 {
+  color: #0d0d12;
+  font-weight: 750;
+}
+[data-theme="light"] .partners-v2-card-icon {
+  color: var(--red);
+}
+[data-theme="light"] .partners-v2-card-lead,
+[data-theme="light"] .partners-v2-benefit-card p {
+  color: #4a5164;
+  font-weight: 500;
+}
+[data-theme="light"] .partners-v2-list li {
+  color: #2d3142;
+  font-weight: 500;
+}
+[data-theme="light"] .partners-v2-list li::before {
+  background: var(--red);
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.12);
+}
+[data-theme="light"] .partners-v2-prefill-badge {
+  border-color: rgba(239, 68, 68, 0.25);
+  background: rgba(239, 68, 68, 0.08);
+  color: #b91c1c;
+}
+[data-theme="light"] .partners-v2-form .fineprint {
+  color: #6b7280;
 }
 
 /* Скелетоны */
