@@ -9,16 +9,24 @@ if (!root) {
 const STORAGE_KEY = "remcard_navigator_stage_clean_v1";
 const DEFAULT_STAGE_ID = "planning";
 const STAGE_ORDER = ["planning", "rough", "engineering", "finishing", "furnishing"];
-const TAB_LABELS = {
-  planning: "1. Планирование",
-  rough: "2. Черновые работы",
-  engineering: "3. Инженерные работы",
-  finishing: "4. Чистовая отделка",
-  furnishing: "5. Мебель и декор"
+const STAGE_ICONS = {
+  planning: "📐",
+  rough: "🧱",
+  engineering: "⚡",
+  finishing: "🎨",
+  furnishing: "🛋️"
+};
+const STAGE_MAP_LABELS = {
+  planning: "Планирование",
+  rough: "Черновые",
+  engineering: "Инженерия",
+  finishing: "Чистовая",
+  furnishing: "Мебель"
 };
 
 const state = {
   selectedStageId: getInitialStageId(),
+  activeDetailTab: "checklist",
   routeSource: "stage-data",
   routeSteps: [],
   routeStep: null,
@@ -60,7 +68,7 @@ function escapeHtml(value) {
     .replace(/"/g, "&quot;");
 }
 
-function uniqueStrings(values, max = 5) {
+function uniqueStrings(values, max = 6) {
   return Array.from(
     new Set(
       (Array.isArray(values) ? values : [])
@@ -96,17 +104,23 @@ function getInitialStageId() {
 }
 
 function getStageById(stageId) {
-  return navigatorStagesById[normalizeStageId(stageId)] || navigatorStagesById[DEFAULT_STAGE_ID] || navigatorStages[0];
+  const id = typeof stageId === "object" && stageId?.id ? stageId.id : stageId;
+  return navigatorStagesById[normalizeStageId(id)] || navigatorStagesById[DEFAULT_STAGE_ID] || navigatorStages[0];
 }
 
-function getStageNumber(stageId) {
-  const idx = STAGE_ORDER.indexOf(stageId);
+function getStageNumber(stage) {
+  const stageId = typeof stage === "object" ? stage?.id : stage;
+  const idx = STAGE_ORDER.indexOf(normalizeStageId(stageId));
   return idx >= 0 ? idx + 1 : 1;
 }
 
 function getNextStageId(stage) {
-  const nextStageId = stage && (stage.nextStageId || stage.nextStage) ? normalizeStageId(stage.nextStageId || stage.nextStage) : null;
-  return nextStageId && navigatorStagesById[nextStageId] ? nextStageId : null;
+  const s = typeof stage === "object" ? stage : getStageById(stage);
+  const fromStage = s?.nextStageId || s?.nextStage;
+  if (fromStage && navigatorStagesById[normalizeStageId(fromStage)]) return normalizeStageId(fromStage);
+  const idx = STAGE_ORDER.indexOf(s?.id);
+  if (idx >= 0 && idx < STAGE_ORDER.length - 1) return STAGE_ORDER[idx + 1];
+  return null;
 }
 
 function updateStageQuery(stageId) {
@@ -120,6 +134,7 @@ function setSelectedStage(stageId) {
   if (!navigatorStagesById[normalized]) return;
   if (state.selectedStageId === normalized) return;
   state.selectedStageId = normalized;
+  state.activeDetailTab = "checklist";
 
   try {
     localStorage.setItem(STORAGE_KEY, normalized);
@@ -173,22 +188,27 @@ function pickRouteStep(steps, stageId) {
   return steps.find((step) => normalizeStageId(step && step.stage_type) === stageId) || steps[0] || null;
 }
 
-function buildChecklist(stage, routeStep) {
+function buildChecklist(stage, routeStep, maxItems = 6) {
   const items = [];
-  for (const item of uniqueStrings(routeStep && routeStep.tips, 5)) items.push(compactText(item, 92));
-  for (const item of uniqueStrings(stage.currentActions, 5)) {
+  for (const item of uniqueStrings(routeStep && routeStep.tips, maxItems)) {
     const compact = compactText(item, 92);
-    if (!compact || items.includes(compact)) continue;
-    items.push(compact);
-    if (items.length >= 4) break;
+    if (compact && !items.includes(compact)) items.push(compact);
   }
-  for (const item of uniqueStrings(stage.preparation, 5)) {
+  for (const item of uniqueStrings(stage.currentActions, maxItems)) {
     const compact = compactText(item, 92);
-    if (!compact || items.includes(compact)) continue;
-    items.push(compact);
-    if (items.length >= 4) break;
+    if (compact && !items.includes(compact)) {
+      items.push(compact);
+      if (items.length >= maxItems) break;
+    }
   }
-  return items.slice(0, 4);
+  for (const item of uniqueStrings(stage.preparation, maxItems)) {
+    const compact = compactText(item, 92);
+    if (compact && !items.includes(compact)) {
+      items.push(compact);
+      if (items.length >= maxItems) break;
+    }
+  }
+  return items.slice(0, maxItems);
 }
 
 function getSpecialists(stage, routeStep) {
@@ -203,148 +223,179 @@ function getMaterials(stage, routeStep) {
   return uniqueStrings(stage.materials, 4).map((item) => compactText(item, 70));
 }
 
-function renderTabs(selectedStageId) {
-  return STAGE_ORDER.map((stageId) => {
+function getMistakes(stage) {
+  return uniqueStrings(stage.commonMistakes || [], 6).map((item) => compactText(item, 120));
+}
+
+function getTips(stage, routeStep) {
+  const fromRoute = uniqueStrings(routeStep && routeStep.tips, 6);
+  if (fromRoute.length) return fromRoute.map((item) => compactText(item, 120));
+  return uniqueStrings(stage.tips || [], 6).map((item) => compactText(item, 120));
+}
+
+function renderHero() {
+  return `
+    <section class="nav2-hero">
+      <div class="nav2-hero-badge">Навигатор ремонта</div>
+      <h1 class="nav2-hero-title">Ваш маршрут<br>к идеальному ремонту</h1>
+      <p class="nav2-hero-sub">Нажмите на этап, чтобы раскрыть план действий</p>
+    </section>
+  `;
+}
+
+function renderMap(selectedId, progressPercent) {
+  const selectedIdx = STAGE_ORDER.indexOf(normalizeStageId(selectedId));
+  const nodes = STAGE_ORDER.map((stageId, idx) => {
+    const isCompleted = idx < selectedIdx;
+    const isCurrent = idx === selectedIdx;
+    const isUpcoming = idx > selectedIdx;
+    const classes = ["nav2-map-node"];
+    if (isCompleted) classes.push("is-completed");
+    if (isCurrent) classes.push("is-current");
+    if (isUpcoming) classes.push("is-upcoming");
     const stage = getStageById(stageId);
-    const isActive = stageId === selectedStageId;
+    const icon = stage.icon || STAGE_ICONS[stageId] || "•";
+    const label = STAGE_MAP_LABELS[stageId] || stage.mapLabel || stage.title;
     return `
-      <button
-        class="navigator-clean-tab${isActive ? " is-active" : ""}"
-        type="button"
-        role="tab"
-        aria-selected="${isActive ? "true" : "false"}"
-        data-stage-id="${stageId}"
-      >
-        ${escapeHtml(TAB_LABELS[stageId] || stage.title)}
+      <button class="${classes.join(" ")}" type="button" data-stage-id="${stageId}" aria-current="${isCurrent ? "step" : "false"}">
+        <span class="nav2-map-node-circle">
+          ${isCompleted ? '<span class="nav2-map-node-check" aria-hidden="true">✓</span>' : `<span class="nav2-map-node-icon">${escapeHtml(icon)}</span>`}
+        </span>
+        <span class="nav2-map-node-label">${escapeHtml(label)}</span>
       </button>
     `;
   }).join("");
+
+  return `
+    <section class="nav2-map">
+      <div class="nav2-map-track" style="--nav2-progress-height: ${progressPercent}%">
+        <div class="nav2-map-line">
+          <div class="nav2-map-line-progress" style="width: ${progressPercent}%"></div>
+        </div>
+        ${nodes}
+      </div>
+    </section>
+  `;
 }
 
-function renderChecklist(items) {
-  return items
+function renderDetail(stage, stageNumber, activeTab, checklist, specialists, materials, catalogStage) {
+  const specialistsHref = `../catalog/?type=services&stage=${encodeURIComponent(catalogStage)}&source=navigator`;
+  const materialsHref = `../catalog/?type=products&stage=${encodeURIComponent(catalogStage)}&source=navigator`;
+  const mistakes = getMistakes(stage);
+  const tips = getTips(stage, state.routeStep);
+  const keyInsight = stage.keyInsight || "";
+  const stageDesc = compactText((state.routeStep && state.routeStep.description) || stage.shortDescription, 130);
+  const ctaLabel = stage.leadCtaLabel || "Оставить заявку";
+
+  const checklistHtml = checklist
     .map(
       (item, idx) => `
-        <li class="navigator-clean-check-item">
-          <label>
-            <input type="checkbox" name="stage-check-${idx}" />
-            <span>${escapeHtml(item)}</span>
-          </label>
-        </li>
-      `
+      <li><label><input type="checkbox" name="nav2-check-${idx}" /><span>${escapeHtml(item)}</span></label></li>
+    `
     )
     .join("");
+
+  const mistakesHtml = mistakes
+    .map((item) => `<li>⚠ ${escapeHtml(item)}</li>`)
+    .join("");
+
+  const tipsHtml = tips.map((item) => `<li>💡 ${escapeHtml(item)}</li>`).join("");
+
+  const specialistsTags = specialists.map((s) => `<span class="nav2-tag">${escapeHtml(s)}</span>`).join("");
+  const materialsTags = materials.map((m) => `<span class="nav2-tag">${escapeHtml(m)}</span>`).join("");
+
+  const hideChecklist = activeTab !== "checklist";
+  const hideMistakes = activeTab !== "mistakes";
+  const hideTips = activeTab !== "tips";
+
+  return `
+    <section class="nav2-detail" data-stage-id="${stage.id}">
+      <div class="nav2-detail-header">
+        <div class="nav2-detail-number">
+          <span>${stageNumber}</span>
+          <span class="nav2-detail-of">из 5</span>
+        </div>
+        <div class="nav2-detail-title-wrap">
+          <h2 class="nav2-detail-title">${escapeHtml(stage.title)}</h2>
+          <p class="nav2-detail-desc">${escapeHtml(stageDesc)}</p>
+        </div>
+      </div>
+
+      <div class="nav2-detail-metrics">
+        <div class="nav2-metric">
+          <span class="nav2-metric-icon">⏱</span>
+          <div>
+            <span class="nav2-metric-label">Сроки</span>
+            <strong class="nav2-metric-value">${escapeHtml(stage.durationRange || "—")}</strong>
+          </div>
+        </div>
+        <div class="nav2-metric">
+          <span class="nav2-metric-icon">₽</span>
+          <div>
+            <span class="nav2-metric-label">Бюджет</span>
+            <strong class="nav2-metric-value">${escapeHtml(stage.budgetRange || "—")}</strong>
+          </div>
+        </div>
+      </div>
+
+      ${keyInsight ? `
+      <div class="nav2-detail-insight">
+        <span class="nav2-detail-insight-icon">💡</span>
+        <p>${escapeHtml(keyInsight)}</p>
+      </div>
+      ` : ""}
+
+      <div class="nav2-detail-tabs">
+        <button class="nav2-detail-tab ${activeTab === "checklist" ? "is-active" : ""}" type="button" data-detail-tab="checklist">Что сделать</button>
+        <button class="nav2-detail-tab ${activeTab === "mistakes" ? "is-active" : ""}" type="button" data-detail-tab="mistakes">Частые ошибки</button>
+        <button class="nav2-detail-tab ${activeTab === "tips" ? "is-active" : ""}" type="button" data-detail-tab="tips">Советы</button>
+      </div>
+
+      <div class="nav2-detail-tab-content">
+        <ul class="nav2-checklist"${hideChecklist ? ' hidden' : ""}>${checklistHtml || "<li><span class=\"muted\">Нет данных</span></li>"}</ul>
+        <ul class="nav2-mistakes-list"${hideMistakes ? ' hidden' : ""}>${mistakesHtml || "<li><span class=\"muted\">Нет данных</span></li>"}</ul>
+        <ul class="nav2-tips-list"${hideTips ? ' hidden' : ""}>${tipsHtml || "<li><span class=\"muted\">Нет данных</span></li>"}</ul>
+      </div>
+
+      <div class="nav2-detail-resources">
+        <div class="nav2-resource-block">
+          <h3>👷 Кто нужен</h3>
+          <div class="nav2-resource-tags">${specialistsTags || "<span class=\"muted\">—</span>"}</div>
+          <a class="nav2-resource-link" href="${specialistsHref}">Найти специалистов →</a>
+        </div>
+        <div class="nav2-resource-block">
+          <h3>🧱 Материалы</h3>
+          <div class="nav2-resource-tags">${materialsTags || "<span class=\"muted\">—</span>"}</div>
+          <a class="nav2-resource-link" href="${materialsHref}">Найти материалы →</a>
+        </div>
+      </div>
+
+      <div class="nav2-detail-cta">
+        <button class="btn btn-primary nav2-cta-main" type="button" data-nav-action="request" ${state.submitting ? "disabled" : ""}>
+          ${state.submitting ? "Отправляем..." : escapeHtml(ctaLabel)}
+        </button>
+      </div>
+    </section>
+  `;
 }
 
-function renderList(items) {
-  if (!items.length) return `<p class="navigator-clean-list-empty">Пока нет данных для этого этапа.</p>`;
-  return `<ul class="navigator-clean-list">${items.map((item) => `<li>${escapeHtml(compactText(item, 88))}</li>`).join("")}</ul>`;
-}
+function renderNextStage(nextStage, currentStage) {
+  const title = (currentStage && currentStage.nextStageTitle) || nextStage.title || "Следующий этап";
+  const desc = (currentStage && currentStage.nextStageDescription) || "";
+  const icon = nextStage.icon || STAGE_ICONS[nextStage.id] || "→";
 
-function render() {
-  const stage = getStageById(state.selectedStageId);
-  const stageNumber = getStageNumber(stage.id);
-  const nextStageId = getNextStageId(stage);
-  const catalogStage = toCatalogStageCode(stage.id);
-  const specialistsCatalogHref = `../catalog/?type=services&stage=${encodeURIComponent(catalogStage)}&source=navigator`;
-  const materialsCatalogHref = `../catalog/?type=products&stage=${encodeURIComponent(catalogStage)}&source=navigator`;
-  const checklist = buildChecklist(stage, state.routeStep);
-  const specialists = getSpecialists(stage, state.routeStep);
-  const materials = getMaterials(stage, state.routeStep);
-  const routeInfoText = state.routeSource !== "stage-data" ? "Персональный план готов" : "";
-  const stageDescription = compactText((state.routeStep && state.routeStep.description) || stage.shortDescription, 130);
-  const routeInfoMarkup = routeInfoText
-    ? `<p class="navigator-clean-route-meta">${escapeHtml(routeInfoText)}</p>`
-    : "";
-
-  root.innerHTML = `
-    <div class="navigator-clean-root">
-      <section class="navigator-clean-head">
-        <p class="navigator-clean-badge">Интерактивный инструмент</p>
-        <h1>Навигатор ремонта</h1>
-        <p class="navigator-clean-subtitle">Выберите этап и получите персональный план действий</p>
-      </section>
-
-      <section class="navigator-clean-picker">
-        <p class="navigator-clean-picker-label">Выберите текущий этап</p>
-        <div class="navigator-clean-tabs" role="tablist" aria-label="Этапы ремонта">
-          ${renderTabs(stage.id)}
-        </div>
-        ${routeInfoMarkup}
-      </section>
-
-      <section class="navigator-clean-stage-card" aria-live="polite">
-        <div class="navigator-clean-stage-main">
-          <div class="navigator-clean-stage-index-wrap">
-            <span class="navigator-clean-stage-index">${stageNumber}</span>
-            <span class="navigator-clean-stage-now">Вы сейчас здесь</span>
-          </div>
-          <h2>${escapeHtml(stage.title)}</h2>
-          <p>${escapeHtml(stageDescription || "")}</p>
-        </div>
-        <div class="navigator-clean-stage-metrics">
-          <div class="navigator-clean-metric">
-            <span class="navigator-clean-metric-icon" aria-hidden="true">⏱</span>
-            <div>
-              <span>Сроки</span>
-              <strong>${escapeHtml(stage.durationRange || "—")}</strong>
-            </div>
-          </div>
-          <div class="navigator-clean-metric">
-            <span class="navigator-clean-metric-icon" aria-hidden="true">₽</span>
-            <div>
-              <span>Бюджет</span>
-              <strong>${escapeHtml(stage.budgetRange || "—")}</strong>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="navigator-clean-work-grid">
-        <article class="navigator-clean-checklist-card">
-          <h3><span aria-hidden="true">☑</span>Что сделать сейчас</h3>
-          <ul class="navigator-clean-checklist">
-            ${renderChecklist(checklist)}
-          </ul>
-        </article>
-      </section>
-
-      <section class="navigator-clean-resources-grid">
-        <article class="navigator-clean-mini-card">
-          <h3>Кто нужен</h3>
-          ${renderList(specialists)}
-          <div class="navigator-clean-mini-actions">
-            <a class="btn btn-ghost" href="${specialistsCatalogHref}">Смотреть специалистов в каталоге</a>
-          </div>
-        </article>
-        <article class="navigator-clean-mini-card">
-          <h3>Материалы</h3>
-          ${renderList(materials)}
-          <div class="navigator-clean-mini-actions">
-            <a class="btn btn-ghost" href="${materialsCatalogHref}">Смотреть материалы в каталоге</a>
-          </div>
-        </article>
-      </section>
-
-      <aside class="navigator-clean-cta-card">
-        <button
-          class="btn btn-primary"
-          type="button"
-          data-nav-action="next-stage"
-          ${nextStageId ? "" : "disabled"}
-        >
-          ${nextStageId ? "Перейти к следующему →" : "Маршрут завершён"}
-        </button>
-        <button
-          class="btn btn-ghost"
-          type="button"
-          data-nav-action="request"
-          ${state.submitting ? "disabled" : ""}
-        >
-          ${state.submitting ? "Отправляем..." : "Оставить заявку"}
-        </button>
-      </aside>
-    </div>
+  return `
+    <section class="nav2-next">
+      <p class="nav2-next-hint">Следующий этап</p>
+      <button class="nav2-next-btn" type="button" data-nav-action="next-stage">
+        <span class="nav2-next-icon">${escapeHtml(icon)}</span>
+        <span class="nav2-next-text">
+          <strong>${escapeHtml(title)}</strong>
+          <span>${escapeHtml(desc)}</span>
+        </span>
+        <span class="nav2-next-arrow">→</span>
+      </button>
+    </section>
   `;
 }
 
@@ -356,7 +407,7 @@ function buildSubmitPayload(stage) {
     stage_type: toApiStageId(stage.id),
     recommended_professionals: getSpecialists(stage, null),
     recommended_categories: getMaterials(stage, null),
-    tips: buildChecklist(stage, null),
+    tips: buildChecklist(stage, null, 4),
     resources: []
   };
 
@@ -403,6 +454,31 @@ async function handleRequestAction() {
   window.location.href = `../request/?${params.toString()}`;
 }
 
+function render() {
+  const stage = getStageById(state.selectedStageId);
+  const stageNumber = getStageNumber(stage);
+  const nextStageId = getNextStageId(stage);
+  const nextStage = nextStageId ? getStageById(nextStageId) : null;
+  const catalogStage = toCatalogStageCode(stage.id);
+
+  const selectedIdx = STAGE_ORDER.indexOf(stage.id);
+  const progressPercent = STAGE_ORDER.length > 1 ? (selectedIdx / (STAGE_ORDER.length - 1)) * 100 : 0;
+
+  const checklist = buildChecklist(stage, state.routeStep, 6);
+  const specialists = getSpecialists(stage, state.routeStep);
+  const materials = getMaterials(stage, state.routeStep);
+  const activeTab = state.activeDetailTab || "checklist";
+
+  root.innerHTML = `
+    <div class="nav2-root">
+      ${renderHero()}
+      ${renderMap(stage.id, progressPercent)}
+      ${renderDetail(stage, stageNumber, activeTab, checklist, specialists, materials, catalogStage)}
+      ${nextStage ? renderNextStage(nextStage, stage) : ""}
+    </div>
+  `;
+}
+
 async function loadRouteForSelectedStage() {
   const stage = getStageById(state.selectedStageId);
   state.routeRequestStageId = stage.id;
@@ -428,14 +504,21 @@ root.addEventListener("click", (event) => {
   const target = event.target instanceof Element ? event.target : null;
   if (!target) return;
 
-  const stageTab = target.closest("[data-stage-id]");
-  if (stageTab) {
-    setSelectedStage(stageTab.getAttribute("data-stage-id"));
+  const stageNode = target.closest("[data-stage-id]");
+  if (stageNode && stageNode.closest(".nav2-map")) {
+    setSelectedStage(stageNode.getAttribute("data-stage-id"));
     return;
   }
 
-  const nextStageBtn = target.closest("[data-nav-action='next-stage']");
-  if (nextStageBtn) {
+  const detailTab = target.closest("[data-detail-tab]");
+  if (detailTab) {
+    state.activeDetailTab = detailTab.getAttribute("data-detail-tab") || "checklist";
+    render();
+    return;
+  }
+
+  const nextBtn = target.closest("[data-nav-action='next-stage']");
+  if (nextBtn) {
     const stage = getStageById(state.selectedStageId);
     const nextStageId = getNextStageId(stage);
     if (nextStageId) setSelectedStage(nextStageId);
@@ -450,4 +533,3 @@ root.addEventListener("click", (event) => {
 
 render();
 loadRouteForSelectedStage();
-
