@@ -39,8 +39,10 @@ Secondary-разделы вынесены в footer:
 - `api/catalog/services.js` — публичный API каталога услуг (фильтры + пагинация)
 - `api/catalog/service-by-id.js` — API карточки услуги
 - `api/catalog/service-reviews.js` — API отзывов услуги
-- `partner/cabinet/index.html` + `partner/cabinet/cabinet.js` — личный кабинет партнёра (MVP)
+- `partner/login/` — страница входа партнёров
+- `partner/cabinet/index.html` + `partner/cabinet/cabinet.js` — личный кабинет партнёра (MVP, загрузка фото)
 - `api/partner/me`, `api/partner/services`, `api/partner/services/:id` — API профиля и услуг партнёра
+- `api/upload.js` — загрузка фото в Vercel Blob
 - `validate-knowledge-base.mjs` — локальная проверка структуры knowledge base
 - `docs/navigator-mvp.md` — ТЗ и структура первого MVP навигатора
 - `backend/prisma/schema.prisma` — Prisma-схема каталога партнёров и услуг
