@@ -13,6 +13,13 @@
   const resultEl = document.getElementById("partner-cabinet-result");
   const partnerIdBadge = document.getElementById("cabinet-partner-id-badge");
   const promoChecklistEl = document.getElementById("partner-profile-promo-checklist");
+  const itemKindToggle = document.querySelector(".partner-add-item-kind-toggle");
+  const stageField = document.querySelector(".partner-add-stage-field");
+  const taskTypeField = document.querySelector(".partner-add-task-type-field");
+  const serviceStageSelect = document.getElementById("service-stage");
+  const serviceTaskTypeSelect = document.getElementById("service-task-type");
+  const serviceItemKindInput = document.getElementById("service-item-kind");
+  const addServiceSubmitBtn = document.getElementById("partner-add-service-submit");
   const promoOnlyMineEl = document.getElementById("partner-profile-promo-only-mine");
   const promoSelectAllBtn = document.getElementById("partner-profile-promo-select-all");
   const promoClearAllBtn = document.getElementById("partner-profile-promo-clear-all");
@@ -25,6 +32,11 @@
     ENGINEERING: t("Инженерные работы", "Engineering"),
     FINISHING: t("Чистовая отделка", "Finishing"),
     FURNITURE: t("Мебель и комплектация", "Furniture & setup")
+  };
+
+  const ITEM_KIND_LABELS = {
+    SERVICE: t("Услуга", "Service"),
+    PRODUCT: t("Товар", "Product")
   };
 
   const TASK_LABELS = {
@@ -271,18 +283,23 @@
     card.className = "card partner-service-card";
     card.dataset.serviceId = service.id;
 
+    const itemKind = service.itemKind || "SERVICE";
+    const itemKindLabel = ITEM_KIND_LABELS[itemKind] || itemKind;
     const isActiveText = service.isActive ? t("Активна", "Active") : t("Отключена", "Disabled");
     const areasText = Array.isArray(service.areas) && service.areas.length ? service.areas.join(", ") : "—";
+    const stageTag = service.stage ? `<span class="tag">${escapeHtml(STAGE_LABELS[service.stage] || service.stage)}</span>` : "";
+    const taskTypeTag = service.taskType ? `<span class="tag">${escapeHtml(TASK_LABELS[service.taskType] || service.taskType)}</span>` : "";
 
     card.innerHTML = `
       <div class="partner-service-head">
-        <h3>${escapeHtml(service.title || t("Услуга", "Service"))}</h3>
+        <h3>${escapeHtml(service.title || itemKindLabel)}</h3>
+        <span class="tag tag-item-kind">${escapeHtml(itemKindLabel)}</span>
         <span class="tag ${service.isActive ? "tag-active" : "tag-disabled"}">${escapeHtml(isActiveText)}</span>
       </div>
       <p class="muted">${escapeHtml(service.description || t("Краткое описание не заполнено.", "Short description is not filled."))}</p>
       <div class="partner-meta">
-        <span class="tag">${escapeHtml(STAGE_LABELS[service.stage] || service.stage)}</span>
-        <span class="tag">${escapeHtml(TASK_LABELS[service.taskType] || service.taskType)}</span>
+        ${stageTag}
+        ${taskTypeTag}
         <span class="tag">${escapeHtml(formatPriceRange(service.minPrice, service.maxPrice))}</span>
       </div>
       <p class="partner-service-info">${escapeHtml(`${t("Районы", "Areas")}: ${areasText}`)}</p>
@@ -298,27 +315,29 @@
         }
         </button>
       </div>
-      <form class="form partner-service-edit-form" hidden>
+      <form class="form partner-service-edit-form" hidden data-item-kind="${escapeHtml(itemKind)}">
         <div class="form-grid">
           <div class="field field-wide">
-            <label>${t("Название услуги", "Service title")}</label>
+            <label>${t("Название", "Title")}</label>
             <input class="input" name="title" value="${escapeHtml(service.title || "")}" required />
           </div>
           <div class="field field-wide">
             <label>${t("Описание", "Description")}</label>
             <textarea class="input textarea" name="description" rows="3">${escapeHtml(service.description || "")}</textarea>
           </div>
-          <div class="field">
+          <div class="field partner-edit-stage-field" style="${itemKind === "PRODUCT" ? "display:none" : ""}">
             <label>${t("Этап", "Stage")}</label>
             <select class="input" name="stage">
+              <option value="">—</option>
               ${Object.keys(STAGE_LABELS)
                 .map((k) => `<option value="${k}"${k === service.stage ? " selected" : ""}>${escapeHtml(STAGE_LABELS[k])}</option>`)
                 .join("")}
             </select>
           </div>
-          <div class="field">
+          <div class="field partner-edit-task-type-field" style="${itemKind === "PRODUCT" ? "display:none" : ""}">
             <label>${t("Тип задачи", "Task type")}</label>
             <select class="input" name="taskType">
+              <option value="">—</option>
               ${Object.keys(TASK_LABELS)
                 .map((k) => `<option value="${k}"${k === service.taskType ? " selected" : ""}>${escapeHtml(TASK_LABELS[k])}</option>`)
                 .join("")}
@@ -359,9 +378,35 @@
     items.forEach((item) => listEl.appendChild(createServiceCard(item)));
 
     if (countEl) {
-      countEl.textContent = `${items.length} ${t("услуг", "services")}`;
+      countEl.textContent = `${items.length} ${t("позиций", "items")}`;
     }
-    if (emptyEl) emptyEl.hidden = items.length > 0;
+    if (emptyEl) {
+      const textEl = emptyEl.querySelector(".form-result-text");
+      if (textEl) textEl.textContent = t("Добавьте первую услугу или товар — она появится в каталоге, если включена.", "Add your first service or product — it will appear in the catalog when enabled.");
+      emptyEl.hidden = items.length > 0;
+    }
+  };
+
+  const updateAddFormForItemKind = (kind) => {
+    if (!serviceItemKindInput) return;
+    serviceItemKindInput.value = kind || "SERVICE";
+    const isProduct = kind === "PRODUCT";
+    if (stageField) stageField.style.display = isProduct ? "none" : "";
+    if (taskTypeField) taskTypeField.style.display = isProduct ? "none" : "";
+    if (serviceStageSelect) serviceStageSelect.required = !isProduct;
+    if (serviceTaskTypeSelect) serviceTaskTypeSelect.required = !isProduct;
+    if (isProduct) {
+      if (serviceStageSelect) serviceStageSelect.value = "";
+      if (serviceTaskTypeSelect) serviceTaskTypeSelect.value = "GENERAL";
+    } else if (!serviceStageSelect?.value) {
+      if (serviceStageSelect) serviceStageSelect.value = "ROUGH";
+      if (serviceTaskTypeSelect) serviceTaskTypeSelect.value = "SANUZEL";
+    }
+    if (addServiceSubmitBtn) {
+      addServiceSubmitBtn.textContent = isProduct ? t("Добавить товар", "Add product") : t("Добавить услугу", "Add service");
+    }
+    const buttons = itemKindToggle?.querySelectorAll(".partner-item-kind-btn");
+    buttons?.forEach((btn) => btn.classList.toggle("is-active", (btn.dataset.itemKind || "") === kind));
   };
 
   const loadPartner = async () => {
@@ -437,6 +482,16 @@
   const imagePreview = document.getElementById("service-image-preview");
   const imagePreviewImg = document.getElementById("service-image-preview-img");
 
+  if (itemKindToggle) {
+    itemKindToggle.addEventListener("click", (e) => {
+      const btn = e.target?.closest(".partner-item-kind-btn");
+      if (!btn) return;
+      const kind = btn.dataset.itemKind || "SERVICE";
+      updateAddFormForItemKind(kind);
+    });
+  }
+  updateAddFormForItemKind("SERVICE");
+
   if (imageInput && imagePreview && imagePreviewImg) {
     imageInput.addEventListener("change", () => {
       const file = imageInput.files && imageInput.files[0];
@@ -471,12 +526,17 @@
         imageUrl = await uploadServiceImage(imageFile);
       }
 
+      const itemKind = String(serviceItemKindInput?.value || "SERVICE").trim().toUpperCase() || "SERVICE";
+      const stageVal = String(addServiceForm.stage?.value || "").trim();
+      const taskTypeVal = String(addServiceForm.taskType?.value || "").trim();
+
       const payload = {
         title: String(addServiceForm.title.value || "").trim(),
         description: String(addServiceForm.description.value || "").trim(),
         imageUrl,
-        stage: String(addServiceForm.stage.value || "").trim(),
-        taskType: String(addServiceForm.taskType.value || "").trim(),
+        itemKind: itemKind === "PRODUCT" ? "PRODUCT" : "SERVICE",
+        stage: itemKind === "PRODUCT" ? null : (stageVal || null),
+        taskType: itemKind === "PRODUCT" ? "GENERAL" : (taskTypeVal || null),
         minPrice: addServiceForm.minPrice.value ? Number(addServiceForm.minPrice.value) : null,
         maxPrice: addServiceForm.maxPrice.value ? Number(addServiceForm.maxPrice.value) : null,
         city: String(addServiceForm.city.value || "").trim() || "Краснодар",
@@ -496,8 +556,8 @@
       await loadServices();
       showResult({
         type: "success",
-        title: t("Услуга добавлена", "Service added"),
-        text: t("Новая услуга появилась в списке.", "New service appears in your list.")
+        title: t("Добавлено", "Added"),
+        text: t("Позиция появилась в списке.", "Item added to your list.")
       });
     } catch (err) {
       showResult({
@@ -594,15 +654,19 @@
     const serviceId = String(card.dataset.serviceId || "");
     if (!serviceId) return;
 
+    const formStage = String(form.querySelector('[name="stage"]')?.value || "").trim();
+    const formTaskType = String(form.querySelector('[name="taskType"]')?.value || "").trim();
+    const itemKind = form.dataset.itemKind || "SERVICE";
+
     const payload = {
-      title: String(form.querySelector('[name="title"]').value || "").trim(),
-      description: String(form.querySelector('[name="description"]').value || "").trim(),
-      stage: String(form.querySelector('[name="stage"]').value || "").trim(),
-      taskType: String(form.querySelector('[name="taskType"]').value || "").trim(),
-      minPrice: form.querySelector('[name="minPrice"]').value ? Number(form.querySelector('[name="minPrice"]').value) : null,
-      maxPrice: form.querySelector('[name="maxPrice"]').value ? Number(form.querySelector('[name="maxPrice"]').value) : null,
-      areas: parseList(form.querySelector('[name="areas"]').value),
-      isActive: String(form.querySelector('[name="isActive"]').value || "true") === "true"
+      title: String(form.querySelector('[name="title"]')?.value || "").trim(),
+      description: String(form.querySelector('[name="description"]')?.value || "").trim(),
+      stage: itemKind === "PRODUCT" ? null : (formStage || null),
+      taskType: itemKind === "PRODUCT" ? null : (formTaskType || null),
+      minPrice: form.querySelector('[name="minPrice"]')?.value ? Number(form.querySelector('[name="minPrice"]').value) : null,
+      maxPrice: form.querySelector('[name="maxPrice"]')?.value ? Number(form.querySelector('[name="maxPrice"]').value) : null,
+      areas: parseList(form.querySelector('[name="areas"]')?.value),
+      isActive: String(form.querySelector('[name="isActive"]')?.value || "true") === "true"
     };
 
     const submitBtn = form.querySelector("button[type='submit']");

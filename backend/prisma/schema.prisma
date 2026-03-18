@@ -35,6 +35,11 @@ enum ServiceTaskType {
   GENERAL
 }
 
+enum ItemKind {
+  SERVICE
+  PRODUCT
+}
+
 model Partner {
   id              String      @id @default(uuid()) @db.Uuid
   type            PartnerType
@@ -66,28 +71,30 @@ model PartnerAccount {
 }
 
 model Service {
-  id          String          @id @default(uuid()) @db.Uuid
-  partnerId   String          @db.Uuid
-  partner     Partner         @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  id          String           @id @default(uuid()) @db.Uuid
+  partnerId   String           @db.Uuid
+  partner     Partner          @relation(fields: [partnerId], references: [id], onDelete: Cascade)
   reviews     ServiceReview[]
   title       String
   description String?
   imageUrl    String?
-  stage       ServiceStage
-  taskType    ServiceTaskType
+  itemKind    ItemKind         @default(SERVICE)
+  stage       ServiceStage?
+  taskType    ServiceTaskType?
   minPrice    Int?
   maxPrice    Int?
-  currency    String          @default("RUB")
-  city        String          @default("Краснодар")
-  areas       String[]        @default([])
-  isActive    Boolean         @default(true)
+  currency    String           @default("RUB")
+  city        String           @default("Краснодар")
+  areas       String[]         @default([])
+  isActive    Boolean          @default(true)
   rating      Float?
-  ratingCount Int             @default(0)
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
+  ratingCount Int              @default(0)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
 
   @@index([partnerId])
-  @@index([isActive, stage, city, taskType])
+  @@index([isActive, city])
+  @@index([isActive, itemKind, city])
 }
 
 model ServiceReview {
