@@ -45,6 +45,7 @@
     const email = registerForm.email.value.trim();
     const password = registerForm.password.value;
     const name = registerForm.name.value.trim();
+    const phone = registerForm.phone.value.trim();
     const type = registerForm.type.value;
     const city = registerForm.city.value.trim();
     if (!email || !password || !name) { showResult('register', 'error', 'Ошибка', 'Заполните все обязательные поля'); return; }
@@ -52,7 +53,7 @@
     const btn = registerForm.querySelector('button[type="submit"]');
     btn.disabled = true; btn.textContent = 'Создание...';
     try {
-      const res = await fetch('/api/auth/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password, name, type, city }) });
+      const res = await fetch('/api/auth/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password, name, phone, type, city }) });
       const data = await res.json();
       if (!res.ok) { showResult('register', 'error', 'Ошибка', data.error || 'Не удалось создать аккаунт'); return; }
       window.location.href = '/partner/cabinet/';

@@ -44,6 +44,7 @@ model Partner {
   id              String      @id @default(uuid()) @db.Uuid
   type            PartnerType
   name            String
+  phone           String?
   description     String?
   promotionBannerUrl String?
   promotionIds    String[]    @default([])
