@@ -1541,60 +1541,55 @@
 
   // ── Theme switcher (dropdown) ──
   (function() {
-    var ICONS = { auto: '◑', light: '☀', dark: '🌙' };
+    var ICONS = { auto: '◑', light: '☀️', dark: '🌙' };
 
-    function updateDropdownState() {
+    function updateUI() {
       var t = window.__REMCARD_THEME;
       if (!t) return;
-      // Обновить иконку кнопки
       document.querySelectorAll('.theme-switch-icon').forEach(function(el) {
         el.textContent = ICONS[t.current] || '◑';
       });
-      // Обновить active-состояние в dropdown
       document.querySelectorAll('.theme-dropdown-item').forEach(function(el) {
-        var mode = el.getAttribute('data-theme-mode');
-        el.classList.toggle('is-active', mode === t.current);
+        el.classList.toggle('is-active', el.getAttribute('data-theme-mode') === t.current);
       });
     }
 
-    // Клик по кнопке — открыть/закрыть dropdown
     document.addEventListener('click', function(e) {
+      // Кнопка — открыть/закрыть
       var btn = e.target.closest('.theme-switch');
       if (btn) {
         var wrap = btn.closest('.theme-switch-wrap');
         if (!wrap) return;
         var dd = wrap.querySelector('.theme-dropdown');
         if (!dd) return;
-        var isOpen = !dd.hidden;
-        // Закрыть все dropdown
+        var wasOpen = !dd.hidden;
         document.querySelectorAll('.theme-dropdown').forEach(function(d) { d.hidden = true; });
-        if (!isOpen) {
-          dd.hidden = false;
-          updateDropdownState();
-        }
+        if (!wasOpen) { dd.hidden = false; updateUI(); }
         return;
       }
 
-      // Клик по пункту dropdown
+      // Пункт меню
       var item = e.target.closest('.theme-dropdown-item');
       if (item && window.__REMCARD_THEME) {
         var mode = item.getAttribute('data-theme-mode');
-        if (mode) {
-          window.__REMCARD_THEME.apply(mode);
-          updateDropdownState();
-        }
-        // Закрыть dropdown
+        if (mode) { window.__REMCARD_THEME.apply(mode); updateUI(); }
         document.querySelectorAll('.theme-dropdown').forEach(function(d) { d.hidden = true; });
         return;
       }
 
-      // Клик вне dropdown — закрыть
+      // Клик вне — закрыть
       if (!e.target.closest('.theme-switch-wrap')) {
         document.querySelectorAll('.theme-dropdown').forEach(function(d) { d.hidden = true; });
       }
     });
 
-    // Начальное состояние иконки
-    updateDropdownState();
+    // Закрыть по Escape
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.theme-dropdown').forEach(function(d) { d.hidden = true; });
+      }
+    });
+
+    updateUI();
   })();
 })();
