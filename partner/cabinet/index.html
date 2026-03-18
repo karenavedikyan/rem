@@ -198,9 +198,9 @@
               <div class="partner-cabinet-card-title-row">
                 <h2>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 3H8l-2 4h12l-2-4z"/></svg>
-                  Мои услуги
+                  Мои услуги и товары
                 </h2>
-                <span class="muted" id="partner-services-count">0 услуг</span>
+                <span class="muted" id="partner-services-count">0 позиций</span>
               </div>
               <div class="partner-services-list" id="partner-services-list"></div>
               <div class="form-result" id="partner-services-empty" role="status" aria-live="polite" hidden>
@@ -212,14 +212,19 @@
             <article class="card partner-cabinet-section partner-cabinet-add-card">
               <h2>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-                Добавить услугу
+                Добавить услугу или товар
               </h2>
+              <div class="partner-add-item-kind-toggle" role="group" aria-label="Тип позиции">
+                <button type="button" class="btn btn-ghost partner-item-kind-btn is-active" data-item-kind="SERVICE">Услуга</button>
+                <button type="button" class="btn btn-ghost partner-item-kind-btn" data-item-kind="PRODUCT">Товар</button>
+              </div>
               <form class="form" id="partner-add-service-form" novalidate>
+                <input type="hidden" id="service-item-kind" name="itemKind" value="SERVICE" />
                 <div class="form-grid">
                   <div class="field field-wide">
                     <label for="service-title">
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
-                      Название услуги
+                      Название
                     </label>
                     <input class="input" id="service-title" name="title" required />
                   </div>
@@ -243,12 +248,12 @@
                       </div>
                     </div>
                   </div>
-                  <div class="field">
+                  <div class="field partner-add-stage-field">
                     <label for="service-stage">
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
                       Этап
                     </label>
-                    <select class="input" id="service-stage" name="stage" required>
+                    <select class="input" id="service-stage" name="stage">
                       <option value="PLANNING">Планирование</option>
                       <option value="ROUGH">Черновые работы</option>
                       <option value="ENGINEERING">Инженерные работы</option>
@@ -256,12 +261,12 @@
                       <option value="FURNITURE">Мебель и комплектация</option>
                     </select>
                   </div>
-                  <div class="field">
+                  <div class="field partner-add-task-type-field">
                     <label for="service-task-type">
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
                       Тип задачи
                     </label>
-                    <select class="input" id="service-task-type" name="taskType" required>
+                    <select class="input" id="service-task-type" name="taskType">
                       <option value="SANUZEL">Санузел</option>
                       <option value="KITCHEN">Кухня</option>
                       <option value="ELECTRICAL">Электрика</option>
@@ -314,7 +319,7 @@
                   </div>
                 </div>
                 <div class="form-actions">
-                  <button class="btn btn-primary" type="submit">Добавить услугу</button>
+                  <button class="btn btn-primary" type="submit" id="partner-add-service-submit">Добавить</button>
                 </div>
               </form>
             </article>
