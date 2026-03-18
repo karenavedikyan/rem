@@ -259,9 +259,6 @@
     const p = state.partner;
     if (!p) return;
 
-    const banner = document.getElementById("moderation-banner");
-    if (banner) banner.style.display = p.isApproved ? "none" : "block";
-
     setText("#cabinet-partner-name", p.name);
     setText("#cabinet-partner-type", PARTNER_TYPES[p.type] || p.type);
     setText("#cabinet-partner-city", p.city || "—");
@@ -280,6 +277,57 @@
     if (promoOnlyMineEl) promoOnlyMineEl.checked = state.promoShowOnlyMine;
     renderPromotionChecklist(Array.isArray(p.promotionIds) ? p.promotionIds : []);
   };
+
+  function updateOnboarding(partner, services) {
+    const block = document.getElementById("onboarding-block");
+    const statusBar = document.getElementById("onb-status-bar");
+    const instructions = document.getElementById("onb-instructions");
+    const submitBtn = document.getElementById("onb-submit-btn");
+    const submitHint = document.getElementById("onb-submit-hint");
+    if (!block) return;
+
+    if (partner.isApproved) {
+      block.style.display = "block";
+      statusBar.className = "onb-status approved";
+      statusBar.textContent = "✅ Ваш профиль опубликован в каталоге RemCard";
+      instructions.style.display = "none";
+      return;
+    }
+
+    block.style.display = "block";
+
+    const hasDescription = !!(partner.description && partner.description.trim());
+    const hasServices = services && services.length > 0;
+    const hasPhotos = services && services.some((s) => s.imageUrl);
+
+    const stepProfile = document.getElementById("onb-step-profile");
+    const stepServices = document.getElementById("onb-step-services");
+    const stepPhotos = document.getElementById("onb-step-photos");
+    const stepReview = document.getElementById("onb-step-review");
+
+    if (stepProfile) stepProfile.classList.toggle("done", hasDescription);
+    if (stepServices) stepServices.classList.toggle("done", hasServices);
+    if (stepPhotos) stepPhotos.classList.toggle("done", hasPhotos);
+
+    const canSubmit = hasDescription && hasServices && hasPhotos;
+    if (submitBtn) submitBtn.disabled = !canSubmit;
+
+    if (submitHint) {
+      if (!canSubmit) {
+        const missing = [];
+        if (!hasDescription) missing.push("описание в профиле");
+        if (!hasServices) missing.push("хотя бы 1 услугу/товар");
+        if (!hasPhotos) missing.push("фото к услугам/товарам");
+        submitHint.textContent = "Осталось добавить: " + missing.join(", ");
+      } else {
+        submitHint.textContent = "Всё готово! Нажмите кнопку для отправки на проверку.";
+      }
+    }
+
+    statusBar.className = "onb-status pending";
+    statusBar.textContent = "⏳ Заполните профиль и отправьте на проверку";
+    instructions.style.display = "block";
+  }
 
   const createServiceCard = (service) => {
     const card = document.createElement("article");
@@ -424,6 +472,39 @@
     renderServices();
   };
 
+  document.getElementById("onb-submit-btn")?.addEventListener("click", async () => {
+    const btn = document.getElementById("onb-submit-btn");
+    const hint = document.getElementById("onb-submit-hint");
+    const statusBar = document.getElementById("onb-status-bar");
+    btn.disabled = true;
+    btn.textContent = "Отправка...";
+
+    try {
+      const res = await fetch("/api/auth/request-review", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include"
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        statusBar.className = "onb-status review";
+        statusBar.textContent = "📋 Профиль отправлен на проверку. Ожидайте одобрения от команды RemCard.";
+        btn.textContent = "Отправлено на проверку ✓";
+        hint.textContent = "Мы проверим ваш профиль и свяжемся при необходимости.";
+        const stepsEl = document.getElementById("onb-steps");
+        if (stepsEl) stepsEl.style.display = "none";
+      } else {
+        hint.textContent = data.error || "Ошибка отправки";
+        btn.disabled = false;
+        btn.textContent = "Отправить на проверку";
+      }
+    } catch {
+      hint.textContent = "Ошибка сети. Попробуйте позже.";
+      btn.disabled = false;
+      btn.textContent = "Отправить на проверку";
+    }
+  });
+
   profileForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     if (!profileForm.checkValidity()) {
@@ -450,6 +531,7 @@
       });
       state.partner = data.item || state.partner;
       renderProfile();
+      updateOnboarding(state.partner, state.services);
       showResult({
         type: "success",
         title: t("Профиль сохранён", "Profile saved"),
@@ -557,6 +639,7 @@
       addServiceForm.city.value = state.partner && state.partner.city ? state.partner.city : "Краснодар";
       addServiceForm.isActive.value = "true";
       await loadServices();
+      updateOnboarding(state.partner, state.services);
       showResult({
         type: "success",
         title: t("Добавлено", "Added"),
@@ -628,6 +711,7 @@
           body: JSON.stringify({ isActive: !service.isActive })
         });
         await loadServices();
+        updateOnboarding(state.partner, state.services);
         showResult({
           type: "success",
           title: t("Статус обновлён", "Status updated"),
@@ -680,6 +764,7 @@
         body: JSON.stringify(payload)
       });
       await loadServices();
+      updateOnboarding(state.partner, state.services);
       showResult({
         type: "success",
         title: t("Услуга обновлена", "Service updated"),
@@ -711,6 +796,7 @@
     try {
       await loadPartner();
       await loadServices();
+      updateOnboarding(state.partner, state.services);
       if (addServiceForm.city) addServiceForm.city.value = state.partner && state.partner.city ? state.partner.city : "Краснодар";
       if (I18N && I18N.isEn && typeof I18N.applyTo === "function") I18N.applyTo(document);
     } catch (err) {

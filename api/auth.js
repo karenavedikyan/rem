@@ -258,6 +258,66 @@ async function handleApprove(req, res) {
   }
 }
 
+async function handleRequestReview(req, res) {
+  if (req.method !== "POST") { res.status(405).json({ error: "Метод не разрешён" }); return; }
+
+  const token = getTokenFromRequest(req);
+  const payload = token ? verifyToken(token) : null;
+  if (!payload?.partnerId) { res.status(401).json({ error: "Не авторизован" }); return; }
+
+  let prisma = null;
+  try {
+    prisma = await getPrisma();
+    if (!prisma) { res.status(500).json({ error: "Prisma недоступен" }); return; }
+
+    const partner = await prisma.partner.findUnique({
+      where: { id: payload.partnerId },
+      include: { services: { where: { isActive: true }, select: { id: true, title: true, imageUrl: true } } }
+    });
+
+    if (!partner) { res.status(404).json({ error: "Партнёр не найден" }); return; }
+    if (partner.isApproved) { res.status(200).json({ success: true, message: "Уже опубликован" }); return; }
+
+    const { botToken, chatId } = getTelegramConfig();
+    if (botToken && chatId) {
+      const typeLabels = { MASTER: "Мастер", COMPANY: "Компания", STORE: "Магазин" };
+      const approveUrl = `https://rem-navy.vercel.app/api/auth/approve?id=${partner.id}&secret=${APPROVE_SECRET}`;
+      const catalogPreview = `https://rem-navy.vercel.app/catalog/?partner=${partner.id}`;
+      const servicesInfo = partner.services.length > 0
+        ? partner.services.map((s) => `  • ${s.title}${s.imageUrl ? " 📷" : " ⚠️ без фото"}`).join("\n")
+        : "  ⚠️ Нет услуг/товаров";
+
+      const text = [
+        `📋 Партнёр готов к проверке!`,
+        ``,
+        `📌 ${partner.name}`,
+        `🏷 ${typeLabels[partner.type] || partner.type}`,
+        `🏙 ${partner.city}`,
+        partner.phone ? `📞 ${partner.phone}` : null,
+        partner.description ? `📝 ${partner.description.slice(0, 150)}${partner.description.length > 150 ? "..." : ""}` : "⚠️ Нет описания",
+        ``,
+        `📦 Услуги/товары (${partner.services.length}):`,
+        servicesInfo,
+        ``,
+        `👁 Превью: ${catalogPreview}`,
+        `✅ Одобрить: ${approveUrl}`
+      ].filter(Boolean).join("\n");
+
+      await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: chatId, text, disable_web_page_preview: true }),
+      }).catch((e) => console.error("TG review error:", e));
+    }
+
+    res.status(200).json({ success: true, message: "Отправлено на проверку" });
+  } catch (e) {
+    res.status(500).json({ error: e instanceof Error ? e.message : "Ошибка" });
+  } finally {
+    if (prisma) await prisma.$disconnect().catch(() => {});
+  }
+}
+
 // ── main router ────────────────────────────────────────────────
 export default async function handler(req, res) {
   if (handleOptions(req, res)) return;
@@ -269,11 +329,12 @@ export default async function handler(req, res) {
   const action = url.searchParams.get("action") || segments[segments.length - 1];
 
   switch (action) {
-    case "login":    return handleLogin(req, res);
-    case "register": return handleRegister(req, res);
-    case "me":       return handleMe(req, res);
-    case "logout":   return handleLogout(req, res);
-    case "approve":  return handleApprove(req, res);
-    default:         res.status(404).json({ error: "Неизвестный auth-маршрут" });
+    case "login":         return handleLogin(req, res);
+    case "register":      return handleRegister(req, res);
+    case "me":            return handleMe(req, res);
+    case "logout":       return handleLogout(req, res);
+    case "approve":       return handleApprove(req, res);
+    case "request-review": return handleRequestReview(req, res);
+    default:              res.status(404).json({ error: "Неизвестный auth-маршрут" });
   }
 }
