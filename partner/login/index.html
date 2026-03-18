@@ -41,35 +41,39 @@
     </header>
 
     <main id="main">
-      <section class="section" style="padding-top: 80px;">
-        <div class="container" style="max-width: 480px;">
-          <span class="section-badge">ПАРТНЁРАМ</span>
-          <h1 class="section-title">Вход в кабинет</h1>
-          <p class="section-subtitle">Войдите или создайте аккаунт партнёра RemCard</p>
+      <section class="section auth-page-section">
+        <div class="container auth-page-container">
+          <header class="auth-page-header">
+            <span class="section-badge">ПАРТНЁРАМ</span>
+            <h1 class="auth-page-title">Вход в кабинет</h1>
+            <p class="auth-page-subtitle">Войдите или создайте аккаунт партнёра RemCard</p>
+          </header>
 
-          <div class="auth-tabs">
-            <button class="auth-tab active" id="tab-login" type="button">Вход</button>
-            <button class="auth-tab" id="tab-register" type="button">Регистрация</button>
-          </div>
+          <article class="card auth-page-card">
+            <div class="auth-tabs">
+              <button class="auth-tab active" id="tab-login" type="button">Вход</button>
+              <button class="auth-tab" id="tab-register" type="button">Регистрация</button>
+            </div>
 
-          <form id="login-form" class="form-grid" style="grid-template-columns:1fr">
-            <label class="field"><span class="label">Email</span><input class="input" name="email" type="email" required></label>
-            <label class="field"><span class="label">Пароль</span><input class="input" name="password" type="password" required></label>
-            <button class="btn btn-primary" type="submit" style="width:100%">Войти</button>
-            <div class="form-result" id="login-result" hidden><p class="form-result-title"></p><p class="form-result-text"></p></div>
-          </form>
+            <form id="login-form" class="form-grid auth-form" style="grid-template-columns:1fr">
+              <label class="field"><span class="label">Email</span><input class="input" name="email" type="email" required placeholder="partner@example.com"></label>
+              <label class="field"><span class="label">Пароль</span><input class="input" name="password" type="password" required placeholder="••••••••"></label>
+              <button class="btn btn-primary auth-submit" type="submit">Войти</button>
+              <div class="form-result" id="login-result" hidden><p class="form-result-title"></p><p class="form-result-text"></p></div>
+            </form>
 
-          <form id="register-form" class="form-grid" style="grid-template-columns:1fr" hidden>
-            <label class="field"><span class="label">Email</span><input class="input" name="email" type="email" required></label>
-            <label class="field"><span class="label">Пароль (мин. 6 символов)</span><input class="input" name="password" type="password" required minlength="6"></label>
-            <label class="field"><span class="label">Название компании / ФИО</span><input class="input" name="name" required></label>
-            <label class="field"><span class="label">Тип</span>
-              <select class="input" name="type"><option value="company">Компания</option><option value="master">Мастер</option><option value="store">Магазин</option></select>
-            </label>
-            <label class="field"><span class="label">Город</span><input class="input" name="city" value="Краснодар"></label>
-            <button class="btn btn-primary" type="submit" style="width:100%">Создать аккаунт</button>
-            <div class="form-result" id="register-result" hidden><p class="form-result-title"></p><p class="form-result-text"></p></div>
-          </form>
+            <form id="register-form" class="form-grid auth-form" style="grid-template-columns:1fr" hidden>
+              <label class="field"><span class="label">Email</span><input class="input" name="email" type="email" required placeholder="partner@example.com"></label>
+              <label class="field"><span class="label">Пароль (мин. 6 символов)</span><input class="input" name="password" type="password" required minlength="6" placeholder="••••••••"></label>
+              <label class="field"><span class="label">Название компании / ФИО</span><input class="input" name="name" required placeholder="ООО Ремстрой или Иванов И.И."></label>
+              <label class="field"><span class="label">Тип</span>
+                <select class="input" name="type"><option value="company">Компания</option><option value="master">Мастер</option><option value="store">Магазин</option></select>
+              </label>
+              <label class="field"><span class="label">Город</span><input class="input" name="city" value="Краснодар"></label>
+              <button class="btn btn-primary auth-submit" type="submit">Создать аккаунт</button>
+              <div class="form-result" id="register-result" hidden><p class="form-result-title"></p><p class="form-result-text"></p></div>
+            </form>
+          </article>
         </div>
       </section>
     </main>
