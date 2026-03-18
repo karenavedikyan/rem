@@ -418,6 +418,42 @@
     }
   });
 
+  async function uploadServiceImage(file) {
+    const res = await fetch(`/api/upload?filename=${encodeURIComponent(file.name)}`, {
+      method: "POST",
+      headers: { "Content-Type": file.type },
+      credentials: "include",
+      body: file,
+    });
+    if (!res.ok) {
+      const data = await res.json().catch(() => null);
+      throw new Error(data?.error || `Ошибка загрузки: ${res.status}`);
+    }
+    const data = await res.json();
+    return data.url;
+  }
+
+  const imageInput = document.getElementById("service-image");
+  const imagePreview = document.getElementById("service-image-preview");
+  const imagePreviewImg = document.getElementById("service-image-preview-img");
+
+  if (imageInput && imagePreview && imagePreviewImg) {
+    imageInput.addEventListener("change", () => {
+      const file = imageInput.files && imageInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          imagePreviewImg.src = e.target.result;
+          imagePreview.hidden = false;
+        };
+        reader.readAsDataURL(file);
+      } else {
+        imagePreview.hidden = true;
+        imagePreviewImg.src = "";
+      }
+    });
+  }
+
   addServiceForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     if (!addServiceForm.checkValidity()) {
@@ -425,25 +461,36 @@
       return;
     }
 
-    const payload = {
-      title: String(addServiceForm.title.value || "").trim(),
-      description: String(addServiceForm.description.value || "").trim(),
-      stage: String(addServiceForm.stage.value || "").trim(),
-      taskType: String(addServiceForm.taskType.value || "").trim(),
-      minPrice: addServiceForm.minPrice.value ? Number(addServiceForm.minPrice.value) : null,
-      maxPrice: addServiceForm.maxPrice.value ? Number(addServiceForm.maxPrice.value) : null,
-      city: String(addServiceForm.city.value || "").trim() || "Краснодар",
-      areas: parseList(addServiceForm.areas.value),
-      isActive: String(addServiceForm.isActive.value || "true") === "true"
-    };
+    const imageFile = imageInput && imageInput.files && imageInput.files[0];
+    let imageUrl = null;
 
     setLoading(addServiceForm, true);
     try {
+      // Upload image first if selected
+      if (imageFile) {
+        imageUrl = await uploadServiceImage(imageFile);
+      }
+
+      const payload = {
+        title: String(addServiceForm.title.value || "").trim(),
+        description: String(addServiceForm.description.value || "").trim(),
+        imageUrl,
+        stage: String(addServiceForm.stage.value || "").trim(),
+        taskType: String(addServiceForm.taskType.value || "").trim(),
+        minPrice: addServiceForm.minPrice.value ? Number(addServiceForm.minPrice.value) : null,
+        maxPrice: addServiceForm.maxPrice.value ? Number(addServiceForm.maxPrice.value) : null,
+        city: String(addServiceForm.city.value || "").trim() || "Краснодар",
+        areas: parseList(addServiceForm.areas.value),
+        isActive: String(addServiceForm.isActive.value || "true") === "true"
+      };
+
       await request("/api/partner/services", {
         method: "POST",
         body: JSON.stringify(payload)
       });
       addServiceForm.reset();
+      if (imagePreview) imagePreview.hidden = true;
+      if (imagePreviewImg) imagePreviewImg.src = "";
       addServiceForm.city.value = state.partner && state.partner.city ? state.partner.city : "Краснодар";
       addServiceForm.isActive.value = "true";
       await loadServices();
