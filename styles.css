@@ -173,11 +173,30 @@
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
 }
 [data-theme="light"] .catalog-tab {
-  color: #5a6275;
+  border-color: rgba(0, 0, 0, 0.12);
+  background: rgba(0, 0, 0, 0.04);
+  color: #1a1a2e;
+}
+[data-theme="light"] .catalog-tab:hover,
+[data-theme="light"] .catalog-tab:focus-visible {
+  border-color: rgba(239, 68, 68, 0.45);
+  background: rgba(239, 68, 68, 0.1);
 }
 [data-theme="light"] .catalog-tab.is-active {
-  background: var(--red);
-  color: #ffffff;
+  border-color: rgba(239, 68, 68, 0.5);
+  background: linear-gradient(180deg, rgba(229, 57, 53, 0.94), rgba(198, 40, 40, 0.9));
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(229, 57, 53, 0.22);
+}
+[data-theme="light"] .catalog-filters-trigger {
+  border-color: rgba(0, 0, 0, 0.12);
+  background: rgba(0, 0, 0, 0.04);
+  color: #1a1a2e;
+}
+[data-theme="light"] .catalog-filters-trigger:hover,
+[data-theme="light"] .catalog-filters-trigger:focus-visible {
+  border-color: rgba(239, 68, 68, 0.45);
+  background: rgba(239, 68, 68, 0.1);
 }
 [data-theme="light"] .catalog-filters-badge {
   background: var(--red);
