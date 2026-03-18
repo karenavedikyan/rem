@@ -275,7 +275,13 @@
     if (descriptionEl) {
       descriptionEl.textContent = service.description || t("Описание появится скоро.", "Description will be available soon.");
     }
-    if (partnerEl) partnerEl.textContent = service.partner?.name || "-";
+    if (partnerEl) {
+      if (service.partner?.id) {
+        partnerEl.innerHTML = `<a href="../../partner/profile/?id=${encodeURIComponent(service.partner.id)}" style="color:var(--clr-accent,#c0392b);text-decoration:none">${escapeHtml(service.partner.name || "-")}</a>`;
+      } else {
+        partnerEl.textContent = service.partner?.name || "-";
+      }
+    }
     if (stageEl) stageEl.textContent = stageLabel(service.stage);
     if (taskTypeEl) taskTypeEl.textContent = taskTypeLabel(service.taskType);
     if (cityEl) cityEl.textContent = service.city || "-";
