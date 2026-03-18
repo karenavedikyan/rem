@@ -1392,8 +1392,39 @@
       if (result) result.hidden = true;
 
       try {
-        const message = buildMessage(getValue);
-        await sendTelegram(message);
+        let sent = false;
+
+        // Для формы request-form — отправляем через серверный API
+        if (formId === "request-form") {
+          const payload = {
+            name: getValue("name"),
+            phone: getValue("contact"),
+            stage: getValue("stageContext") || getValue("stage"),
+            objectType: getValue("jobType"),
+            comment: getValue("comment"),
+            serviceId: getValue("serviceId") || null,
+            serviceTitle: getValue("serviceTitle") || null,
+            source: getValue("requestSource") || "direct",
+          };
+
+          const apiRes = await fetch("/api/requests", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+
+          if (!apiRes.ok) {
+            const errData = await apiRes.json().catch(() => null);
+            throw new Error(errData?.error || `HTTP ${apiRes.status}`);
+          }
+          sent = true;
+        }
+
+        // Для остальных форм (partner-form, feedback-form) — по-прежнему Telegram напрямую
+        if (!sent) {
+          const message = buildMessage(getValue);
+          await sendTelegram(message);
+        }
 
         setResult({
           type: "success",
