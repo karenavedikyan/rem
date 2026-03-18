@@ -1547,31 +1547,57 @@
       `Контакт: ${get("contact") || "-"}`,
   });
 
-  // ── Theme switcher ──
+  // ── Theme switcher (dropdown) ──
   (function() {
-    var MODES = ['auto', 'light', 'dark'];
-    var ICONS = { auto: '◑', light: '☀', dark: '🌙' };
+    var ICONS = { auto: '◑', light: '☀️', dark: '🌙' };
+
+    function updateUI() {
+      var t = window.__REMCARD_THEME;
+      if (!t) return;
+      document.querySelectorAll('.theme-switch-icon').forEach(function(el) {
+        el.textContent = ICONS[t.current] || '◑';
+      });
+      document.querySelectorAll('.theme-dropdown-item').forEach(function(el) {
+        el.classList.toggle('is-active', el.getAttribute('data-theme-mode') === t.current);
+      });
+    }
 
     document.addEventListener('click', function(e) {
+      // Кнопка — открыть/закрыть
       var btn = e.target.closest('.theme-switch');
-      if (!btn || !window.__REMCARD_THEME) return;
+      if (btn) {
+        var wrap = btn.closest('.theme-switch-wrap');
+        if (!wrap) return;
+        var dd = wrap.querySelector('.theme-dropdown');
+        if (!dd) return;
+        var wasOpen = !dd.hidden;
+        document.querySelectorAll('.theme-dropdown').forEach(function(d) { d.hidden = true; });
+        if (!wasOpen) { dd.hidden = false; updateUI(); }
+        return;
+      }
 
-      var currentIdx = MODES.indexOf(window.__REMCARD_THEME.current);
-      var nextIdx = (currentIdx + 1) % MODES.length;
-      var next = MODES[nextIdx];
+      // Пункт меню
+      var item = e.target.closest('.theme-dropdown-item');
+      if (item && window.__REMCARD_THEME) {
+        var mode = item.getAttribute('data-theme-mode');
+        if (mode) { window.__REMCARD_THEME.apply(mode); updateUI(); }
+        document.querySelectorAll('.theme-dropdown').forEach(function(d) { d.hidden = true; });
+        return;
+      }
 
-      window.__REMCARD_THEME.apply(next);
-
-      var iconEl = btn.querySelector('.theme-switch-icon');
-      if (iconEl) iconEl.textContent = ICONS[next];
+      // Клик вне — закрыть
+      if (!e.target.closest('.theme-switch-wrap')) {
+        document.querySelectorAll('.theme-dropdown').forEach(function(d) { d.hidden = true; });
+      }
     });
 
-    // Установить начальную иконку при загрузке
-    var t = window.__REMCARD_THEME;
-    if (t) {
-      var btns = document.querySelectorAll('.theme-switch-icon');
-      var icon = t.current === 'auto' ? '◑' : (t.resolved === 'light' ? '☀' : '🌙');
-      btns.forEach(function(el) { el.textContent = icon; });
-    }
+    // Закрыть по Escape
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.theme-dropdown').forEach(function(d) { d.hidden = true; });
+      }
+    });
+
+    updateUI();
   })();
 })();
