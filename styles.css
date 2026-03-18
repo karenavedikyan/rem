@@ -58,7 +58,7 @@
   border-color: var(--border);
 }
 
-/* Навигация — бургер-кнопка (размеры единые, цвета по теме) */
+/* Навигация — бургер-кнопка (размеры как в тёмной теме, только цвет полосок) */
 [data-theme="light"] .nav-toggle {
   background: #ffffff;
   border-color: rgba(0, 0, 0, 0.12);
@@ -66,10 +66,18 @@
 [data-theme="light"] .nav-toggle:hover {
   border-color: rgba(239, 68, 68, 0.35);
 }
-[data-theme="light"] .nav-toggle-lines,
 [data-theme="light"] .nav-toggle-lines::before,
 [data-theme="light"] .nav-toggle-lines::after {
+  width: 100%;
+  height: 2px;
+  left: 0;
   background: #1a1a2e;
+}
+[data-theme="light"] .nav-toggle-lines::before {
+  top: 0;
+}
+[data-theme="light"] .nav-toggle-lines::after {
+  top: 10px;
 }
 
 /* Футер */
