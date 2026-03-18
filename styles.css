@@ -74,11 +74,34 @@
 
 /* Футер */
 [data-theme="light"] .site-footer {
-  background: #1a1a2e;
-  color: #f3f6fb;
+  background: linear-gradient(180deg, #f0f0f2 0%, #e8e8ec 100%);
+  border-top-color: rgba(0, 0, 0, 0.08);
+  color: #1a1a2e;
 }
-[data-theme="light"] .site-footer a {
-  color: #f3f6fb;
+[data-theme="light"] .site-footer a,
+[data-theme="light"] .footer-mini-link {
+  color: #1a1a2e;
+}
+[data-theme="light"] .site-footer a:hover,
+[data-theme="light"] .footer-mini-link:hover,
+[data-theme="light"] .footer-mini-link:focus-visible {
+  color: var(--red);
+  background: rgba(239, 68, 68, 0.06);
+}
+[data-theme="light"] .home-footer-col h3 {
+  color: #1a1a2e;
+}
+[data-theme="light"] .home-footer-description {
+  color: #5a6275;
+}
+[data-theme="light"] .home-footer-contact {
+  color: #5a6275;
+}
+[data-theme="light"] .home-footer-bottom {
+  border-top-color: rgba(0, 0, 0, 0.08);
+}
+[data-theme="light"] .home-footer-bottom p {
+  color: #5a6275;
 }
 
 /* Кнопки outline */
