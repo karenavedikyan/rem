@@ -1538,4 +1538,32 @@
       `Имя: ${get("name") || "-"}\n` +
       `Контакт: ${get("contact") || "-"}`,
   });
+
+  // ── Theme switcher ──
+  (function() {
+    var MODES = ['auto', 'light', 'dark'];
+    var ICONS = { auto: '◑', light: '☀', dark: '🌙' };
+
+    document.addEventListener('click', function(e) {
+      var btn = e.target.closest('.theme-switch');
+      if (!btn || !window.__REMCARD_THEME) return;
+
+      var currentIdx = MODES.indexOf(window.__REMCARD_THEME.current);
+      var nextIdx = (currentIdx + 1) % MODES.length;
+      var next = MODES[nextIdx];
+
+      window.__REMCARD_THEME.apply(next);
+
+      var iconEl = btn.querySelector('.theme-switch-icon');
+      if (iconEl) iconEl.textContent = ICONS[next];
+    });
+
+    // Установить начальную иконку при загрузке
+    var t = window.__REMCARD_THEME;
+    if (t) {
+      var btns = document.querySelectorAll('.theme-switch-icon');
+      var icon = t.current === 'auto' ? '◑' : (t.resolved === 'light' ? '☀' : '🌙');
+      btns.forEach(function(el) { el.textContent = icon; });
+    }
+  })();
 })();
