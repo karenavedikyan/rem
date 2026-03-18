@@ -259,6 +259,9 @@
     const p = state.partner;
     if (!p) return;
 
+    const banner = document.getElementById("moderation-banner");
+    if (banner) banner.style.display = p.isApproved ? "none" : "block";
+
     setText("#cabinet-partner-name", p.name);
     setText("#cabinet-partner-type", PARTNER_TYPES[p.type] || p.type);
     setText("#cabinet-partner-city", p.city || "—");
